@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Workspace Name="udf" Database="./udf.tags">
+  <Project Name="udf" Path="udf/udf.project" Active="Yes"/>
+  <Project Name="DBManager" Path="DBManager/DBManager.project" Active="No"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="udf" ConfigName="Debug"/>
+      <Project Name="DBManager" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="udf" ConfigName="Release"/>
+      <Project Name="DBManager" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+  <Environment>
+    <![CDATA[]]>
+  </Environment>
+</CodeLite_Workspace>
