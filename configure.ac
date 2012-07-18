@@ -1,0 +1,111 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.68])
+AC_INIT([udf], [0.01], [andrian.yablonsky@gmail.com])
+AC_CANONICAL_SYSTEM
+
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
+# Checks for programs.
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_CPP
+
+# Checks for libraries.
+LT_INIT([disable-shared])
+
+abs_builddir=`pwd`
+abs_srcdir=`cd $srcdir && pwd`
+abs_bin=$abs_srcdir/bin
+mkdir -p $abs_bin
+
+export abs_bin=$abs_bin
+export abs_builddir=$abs_builddir
+export abs_srcdir=$abs_srcdir
+
+AC_SUBST(UDF_WITH_CPPFLAGS)
+AC_SUBST(UDF_WITH_LDADD)
+
+UDF_WITH_CPPFLAGS="$UDF_WITH_CPPFLAGS -I$abs_srcdir/common/src"
+
+AC_ARG_WITH([wxWidgets],
+            [AS_HELP_STRING([--with-wxWidgets],[Compile wxWidgets libraries [default=no]])],
+            [],[with_wxWidgets=yes])
+
+# Checks for library functions.
+AC_CHECK_LIB([pthread], [pthread_create], [], [AC_MSG_ERROR([pthread library was not found])])
+
+# Check packages installed
+#AC_PKG_SQLITE
+
+# Check headers
+#AC_CHECK_HEADERS([gtk/gtk.h], [], [AC_MSG_ERROR([gtk/gtk.h header was not found. please install libgtk*-dev])])
+
+AC_CONFIG_HEADERS([config.h])
+
+AC_C_BIGENDIAN
+
+target_os_windows=no
+target_os_linux=no
+case "$target_os" in
+windows*)
+        target_os_windows=yes
+	AC_DEFINE([BUILD4WIN],[1],[BUILD4WIN])
+	AC_MSG_CHECKING(compiling for windows)
+	;;
+linux*)
+        target_os_linux=yes
+	AC_MSG_CHECKING(compiling for Linux)
+	AC_DEFINE([BUILD4LIN],[1],[BUILD4LIN])
+	;;
+esac
+
+AM_CONDITIONAL([TARGET_OS_WINDOWS],[test "x$target_os_windows" = "xyes"])
+AM_CONDITIONAL([TARGET_OS_LINUX],[test "x$target_os_linux" = "xyes"])
+
+AC_SUBST(CC_FOR_BUILD)
+AS_IF([test "x$build" != "x$host"],
+      [CC_FOR_BUILD=${CC_FOR_BUILD-cc}],
+      [CC_FOR_BUILD=$CC])
+      
+AS_IF([test "x$with_wxWidgets" = "xyes"],[
+	AC_DEFINE([CONFIG_WXWIDGETS],[1],[Compile wxWidgets libraries])
+
+	cd $abs_srcdir/3rd_party
+	wxTar=`ls wxWidgets*.tar.*`
+	wxSrc=`echo $wxTar|awk -F.tar '{print $1}'`
+
+	AS_IF([ ! test -d "$wxSrc" ],[
+		echo `pwd`
+		echo 'TAR:--->'
+		tar -xvf $wxTar 
+		AS_IF([ ! test -d "$wxSrc" ],[
+			echo "Error! wxWidgets-XXX dir not created."
+			exit 1
+		])
+	])
+	AS_IF([ ! test -d "$wxSrc/buildwx" ],[
+		echo 'Build:--->'
+		mkdir -p $wxSrc/buildwx
+		cd $wxSrc/buildwx
+		echo 'Config:--->'
+		echo `pwd`
+		../configure --disable-shared --with-gtk
+		make -j8
+	])
+])
+AM_CONDITIONAL([WITH_WXWIDGETS],[test "x$with_wxWidgets" = "xyes"])
+
+export CFLAGS="-Wall $CFLAGS"
+export CXXFLAGS="-Wall $CXXFLAGS"
+
+AC_CONFIG_FILES([
+	Makefile
+	3rd_party/Makefile
+	common/Makefile
+	dbmgr/Makefile
+	gui/Makefile
+	])
+	
+AC_OUTPUT
