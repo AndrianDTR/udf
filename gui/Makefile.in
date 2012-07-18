@@ -56,6 +56,8 @@ PROGRAMS = $(bin_PROGRAMS)
 am_udf_OBJECTS = main.$(OBJEXT)
 udf_OBJECTS = $(am_udf_OBJECTS)
 udf_LDADD = $(LDADD)
+udf_DEPENDENCIES = libwx_baseu-2.9.a libwx_gtk2u_core-2.9.a libz.a \
+	libld.a
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -92,7 +94,6 @@ AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
-CC_FOR_BUILD = @CC_FOR_BUILD@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
@@ -149,6 +150,7 @@ SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 UDF_WITH_CPPFLAGS = @UDF_WITH_CPPFLAGS@
+UDF_WITH_CXXFLAGS = @UDF_WITH_CXXFLAGS@
 UDF_WITH_LDADD = @UDF_WITH_LDADD@
 VERSION = @VERSION@
 abs_builddir = @abs_builddir@
@@ -208,6 +210,12 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+AM_CPPFLAGS = @UDF_WITH_CXXFLAGS@ @UDF_WITH_CPPFLAGS@
+LDADD = libwx_baseu-2.9.a \
+		libwx_gtk2u_core-2.9.a \
+		libz.a \
+		libld.a
+
 udf_SOURCES = \
 	src/main.cpp src/main.h
 

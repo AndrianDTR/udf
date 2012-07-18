@@ -1,6 +1,5 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
-
 AC_PREREQ([2.68])
 AC_INIT([udf], [0.01], [andrian.yablonsky@gmail.com])
 AC_CANONICAL_SYSTEM
@@ -8,11 +7,9 @@ AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 # Checks for programs.
-AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_CPP
 
-# Checks for libraries.
 LT_INIT([disable-shared])
 
 abs_builddir=`pwd`
@@ -23,11 +20,6 @@ mkdir -p $abs_bin
 export abs_bin=$abs_bin
 export abs_builddir=$abs_builddir
 export abs_srcdir=$abs_srcdir
-
-AC_SUBST(UDF_WITH_CPPFLAGS)
-AC_SUBST(UDF_WITH_LDADD)
-
-UDF_WITH_CPPFLAGS="$UDF_WITH_CPPFLAGS -I$abs_srcdir/common/src"
 
 AC_ARG_WITH([wxWidgets],
             [AS_HELP_STRING([--with-wxWidgets],[Compile wxWidgets libraries [default=no]])],
@@ -42,12 +34,18 @@ AC_CHECK_LIB([pthread], [pthread_create], [], [AC_MSG_ERROR([pthread library was
 # Check headers
 #AC_CHECK_HEADERS([gtk/gtk.h], [], [AC_MSG_ERROR([gtk/gtk.h header was not found. please install libgtk*-dev])])
 
+######################################
+
 AC_CONFIG_HEADERS([config.h])
+
+######################################
 
 AC_C_BIGENDIAN
 
+######################################
 target_os_windows=no
 target_os_linux=no
+
 case "$target_os" in
 windows*)
         target_os_windows=yes
@@ -64,41 +62,42 @@ esac
 AM_CONDITIONAL([TARGET_OS_WINDOWS],[test "x$target_os_windows" = "xyes"])
 AM_CONDITIONAL([TARGET_OS_LINUX],[test "x$target_os_linux" = "xyes"])
 
-AC_SUBST(CC_FOR_BUILD)
-AS_IF([test "x$build" != "x$host"],
-      [CC_FOR_BUILD=${CC_FOR_BUILD-cc}],
-      [CC_FOR_BUILD=$CC])
-      
-AS_IF([test "x$with_wxWidgets" = "xyes"],[
-	AC_DEFINE([CONFIG_WXWIDGETS],[1],[Compile wxWidgets libraries])
+######################################
+AC_SUBST(UDF_WITH_CPPFLAGS)
+AC_SUBST(UDF_WITH_LDADD)
+AC_SUBST(UDF_WITH_CXXFLAGS)
+UDF_WITH_CXXFLAGS="$UDF_WITH_CXXFLAGS -I$abs_srcdir/common/src"
 
-	cd $abs_srcdir/3rd_party
-	wxTar=`ls wxWidgets*.tar.*`
-	wxSrc=`echo $wxTar|awk -F.tar '{print $1}'`
-
-	AS_IF([ ! test -d "$wxSrc" ],[
-		echo `pwd`
-		echo 'TAR:--->'
-		tar -xvf $wxTar 
-		AS_IF([ ! test -d "$wxSrc" ],[
-			echo "Error! wxWidgets-XXX dir not created."
-			exit 1
-		])
-	])
-	AS_IF([ ! test -d "$wxSrc/buildwx" ],[
-		echo 'Build:--->'
-		mkdir -p $wxSrc/buildwx
-		cd $wxSrc/buildwx
-		echo 'Config:--->'
-		echo `pwd`
-		../configure --disable-shared --with-gtk
-		make -j8
-	])
-])
 AM_CONDITIONAL([WITH_WXWIDGETS],[test "x$with_wxWidgets" = "xyes"])
+AS_IF([test "x$with_wxWidgets" = "xyes"],[
+    AC_DEFINE([CONFIG_WXWIDGETS],[1],[Compile wxWidgets libraries])
+    wxTar=`ls $abs_srcdir/3rd_party/wxWidgets*.tar.*`
+    wxSrc=`echo $wxTar|awk -F.tar '{print $1}'`
+    wxVer=`echo wxWidgets-2.9.3|awk -F- '{print $2}'|awk -F. '{print $1"."$2}'`
+    AS_IF([ ! test -d "$wxSrc/buildwx" ],[
+    	echo ""
+    	echo "Unpack wxWidgets sources..."
+        `tar -xvf $wxTar -C $abs_srcdir/3rd_party/`
+        AS_IF([ ! test -d "$wxSrc" ],[
+            `echo "Error! wxWidgets-XXX dir not created." && exit 1`
+        ])
+        echo "Building wxWidgets libraries..."
+        `mkdir -p $wxSrc/buildwx && cd $wxSrc/buildwx && ../configure --disable-shared --with-gtk && make -j8`
+        echo "Finish"
+    ])
+    
+    UDF_WITH_CXXFLAGS="$UDF_WITH_CXXFLAGS -L$wxSrc/buildwx/lib -I$wxSrc/buildwx/lib/wx/include/gtk2-unicode-static-$wxVer -I$wxSrc/include"
+    UDF_WITH_CPPFLAGS="$UDF_WITH_CPPFLAGS -D_FILE_OFFSET_BITS=64 -D__WXGTK__"
+])
 
-export CFLAGS="-Wall $CFLAGS"
-export CXXFLAGS="-Wall $CXXFLAGS"
+export UDF_WITH_CPPFLAGS="$UDF_WITH_CPPFLAGS"
+export UDF_WITH_LDADD="$UDF_WITH_LDADD"
+export UDF_WITH_CXXFLAGS="-Wall $UDF_WITH_CXXFLAGS"
+
+echo "AAAAAAAAAAAAAAAAA"$UDF_WITH_CPPFLAGS
+echo "BBBBBBBBBBBBBBBBB"$UDF_WITH_CXXFLAGS
+echo "CCCCCCCCCCCCCCCCC"$UDF_WITH_LDADD
+
 
 AC_CONFIG_FILES([
 	Makefile

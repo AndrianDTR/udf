@@ -1,8 +1,10 @@
 #!/bin/bash
 
-autogen.sh
+./autogen.sh
+
+mkdir -p build
 cd build
-../configure --with_wxWidgets=yes
+../configure --with-wxWidgets=yes
 make -j8
 cd ..
 
