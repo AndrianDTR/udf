@@ -12,7 +12,7 @@ AM_LDFLAGS = @UDF_WITH_LDADD@
 
 bin_PROGRAMS = udf
 
-AM_LDFLAGS += -lwx_baseu-2.9 -lwx_gtk2u_core-2.9 -lpthread -lz
+AM_LDFLAGS += -lwx_baseu-2.9 -lwx_gtk2u_core-2.9 -lwx_gtk2u_adv-2.9 -lwx_gtk2u_aui-2.9 -lpthread -lz
 
 		
 udf_SOURCES = \

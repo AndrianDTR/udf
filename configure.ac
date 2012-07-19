@@ -70,6 +70,9 @@ AC_SUBST(UDF_WITH_CXXFLAGS)
 AC_SUBST(UDF_WXSRC)
 AC_SUBST(UDF_WXVER)
 
+AC_SUBST(TOP_SRCDIR)
+AC_SUBST(TOP_BUILDDIR)
+
 UDF_WITH_CXXFLAGS="$UDF_WITH_CXXFLAGS -I$abs_srcdir/common/src"
 
 AM_CONDITIONAL([WITH_WXWIDGETS],[test "x$with_wxWidgets" = "xyes"])
@@ -97,6 +100,9 @@ AS_IF([test "x$with_wxWidgets" = "xyes"],[
 export UDF_WITH_CPPFLAGS="$UDF_WITH_CPPFLAGS"
 export UDF_WITH_LDADD="$UDF_WITH_LDADD"
 export UDF_WITH_CXXFLAGS="-Wall $UDF_WITH_CXXFLAGS"
+
+export TOP_SRCDIR="$abs_srcdir"
+export TOP_BUILDDIR="$abs_builddir"
 
 
 AC_CONFIG_FILES([
