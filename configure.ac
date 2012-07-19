@@ -1,6 +1,6 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
-AC_PREREQ([2.68])
+AC_PREREQ([2.65])
 AC_INIT([udf], [0.01], [andrian.yablonsky@gmail.com])
 AC_CANONICAL_SYSTEM
 
@@ -66,37 +66,37 @@ AM_CONDITIONAL([TARGET_OS_LINUX],[test "x$target_os_linux" = "xyes"])
 AC_SUBST(UDF_WITH_CPPFLAGS)
 AC_SUBST(UDF_WITH_LDADD)
 AC_SUBST(UDF_WITH_CXXFLAGS)
+
+AC_SUBST(UDF_WXSRC)
+AC_SUBST(UDF_WXVER)
+
 UDF_WITH_CXXFLAGS="$UDF_WITH_CXXFLAGS -I$abs_srcdir/common/src"
 
 AM_CONDITIONAL([WITH_WXWIDGETS],[test "x$with_wxWidgets" = "xyes"])
 AS_IF([test "x$with_wxWidgets" = "xyes"],[
     AC_DEFINE([CONFIG_WXWIDGETS],[1],[Compile wxWidgets libraries])
     wxTar=`ls $abs_srcdir/3rd_party/wxWidgets*.tar.*`
-    wxSrc=`echo $wxTar|awk -F.tar '{print $1}'`
-    wxVer=`echo wxWidgets-2.9.3|awk -F- '{print $2}'|awk -F. '{print $1"."$2}'`
-    AS_IF([ ! test -d "$wxSrc/buildwx" ],[
+    UDF_WXSRC=`echo $wxTar|awk -F.tar '{print $1}'`
+    UDF_WXVER=`echo wxWidgets-2.9.3|awk -F- '{print $2}'|awk -F. '{print $1"."$2}'`
+    AS_IF([ ! test -d "$UDF_WXSRC/buildwx" ],[
     	echo ""
     	echo "Unpack wxWidgets sources..."
         `tar -xvf $wxTar -C $abs_srcdir/3rd_party/`
-        AS_IF([ ! test -d "$wxSrc" ],[
+        AS_IF([ ! test -d "$UDF_WXSRC" ],[
             `echo "Error! wxWidgets-XXX dir not created." && exit 1`
         ])
-        echo "Building wxWidgets libraries..."
-        `mkdir -p $wxSrc/buildwx && cd $wxSrc/buildwx && ../configure --disable-shared --with-gtk && make -j8`
+        `mkdir -p $UDF_WXSRC/buildwx`
         echo "Finish"
     ])
-    
-    UDF_WITH_CXXFLAGS="$UDF_WITH_CXXFLAGS -L$wxSrc/buildwx/lib -I$wxSrc/buildwx/lib/wx/include/gtk2-unicode-static-$wxVer -I$wxSrc/include"
+    UDF_WITH_CXXFLAGS="$UDF_WITH_CXXFLAGS -L $UDF_WXSRC/buildwx/lib -I$UDF_WXSRC/buildwx/lib/wx/include/gtk2-unicode-static-$UDF_WXVER -I$UDF_WXSRC/include"
     UDF_WITH_CPPFLAGS="$UDF_WITH_CPPFLAGS -D_FILE_OFFSET_BITS=64 -D__WXGTK__"
+    export UDF_WXSRC="$UDF_WXSRC"
+	export UDF_WXVER="$UDF_WXVER"
 ])
 
 export UDF_WITH_CPPFLAGS="$UDF_WITH_CPPFLAGS"
 export UDF_WITH_LDADD="$UDF_WITH_LDADD"
 export UDF_WITH_CXXFLAGS="-Wall $UDF_WITH_CXXFLAGS"
-
-echo "AAAAAAAAAAAAAAAAA"$UDF_WITH_CPPFLAGS
-echo "BBBBBBBBBBBBBBBBB"$UDF_WITH_CXXFLAGS
-echo "CCCCCCCCCCCCCCCCC"$UDF_WITH_LDADD
 
 
 AC_CONFIG_FILES([

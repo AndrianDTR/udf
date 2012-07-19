@@ -1,13 +1,12 @@
 #include "cdbmanager.h"
 
-#include "dbaccessmgr.h"
+//#include "dbmgr.h"
 
 CDbManager* CDbManager::ms_instance = 0;
 
 CDbManager::CDbManager()
 {
 	int a = 0;
-	DBA_test();
 }
 
 CDbManager::~CDbManager()
