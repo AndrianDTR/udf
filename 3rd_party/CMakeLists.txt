@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 2.6)
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+	if( NOT EXISTS "${UDF_SOURCE_DIR}/3rd_party/build_wxWidgets.bat")
+		MESSAGE(FATAL_ERROR "Error! File build_wxWidgets.bat not found.")
+	endif()
+	EXEC_PROGRAM( "${UDF_SOURCE_DIR}/3rd_party/build_wxWidgets.bat" "${UDF_SOURCE_DIR}/3rd_party/" ARGS "release 0 1 1")
+else(${CMAKE_SYSTEM_NAME} STREQUAL Linux) 
+	if( NOT EXISTS "${UDF_SOURCE_DIR}/3rd_party/build_wxWidgets.sh")
+		MESSAGE(FATAL_ERROR "Error! File build_wxWidgets.sh not found.")
+	endif()
+	EXEC_PROGRAM( "${UDF_SOURCE_DIR}/3rd_party/build_wxWidgets.sh" "${UDF_SOURCE_DIR}/3rd_party/" ARGS "release 0 1 1")
+endif(${CMAKE_SYSTEM_NAME} STREQUAL Windows) 
