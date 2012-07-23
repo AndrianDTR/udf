@@ -5,6 +5,13 @@ cmake_policy(SET CMP0003 NEW)
 project(UDF)
 
 set(wxWidgetsPath "${UDF_SOURCE_DIR}/3rd_party/wxWidgets-2.9.3")
+
+if(WIN32)
+	set(wxWidgetsBuild "${wxWidgetsPath}")
+elseif(LINUX)
+	set(wxWidgetsBuild "${wxWidgetsPath}/buildgtk")
+endif(WIN32)
+
 if( NOT EXISTS ${wxWidgetsPath})
 	MESSAGE(FATAL_ERROR "WxWidgets path not found.")
 endif()
