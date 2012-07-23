@@ -64,8 +64,8 @@ set( MODULE_NAME "gui" )
 
 
 add_executable( ${MODULE_NAME} ${HEADER_FILES} ${SOURCE_FILES} )
-add_dependencies( ${MODULE_NAME} dbmgr wxpng wxzlib wxexpat)
-target_link_libraries( ${MODULE_NAME} dbmgr wxpng wxzlib wxexpat)
+add_dependencies( ${MODULE_NAME} dbmgr wxpng-2.9 wxzlib-2.9 wxexpat-2.9 )
+target_link_libraries( ${MODULE_NAME} dbmgr wxpng-2.9 wxzlib-2.9 wxexpat-2.9 )
 set_target_properties( ${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS "GUI_BUILD_MODULE" )
 
 include_directories(
@@ -90,21 +90,21 @@ if ( WIN32 )
 	include_directories( ../gui/src/windows )
 	
 	add_dependencies( ${MODULE_NAME} wxmsw29u comctl32)
-	target_link_libraries( ${MODULE_NAME} comctl32)
+	target_link_libraries( ${MODULE_NAME} wxmsw29u comctl32)
 	
 else ( WIN32 )
-	MESSAGE(STATUS "Add path ${wxWidgetsPath}")
-	MESSAGE(STATUS "Add build ${wxWidgetsBuild}")
 	include_directories( ${wxWidgetsBuild}/lib/wx/include/gtk2-unicode-static-2.9 )
 	include_directories( ${wxWidgetsBuild}/lib/wx/include/gtk2-unicode-2.9 )
 	
 	link_directories ( ${wxWidgetsBuild}/lib ) 
 	
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${wxWidgetsBuild}/lib") 
+	add_definitions(-D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D__WXGTK__ -pthread)
+	
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${wxWidgetsBuild}/lib -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D__WXGTK__ -pthread") 
 	
 	include_directories( ../gui/src/linux )
 	
-	add_dependencies( ${MODULE_NAME} wx_gtk2u-2.9 comctl32)
+	add_dependencies( ${MODULE_NAME} wx_gtk2u-2.9)
 	target_link_libraries( ${MODULE_NAME} wx_gtk2u-2.9)
 endif ( WIN32 )
 

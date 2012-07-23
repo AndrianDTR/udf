@@ -51,8 +51,8 @@ else
 	if [ "$wxBuildMono" = "x1" ]; then
 		config="$config --enable-monolithic"
 	fi
-
-	../configure --with-gtk $config
+	
+	../configure --with-gtk --with-libpng=builtin --with-zlib=builtin --with-expat=builtin $config
 
 	echo '*********************************************************************'
 	echo '* Make of wxWidgets.'
