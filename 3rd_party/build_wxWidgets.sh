@@ -42,7 +42,7 @@ else
 	cd $wxBuildPath
 	config=''
 	
-	if [ ! "$wxBuildSgared" = "x1" ]; then
+	if [ ! "$wxBuildShared" = "x1" ]; then
 		config="$config --disable-shared"
 	fi
 	if [ "$wxBuildUnicode" = "x1" ]; then

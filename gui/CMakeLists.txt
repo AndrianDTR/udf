@@ -92,7 +92,9 @@ if ( WIN32 )
 	add_dependencies( ${MODULE_NAME} wxmsw29u comctl32)
 	target_link_libraries( ${MODULE_NAME} comctl32)
 	
-elseif ( LINUX )
+else ( WIN32 )
+	MESSAGE(STATUS "Add path ${wxWidgetsPath}")
+	MESSAGE(STATUS "Add build ${wxWidgetsBuild}")
 	include_directories( ${wxWidgetsBuild}/lib/wx/include/gtk2-unicode-static-2.9 )
 	include_directories( ${wxWidgetsBuild}/lib/wx/include/gtk2-unicode-2.9 )
 	

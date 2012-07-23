@@ -4,23 +4,25 @@ cmake_policy(SET CMP0003 NEW)
 
 project(UDF)
 
-set(wxWidgetsPath "${UDF_SOURCE_DIR}/3rd_party/wxWidgets-2.9.3")
+set ( wxWidgetsPath "${UDF_SOURCE_DIR}/3rd_party/wxWidgets-2.9.3")
+set ( wxWidgetsBuild ${wxWidgetsPath} )
 
-if(WIN32)
-	set(wxWidgetsBuild "${wxWidgetsPath}")
-elseif(LINUX)
-	set(wxWidgetsBuild "${wxWidgetsPath}/buildgtk")
-endif(WIN32)
+IF ( WIN32 )
+	MESSAGE(STATUS "WIN32.")
+ELSE ( WIN32 )
+	MESSAGE(STATUS "! WIN32.")
+	set ( wxWidgetsBuild "${wxWidgetsPath}/buildgtk" )
+ENDIF ( WIN32 )
 
-if( NOT EXISTS ${wxWidgetsPath})
+IF( NOT EXISTS ${wxWidgetsPath})
 	MESSAGE(FATAL_ERROR "WxWidgets path not found.")
-endif()
+ENDIF()
 
-if ( WIN32 )
+IF ( WIN32 )
 	add_definitions(-DBUILD4WIN)
-else ()
+ELSE ()
 	add_definitions(-DBUILD4LIN)
-endif ()
+ENDIF ()
 
 # Include necessary submodules
 set(CMAKE_MODULE_PATH "${UDF_SOURCE_DIR}/build_utils")
@@ -32,10 +34,10 @@ set(UDF_WORK_DIR ${UDF_BINARY_DIR})
 # Set up the basic build environment
 #####################################################################
 
-if (CMAKE_BUILD_TYPE STREQUAL "")
+IF (CMAKE_BUILD_TYPE STREQUAL "")
   # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
   # differentiation between debug and release builds.
-  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
+  set( CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
 
 # determine UDF version numbers
