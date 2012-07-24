@@ -35,17 +35,6 @@ IF (CMAKE_BUILD_TYPE STREQUAL "")
   set( CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
 
-# determine UDF version numbers
-include(version)
-#ADD_CUSTOM_COMMAND(
-#    OUTPUT ${UDF_SOURCE_DIR}/common/src/version.h
-#    COMMAND ${CMAKE_COMMAND} -P version.cmake
-#    DEPENDS generate version.cmake
-#    )
-    
-UDF_get_version(${UDF_SOURCE_DIR}/common/src/version.h)
-message(STATUS "Configuring UDF ${UDF_VERSION}")
-
 if (NOT APPLE)
   # Create debug libraries with _d postfix
   set(CMAKE_DEBUG_POSTFIX "_d")
@@ -68,6 +57,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${UDF_BINARY_DIR}/bin")
 # Setup targets
 ##################################################################
 # Setup gucef modules
-#add_subdirectory( 3rd_party )
+add_subdirectory( common )
 add_subdirectory( dbmgr )
 add_subdirectory( gui )

@@ -1547,7 +1547,7 @@
             <property name="name">ChampionshipCategoriesMngrDlg</property>
             <property name="pos"></property>
             <property name="size">664,446</property>
-            <property name="style">wxDEFAULT_DIALOG_STYLE</property>
+            <property name="style">wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE</property>
             <property name="subclass"></property>
             <property name="title">Championship categories management</property>
             <property name="tooltip"></property>

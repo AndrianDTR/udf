@@ -63,10 +63,9 @@ set( ALL_FILES ${HEADER_FILES} ${SOURCE_FILES} ${PLATFORM_HEADER_FILES} ${PLATFO
 # Set module name
 set( MODULE_NAME "gui" )
 
-
 # Set module link properties
 add_executable( ${MODULE_NAME} ${HEADER_FILES} ${SOURCE_FILES} )
-add_dependencies( ${MODULE_NAME} dbmgr )
+add_dependencies( ${MODULE_NAME} dbmgr)
 target_link_libraries( ${MODULE_NAME} dbmgr )
 set_target_properties( ${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS "GUI_BUILD_MODULE" )
 

@@ -155,7 +155,7 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 	
 	public:
 		
-		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 664,446 ), long style = wxDEFAULT_DIALOG_STYLE );
+		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 664,446 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
 		~ChampionshipCategoriesMngrDlg();
 	
 };
