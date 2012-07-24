@@ -60,26 +60,37 @@ set( PLATFORM_SOURCE_FILES "" )
 # For ease of use make a variable that has all files for this module
 set( ALL_FILES ${HEADER_FILES} ${SOURCE_FILES} ${PLATFORM_HEADER_FILES} ${PLATFORM_SOURCE_FILES} )
 
+# Set module name
 set( MODULE_NAME "gui" )
 
 
+# Set module link properties
 add_executable( ${MODULE_NAME} ${HEADER_FILES} ${SOURCE_FILES} )
-add_dependencies( ${MODULE_NAME} dbmgr wxpng-2.9 wxzlib-2.9 wxexpat-2.9 )
-target_link_libraries( ${MODULE_NAME} dbmgr wxpng-2.9 wxzlib-2.9 wxexpat-2.9 )
+add_dependencies( ${MODULE_NAME} dbmgr )
+target_link_libraries( ${MODULE_NAME} dbmgr )
 set_target_properties( ${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS "GUI_BUILD_MODULE" )
 
+# Add module include directories
 include_directories(
-	${wxWidgetsPath}/include
 	${UDF_SOURCE_DIR}/common/src 
 	${UDF_SOURCE_DIR}/dbmgr/src 
 	src
 	res
 )
 
+# Add module find lib directories
 link_directories ( ${UDF_BINARY_DIR}/lib ) 
 
+# Add module link flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -L${UDF_BINARY_DIR}/lib") 
 
+
+################################
+## Add WxWidgets libs
+################################
+include_directories( ${wxWidgetsPath}/include )
+
+## platform dependent wxLibs
 if ( WIN32 )
 	include_directories( ${wxWidgetsBuild}/lib/gcc_lib/mswu )
 	
@@ -89,22 +100,25 @@ if ( WIN32 )
 	
 	include_directories( ../gui/src/windows )
 	
-	add_dependencies( ${MODULE_NAME} wxmsw29u comctl32)
-	target_link_libraries( ${MODULE_NAME} wxmsw29u comctl32)
+	target_link_libraries( ${MODULE_NAME} 
+		wx_msw2u_adv-2.9 wx_msw2u_core-2.9
+		wx_baseu-2.9 wxpng-2.9 wxzlib-2.9 wxexpat-2.9 
+		comctl32)
 	
 else ( WIN32 )
 	include_directories( ${wxWidgetsBuild}/lib/wx/include/gtk2-unicode-static-2.9 )
-	include_directories( ${wxWidgetsBuild}/lib/wx/include/gtk2-unicode-2.9 )
 	
 	link_directories ( ${wxWidgetsBuild}/lib ) 
 	
-	add_definitions(-D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D__WXGTK__ -pthread)
+	add_definitions(-D_FILE_OFFSET_BITS=64 -D__WXGTK__ -pthread)
 	
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${wxWidgetsBuild}/lib -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D__WXGTK__ -pthread") 
-	
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${wxWidgetsBuild}/lib") 
+		
 	include_directories( ../gui/src/linux )
 	
-	add_dependencies( ${MODULE_NAME} wx_gtk2u-2.9)
-	target_link_libraries( ${MODULE_NAME} wx_gtk2u-2.9)
+	target_link_libraries( ${MODULE_NAME} 
+		wx_gtk2u_adv-2.9 wx_gtk2u_core-2.9
+		wx_baseu-2.9 wxpng-2.9 wxzlib-2.9 wxexpat-2.9 
+		gtk-x11-2.0 SM dl )
 endif ( WIN32 )
 

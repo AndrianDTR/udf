@@ -52,7 +52,8 @@ else
 		config="$config --enable-monolithic"
 	fi
 	
-	../configure --with-gtk --with-libpng=builtin --with-zlib=builtin --with-expat=builtin $config
+	../configure --with-gtk --enable-utf8 --disable-shared --with-libpng=builtin --with-zlib=builtin --with-expat=builtin 
+	#$config
 
 	echo '*********************************************************************'
 	echo '* Make of wxWidgets.'
