@@ -13,6 +13,7 @@
 
 #include "main.h"
 
+#include "cdbmanager.h"
 // initialize the application
 IMPLEMENT_APP(MainApp);
 
@@ -22,6 +23,7 @@ IMPLEMENT_APP(MainApp);
 
 bool MainApp::OnInit()
 {
+	CDbManager* dbm = CDbManager::Instance(); 
 	SetTopWindow( new MainFrame( NULL ) );
 	GetTopWindow()->Show();
 	

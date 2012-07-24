@@ -229,8 +229,8 @@ BEGIN_EVENT_TABLE( ChampionshipCategoriesMngrDlg, wxDialog )
 	EVT_BUTTON( wxID_ADDONE, ChampionshipCategoriesMngrDlg::_wxFB_OnAdd )
 	EVT_BUTTON( wxID_REMOVEONE, ChampionshipCategoriesMngrDlg::_wxFB_OnRemove )
 	EVT_BUTTON( wxID_REMOVEALL, ChampionshipCategoriesMngrDlg::_wxFB_OnRemoveAll )
-	EVT_BUTTON( wxID_SAVE, ChampionshipCategoriesMngrDlg::_wxFB_OnSave )
-	EVT_BUTTON( wxID_DISCARD, ChampionshipCategoriesMngrDlg::_wxFB_OnDiscard )
+	EVT_BUTTON( wxID_OK, ChampionshipCategoriesMngrDlg::_wxFB_OnSave )
+	EVT_BUTTON( wxID_CANCEL, ChampionshipCategoriesMngrDlg::_wxFB_OnDiscard )
 END_EVENT_TABLE()
 
 ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -289,10 +289,11 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 	wxBoxSizer* bSizer34;
 	bSizer34 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpButton31 = new wxBitmapButton( this, wxID_SAVE, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton31 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton31->SetDefault(); 
 	bSizer34->Add( m_bpButton31, 0, wxALL, 5 );
 	
-	m_bpButton32 = new wxBitmapButton( this, wxID_DISCARD, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton32 = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer34->Add( m_bpButton32, 0, wxALL, 5 );
 	
 	bSizer7->Add( bSizer34, 0, wxALIGN_CENTER_HORIZONTAL, 5 );

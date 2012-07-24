@@ -54,7 +54,12 @@
       <Completion EnableCpp11="no">
         <ClangCmpFlags/>
         <ClangPP/>
-        <SearchPaths/>
+        <SearchPaths>$(WorkspacePath)/gui/res
+$(WorkspacePath)/gui/src
+$(WorkspacePath)/dbmgr/src
+$(WorkspacePath)/common/src
+$(WorkspacePath)/3rd_party/wxWidgets-2.9.3/buildgtk/lib/wx/include/gtk2-unicode-static-2.9
+$(WorkspacePath)/3rd_party/wxWidgets-2.9.3/include</SearchPaths>
       </Completion>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

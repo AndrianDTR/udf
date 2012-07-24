@@ -130,7 +130,6 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 			wxID_ADDONE,
 			wxID_REMOVEONE,
 			wxID_REMOVEALL,
-			wxID_DISCARD,
 		};
 		
 		wxStaticText* m_staticText8;
@@ -155,7 +154,7 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 	
 	public:
 		
-		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 664,446 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE );
+		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 664,446 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
 		~ChampionshipCategoriesMngrDlg();
 	
 };
