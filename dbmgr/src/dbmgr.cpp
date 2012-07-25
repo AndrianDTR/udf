@@ -149,7 +149,7 @@ static void retrieve_rsmetadata_and_print (ResultSet *rs) {
 
 int dbmgr_test(void)
 {
-	printf("This is a test lib call");
+	cout << "This is a test lib call\n";
 	
 	Driver *driver;
 	Connection *con;
@@ -161,10 +161,10 @@ int dbmgr_test(void)
 	int updatecount = 0;
 
 	/* initiate url, user, password and database variables */
-	string url(argc >= 2 ? argv[1] : DBHOST);
-	const string user(argc >= 3 ? argv[2] : USER);
-	const string password(argc >= 4 ? argv[3] : PASSWORD);
-	const string database(argc >= 5 ? argv[4] : DATABASE);
+	string url(DBHOST);
+	const string user(USER);
+	const string password(PASSWORD);
+	const string database(DATABASE);
 
 	try {
 		driver = get_driver_instance();
