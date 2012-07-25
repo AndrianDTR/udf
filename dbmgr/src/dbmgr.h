@@ -2,7 +2,7 @@
 extern "C" {
 #endif
 
-void dbmgr_test();
+int dbmgr_test();
 
 #ifdef __cplusplus
 }

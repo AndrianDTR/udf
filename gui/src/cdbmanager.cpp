@@ -6,8 +6,7 @@ CDbManager* CDbManager::ms_instance = 0;
 
 CDbManager::CDbManager()
 {
-	int a = 0;
-	dbmgr_test();
+	int a = dbmgr_test();
 }
 
 CDbManager::~CDbManager()

@@ -1,13 +1,20 @@
 cmake_minimum_required(VERSION 2.6)
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
-	if( NOT EXISTS "${UDF_SOURCE_DIR}/3rd_party/build_wxWidgets.bat")
-		MESSAGE(FATAL_ERROR "Error! File build_wxWidgets.bat not found.")
-	endif()
-	EXEC_PROGRAM( "${UDF_SOURCE_DIR}/3rd_party/build_wxWidgets.bat" "${UDF_SOURCE_DIR}/3rd_party/" ARGS "release 0 1 1")
-else(${CMAKE_SYSTEM_NAME} STREQUAL Linux) 
-	if( NOT EXISTS "${UDF_SOURCE_DIR}/3rd_party/build_wxWidgets.sh")
-		MESSAGE(FATAL_ERROR "Error! File build_wxWidgets.sh not found.")
-	endif()
-	EXEC_PROGRAM( "${UDF_SOURCE_DIR}/3rd_party/build_wxWidgets.sh" "${UDF_SOURCE_DIR}/3rd_party/" ARGS "release 0 1 1")
-endif(${CMAKE_SYSTEM_NAME} STREQUAL Windows) 
+IF (UNIX)
+	add_custom_target(boost ALL
+		COMMAND "tar -C ${CMAKE_CURRENT_SOURCE_DIR} -xvzf ${CMAKE_CURRENT_SOURCE_DIR}/${BOOST_LIB_FILE}.${TARGZ_EXT}"
+		DEPENDS ${BOOST_LIB_FILE}.${TARGZ_EXT}
+ 	)
+	
+	add_custom_target(mysql ALL
+		COMMAND "tar -C ${CMAKE_CURRENT_SOURCE_DIR} -xvzf ${CMAKE_CURRENT_SOURCE_DIR}/${MYSQL_CONN_FILE}.${TARGZ_EXT}"
+		DEPENDS ${MYSQL_CONN_FILE}.${TARGZ_EXT}
+ 	)
+
+ELSE( WIN32 )
+	MESSAGE(FATAL_ERROR "Extract MySQL connector for win32 not implemented yet.")
+ELSE( WIN64 )
+	MESSAGE(FATAL_ERROR "Extract MySQL connector for win32 not implemented yet.")
+ENDIF()
+
+

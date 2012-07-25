@@ -19,6 +19,15 @@ set( SOURCE_FILES
   src/dbmgr.cpp
 )
 
+###########################################################################
+add_custom_target (
+    MySql
+    DEPENDS ${BOOST_INCLUDE}/variant.hpp
+    COMMAND "cd ${MYSQL_CONN_PATH} && cmake -D${BOOST_PATH} ."
+)
+ 
+###########################################################################
+
 # Make sure the PLATFORM_HEADER_FILES variable is always defined
  set( PLATFORM_HEADER_FILES "" )
 
@@ -28,21 +37,31 @@ set( SOURCE_FILES
 # For ease of use make a variable that has all files for this module
 set( ALL_FILES ${HEADER_FILES} ${SOURCE_FILES} ${PLATFORM_HEADER_FILES} ${PLATFORM_SOURCE_FILES} )
 
+
+IF (UNIX)
+	target_link_libraries( ${MODULE_NAME} pthread)
+	
+	set(MYSQL_CONNECTIR_DIR "${UDF_SOURCE_DIR}/3rd_party/${CONN_FILE}")
+	include_directories( ${MYSQL_CONNECTIR_DIR}/include )		
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${MYSQL_CONNECTIR_DIR}/lib -I${MYSQL_CONNECTIR_DIR}/include")
+	target_link_libraries( ${MODULE_NAME} MySql)
+	
+	#MESSAGE(FATAL_ERROR "${MYSQL_CONNECTIR_DIR}/lib")
+ELSE( WIN32 )
+	target_link_libraries( ${MODULE_NAME} Winmm )
+	MESSAGE(FATAL_ERROR "Extract MySQL connector for win32 not implemented yet.")
+ELSE( WIN64 )
+	target_link_libraries( ${MODULE_NAME} Winmm )
+	MESSAGE(FATAL_ERROR "Extract MySQL connector for win32 not implemented yet.")
+ENDIF()
+
+include_directories( ${UDF_SOURCE_DIR}/common/src src )
+
+add_definitions(-DDBMGR_EXPORTS)
+
 set( MODULE_NAME "dbmgr" )
 add_library( ${MODULE_NAME} SHARED ${ALL_FILES} )
 set_target_properties( ${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS "DBMGR_BUILD_MODULE" )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall ")
 
-if ( UNIX )
-  target_link_libraries( ${MODULE_NAME} pthread mysqlclient)
-endif( UNIX )
-
-if ( WIN32 )
-  target_link_libraries( ${MODULE_NAME} Winmm )
-  #target_link_libraries( ${MODULE_NAME} )
-endif( WIN32 )
-
-include_directories( ${UDF_SOURCE_DIR}/common/src src )
-
-add_definitions(-DDBMGR_EXPORTS)
