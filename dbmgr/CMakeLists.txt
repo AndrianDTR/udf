@@ -21,11 +21,12 @@ set( SOURCE_FILES
 
 ###########################################################################
 add_custom_target (
-    MySql
+    libmysqlcppconn-static.a
     DEPENDS ${BOOST_INCLUDE}/variant.hpp
     COMMAND "cd ${MYSQL_CONN_PATH} && cmake -D${BOOST_PATH} ."
 )
  
+#add_dependencies(${MODULE_NAME} libmysqlcppconn-static.a)
 ###########################################################################
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined
@@ -43,8 +44,8 @@ IF (UNIX)
 	
 	set(MYSQL_CONNECTIR_DIR "${UDF_SOURCE_DIR}/3rd_party/${CONN_FILE}")
 	include_directories( ${MYSQL_CONNECTIR_DIR}/include )		
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${MYSQL_CONNECTIR_DIR}/lib -I${MYSQL_CONNECTIR_DIR}/include")
-	target_link_libraries( ${MODULE_NAME} MySql)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${MYSQL_CONN_PATH}/driver -I${MYSQL_CONN_PATH} -I${BOOST_PATH}")
+	target_link_libraries( ${MODULE_NAME} libmysqlcppconn-static.a)
 	
 	#MESSAGE(FATAL_ERROR "${MYSQL_CONNECTIR_DIR}/lib")
 ELSE( WIN32 )
