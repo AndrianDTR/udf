@@ -19,6 +19,8 @@
     </WorkspaceConfiguration>
   </BuildMatrix>
   <Environment>
-    <![CDATA[]]>
+    <![CDATA[
+  
+  ]]>
   </Environment>
 </CodeLite_Workspace>

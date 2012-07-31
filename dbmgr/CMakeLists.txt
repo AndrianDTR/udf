@@ -28,6 +28,12 @@ set( SOURCE_FILES
 # For ease of use make a variable that has all files for this module
 set( ALL_FILES ${HEADER_FILES} ${SOURCE_FILES} ${PLATFORM_HEADER_FILES} ${PLATFORM_SOURCE_FILES} )
 
+set( MODULE_NAME "dbmgr" )
+
+add_library( ${MODULE_NAME} SHARED ${ALL_FILES} )
+SET_TARGET_PROPERTIES(${MODULE_NAME} PROPERTIES
+	COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/include/mysql -DBIG_JOINS=1  -fno-strict-aliasing -g -L${MYSQL_CONN_PATH}/driver -L${MYSQL_CONN_PATH}/cppconn ")
+TARGET_LINK_LIBRARIES(${MODULE_NAME} ${MYSQL_CONN_PATH}/driver/libmysqlcppconn-static.a; mysqlclient_r)
 
 IF (UNIX)
 	#target_link_libraries( ${MODULE_NAME} mysql)
@@ -53,9 +59,6 @@ include_directories( ${UDF_SOURCE_DIR}/common/src src )
 
 add_definitions(-DDBMGR_EXPORTS)
 
-set( MODULE_NAME "dbmgr" )
-add_library( ${MODULE_NAME} SHARED ${ALL_FILES} )
-set_target_properties( ${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS "DBMGR_BUILD_MODULE" )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall ")
 
