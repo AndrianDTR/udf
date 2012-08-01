@@ -63,7 +63,6 @@ class DancersTeamMngr : public wxDialog
 			wxID_REMOVEDANCERTEAMCATEGORY,
 			wxID_ADDDANCER,
 			wxID_REMOVEDANCER,
-			wxID_DISCARD,
 		};
 		
 		wxStaticText* m_staticText88;
@@ -175,11 +174,6 @@ class CategoriesMngrDlg : public wxDialog
 		
 	
 	protected:
-		enum
-		{
-			wxID_DISCARD = 1000,
-		};
-		
 		wxStaticText* m_staticText15;
 		wxTextCtrl* m_textCtrl5;
 		wxListBox* m_listBox4;
@@ -205,7 +199,7 @@ class CategoriesMngrDlg : public wxDialog
 	
 	public:
 		
-		CategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 715,287 ), long style = wxDEFAULT_DIALOG_STYLE );
+		CategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 715,287 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
 		~CategoriesMngrDlg();
 	
 };
@@ -238,7 +232,6 @@ class ClubsMngrDlg : public wxDialog
 			wxID_DIRECTORINFO,
 			wxID_TRAINERS,
 			wxID_DANCERS,
-			wxID_DISCARD,
 		};
 		
 		wxStaticText* m_staticText20;
@@ -406,11 +399,6 @@ class DirectorInfo : public wxDialog
 		
 	
 	protected:
-		enum
-		{
-			wxID_DISCARD = 1000,
-		};
-		
 		wxStaticText* m_staticText29;
 		wxTextCtrl* m_textCtrl14;
 		wxStaticText* m_staticText30;
@@ -454,11 +442,6 @@ class TarinersMngrDlg : public wxDialog
 		
 	
 	protected:
-		enum
-		{
-			wxID_DISCARD = 1000,
-		};
-		
 		wxStaticText* m_staticText20;
 		wxTextCtrl* m_textCtrl8;
 		wxListBox* m_listBox5;
@@ -513,11 +496,6 @@ class DancersMngrDlg : public wxDialog
 		
 	
 	protected:
-		enum
-		{
-			wxID_DISCARD = 1000,
-		};
-		
 		wxStaticText* m_staticText78;
 		wxTextCtrl* m_textCtrl38;
 		wxListBox* m_listBox5;
@@ -578,11 +556,6 @@ class AccountInfo : public wxDialog
 		
 	
 	protected:
-		enum
-		{
-			wxID_DISCARD = 1000,
-		};
-		
 		wxStaticText* m_staticText56;
 		wxTextCtrl* m_textCtrl28;
 		wxStaticText* m_staticText57;
@@ -620,11 +593,6 @@ class JudgesMngr : public wxDialog
 		
 	
 	protected:
-		enum
-		{
-			wxID_DISCARD = 1000,
-		};
-		
 		wxStaticText* m_staticText20;
 		wxTextCtrl* m_textCtrl8;
 		wxListBox* m_listBox5;
@@ -691,7 +659,6 @@ class TeamCategoryMngrDlg : public wxDialog
 			wxID_ADDONE,
 			wxID_REMOVEONE,
 			wxID_REMOVEALL,
-			wxID_DISCARD,
 		};
 		
 		wxStaticText* m_staticText8;
@@ -745,7 +712,6 @@ class TeamDancersMngrDlg : public wxDialog
 			wxID_ADDONE,
 			wxID_REMOVEONE,
 			wxID_REMOVEALL,
-			wxID_DISCARD,
 		};
 		
 		wxStaticText* m_staticText8;
@@ -799,7 +765,6 @@ class ChampionshipJudgesTeamMngrDlg : public wxDialog
 			wxID_ADDONE,
 			wxID_REMOVEONE,
 			wxID_REMOVEALL,
-			wxID_DISCARD,
 		};
 		
 		wxStaticText* m_staticText8;
@@ -851,7 +816,6 @@ class StartNumberAssignDlg : public wxDialog
 			wxID_RANDOM = 1000,
 			wxID_NEXT,
 			wxID_ASSIGN,
-			wxID_DISCARD,
 		};
 		
 		wxStaticText* m_staticText15;

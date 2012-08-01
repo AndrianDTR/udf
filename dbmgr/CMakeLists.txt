@@ -31,22 +31,28 @@ set( ALL_FILES ${HEADER_FILES} ${SOURCE_FILES} ${PLATFORM_HEADER_FILES} ${PLATFO
 set( MODULE_NAME "dbmgr" )
 
 add_library( ${MODULE_NAME} SHARED ${ALL_FILES} )
-SET_TARGET_PROPERTIES(${MODULE_NAME} PROPERTIES
-	COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/include/mysql -DBIG_JOINS=1  -fno-strict-aliasing -g -L${MYSQL_CONN_PATH}/driver -L${MYSQL_CONN_PATH}/cppconn ")
-TARGET_LINK_LIBRARIES(${MODULE_NAME} ${MYSQL_CONN_PATH}/driver/libmysqlcppconn-static.a; mysqlclient_r)
+
+include_directories( ${UDF_SOURCE_DIR}/common/src src )
+
+add_definitions(-DDBMGR_EXPORTS)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall ")
 
 IF (UNIX)
-	#target_link_libraries( ${MODULE_NAME} mysql)
 	
-	set(MYSQL_CONNECTIR_DIR "${UDF_SOURCE_DIR}/3rd_party/${CONN_FILE}")
-	include_directories( ${MYSQL_CONNECTIR_DIR}/include
-		${MYSQL_CONN_PATH} 
+	LINK_DIRECTORIES(${MYSQL_CONN_INCLUDE})
+	
+	INCLUDE_DIRECTORIES(-I/usr/include/mysql
+		${MYSQL_CONN_PATH}
 		${BOOST_PATH}
-	)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${MYSQL_CONN_PATH}/driver -L${MYSQL_CONN_PATH}/cppconn -lmysqlcppconn-static")
-	#target_link_libraries( ${MODULE_NAME} )
+		)
 	
-	#MESSAGE(FATAL_ERROR "${MYSQL_CONNECTIR_DIR}/lib")
+	ADD_DEFINITIONS(-DBIG_JOINS=1 -fno-strict-aliasing -g)
+	
+	TARGET_LINK_LIBRARIES(${MODULE_NAME} ${MYSQL_CONN_INCLUDE}/libmysqlcppconn-static.a; mysqlclient_r)
+	
+	ADD_DEPENDENCIES(${MODULE_NAME} mysql_connector_lib)
+
 ELSE( WIN32 )
 	target_link_libraries( ${MODULE_NAME} Winmm )
 	MESSAGE(FATAL_ERROR "Extract MySQL connector for win32 not implemented yet.")
@@ -54,11 +60,4 @@ ELSE( WIN64 )
 	target_link_libraries( ${MODULE_NAME} Winmm )
 	MESSAGE(FATAL_ERROR "Extract MySQL connector for win32 not implemented yet.")
 ENDIF()
-
-include_directories( ${UDF_SOURCE_DIR}/common/src src )
-
-add_definitions(-DDBMGR_EXPORTS)
-
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall ")
 

@@ -65,7 +65,7 @@ set( MODULE_NAME "gui" )
 
 # Set module link properties
 add_executable( ${MODULE_NAME} ${HEADER_FILES} ${SOURCE_FILES} )
-add_dependencies( ${MODULE_NAME} dbmgr)
+add_dependencies( ${MODULE_NAME} dbmgr wx_build)
 target_link_libraries( ${MODULE_NAME} dbmgr )
 set_target_properties( ${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS "GUI_BUILD_MODULE" )
 
@@ -87,15 +87,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -L${UDF_BINARY_DIR}/lib")
 ################################
 ## Add WxWidgets libs
 ################################
-include_directories( ${wxWidgetsPath}/include )
+include_directories( ${WX_PATH}/include )
 
 ## platform dependent wxLibs
 if ( WIN32 )
-	include_directories( ${wxWidgetsBuild}/lib/gcc_lib/mswu )
+	include_directories( ${WX_BUILD_PATH}/lib/gcc_lib/mswu )
 	
-	link_directories ( ${wxWidgetsBuild}/lib/gcc_lib ) 
+	link_directories ( ${WX_BUILD_PATH}/lib/gcc_lib ) 
 	
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${wxWidgetsBuild}/lib/gcc_lib") 
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${WX_BUILD_PATH}/lib/gcc_lib") 
 	
 	include_directories( ../gui/src/windows )
 	
@@ -105,13 +105,13 @@ if ( WIN32 )
 		comctl32)
 	
 else ( WIN32 )
-	include_directories( ${wxWidgetsBuild}/lib/wx/include/gtk2-unicode-static-2.9 )
+	include_directories( ${WX_BUILD_PATH}/lib/wx/include/gtk2-unicode-static-2.9 )
 	
-	link_directories ( ${wxWidgetsBuild}/lib ) 
+	link_directories ( ${WX_BUILD_PATH}/lib ) 
 	
 	add_definitions(-D_FILE_OFFSET_BITS=64 -D__WXGTK__ -pthread)
 	
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${wxWidgetsBuild}/lib") 
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${WX_BUILD_PATH}/lib") 
 		
 	include_directories( ../gui/src/linux )
 	

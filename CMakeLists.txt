@@ -12,25 +12,25 @@ set ( EXT_LIB_PATH "${UDF_SOURCE_DIR}/3rd_party")
 
 set(MYSQL_CONN_FILE "mysql-connector-c++-1.1.0")
 set(MYSQL_CONN_PATH "${EXT_LIB_PATH}/${MYSQL_CONN_FILE}")
-set(MYSQL_CONN_INCLUDE "${MYSQL_CONN_PATH}/include")
+set(MYSQL_CONN_INCLUDE "${MYSQL_CONN_PATH}/driver")
 
 set(BOOST_LIB_FILE "boost_1_50_0")
 set(BOOST_PATH "${EXT_LIB_PATH}/${BOOST_LIB_FILE}")
 set(BOOST_INCLUDE "${BOOST_PATH}/boost")
 
+set (WX_LIB_FILE "wxWidgets-2.9.3")
+set (WX_PATH "${EXT_LIB_PATH}/${WX_LIB_FILE}" )
+
 set(TARGZ_EXT "tar.gz")
+set(TARBZ2_EXT "tar.bz2")
 ##########################
 
-set ( wxWidgetsPath "${EXT_LIB_PATH}/wxWidgets-2.9.3")
-set ( wxWidgetsBuild ${wxWidgetsPath} )
-
+set ( WX_BUILD_PATH "${WX_PATH}" )
 IF ( UNIX )
-	set ( wxWidgetsBuild "${wxWidgetsPath}/buildgtk" )
+	set ( WX_BUILD_PATH "${WX_PATH}/buildgtk" )
 ENDIF ( UNIX )
 
-IF( NOT EXISTS ${wxWidgetsPath})
-	MESSAGE(FATAL_ERROR "WxWidgets path not found.")
-ENDIF()
+add_subdirectory( 3rd_party )
 
 IF ( WIN32 )
 	add_definitions(-DBUILD4WIN)
@@ -90,7 +90,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${UDF_BINARY_DIR}/bin")
 # Setup targets
 ##################################################################
 # Setup gucef modules
-add_subdirectory( 3rd_party )
 add_subdirectory( common )
 add_subdirectory( dbmgr )
 add_subdirectory( gui )

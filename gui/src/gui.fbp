@@ -2253,7 +2253,7 @@
             <property name="name">CategoriesMngrDlg</property>
             <property name="pos"></property>
             <property name="size">715,287</property>
-            <property name="style">wxDEFAULT_DIALOG_STYLE</property>
+            <property name="style">wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU</property>
             <property name="subclass"></property>
             <property name="title">Categories manager</property>
             <property name="tooltip"></property>
