@@ -19,10 +19,10 @@ void udfCategoriesMngrDlg::OnRemove( wxCommandEvent& event )
 
 void udfCategoriesMngrDlg::OnSave( wxCommandEvent& event )
 {
-	// TODO: Implement OnSave
+	EndModal(wxID_OK);
 }
 
 void udfCategoriesMngrDlg::OnDiscard( wxCommandEvent& event )
 {
-	// TODO: Implement OnDiscard
+	EndModal(wxID_CANCEL);
 }

@@ -199,7 +199,7 @@ class CategoriesMngrDlg : public wxDialog
 	
 	public:
 		
-		CategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 715,287 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
+		CategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 715,287 ), long style = wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
 		~CategoriesMngrDlg();
 	
 };
