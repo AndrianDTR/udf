@@ -18,10 +18,10 @@
 #include <cppconn/exception.h>
 #include <cppconn/warning.h>
 	
-#define DBHOST "tcp://127.0.0.1:3306"
-#define USER "root"
-#define PASSWORD "admin"
-#define DATABASE "test"
+#define DBHOST "tcp://192.169.11.182:3306"
+#define USER "andrian"
+#define PASSWORD "dataNet"
+#define DATABASE "udf"
 
 #define NUMOFFSET 100
 #define COLNAME 200
@@ -120,7 +120,7 @@ static void retrieve_rsmetadata_and_print (ResultSet *rs) {
 	//auto_ptr < ResultSetMetaData > res_meta ( rs -> getMetaData() );
 
 	ResultSetMetaData *res_meta = rs -> getMetaData();
-
+	
 	int numcols = res_meta -> getColumnCount();
 	cout << "\nNumber of columns in the result set = " << numcols << endl << endl;
 
@@ -130,14 +130,18 @@ static void retrieve_rsmetadata_and_print (ResultSet *rs) {
 	cout << "Column Type";
 	cout.width(20);
 	cout << "Column Size" << endl;
-
+	
+	rs->next();
+		
 	for (int i = 0; i < numcols; ++i) {
 		cout.width(20);
 		cout << res_meta -> getColumnLabel (i+1);
 		cout.width(20); 
 		cout << res_meta -> getColumnTypeName (i+1);
 		cout.width(20); 
-		cout << res_meta -> getColumnDisplaySize (i+1) << endl << endl;
+		cout << res_meta -> getColumnDisplaySize (i+1) << endl;
+		cout.width(20); 
+		cout << rs -> getString(i+1) << endl;
 	}
 
 	cout << "\nColumn \"" << res_meta -> getColumnLabel(1);
@@ -149,8 +153,6 @@ static void retrieve_rsmetadata_and_print (ResultSet *rs) {
 
 int dbmgr_test(void)
 {
-	cout << "This is a test lib call\n";
-	
 	Driver *driver;
 	Connection *con;
 	Statement *stmt;
@@ -177,66 +179,72 @@ int dbmgr_test(void)
 
 		/* turn off the autocommit */
 		con -> setAutoCommit(0);
-
-		cout << "\nDatabase connection\'s autocommit mode = " << con -> getAutoCommit() << endl;
-
+		
 		/* select appropriate database schema */
 		con -> setSchema(database);
-
+		
 		/* retrieve and display the database metadata */
-		retrieve_dbmetadata_and_print (con);
+		//retrieve_dbmetadata_and_print (con);
 
 		/* create a statement object */
 		stmt = con -> createStatement();
 
-		cout << "Executing the Query: \"SELECT * FROM City\" .." << endl;
+		cout << "Executing the Query: \"SELECT * FROM cities\" .." << endl;
 
+		//res = stmt -> executeQuery ("set character_set_client='utf8'");
+		//res = stmt -> executeQuery ("set character_set_results='utf8'");
+		//res = stmt -> executeQuery ("set collation_connection='utf8_general_ci'");
 		/* run a query which returns exactly one result set */
-		res = stmt -> executeQuery ("SELECT * FROM City");
+		res = stmt->executeQuery("SELECT * FROM age_category");
 
-		cout << "Retrieving the result set .." << endl;
+		cout << "Retrieving the result set ..." << endl;
+		while (res->next())
+		{
+			cout<<res->getString(1)<<" "<<res->getString(2)<<endl;
+		}
+		//retrieve_rsmetadata_and_print(res);
 
 		/* retrieve the data from the result set and display on stdout */
-		retrieve_data_and_print (res, NUMOFFSET, 1, string("CityName"));
+		//retrieve_data_and_print (res, NUMOFFSET, 1, string("CityName"));
 
 		/* retrieve and display the result set metadata */
-		retrieve_rsmetadata_and_print (res);
+		//retrieve_rsmetadata_and_print (res);
 
-		cout << "Demonstrating Prepared Statements .. " << endl << endl;
+		//cout << "Demonstrating Prepared Statements .. " << endl << endl;
 
 		/* insert couple of rows of data into City table using Prepared Statements */
-		prep_stmt = con -> prepareStatement ("INSERT INTO City (CityName) VALUES (?)");
+		//prep_stmt = con -> prepareStatement ("INSERTmysql_query ("set character_set_client='cp1251'");
 
-		cout << "\tInserting \"London, UK\" into the table, City .." << endl;
+		//cout << "\tInserting \"London, UK\" into the table, City .." << endl;
 
-		prep_stmt -> setString (1, "London, UK");
-		updatecount = prep_stmt -> executeUpdate();
+		//prep_stmt -> setString (1, "London, UK");
+		//updatecount = prep_stmt -> executeUpdate();
 
-		cout << "\tCreating a save point \"SAVEPT1\" .." << endl;
-		savept = con -> setSavepoint ("SAVEPT1");
+		//cout << "\tCreating a save point \"SAVEPT1\" .." << endl;
+		//savept = con -> setSavepoint ("SAVEPT1");
 
-		cout << "\tInserting \"Paris, France\" into the table, City .." << endl;
+		//cout << "\tInserting \"Paris, France\" into the table, City .." << endl;
 
-		prep_stmt -> setString (1, "Paris, France");
-		updatecount = prep_stmt -> executeUpdate();
+		//prep_stmt -> setString (1, "Paris, France");
+		//updatecount = prep_stmt -> executeUpdate();
 
-		cout << "\tRolling back until the last save point \"SAVEPT1\" .." << endl;
-		con -> rollback (savept);
-		con -> releaseSavepoint (savept);
+		//cout << "\tRolling back until the last save point \"SAVEPT1\" .." << endl;
+		//con -> rollback (savept);
+		//con -> releaseSavepoint (savept);
 
-		cout << "\tCommitting outstanding updates to the database .." << endl;
-		con -> commit();
+		//cout << "\tCommitting outstanding updates to the database .." << endl;
+		//con -> commit();
 
-		cout << "\nQuerying the City table again .." << endl;
+		//cout << "\nQuerying the City table again .." << endl;
 
 		/* re-use result set object */
 		res = NULL;
-		res = stmt -> executeQuery ("SELECT * FROM City");
+		//res = stmt -> executeQuery ("SELECT * FROM City");
 
 		/* retrieve the data from the result set and display on stdout */
-		retrieve_data_and_print (res, COLNAME, 1, string ("CityName"));
+		//retrieve_data_and_print (res, COLNAME, 1, string ("CityName"));
 
-		cout << "Cleaning up the resources .." << endl;
+		cout << "Cleaning up the resources ... exit!" << endl;
 
 		/* Clean up */
 		delete res;

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
 IF (UNIX)
-	
+	if (WITH_BOOST STREQUAL yes)
 	ADD_CUSTOM_TARGET(boost
 		DEPENDS ${BOOST_PATH}.${TARGZ_EXT}
 		COMMAND ${CMAKE_COMMAND} -E tar	-xvzf ${BOOST_PATH}.${TARGZ_EXT}
@@ -9,7 +9,8 @@ IF (UNIX)
 		COMMENT "Unpacking ${BOOST_PATH}.${TARGZ_EXT}"
 		VERBATIM
 	)
-
+	endif()
+	if(WITH_MYSQL_CONNECTOR STREQUAL yes)
 	ADD_CUSTOM_TARGET(mysql_connector
 		DEPENDS	boost ${MYSQL_CONN_PATH}.${TARGZ_EXT}
 		COMMAND	${CMAKE_COMMAND} -E tar	-xvzf ${MYSQL_CONN_PATH}.${TARGZ_EXT}
@@ -17,7 +18,6 @@ IF (UNIX)
 		COMMENT "Unpacking ${MYSQL_CONN_PATH}.${TARGZ_EXT}"
 		VERBATIM
 	)
-
 	ADD_CUSTOM_TARGET(mysql_connector_lib
 		DEPENDS	mysql_connector
 		COMMAND	cmake -DBOOST_ROOT=${BOOST_PATH} . && make -j8
@@ -25,7 +25,9 @@ IF (UNIX)
 		COMMENT "Build connector lib"
 		VERBATIM
 	)
+	endif()
 	
+	if(WITH_WX_WIDGETS STREQUAL yes)
 	ADD_CUSTOM_TARGET(wx_unpack
 		DEPENDS	${WX_PATH}.${TARBZ2_EXT}
 		COMMAND	${CMAKE_COMMAND} -E tar	-xvf ${WX_PATH}.${TARBZ2_EXT} && mkdir -p ${WX_BUILD_PATH}
@@ -41,7 +43,7 @@ IF (UNIX)
 		COMMENT "Unpacking ${WX_PATH}.${TARGZ_EXT}"
 		VERBATIM
 	)
-	
+	endif()
  	
 	
 #MESSAGE(FATAL_ERROR "Extract fail.")
