@@ -43,11 +43,9 @@ typedef	Savepoint*			tUDF_LPSAVEPOINT;
 #include "string"
 #include "map"
 
-
-
 #define udfRegisterMap(keytype, valueType, name)	\
-typedef map<keytype, valueType> tUDF_Map#name; \
-typedef map<keytype, valueType>::iterator tUDF_MapIterator#name; 
+typedef map<keytype, valueType> tUDF_Map##name; \
+typedef map<keytype, valueType>::iterator tUDF_MapIterator##name; 
 
 
 typedef struct{
