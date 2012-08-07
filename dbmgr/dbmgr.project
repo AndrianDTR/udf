@@ -11,6 +11,8 @@
     <File Name="src/dbmgr.cpp"/>
     <File Name="src/dbmgr.h"/>
   </VirtualDirectory>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
   <Settings Type="Static Library">
     <GlobalSettings>
       <Compiler Options="" C_Options="">
@@ -61,7 +63,8 @@ $(WorkspacePath)/common/src
 $(WorkspacePath)/3rd_party/wxWidgets-2.9.3/buildgtk/lib/wx/include/gtk2-unicode-static-2.9
 $(WorkspacePath)/3rd_party/wxWidgets-2.9.3/include
 $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/driver
-$(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn</SearchPaths>
+$(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
+/usr/include</SearchPaths>
       </Completion>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -73,6 +76,7 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn</SearchPaths>
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       ]]>
       </Environment>

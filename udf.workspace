@@ -2,6 +2,16 @@
 <CodeLite_Workspace Name="udf" Database="./udf.tags">
   <Project Name="gui" Path="gui/gui.project" Active="Yes"/>
   <Project Name="dbmgr" Path="dbmgr/dbmgr.project" Active="No"/>
+  <Environment>
+    <![CDATA[
+  
+  
+  
+  
+  
+  ]]>
+  </Environment>
+  <Project Name="db" Path="db/db.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Project Name="udf" ConfigName="Debug"/>
@@ -9,6 +19,7 @@
       <Project Name="gui" ConfigName="Debug"/>
       <Project Name="gui" ConfigName="Debug"/>
       <Project Name="dbmgr" ConfigName="Debug"/>
+      <Project Name="db" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="udf" ConfigName="Release"/>
@@ -16,13 +27,7 @@
       <Project Name="gui" ConfigName="Release"/>
       <Project Name="gui" ConfigName="Release"/>
       <Project Name="dbmgr" ConfigName="Release"/>
+      <Project Name="db" ConfigName="Debug"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
-  <Environment>
-    <![CDATA[
-  
-  
-  
-  ]]>
-  </Environment>
 </CodeLite_Workspace>

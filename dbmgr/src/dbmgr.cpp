@@ -1,22 +1,9 @@
 
 #include "dbmgr.h"
-/* Standard C++ headers */
-#include <iostream>
-#include <sstream>
-#include <memory>
-#include <string>
-#include <stdexcept>
-
 /* MySQL Connector/C++ specific headers */
-#include <cppconn/driver.h>
-#include <cppconn/connection.h>
-#include <cppconn/statement.h>
-#include <cppconn/prepared_statement.h>
-#include <cppconn/resultset.h>
+
 #include <cppconn/metadata.h>
 #include <cppconn/resultset_metadata.h>
-#include <cppconn/exception.h>
-#include <cppconn/warning.h>
 	
 #define DBHOST "tcp://192.169.11.182:3306"
 #define USER "andrian"
@@ -26,8 +13,6 @@
 #define NUMOFFSET 100
 #define COLNAME 200
 
-using namespace std;
-using namespace sql;
 
 static void retrieve_data_and_print (ResultSet *rs, int type, int colidx, string colname) {
 
