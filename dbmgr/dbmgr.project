@@ -10,13 +10,24 @@
   <VirtualDirectory Name="src">
     <File Name="src/dbmgr.cpp"/>
     <File Name="src/dbmgr.h"/>
+    <File Name="src/other.cpp"/>
+    <File Name="src/other.h"/>
+    <File Name="src/cdbconnection_base.h"/>
+    <File Name="src/udfdbconnection.h"/>
+    <File Name="src/udfdbconnection.cpp"/>
   </VirtualDirectory>
-  <Dependencies Name="Debug"/>
-  <Dependencies Name="Release"/>
   <Settings Type="Static Library">
     <GlobalSettings>
       <Compiler Options="" C_Options="">
-        <IncludePath Value="."/>
+        <IncludePath Value="$(WorkspacePath)/gui/res"/>
+        <IncludePath Value="$(WorkspacePath)/gui/src"/>
+        <IncludePath Value="$(WorkspacePath)/dbmgr/src"/>
+        <IncludePath Value="$(WorkspacePath)/common/src"/>
+        <IncludePath Value="$(WorkspacePath)/3rd_party/wxWidgets-2.9.3/buildgtk/lib/wx/include/gtk2-unicode-static-2.9"/>
+        <IncludePath Value="$(WorkspacePath)/3rd_party/wxWidgets-2.9.3/include"/>
+        <IncludePath Value="$(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/driver"/>
+        <IncludePath Value="$(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn"/>
+        <IncludePath Value="/usr/include"/>
       </Compiler>
       <Linker Options="">
         <LibraryPath Value="."/>
@@ -78,6 +89,7 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
         <![CDATA[
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -107,4 +119,6 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
 </CodeLite_Project>

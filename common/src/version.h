@@ -18,11 +18,11 @@
 	#define UDF_VERSION_PATCH   0
 #endif
 
-#ifndef
+#ifndef UDF_VERSION_DESCR
 #define UDF_VERSION_DESCR	"cdfds"
 #endif
 
-
+#define UDF_VERSION UDF_VERSION_MAJOR.UDF_VERSION_MINOR.UDF_VERSION_PATCH
 
 /*-------------------------------------------------------------------------*/
 
