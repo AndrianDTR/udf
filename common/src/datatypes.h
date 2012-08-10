@@ -22,7 +22,6 @@ using namespace sql;
 typedef map< keytype, valueType > tUDF_##tname; \
 typedef map< keytype, valueType >::iterator tUDF_##tname##Iterator;
 
-
 typedef	ResultSet			tUDF_RESULTS;
 typedef	ResultSet*			tUDF_LPRESULTS;
 
@@ -41,8 +40,9 @@ typedef	Savepoint*			tUDF_LPSAVEPOINT;
 typedef struct{
 	int				id;
 	string			descr;
-} tUDF_AGE_CATEGORY;
-udfRegisterMap(int, tUDF_AGE_CATEGORY, AgeCategory);
+} tUdfAgeCategory;
+typedef map< int, tUdfAgeCategory > tUdfAgeCategoryMap;
+typedef map< int, tUdfAgeCategory >::iterator tUdfAgeCategoryMapIterator;
 
 /*
  * Category datatype and API

@@ -34,10 +34,10 @@ public:
 	virtual long								SetAutocommitStatus(bool status) = 0;
 	
 	
-	virtual tUDF_AgeCategory*					GetAgeCategoryList(tUDF_AgeCategory* filter) = 0;
-	virtual tUDF_AgeCategory*					FindAgeCategory(tUDF_AgeCategory* filter) = 0;
-	virtual long								AddAgeCategory(tUDF_AgeCategory* data) = 0;
-	virtual long								RemoveAgeCategory(tUDF_AgeCategory* item) = 0;
+	virtual tUdfAgeCategoryMap*					GetAgeCategoryList(tUdfAgeCategory* filter) = 0;
+	virtual tUdfAgeCategoryMap*					FindAgeCategory(tUdfAgeCategory* filter) = 0;
+	virtual long								AddAgeCategory(tUdfAgeCategory* data) = 0;
+	virtual long								RemoveAgeCategory(tUdfAgeCategory* item) = 0;
 
 	virtual tUDF_Category*						GetCategoryList(tUDF_Category* filter) = 0;
 	virtual tUDF_Category*						FindCategory(tUDF_Category* filter) = 0;

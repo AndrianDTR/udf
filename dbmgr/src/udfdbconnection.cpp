@@ -143,7 +143,7 @@ long udfDbConnection::SetAutocommitStatus(bool status)
 			break;
 		}
 		
-		m_pConnection->setAutoCommit(status);
+		//m_pConnection->setAutoCommit(status);
 		result = UDF_OK;
 	}while(0);
 	
@@ -177,7 +177,7 @@ void udfDbConnection::Rollback(tUDF_LPSAVEPOINT save)
 
 /*****************************************************************/
 
-tUDF_AgeCategory* udfDbConnection::GetAgeCategoryList(tUDF_AgeCategory* filter)
+tUdfAgeCategoryMap* udfDbConnection::GetAgeCategoryList(tUdfAgeCategory* filter)
 {
 	// Reinit list
 	Statement* stmt = NULL;
@@ -187,19 +187,22 @@ tUDF_AgeCategory* udfDbConnection::GetAgeCategoryList(tUDF_AgeCategory* filter)
 		stmt = m_pConnection->createStatement();
 		if(!stmt)
 			break;
-
+		
 		res = stmt->executeQuery ("select * from age_category");
 		if(!res)
 			break;
 		
 		m_mapAgeCategory.clear();
-		while(res->next())
+		
+		while( res && res->next())
 		{
-			tUDF_AGE_CATEGORY cat;
-			memset(&cat, 0, sizeof(tUDF_AGE_CATEGORY));
+			tUdfAgeCategory cat = {0};
+			//memset(&cat, 0, sizeof(tUDF_AGE_CATEGORY));
 			cat.id = res->getInt(1);
 			cat.descr = res->getString(2);
+		
 			m_mapAgeCategory.insert(make_pair(cat.id, cat));
+			//*/
 		}
 		
 		delete stmt;
@@ -209,15 +212,15 @@ tUDF_AgeCategory* udfDbConnection::GetAgeCategoryList(tUDF_AgeCategory* filter)
 	return &m_mapAgeCategory;
 }
 
-long udfDbConnection::AddAgeCategory(tUDF_AgeCategory* data)
+long udfDbConnection::AddAgeCategory(tUdfAgeCategory* data)
 {
 }
 
-long udfDbConnection::RemoveAgeCategory(tUDF_AgeCategory* item)
+long udfDbConnection::RemoveAgeCategory(tUdfAgeCategory* item)
 {
 }
 
-tUDF_AgeCategory* udfDbConnection::FindAgeCategory(tUDF_AgeCategory* filter)
+tUdfAgeCategoryMap* udfDbConnection::FindAgeCategory(tUdfAgeCategory* filter)
 {
 }
 

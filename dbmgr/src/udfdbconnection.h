@@ -13,7 +13,7 @@ class udfDbConnection : public CDbConnection
 {
 	Connection*		m_pConnection;
 	
-	tUDF_AgeCategory					m_mapAgeCategory;
+	tUdfAgeCategoryMap					m_mapAgeCategory;
 	tUDF_Category						m_mapCategory;
 	tUDF_Championship					m_mapChanlionship;
 	tUDF_ChampionshipCategories			m_mapChanlionshipCategories;
@@ -56,10 +56,10 @@ public:
 	virtual long								GetAutocommitStatus(bool& status);
 	virtual long								SetAutocommitStatus(bool status);
 	
-	virtual tUDF_AgeCategory*					GetAgeCategoryList(tUDF_AgeCategory* filter);
-	virtual tUDF_AgeCategory*					FindAgeCategory(tUDF_AgeCategory* filter);
-	virtual long								AddAgeCategory(tUDF_AgeCategory* data);
-	virtual long								RemoveAgeCategory(tUDF_AgeCategory* item);
+	virtual tUdfAgeCategoryMap*					GetAgeCategoryList(tUdfAgeCategory* filter);
+	virtual tUdfAgeCategoryMap*					FindAgeCategory(tUdfAgeCategory* filter);
+	virtual long								AddAgeCategory(tUdfAgeCategory* data);
+	virtual long								RemoveAgeCategory(tUdfAgeCategory* item);
 
 	virtual tUDF_Category*						GetCategoryList(tUDF_Category* filter);
 	virtual tUDF_Category*						FindCategory(tUDF_Category* filter);

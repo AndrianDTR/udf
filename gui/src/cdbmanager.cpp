@@ -14,7 +14,16 @@ CDbManager::CDbManager()
 		CDbConnection* con = getConnection();
 		con->Connect("192.169.10.17","udf","andrian","dataNet");
 		cout<< con->GetName() <<endl<<con->GetVersion()<<endl;
-		con->GetAgeCategoryList(NULL);
+		tUdfAgeCategoryMap* map = con->GetAgeCategoryList(NULL);
+		tUdfAgeCategoryMapIterator i = map->begin();
+		
+		while(i != map->end())
+		{
+			cout<<"id "<<((tUdfAgeCategory)i->second).id<<
+			", descr "<<((tUdfAgeCategory)i->second).descr<<endl;
+			i++;
+		}
+		
 	}
 	catch (CDbException &e)
 	{
