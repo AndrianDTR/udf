@@ -1,8 +1,13 @@
 #ifndef __DBMANAGER_H__
 #define __DBMANAGER_H__
 
-class CDbManager {
+#include "datatypes.h"
+#include "cdbconnection_base.h"
 
+class CDbManager {
+	
+	CDbConnection* m_pDBCon;
+		
 	static CDbManager* ms_instance;
 
 public:

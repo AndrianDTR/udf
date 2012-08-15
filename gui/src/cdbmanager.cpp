@@ -1,9 +1,8 @@
 #include "cdbmanager.h"
 
-#include "cdbconnection_base.h"
 
-#include "iostream"
-using namespace std;
+
+#include "stdio.h"
 
 CDbManager* CDbManager::ms_instance = 0;
 
@@ -11,45 +10,42 @@ CDbManager::CDbManager()
 {
 	try
 	{
-		CDbConnection* con = getConnection();
-		con->Connect("192.169.10.17","udf","andrian","dataNet");
-		cout<< con->GetName() <<endl<<con->GetVersion()<<endl;
-		tUdfAgeCategoryMap* map = con->GetAgeCategoryList(NULL);
-		tUdfAgeCategoryMapIterator i = map->begin();
+		m_pDBCon = getConnection();
+		m_pDBCon->Connect("192.169.10.17","udf","andrian","dataNet");
 		
-		while(i != map->end())
-		{
-			cout<<"id "<<((tUdfAgeCategory)i->second).id<<
-			", descr "<<((tUdfAgeCategory)i->second).descr<<endl;
-			i++;
-		}
+		printf("DB Driver: %s, ver: %s\n", m_pDBCon->GetName().c_str(), m_pDBCon->GetVersion().c_str());
 		
 	}
 	catch (CDbException &e)
 	{
-		cout << "File: "<< __FILE__<<":"<<__LINE__<<endl;
-		cout << "ERROR: " << e.what();
-		cout << " (MySQL error code: " << e.getErrorCode();
-		cout << ", SQLState: " << e.getSQLState() << ")" << endl;
+		printf("File: %s:%d\n", __FILE__, __LINE__);
+		printf("Error! %s\n", e.what());
+		printf("MySQL error code: %d, SQLState: %s\n\n", e.getErrorCode(), e.getSQLState().c_str());
 
 		if (e.getErrorCode() == 1047) {
 			/*
 			Error: 1047 SQLSTATE: 08S01 (ER_UNKNOWN_COM_ERROR)
 			Message: Unknown command
 			*/
-			cout << "\nYour server does not seem to support Prepared Statements at all. ";
-			cout << "Perhaps MYSQL < 4.1?" << endl;
+			printf("Your server does not seem to support Prepared Statements at all.\n");
+			printf("Perhaps MYSQL < 4.1?\n\n");
 		}
 	} 
 	catch (std::runtime_error &e) 
 	{
-		cout << "File: "<< __FILE__<<":"<<__LINE__<<endl;
-		cout << "ERROR: " << e.what() << endl;
+		printf("File: %s:%d\n", __FILE__, __LINE__);
+		printf("Runtime error %s\n\n", e.what());
 	}
 }
 
 CDbManager::~CDbManager()
 {
+	if(m_pDBCon)
+	{
+		m_pDBCon->Close();
+		delete m_pDBCon;
+		m_pDBCon = NULL;
+	}
 }
 
 CDbManager* CDbManager::Instance()

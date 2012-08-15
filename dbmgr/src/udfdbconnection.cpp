@@ -6,6 +6,8 @@
 #include "errorcodes.h"
 
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -81,10 +83,6 @@ long udfDbConnection::Connect(std::string url, std::string dbName, std::string u
 			break;
 		}
 		
-		//stmt->executeQuery("set character_set_client='utf8'");
-		//stmt->executeQuery("set character_set_results='utf8'");
-		//stmt->executeQuery("set collation_connection='utf8_general_ci'");
-		
 		delete stmt;
 		
 		result = UDF_OK;
@@ -110,6 +108,23 @@ void udfDbConnection::Commit()
 
 tUDF_LPRESULTS udfDbConnection::ExecureQuery(string query)
 {
+	// Reinit list
+	Statement* 		stmt = NULL;
+	tUDF_LPRESULTS 	res = NULL;
+
+	do{
+		stmt = m_pConnection->createStatement();
+		if(!stmt)
+			break;
+		
+		res = stmt->executeQuery (query);
+		
+	}while(0);
+	
+	if(stmt)
+		delete stmt;
+	
+	return res;
 }
 
 long udfDbConnection::GetAutocommitStatus(bool& status)
@@ -179,16 +194,19 @@ void udfDbConnection::Rollback(tUDF_LPSAVEPOINT save)
 
 tUdfAgeCategoryMap* udfDbConnection::GetAgeCategoryList(tUdfAgeCategory* filter)
 {
-	// Reinit list
-	Statement* stmt = NULL;
-	ResultSet* res = NULL;
-
+	Statement*	stmt = NULL;
+	ResultSet*	res = NULL;
+	char		query[500] = {0};
 	do{
 		stmt = m_pConnection->createStatement();
 		if(!stmt)
 			break;
 		
-		res = stmt->executeQuery ("select * from age_category");
+		sprintf(query,"select * from age_category");
+		if(filter)
+			sprintf(query, "%s where id like %d and descr like %s", query, filter->id, filter->descr.c_str());
+		
+		res = stmt->executeQuery (query);
 		if(!res)
 			break;
 		
@@ -197,12 +215,11 @@ tUdfAgeCategoryMap* udfDbConnection::GetAgeCategoryList(tUdfAgeCategory* filter)
 		while( res && res->next())
 		{
 			tUdfAgeCategory cat = {0};
-			//memset(&cat, 0, sizeof(tUDF_AGE_CATEGORY));
+			
 			cat.id = res->getInt(1);
 			cat.descr = res->getString(2);
 		
 			m_mapAgeCategory.insert(make_pair(cat.id, cat));
-			//*/
 		}
 		
 		delete stmt;

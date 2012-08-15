@@ -2,17 +2,6 @@
 <CodeLite_Workspace Name="udf" Database="./udf.tags">
   <Project Name="gui" Path="gui/gui.project" Active="Yes"/>
   <Project Name="dbmgr" Path="dbmgr/dbmgr.project" Active="No"/>
-  <Environment>
-    <![CDATA[
-  
-  
-  
-  
-  
-  
-  
-  ]]>
-  </Environment>
   <Project Name="db" Path="db/db.project" Active="No"/>
   <Project Name="common" Path="common/common.project" Active="No"/>
   <BuildMatrix>
@@ -35,4 +24,8 @@
       <Project Name="common" ConfigName="Debug"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
+  <Environment>
+    <![CDATA[
+  ]]>
+  </Environment>
 </CodeLite_Workspace>
