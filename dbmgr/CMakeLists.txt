@@ -12,12 +12,18 @@
 # Configuration for module: gucefMT
 
 set( HEADER_FILES 
-  src/cdbconnection_base.h
-  src/udfdbconnection.h
+	src/dberrors.h
+	src/dbutils.h
+	src/dbconnection.h
+	src/dbtable.h
+	src/tagecategory.h
 )
 
 set( SOURCE_FILES 
-  src/udfdbconnection.cpp
+	src/dberrors.cpp
+	src/dbutils.cpp
+	src/dbconnection.cpp
+	src/tagecategory.cpp
 )
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined

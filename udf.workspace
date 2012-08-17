@@ -4,6 +4,13 @@
   <Project Name="dbmgr" Path="dbmgr/dbmgr.project" Active="No"/>
   <Project Name="db" Path="db/db.project" Active="No"/>
   <Project Name="common" Path="common/common.project" Active="No"/>
+  <Environment>
+    <![CDATA[
+  
+  
+  ]]>
+  </Environment>
+  <Project Name="dbtest" Path="dbtest/dbtest.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Project Name="udf" ConfigName="Debug"/>
@@ -13,6 +20,7 @@
       <Project Name="dbmgr" ConfigName="Debug"/>
       <Project Name="db" ConfigName="Debug"/>
       <Project Name="common" ConfigName="Debug"/>
+      <Project Name="dbtest" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="udf" ConfigName="Release"/>
@@ -22,10 +30,7 @@
       <Project Name="dbmgr" ConfigName="Release"/>
       <Project Name="db" ConfigName="Debug"/>
       <Project Name="common" ConfigName="Debug"/>
+      <Project Name="dbtest" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
-  <Environment>
-    <![CDATA[
-  ]]>
-  </Environment>
 </CodeLite_Workspace>

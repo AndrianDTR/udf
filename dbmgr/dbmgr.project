@@ -8,13 +8,15 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
-    <File Name="src/dbmgr.cpp"/>
-    <File Name="src/dbmgr.h"/>
-    <File Name="src/other.cpp"/>
-    <File Name="src/other.h"/>
-    <File Name="src/cdbconnection_base.h"/>
-    <File Name="src/udfdbconnection.h"/>
-    <File Name="src/udfdbconnection.cpp"/>
+    <File Name="src/dbconnection.cpp"/>
+    <File Name="src/dbconnection.h"/>
+    <File Name="src/dberrors.h"/>
+    <File Name="src/dbtable.h"/>
+    <File Name="src/tagecategory.cpp"/>
+    <File Name="src/tagecategory.h"/>
+    <File Name="src/dberrors.cpp"/>
+    <File Name="src/dbutils.cpp"/>
+    <File Name="src/dbutils.h"/>
   </VirtualDirectory>
   <Settings Type="Static Library">
     <GlobalSettings>
@@ -42,7 +44,8 @@
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
-        <![CDATA[]]>
+        <![CDATA[
+      ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -87,6 +90,7 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       

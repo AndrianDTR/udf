@@ -1,50 +1,46 @@
 #include "cdbmanager.h"
 
-
-
 #include "stdio.h"
+
+#include "tagecategory.h"
 
 CDbManager* CDbManager::ms_instance = 0;
 
 CDbManager::CDbManager()
 {
-	try
+	long res = UDF_E_FAIL;
+	do
 	{
-		m_pDBCon = getConnection();
-		m_pDBCon->Connect("192.169.10.17","udf","andrian","dataNet");
+		m_pCon = new CDbConnection();
+		res = m_pCon->Open("192.169.10.17","andrian","dataNet","udf");
+		if(UDF_OK != res)
+			break;
 		
-		printf("DB Driver: %s, ver: %s\n", m_pDBCon->GetName().c_str(), m_pDBCon->GetVersion().c_str());
+		CAgeCategoryTable tbl(m_pCon);
+		CAgeCategoryTable::tAgeCategoryMap* m;
 		
-	}
-	catch (CDbException &e)
-	{
-		printf("File: %s:%d\n", __FILE__, __LINE__);
-		printf("Error! %s\n", e.what());
-		printf("MySQL error code: %d, SQLState: %s\n\n", e.getErrorCode(), e.getSQLState().c_str());
-
-		if (e.getErrorCode() == 1047) {
-			/*
-			Error: 1047 SQLSTATE: 08S01 (ER_UNKNOWN_COM_ERROR)
-			Message: Unknown command
-			*/
-			printf("Your server does not seem to support Prepared Statements at all.\n");
-			printf("Perhaps MYSQL < 4.1?\n\n");
+		res = tbl.GetTable(&m);
+		if(UDF_OK != res)
+			break;
+			
+		CAgeCategoryTable::tAgeCategoryMapIterator it = m->begin();
+		while(it != m->end())
+		{
+			printf("%d = %s\n", it->first, it->second.descr.c_str());
+			it++;
 		}
-	} 
-	catch (std::runtime_error &e) 
-	{
-		printf("File: %s:%d\n", __FILE__, __LINE__);
-		printf("Runtime error %s\n\n", e.what());
-	}
+		
+	}while(0);
+	
+	printf("Open OK, res = %d, %s\n", res, GetErrorMsg(res).c_str());
 }
 
 CDbManager::~CDbManager()
 {
-	if(m_pDBCon)
+	if(m_pCon)
 	{
-		m_pDBCon->Close();
-		delete m_pDBCon;
-		m_pDBCon = NULL;
+		delete m_pCon;
+		m_pCon = NULL;
 	}
 }
 
