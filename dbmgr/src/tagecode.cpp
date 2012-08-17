@@ -4,7 +4,7 @@
 #include "dberrors.h"
 #include "tagecategory.h"
 
-#define	TABLE	TABLE_AGECATEGORY
+#define	TABLE	TABLE_AGECODE
 
 CAgeCategoryTable::CAgeCategoryTable(CDbConnection* pCon)
 : CDbTable(pCon)

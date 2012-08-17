@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#include "connection_data.h"
+
 #include "dberrors.h"
 #include "dbconnection.h"
 #include "tagecategory.h"
@@ -10,45 +12,50 @@ int main(int argc, char **argv)
 	do
 	{
 		CDbConnection* m_pCon = new CDbConnection();
-		res = m_pCon->Open("192.169.10.17","andrian","dataNet","udf");
+		res = m_pCon->Open(szUrl, szUser, szPass, szSchema);
 		if(UDF_OK != res)
 			break;
 		
-		CAgeCategoryTable tbl(m_pCon);
+		CDbTable* tbl = NULL;
+
+		// CAgeCategoryTable
+		tbl = new CAgeCategoryTable(m_pCon);
 		CAgeCategoryTable::tAgeCategoryMap* m;
+		CAgeCategoryTable::tAgeCategoryMapIterator it;
 		
-		CAgeCategoryTable::tDATA data;
-		data.descr = string("Test Дорослі-8");
-		res = tbl.AddRow(data);
+		CAgeCategoryTable::tDATA ageCatData;
+		ageCatData.descr = string("Test Дорослі-8");
+		
+		CAgeCategoryTable::tDATA filter;
+		filter.descr = string("Дорослі");
+		
+		res = tbl.AddRow(ageCatData);
 		if(UDF_OK != res)
 			break;
-		printf("AddRow ID = %d, res = %d, %s\n", data.id, res, GetErrorMsg(res).c_str());
+		printf("CAgeCategoryTable::AddRow ID = %d, res = %d, %s\n", data.id, res, GetErrorMsg(res).c_str());
 		
 		res = tbl.DelRow(data.id);
 		if(UDF_OK != res)
 			break;
-		printf("DelRow ID = %d, res = %d, %s\n", data.id, res, GetErrorMsg(res).c_str());
+		printf("CAgeCategoryTable::DelRow ID = %d, res = %d, %s\n", data.id, res, GetErrorMsg(res).c_str());
 		
 		res = tbl.GetRow(2, data);
 		if(UDF_OK != res)
 			break;
-		printf("GetRow ID = %d, res = %d, %s\n", data.id, res, GetErrorMsg(res).c_str());
-		
+		printf("CAgeCategoryTable::GetRow ID = %d, res = %d, %s\n", data.id, res, GetErrorMsg(res).c_str());
 		
 		res = tbl.GetTable(&m);
 		if(UDF_OK != res)
 			break;
-		printf("GetTable res = %d, %s\n", res, GetErrorMsg(res).c_str());
+		printf("CAgeCategoryTable::GetTable res = %d, %s\n", res, GetErrorMsg(res).c_str());
 		
-		CAgeCategoryTable::tAgeCategoryMapIterator it = m->begin();
+		it = m->begin();
 		while(it != m->end())
 		{
 			printf("%d = %s\n", it->first, it->second.descr.c_str());
 			it++;
 		}
 		
-		CAgeCategoryTable::tDATA filter;
-		filter.descr = string("Дорослі");
 		res = tbl.Find(&m, filter);
 		if(UDF_OK != res)
 			break;

@@ -1,3 +1,5 @@
+#include "connection_data.h"
+
 #include "cdbmanager.h"
 
 #include "stdio.h"
@@ -12,7 +14,7 @@ CDbManager::CDbManager()
 	do
 	{
 		m_pCon = new CDbConnection();
-		res = m_pCon->Open("192.169.10.17","andrian","dataNet","udf");
+		res = m_pCon->Open(szUrl, szUser, szPass, szSchema);
 		if(UDF_OK != res)
 			break;
 		
