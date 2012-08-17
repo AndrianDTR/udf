@@ -2,28 +2,28 @@
 #include "stdio.h"
 
 #include "dberrors.h"
-#include "tagecode.h"
+#include "tcategories.h"
 
-#define	TABLE	TABLE_AGECODE
+#define	TABLE	TABLE_CATEGORIES
 
-CAgeCodeTable::CAgeCodeTable(CDbConnection* pCon)
+CCategoriesTable::CCategoriesTable(CDbConnection* pCon)
 : CDbTable(pCon)
 , m_pConnection(pCon)
 {
 }
 
-CAgeCodeTable::~CAgeCodeTable(void)
+CCategoriesTable::~CCategoriesTable(void)
 {
 }
 
-long CAgeCodeTable::GetTable(tAgeCodeMap** data)
+long CCategoriesTable::GetTable(tCategoriesMap** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tAgeCodeMap*	table = NULL;
+		tCategoriesMap*		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 			break;
 		}
 		
-		table = new tAgeCodeMap();
+		table = new tCategoriesMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -53,8 +53,10 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.id = qRes->getUInt64(1);
+			el.dance = qRes->getUInt(2);
+			el.liga = qRes->getInt(3);
+			el.gender = qRes->getInt(4);
 		
 			table->insert(make_pair(el.id, el));
 		}
@@ -66,14 +68,14 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 	return res;
 }
 
-long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
+long CCategoriesTable::Find(tCategoriesMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tAgeCodeMap*		table = NULL;
+		tCategoriesMap*		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -82,14 +84,15 @@ long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tAgeCodeMap();
+		table = new tCategoriesMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
-		sprintf(query, "select * from %s where descr like '%%%s%%'", TABLE, filter.descr.c_str());
+		sprintf(query, "select * from %s where dance like '%%%ul%%' or liga like '%%%ul%%' or gender like '%%%ul%%'", 
+		TABLE, filter.dance, filter.liga, filter.gender);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -103,8 +106,10 @@ long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.id = qRes->getUInt64(1);
+			el.dance = qRes->getUInt(2);
+			el.liga = qRes->getInt(3);
+			el.gender = qRes->getInt(4);
 		
 			table->insert(make_pair(el.id, el));
 		}
@@ -116,7 +121,7 @@ long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
 	return res;
 }
 
-long CAgeCodeTable::AddRow(tDATA& rec)
+long CCategoriesTable::AddRow(tDATA& rec)
 {
 	long res = UDF_E_FAIL;
 	
@@ -131,7 +136,8 @@ long CAgeCodeTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`descr`) values('%s')", TABLE, rec.descr.c_str());
+		sprintf(query, "insert into %s(`dance`,`liga`,`gender`) values(%ul, %ul, %ul)", 
+			TABLE, rec.dance, rec.liga, rec.gender);
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -142,7 +148,7 @@ long CAgeCodeTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CAgeCodeTable::DelRow(unsigned int nId)
+long CCategoriesTable::DelRow(unsigned long nId)
 {
 	long res = UDF_E_FAIL;
 	
@@ -164,7 +170,7 @@ long CAgeCodeTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CAgeCodeTable::GetRow(unsigned int nId, tDATA& data)
+long CCategoriesTable::GetRow(unsigned long nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -187,8 +193,10 @@ long CAgeCodeTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getInt(1);
-		data.descr = qRes->getString(2);
+		data.id = qRes->getUInt64(1);
+		data.dance = qRes->getUInt(2);
+		data.liga = qRes->getInt(3);
+		data.gender = qRes->getInt(4);
 		
 		res = UDF_OK;
 	}while(0);

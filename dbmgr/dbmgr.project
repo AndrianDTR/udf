@@ -17,6 +17,46 @@
     <File Name="src/dberrors.cpp"/>
     <File Name="src/dbutils.cpp"/>
     <File Name="src/dbutils.h"/>
+    <File Name="src/tagecode.cpp"/>
+    <File Name="src/tagecode.h"/>
+    <File Name="src/tcategories.cpp"/>
+    <File Name="src/tcategories.h"/>
+    <File Name="src/tchampionship.cpp"/>
+    <File Name="src/tchampionship.h"/>
+    <File Name="src/tchampionshipcategories.cpp"/>
+    <File Name="src/tchampionshipcategories.h"/>
+    <File Name="src/tchampionshipjudgesmark.cpp"/>
+    <File Name="src/tchampionshipjudgesmark.h"/>
+    <File Name="src/tchampionshipjudgesteam.cpp"/>
+    <File Name="src/tchampionshipjudgesteam.h"/>
+    <File Name="src/tchampionshipteam.cpp"/>
+    <File Name="src/tchampionshipteam.h"/>
+    <File Name="src/tchampionshipteamcategories.cpp"/>
+    <File Name="src/tchampionshipteamcategories.h"/>
+    <File Name="src/tchampionshiptype.cpp"/>
+    <File Name="src/tchampionshiptype.h"/>
+    <File Name="src/tcities.cpp"/>
+    <File Name="src/tcities.h"/>
+    <File Name="src/tclubs.cpp"/>
+    <File Name="src/tclubs.h"/>
+    <File Name="src/tcountries.cpp"/>
+    <File Name="src/tcountries.h"/>
+    <File Name="src/tdancers.cpp"/>
+    <File Name="src/tdancers.h"/>
+    <File Name="src/tdancetypes.cpp"/>
+    <File Name="src/tdancetypes.h"/>
+    <File Name="src/tgender.cpp"/>
+    <File Name="src/tgender.h"/>
+    <File Name="src/tjudges.cpp"/>
+    <File Name="src/tjudges.h"/>
+    <File Name="src/tjudgescategorieshave.cpp"/>
+    <File Name="src/tjudgescategorieshave.h"/>
+    <File Name="src/tjudgescategoriesname.cpp"/>
+    <File Name="src/tjudgescategoriesname.h"/>
+    <File Name="src/tliga.cpp"/>
+    <File Name="src/tliga.h"/>
+    <File Name="src/ttreiners.cpp"/>
+    <File Name="src/ttreiners.h"/>
   </VirtualDirectory>
   <Settings Type="Static Library">
     <GlobalSettings>
@@ -45,6 +85,7 @@
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -90,6 +131,7 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       

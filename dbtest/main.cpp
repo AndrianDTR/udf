@@ -5,6 +5,7 @@
 #include "dberrors.h"
 #include "dbconnection.h"
 #include "tagecategory.h"
+#include "tagecode.h"
 
 int main(int argc, char **argv)
 {
@@ -16,35 +17,43 @@ int main(int argc, char **argv)
 		if(UDF_OK != res)
 			break;
 		
-		CDbTable* tbl = NULL;
-
-		// CAgeCategoryTable
-		tbl = new CAgeCategoryTable(m_pCon);
+		/*
+		 * CAgeCategory
+		 */ 
+		CAgeCategoryTable ageCatTbl(m_pCon);
 		CAgeCategoryTable::tAgeCategoryMap* m;
 		CAgeCategoryTable::tAgeCategoryMapIterator it;
 		
 		CAgeCategoryTable::tDATA ageCatData;
 		ageCatData.descr = string("Test Дорослі-8");
 		
-		CAgeCategoryTable::tDATA filter;
-		filter.descr = string("Дорослі");
-		
-		res = tbl.AddRow(ageCatData);
+		// Add row
+		res = ageCatTbl.AddRow(ageCatData);
 		if(UDF_OK != res)
 			break;
-		printf("CAgeCategoryTable::AddRow ID = %d, res = %d, %s\n", data.id, res, GetErrorMsg(res).c_str());
+		printf("CAgeCategoryTable::AddRow ID = %d, res = %d, %s\n", ageCatData.id, res, GetErrorMsg(res).c_str());
 		
-		res = tbl.DelRow(data.id);
+		// Get row
+		res = ageCatTbl.GetRow(ageCatData.id, ageCatData);
 		if(UDF_OK != res)
 			break;
-		printf("CAgeCategoryTable::DelRow ID = %d, res = %d, %s\n", data.id, res, GetErrorMsg(res).c_str());
+		printf("CAgeCategoryTable::GetRow ID = %d, res = %d, %s\n", ageCatData.id, res, GetErrorMsg(res).c_str());
 		
-		res = tbl.GetRow(2, data);
+		// Find record
+		res = ageCatTbl.Find(&m, ageCatData);
 		if(UDF_OK != res)
 			break;
-		printf("CAgeCategoryTable::GetRow ID = %d, res = %d, %s\n", data.id, res, GetErrorMsg(res).c_str());
+		printf("CAgeCategoryTable::Find res = %d, %s\n", res, GetErrorMsg(res).c_str());
 		
-		res = tbl.GetTable(&m);
+		it = m->begin();
+		while(it != m->end())
+		{
+			printf("%d = %s\n", it->first, it->second.descr.c_str());
+			it++;
+		}
+		
+		// Get table
+		res = ageCatTbl.GetTable(&m);
 		if(UDF_OK != res)
 			break;
 		printf("CAgeCategoryTable::GetTable res = %d, %s\n", res, GetErrorMsg(res).c_str());
@@ -56,19 +65,68 @@ int main(int argc, char **argv)
 			it++;
 		}
 		
-		res = tbl.Find(&m, filter);
+		// Remove row
+		res = ageCatTbl.DelRow(ageCatData.id);
 		if(UDF_OK != res)
 			break;
-		printf("Find res = %d, %s\n", res, GetErrorMsg(res).c_str());
+		printf("CAgeCategoryTable::DelRow ID = %d, res = %d, %s\n", ageCatData.id, res, GetErrorMsg(res).c_str());
 		
-		it = m->begin();
-		while(it != m->end())
+		/*
+		 * CAgeCode
+		 */ 
+		CAgeCodeTable ageCodeTbl(m_pCon);
+		CAgeCodeTable::tAgeCodeMap* ageCodeM;
+		CAgeCodeTable::tAgeCodeMapIterator ageCodeIt;
+		
+		CAgeCodeTable::tDATA ageCodeData;
+		ageCodeData.descr = string("Test Дорослі-8");
+		
+		// Add row
+		res = ageCodeTbl.AddRow(ageCodeData);
+		if(UDF_OK != res)
+			break;
+		printf("CAgeCodeTable::AddRow ID = %d, res = %d, %s\n", ageCodeData.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = ageCodeTbl.GetRow(ageCodeData.id, ageCodeData);
+		if(UDF_OK != res)
+			break;
+		printf("CAgeCodeTable::GetRow ID = %d, res = %d, %s\n", ageCodeData.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = ageCodeTbl.Find(&ageCodeM, ageCodeData);
+		if(UDF_OK != res)
+			break;
+		printf("CAgeCodeTable::Find res = %d, %s\n", res, GetErrorMsg(res).c_str());
+		
+		ageCodeIt = ageCodeM->begin();
+		while(ageCodeIt != ageCodeM->end())
 		{
-			printf("%d = %s\n", it->first, it->second.descr.c_str());
-			it++;
+			printf("%d = %s\n", ageCodeIt->first, ageCodeIt->second.descr.c_str());
+			ageCodeIt++;
 		}
 		
-		printf("Finish res = %d, %s\n", res, GetErrorMsg(res).c_str());
+		// Get table
+		res = ageCodeTbl.GetTable(&ageCodeM);
+		if(UDF_OK != res)
+			break;
+		printf("CAgeCodeTable::GetTable res = %d, %s\n", res, GetErrorMsg(res).c_str());
+		
+		ageCodeIt = ageCodeM->begin();
+		while(ageCodeIt != ageCodeM->end())
+		{
+			printf("%d = %s\n", ageCodeIt->first, ageCodeIt->second.descr.c_str());
+			ageCodeIt++;
+		}
+		
+		// Remove row
+		res = ageCodeTbl.DelRow(ageCodeData.id);
+		if(UDF_OK != res)
+			break;
+		printf("CAgeCodeTable::DelRow ID = %d, res = %d, %s\n", ageCodeData.id, res, GetErrorMsg(res).c_str());
+		
+		
+		
 	}while(0);
 	
 	printf("Open OK, res = %d, %s\n", res, GetErrorMsg(res).c_str());

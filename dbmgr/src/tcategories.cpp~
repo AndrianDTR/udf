@@ -2,21 +2,21 @@
 #include "stdio.h"
 
 #include "dberrors.h"
-#include "tagecode.h"
+#include "tcategories.h"
 
-#define	TABLE	TABLE_AGECODE
+#define	TABLE	TABLE_CATEGORIES
 
-CAgeCodeTable::CAgeCodeTable(CDbConnection* pCon)
+CCategoriesTable::CCategoriesTable(CDbConnection* pCon)
 : CDbTable(pCon)
 , m_pConnection(pCon)
 {
 }
 
-CAgeCodeTable::~CAgeCodeTable(void)
+CCategoriesTable::~CCategoriesTable(void)
 {
 }
 
-long CAgeCodeTable::GetTable(tAgeCodeMap** data)
+long CCategoriesTable::GetTable(tAgeCodeMap** data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -66,7 +66,7 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 	return res;
 }
 
-long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
+long CCategoriesTable::Find(tAgeCodeMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -116,7 +116,7 @@ long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
 	return res;
 }
 
-long CAgeCodeTable::AddRow(tDATA& rec)
+long CCategoriesTable::AddRow(tDATA& rec)
 {
 	long res = UDF_E_FAIL;
 	
@@ -142,7 +142,7 @@ long CAgeCodeTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CAgeCodeTable::DelRow(unsigned int nId)
+long CCategoriesTable::DelRow(unsigned int nId)
 {
 	long res = UDF_E_FAIL;
 	
@@ -164,7 +164,7 @@ long CAgeCodeTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CAgeCodeTable::GetRow(unsigned int nId, tDATA& data)
+long CCategoriesTable::GetRow(unsigned int nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	

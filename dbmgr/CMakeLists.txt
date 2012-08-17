@@ -17,6 +17,8 @@ set( HEADER_FILES
 	src/dbconnection.h
 	src/dbtable.h
 	src/tagecategory.h
+	src/tagecode.h
+	src/tcategories.h
 )
 
 set( SOURCE_FILES 
@@ -24,6 +26,8 @@ set( SOURCE_FILES
 	src/dbutils.cpp
 	src/dbconnection.cpp
 	src/tagecategory.cpp
+	src/tagecode.cpp
+	src/tcategories.cpp
 )
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined
