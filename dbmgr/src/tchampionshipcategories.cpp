@@ -16,14 +16,14 @@ CChampionshipCategotiesTable::~CChampionshipCategotiesTable(void)
 {
 }
 
-long CChampionshipCategotiesTable::GetTable(tTableMap** data)
+long CChampionshipCategotiesTable::GetTable(tTableSet** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tTableMap*	table = NULL;
+		tTableSet*	        table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CChampionshipCategotiesTable::GetTable(tTableMap** data)
 			break;
 		}
 		
-		table = new tTableMap();
+		table = new tTableSet();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -53,10 +53,10 @@ long CChampionshipCategotiesTable::GetTable(tTableMap** data)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.championshipId = qRes->getInt(1);
+			el.catId = qRes->getInt(2);
 		
-			table->insert(make_pair(el.id, el));
+			table->insert(el);
 		}
 		
 		*data = table;
@@ -66,14 +66,14 @@ long CChampionshipCategotiesTable::GetTable(tTableMap** data)
 	return res;
 }
 
-long CChampionshipCategotiesTable::Find(tTableMap** data, const tDATA& filter)
+long CChampionshipCategotiesTable::Find(tTableSet** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tTableMap*		table = NULL;
+		tTableSet*		    table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -82,14 +82,17 @@ long CChampionshipCategotiesTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tTableMap();
+		table = new tTableSet();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
-		sprintf(query, "select * from %s where descr like '%%%s%%'", TABLE, filter.descr.c_str());
+		sprintf(query, "select * from %s where `catId` = %d or `championship_id` = %d"
+            , TABLE
+            , filter.catId
+            , filter.championshipId);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -103,10 +106,10 @@ long CChampionshipCategotiesTable::Find(tTableMap** data, const tDATA& filter)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+            el.championshipId = qRes->getInt(1);
+            el.catId = qRes->getInt(2);
 		
-			table->insert(make_pair(el.id, el));
+			table->insert(el);
 		}
 		
 		*data = table;
@@ -131,10 +134,13 @@ long CChampionshipCategotiesTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`descr`) values('%s')", TABLE, rec.descr.c_str());
+		sprintf(query, "insert into %s(`championshipId`,`catId`) values(%d,%d)"
+            , TABLE
+            , rec.championshipId
+            , rec.catId);
 		m_pConnection->Execute(query);
 		
-		rec.id = m_pConnection->GetLastInsertId();
+		rec.championshipId = m_pConnection->GetLastInsertId();
 		
 		res = UDF_OK;
 	}while(0);
@@ -142,7 +148,7 @@ long CChampionshipCategotiesTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CChampionshipCategotiesTable::DelRow(unsigned int nId)
+long CChampionshipCategotiesTable::DelRow(const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -155,7 +161,10 @@ long CChampionshipCategotiesTable::DelRow(unsigned int nId)
 			break;
 		}
 		
-		sprintf(query, "delete from %s where id = %d", TABLE, nId);
+		sprintf(query, "delete from %s where `championshipId` = %d and `cat_id` = %d"
+            , TABLE
+            , filter.championshipId
+            , filter.catId);
 		m_pConnection->Execute(query);
 		
 		res = UDF_OK;
@@ -164,7 +173,7 @@ long CChampionshipCategotiesTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CChampionshipCategotiesTable::GetRow(unsigned int nId, tDATA& data)
+long CChampionshipCategotiesTable::GetRow(const tDATA& filter, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -179,7 +188,10 @@ long CChampionshipCategotiesTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		
-		sprintf(query, "select * from %s where id = %d", TABLE, nId);
+		sprintf(query, "select * from %s where `championshipId` = %d and `cat_id` = %d"
+            , TABLE
+            , filter.championshipId
+            , filter.catId);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -187,8 +199,8 @@ long CChampionshipCategotiesTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getInt(1);
-		data.descr = qRes->getString(2);
+        data.championshipId = qRes->getInt(1);
+        data.catId = qRes->getInt(2);
 		
 		res = UDF_OK;
 	}while(0);

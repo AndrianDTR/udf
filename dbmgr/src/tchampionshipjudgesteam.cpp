@@ -16,14 +16,14 @@ CChampionshipJudgesTeamTable::~CChampionshipJudgesTeamTable(void)
 {
 }
 
-long CChampionshipJudgesTeamTable::GetTable(tTableMap** data)
+long CChampionshipJudgesTeamTable::GetTable(tTableSet** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tTableMap*	table = NULL;
+		tTableSet*	table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CChampionshipJudgesTeamTable::GetTable(tTableMap** data)
 			break;
 		}
 		
-		table = new tTableMap();
+		table = new tTableSet();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -66,14 +66,14 @@ long CChampionshipJudgesTeamTable::GetTable(tTableMap** data)
 	return res;
 }
 
-long CChampionshipJudgesTeamTable::Find(tTableMap** data, const tDATA& filter)
+long CChampionshipJudgesTeamTable::Find(tTableSet** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tTableMap*		table = NULL;
+		tTableSet*  		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)

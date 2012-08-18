@@ -16,14 +16,14 @@ CChampionshipJudgesMarkTable::~CChampionshipJudgesMarkTable(void)
 {
 }
 
-long CChampionshipJudgesMarkTable::GetTable(tTableMap** data)
+long CChampionshipJudgesMarkTable::GetTable(tTableSet** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tTableMap*	table = NULL;
+		tTableSet*      	table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CChampionshipJudgesMarkTable::GetTable(tTableMap** data)
 			break;
 		}
 		
-		table = new tTableMap();
+		table = new tTableSet();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -53,10 +53,13 @@ long CChampionshipJudgesMarkTable::GetTable(tTableMap** data)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
-		
-			table->insert(make_pair(el.id, el));
+            el.championshipId = qRes->getUInt64(1);
+            el.judgeId = qRes->getUInt(2);
+            el.teamId = qRes->getUInt(3);
+            el.catId = qRes->getInt(4);
+            el.mark =  = qRes->getInt(5);
+			
+			table->insert(el);
 		}
 		
 		*data = table;
@@ -66,14 +69,14 @@ long CChampionshipJudgesMarkTable::GetTable(tTableMap** data)
 	return res;
 }
 
-long CChampionshipJudgesMarkTable::Find(tTableMap** data, const tDATA& filter)
+long CChampionshipJudgesMarkTable::Find(tTableSet** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tTableMap*		table = NULL;
+		tTableSet*  		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -82,14 +85,21 @@ long CChampionshipJudgesMarkTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tTableMap();
+		table = new tTableSet();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
-		sprintf(query, "select * from %s where descr like '%%%s%%'", TABLE, filter.descr.c_str());
+		sprintf(query, "select * from %s where `championship_id` = %d \
+or `judge_id` = %d or `cat_id` = %d or `team_id` = %d or `mark` = %d"
+            , TABLE
+            , filter.championshipId
+            , filter.judgeId
+            , filter.catId
+            , filter.teamId
+            , filter.mark);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -103,10 +113,13 @@ long CChampionshipJudgesMarkTable::Find(tTableMap** data, const tDATA& filter)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+            el.championshipId = qRes->getUInt64(1);
+            el.judgeId = qRes->getUInt(2);
+            el.teamId = qRes->getUInt(3);
+            el.catId = qRes->getInt(4);
+            el.mark =  = qRes->getInt(5);
 		
-			table->insert(make_pair(el.id, el));
+			table->insert(el);
 		}
 		
 		*data = table;
@@ -131,10 +144,16 @@ long CChampionshipJudgesMarkTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`descr`) values('%s')", TABLE, rec.descr.c_str());
-		m_pConnection->Execute(query);
+        sprintf(query, "insert into %s(`championship_id`,`judge_id`,`team_id`,`cat_id`,`mark`) values(%d,%d,%d,%d,%d)"
+            , TABLE
+            , rec.championshipId
+            , rec.judgeId
+            , rec.teamId
+            , rec.catId
+            , rec.mark);
+        m_pConnection->Execute(query);
 		
-		rec.id = m_pConnection->GetLastInsertId();
+		rec.championshipId = m_pConnection->GetLastInsertId();
 		
 		res = UDF_OK;
 	}while(0);
@@ -187,8 +206,11 @@ long CChampionshipJudgesMarkTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getInt(1);
-		data.descr = qRes->getString(2);
+        data.championshipId = qRes->getUInt64(1);
+        data.judgeId = qRes->getUInt(2);
+        data.teamId = qRes->getUInt(3);
+        data.catId = qRes->getInt(4);
+        data.mark =  = qRes->getInt(5);
 		
 		res = UDF_OK;
 	}while(0);
