@@ -2,28 +2,28 @@
 #include "stdio.h"
 
 #include "dberrors.h"
-#include "tagecode.h"
+#include "tchampionship.h"
 
-#define	TABLE	TABLE_AGECODE
+#define	TABLE	TABLE_CHAMPIONSHIP
 
-CAgeCodeTable::CAgeCodeTable(CDbConnection* pCon)
+CChampionshipTable::CChampionshipTable(CDbConnection* pCon)
 : CDbTable(pCon)
 , m_pConnection(pCon)
 {
 }
 
-CAgeCodeTable::~CAgeCodeTable(void)
+CChampionshipTable::~CChampionshipTable(void)
 {
 }
 
-long CAgeCodeTable::GetTable(tAgeCodeMap** data)
+long CChampionshipTable::GetTable(tTableMap** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tAgeCodeMap*	table = NULL;
+		tTableMap*	table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 			break;
 		}
 		
-		table = new tAgeCodeMap();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -53,9 +53,12 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
-		
+			el.id = qRes->getUInt(1);
+			el.type = qRes->getInt(2);
+			el.name = qRes->getString(3);
+			el.aditionalInfo  = qRes->getString(4);
+			el.city = qRes->getUInt(5);
+			
 			table->insert(make_pair(el.id, el));
 		}
 		
@@ -66,14 +69,14 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 	return res;
 }
 
-long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
+long CChampionshipTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tAgeCodeMap*		table = NULL;
+		tTableMap*		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -82,14 +85,19 @@ long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tAgeCodeMap();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
-		sprintf(query, "select * from %s where descr like '%%%s%%'", TABLE, filter.descr.c_str());
+		sprintf(query, "select * from %s where `name` like '%%%s%%' or `aditional_info` like '%%%s%%' or `city` = %d or `type` = %d"
+		, TABLE
+		, filter.name.c_str()
+		, filter.aditionalInfo.c_str()
+		, filter.city
+		, filter.type);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -103,9 +111,12 @@ long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
-		
+			el.id = qRes->getUInt(1);
+			el.type = qRes->getInt(2);
+			el.name = qRes->getString(3);
+			el.aditionalInfo  = qRes->getString(4);
+			el.city = qRes->getUInt(5);
+			
 			table->insert(make_pair(el.id, el));
 		}
 		
@@ -116,7 +127,7 @@ long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
 	return res;
 }
 
-long CAgeCodeTable::AddRow(tDATA& rec)
+long CChampionshipTable::AddRow(tDATA& rec)
 {
 	long res = UDF_E_FAIL;
 	
@@ -131,7 +142,12 @@ long CAgeCodeTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`descr`) values('%s')", TABLE, rec.descr.c_str());
+		sprintf(query, "insert into %s(`type`, `name`, `aditional_info`, `city`) values(%d, '%s', '%s', %d)"
+		, TABLE
+		, rec.type
+		, rec.name.c_str()
+		, rec.aditionalInfo.c_str()
+		, rec.city);
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -142,7 +158,7 @@ long CAgeCodeTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CAgeCodeTable::DelRow(unsigned int nId)
+long CChampionshipTable::DelRow(unsigned int nId)
 {
 	long res = UDF_E_FAIL;
 	
@@ -164,7 +180,7 @@ long CAgeCodeTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CAgeCodeTable::GetRow(unsigned int nId, tDATA& data)
+long CChampionshipTable::GetRow(unsigned int nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -187,8 +203,11 @@ long CAgeCodeTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getInt(1);
-		data.descr = qRes->getString(2);
+		data.id = qRes->getUInt(1);
+		data.type = qRes->getInt(2);
+		data.name = qRes->getString(3);
+		data.aditionalInfo  = qRes->getString(4);
+		data.city = qRes->getUInt(5);
 		
 		res = UDF_OK;
 	}while(0);

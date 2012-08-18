@@ -16,14 +16,14 @@ CAgeCategoryTable::~CAgeCategoryTable(void)
 {
 }
 
-long CAgeCategoryTable::GetTable(tAgeCategoryMap** data)
+long CAgeCategoryTable::GetTable(tTableMap** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tAgeCategoryMap*	table = NULL;
+		tTableMap*	table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CAgeCategoryTable::GetTable(tAgeCategoryMap** data)
 			break;
 		}
 		
-		table = new tAgeCategoryMap();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -66,14 +66,14 @@ long CAgeCategoryTable::GetTable(tAgeCategoryMap** data)
 	return res;
 }
 
-long CAgeCategoryTable::Find(tAgeCategoryMap** data, const tDATA& filter)
+long CAgeCategoryTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tAgeCategoryMap*	table = NULL;
+		tTableMap*	table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -82,7 +82,7 @@ long CAgeCategoryTable::Find(tAgeCategoryMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tAgeCategoryMap();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;

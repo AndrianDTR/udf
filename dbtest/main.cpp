@@ -75,8 +75,8 @@ int main(int argc, char **argv)
 		 * CAgeCode
 		 */ 
 		CAgeCodeTable ageCodeTbl(m_pCon);
-		CAgeCodeTable::tAgeCodeMap* ageCodeM;
-		CAgeCodeTable::tAgeCodeMapIterator ageCodeIt;
+		CAgeCodeTable::tTableMap* ageCodeM;
+		CAgeCodeTable::tTableIt ageCodeIt;
 		
 		CAgeCodeTable::tDATA ageCodeData;
 		ageCodeData.descr = string("Test Дорослі-8");

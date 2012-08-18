@@ -16,14 +16,14 @@ CAgeCodeTable::~CAgeCodeTable(void)
 {
 }
 
-long CAgeCodeTable::GetTable(tAgeCodeMap** data)
+long CAgeCodeTable::GetTable(tTableMap** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tAgeCodeMap*	table = NULL;
+		tTableMap*	table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 			break;
 		}
 		
-		table = new tAgeCodeMap();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -66,14 +66,14 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 	return res;
 }
 
-long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
+long CAgeCodeTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tAgeCodeMap*		table = NULL;
+		tTableMap*		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -82,7 +82,7 @@ long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tAgeCodeMap();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;

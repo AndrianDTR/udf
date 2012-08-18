@@ -16,14 +16,14 @@ CCategoriesTable::~CCategoriesTable(void)
 {
 }
 
-long CCategoriesTable::GetTable(tCategoriesMap** data)
+long CCategoriesTable::GetTable(tTableMap** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tCategoriesMap*		table = NULL;
+		tTableMap*		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CCategoriesTable::GetTable(tCategoriesMap** data)
 			break;
 		}
 		
-		table = new tCategoriesMap();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -68,14 +68,14 @@ long CCategoriesTable::GetTable(tCategoriesMap** data)
 	return res;
 }
 
-long CCategoriesTable::Find(tCategoriesMap** data, const tDATA& filter)
+long CCategoriesTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tCategoriesMap*		table = NULL;
+		tTableMap*		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -84,7 +84,7 @@ long CCategoriesTable::Find(tCategoriesMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tCategoriesMap();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;

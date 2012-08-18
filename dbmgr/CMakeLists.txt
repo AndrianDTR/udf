@@ -19,6 +19,25 @@ set( HEADER_FILES
 	src/tagecategory.h
 	src/tagecode.h
 	src/tcategories.h
+	src/tchampionship.h
+	src/tchampionshipcategories.h
+	src/tchampionship.h
+	src/tchampionshipjudgesmark.h
+	src/tchampionshipjudgesteam.h
+	src/tchampionshipteamcategories.h
+	src/tchampionshipteam.h
+	src/tchampionshiptype.h
+	src/tcities.h
+	src/tclubs.h
+	src/tcountries.h
+	src/tdancers.h
+	src/tdancetypes.h
+	src/tgender.h
+	src/tjudgescategorieshave.h
+	src/tjudgescategoriesname.h
+	src/tjudges.h
+	src/tliga.h
+	src/ttreiners.h
 )
 
 set( SOURCE_FILES 
@@ -28,6 +47,25 @@ set( SOURCE_FILES
 	src/tagecategory.cpp
 	src/tagecode.cpp
 	src/tcategories.cpp
+	src/tchampionship.cpp
+	src/tchampionshipcategories.cpp
+	src/tchampionship.cpp
+	src/tchampionshipjudgesmark.cpp
+	src/tchampionshipjudgesteam.cpp
+	src/tchampionshipteamcategories.cpp
+	src/tchampionshipteam.cpp
+	src/tchampionshiptype.cpp
+	src/tcities.cpp
+	src/tclubs.cpp
+	src/tcountries.cpp
+	src/tdancers.cpp
+	src/tdancetypes.cpp
+	src/tgender.cpp
+	src/tjudgescategorieshave.cpp
+	src/tjudgescategoriesname.cpp
+	src/tjudges.cpp
+	src/tliga.cpp
+	src/ttreiners.cpp
 )
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined

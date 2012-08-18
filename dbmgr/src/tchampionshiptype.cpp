@@ -2,28 +2,28 @@
 #include "stdio.h"
 
 #include "dberrors.h"
-#include "tagecode.h"
+#include "tchampionshiptype.h"
 
-#define	TABLE	TABLE_AGECODE
+#define	TABLE	TABLE_CHAMPIONSHIPTYPE
 
-CAgeCodeTable::CAgeCodeTable(CDbConnection* pCon)
+CChampionshipTyteTable::CChampionshipTyteTable(CDbConnection* pCon)
 : CDbTable(pCon)
 , m_pConnection(pCon)
 {
 }
 
-CAgeCodeTable::~CAgeCodeTable(void)
+CChampionshipTyteTable::~CChampionshipTyteTable(void)
 {
 }
 
-long CAgeCodeTable::GetTable(tAgeCodeMap** data)
+long CChampionshipTyteTable::GetTable(tTableMap** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tAgeCodeMap*	table = NULL;
+		tTableMap*	table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 			break;
 		}
 		
-		table = new tAgeCodeMap();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -66,14 +66,14 @@ long CAgeCodeTable::GetTable(tAgeCodeMap** data)
 	return res;
 }
 
-long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
+long CChampionshipTyteTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tAgeCodeMap*		table = NULL;
+		tTableMap*		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -82,7 +82,7 @@ long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tAgeCodeMap();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -116,7 +116,7 @@ long CAgeCodeTable::Find(tAgeCodeMap** data, const tDATA& filter)
 	return res;
 }
 
-long CAgeCodeTable::AddRow(tDATA& rec)
+long CChampionshipTyteTable::AddRow(tDATA& rec)
 {
 	long res = UDF_E_FAIL;
 	
@@ -142,7 +142,7 @@ long CAgeCodeTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CAgeCodeTable::DelRow(unsigned int nId)
+long CChampionshipTyteTable::DelRow(unsigned int nId)
 {
 	long res = UDF_E_FAIL;
 	
@@ -164,7 +164,7 @@ long CAgeCodeTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CAgeCodeTable::GetRow(unsigned int nId, tDATA& data)
+long CChampionshipTyteTable::GetRow(unsigned int nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	

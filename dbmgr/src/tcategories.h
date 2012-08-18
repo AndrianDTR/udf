@@ -18,8 +18,8 @@ public:
 		int				gender;
 	} tDATA;
 
-	typedef map<unsigned int, tDATA> tCategoriesMap;
-	typedef map<unsigned int, tDATA>::iterator tCategoriesMapIterator;
+	typedef map<unsigned int, tDATA> tTableMap;
+	typedef map<unsigned int, tDATA>::iterator tTableIt;
 	
 protected:
 	CDbConnection* m_pConnection;
@@ -29,8 +29,8 @@ public:
     virtual ~CCategoriesTable(void);
 
 public:
-    virtual long		GetTable(tCategoriesMap** data);
-    virtual long		Find(tCategoriesMap** data, const tDATA& filter);
+    virtual long		GetTable(tTableMap** data);
+    virtual long		Find(tTableMap** data, const tDATA& filter);
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned long nId);
     virtual long		GetRow(unsigned long nId, tDATA& data);

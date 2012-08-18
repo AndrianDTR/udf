@@ -8,27 +8,28 @@
 
 using namespace std;
 
-class CAgeCodeTable : public CDbTable
+class CCitiesTable : public CDbTable
 {
 public:
 	typedef struct{
 		unsigned int	id;
-		std::string		descr;
+		unsigned int	countryId;
+		std::string		Name;
 	} tDATA;
 
-	typedef map<unsigned int, tDATA> tAgeCodeMap;
-	typedef map<unsigned int, tDATA>::iterator tAgeCodeMapIterator;
+	typedef map<unsigned int, tDATA> tTableMap;
+	typedef map<unsigned int, tDATA>::iterator tTableIt;
 	
 protected:
 	CDbConnection* m_pConnection;
 	
 public:
-    CAgeCodeTable(CDbConnection* pCon);
-    virtual ~CAgeCodeTable(void);
+    CCitiesTable(CDbConnection* pCon);
+    virtual ~CCitiesTable(void);
 
 public:
-    virtual long		GetTable(tAgeCodeMap** data);
-    virtual long		Find(tAgeCodeMap** data, const tDATA& filter);
+    virtual long		GetTable(tTableMap** data);
+    virtual long		Find(tTableMap** data, const tDATA& filter);
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);
