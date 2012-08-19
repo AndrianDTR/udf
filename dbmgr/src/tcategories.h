@@ -1,5 +1,5 @@
-#ifndef __tAgeCode_h__
-#define __tAgeCode_h__
+#ifndef __tCategories_h__
+#define __tCategories_h__
 
 #include "dbconnection.h"
 #include "dbtable.h"
@@ -36,4 +36,4 @@ public:
     virtual long		GetRow(unsigned long nId, tDATA& data);
 };
 
-#endif //__tAgeCode_h__
+#endif //__tCategories_h__

@@ -21,8 +21,8 @@ int main(int argc, char **argv)
 		 * CAgeCategory
 		 */ 
 		CAgeCategoryTable ageCatTbl(m_pCon);
-		CAgeCategoryTable::tAgeCategoryMap* m;
-		CAgeCategoryTable::tAgeCategoryMapIterator it;
+		CAgeCategoryTable::tTableMap* m;
+		CAgeCategoryTable::tTableIt it;
 		
 		CAgeCategoryTable::tDATA ageCatData;
 		ageCatData.descr = string("Test Дорослі-8");

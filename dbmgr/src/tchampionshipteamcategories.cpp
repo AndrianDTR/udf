@@ -16,14 +16,14 @@ CChampionshipTeamCategoriesTable::~CChampionshipTeamCategoriesTable(void)
 {
 }
 
-long CChampionshipTeamCategoriesTable::GetTable(tTableMap** data)
+long CChampionshipTeamCategoriesTable::GetTable(tTableSet** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tTableMap*	table = NULL;
+		tTableSet*	table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CChampionshipTeamCategoriesTable::GetTable(tTableMap** data)
 			break;
 		}
 		
-		table = new tTableMap();
+		table = new tTableSet();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -53,10 +53,10 @@ long CChampionshipTeamCategoriesTable::GetTable(tTableMap** data)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.id = qRes->getUInt(1);
+			el.catId = qRes->getUInt(2);
 		
-			table->insert(make_pair(el.id, el));
+			table->insert(el);
 		}
 		
 		*data = table;
@@ -66,14 +66,14 @@ long CChampionshipTeamCategoriesTable::GetTable(tTableMap** data)
 	return res;
 }
 
-long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filter)
+long CChampionshipTeamCategoriesTable::Find(tTableSet** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tTableMap*		table = NULL;
+		tTableSet*		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -82,14 +82,17 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filte
 			break;
 		}
 		
-		table = new tTableMap();
+		table = new tTableSet();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
-		sprintf(query, "select * from %s where descr like '%%%s%%'", TABLE, filter.descr.c_str());
+		sprintf(query, "select * from %s where `team_id` = %d and `category_id` = %d"
+			, TABLE
+			, filter.id
+			, filter.catId);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -103,10 +106,10 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filte
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.id = qRes->getUInt(1);
+			el.catId = qRes->getUInt(2);
 		
-			table->insert(make_pair(el.id, el));
+			table->insert(el);
 		}
 		
 		*data = table;
@@ -131,7 +134,10 @@ long CChampionshipTeamCategoriesTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`descr`) values('%s')", TABLE, rec.descr.c_str());
+		sprintf(query, "insert into %s(`team_id`, `category_id`) values(%d,%d)"
+			, TABLE
+			, rec.id
+			, rec.catId);
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -187,8 +193,8 @@ long CChampionshipTeamCategoriesTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getInt(1);
-		data.descr = qRes->getString(2);
+		data.id = qRes->getUInt(1);
+		data.catId = qRes->getUInt(2);
 		
 		res = UDF_OK;
 	}while(0);

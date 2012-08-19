@@ -19,13 +19,13 @@ CDbManager::CDbManager()
 			break;
 		
 		CAgeCategoryTable tbl(m_pCon);
-		CAgeCategoryTable::tAgeCategoryMap* m;
+		CAgeCategoryTable::tTableMap* m;
 		
 		res = tbl.GetTable(&m);
 		if(UDF_OK != res)
 			break;
 			
-		CAgeCategoryTable::tAgeCategoryMapIterator it = m->begin();
+		CAgeCategoryTable::tTableIt it = m->begin();
 		while(it != m->end())
 		{
 			printf("%d = %s\n", it->first, it->second.descr.c_str());

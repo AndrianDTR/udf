@@ -1,5 +1,5 @@
-#ifndef __tAgeCode_h__
-#define __tAgeCode_h__
+#ifndef __tChampionshipJudgesMark_h__
+#define __tChampionshipJudgesMark_h__
 
 #include "dbconnection.h"
 #include "dbtable.h"
@@ -11,13 +11,20 @@ using namespace std;
 class CChampionshipJudgesMarkTable : public CDbTable
 {
 public:
-	typedef struct{
+	struct tDATA{
 		unsigned int	championshipId;
 		unsigned int	judgeId;
 		unsigned int	teamId;
 		unsigned int	catId;
-		int				mark;
-	} tDATA;
+		int				nMark;
+			
+		bool operator< (const tDATA& _x) const{
+			return championshipId < _x.championshipId 
+				&& judgeId < _x.judgeId
+				&& teamId < _x.teamId
+				&& catId < _x.catId;
+		};
+	};
 
 	typedef set<tDATA> tTableSet;
 	typedef set<tDATA>::iterator tTableIt;
@@ -37,4 +44,4 @@ public:
     virtual long		GetRow(unsigned int nId, tDATA& data);
 };
 
-#endif //__tAgeCode_h__
+#endif //__tChampionshipJudgesMark_h__

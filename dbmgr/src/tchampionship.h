@@ -1,5 +1,5 @@
-#ifndef __tAgeCode_h__
-#define __tAgeCode_h__
+#ifndef __tCahmpionship_h__
+#define __tCahmpionship_h__
 
 #include "dbconnection.h"
 #include "dbtable.h"
@@ -37,4 +37,4 @@ public:
     virtual long		GetRow(unsigned int nId, tDATA& data);
 };
 
-#endif //__tAgeCode_h__
+#endif //__tCahmpionship_h__

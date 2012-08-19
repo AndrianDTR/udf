@@ -53,10 +53,10 @@ long CChampionshipJudgesTeamTable::GetTable(tTableSet** data)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.championshipId = qRes->getUInt(1);
+			el.judjeId = qRes->getUInt(2);
 		
-			table->insert(make_pair(el.id, el));
+			table->insert(el);
 		}
 		
 		*data = table;
@@ -82,14 +82,17 @@ long CChampionshipJudgesTeamTable::Find(tTableSet** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tTableMap();
+		table = new tTableSet();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
-		sprintf(query, "select * from %s where descr like '%%%s%%'", TABLE, filter.descr.c_str());
+		sprintf(query, "select * from %s where `championship_id` = %d and `judge_id` = %d"
+			, TABLE
+			, filter.championshipId
+			, filter.judjeId);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -103,10 +106,10 @@ long CChampionshipJudgesTeamTable::Find(tTableSet** data, const tDATA& filter)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
-		
-			table->insert(make_pair(el.id, el));
+			el.championshipId = qRes->getUInt(1);
+			el.judjeId = qRes->getUInt(2);
+			
+			table->insert(el);
 		}
 		
 		*data = table;
@@ -131,10 +134,13 @@ long CChampionshipJudgesTeamTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`descr`) values('%s')", TABLE, rec.descr.c_str());
+		sprintf(query, "insert into %s(`championship_id`,`judge_id`) values(%d,%d)"
+			, TABLE
+			, rec.championshipId
+			, rec.judjeId);
 		m_pConnection->Execute(query);
 		
-		rec.id = m_pConnection->GetLastInsertId();
+		//rec.id = m_pConnection->GetLastInsertId();
 		
 		res = UDF_OK;
 	}while(0);
@@ -187,8 +193,8 @@ long CChampionshipJudgesTeamTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getInt(1);
-		data.descr = qRes->getString(2);
+		data.championshipId = qRes->getUInt(1);
+		data.judjeId = qRes->getUInt(2);
 		
 		res = UDF_OK;
 	}while(0);

@@ -16,14 +16,14 @@ CCitiesTable::~CCitiesTable(void)
 {
 }
 
-long CCitiesTable::GetTable(tTableMap** data)
+long CCitiesTable::GetTable(tTableSet** data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char				query[500] = {0};
-		tTableMap*	table = NULL;
+		tTableSet*	table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -32,7 +32,7 @@ long CCitiesTable::GetTable(tTableMap** data)
 			break;
 		}
 		
-		table = new tTableMap();
+		table = new tTableSet();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -53,10 +53,11 @@ long CCitiesTable::GetTable(tTableMap** data)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.id = qRes->getUInt(1);
+			el.countryId = qRes->getUInt(2);
+			el.Name = qRes->getString(3);
 		
-			table->insert(make_pair(el.id, el));
+			table->insert(el);
 		}
 		
 		*data = table;
@@ -66,14 +67,14 @@ long CCitiesTable::GetTable(tTableMap** data)
 	return res;
 }
 
-long CCitiesTable::Find(tTableMap** data, const tDATA& filter)
+long CCitiesTable::Find(tTableSet** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[500] = {0};
-		tTableMap*		table = NULL;
+		tTableSet*		table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -82,14 +83,14 @@ long CCitiesTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tTableMap();
+		table = new tTableSet();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
-		sprintf(query, "select * from %s where descr like '%%%s%%'", TABLE, filter.descr.c_str());
+		sprintf(query, "select * from %s where `name` like '%%%s%%'", TABLE, filter.Name.c_str());
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -103,10 +104,11 @@ long CCitiesTable::Find(tTableMap** data, const tDATA& filter)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.id = qRes->getUInt(1);
+			el.countryId = qRes->getUInt(2);
+			el.Name = qRes->getString(3);
 		
-			table->insert(make_pair(el.id, el));
+			table->insert(el);
 		}
 		
 		*data = table;
@@ -131,7 +133,10 @@ long CCitiesTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`descr`) values('%s')", TABLE, rec.descr.c_str());
+		sprintf(query, "insert into %s(`country_id`,`name`) values(%d,'%s')"
+			, TABLE
+			, rec.id
+			, rec.Name.c_str());
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -187,8 +192,9 @@ long CCitiesTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getInt(1);
-		data.descr = qRes->getString(2);
+		data.id = qRes->getUInt(1);
+		data.countryId = qRes->getUInt(2);
+		data.Name = qRes->getString(3);
 		
 		res = UDF_OK;
 	}while(0);

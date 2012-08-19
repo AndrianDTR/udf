@@ -54,7 +54,7 @@ long CCountriesTable::GetTable(tTableMap** data)
 			tDATA el = {0};
 			
 			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.name = qRes->getString(2);
 		
 			table->insert(make_pair(el.id, el));
 		}
@@ -89,7 +89,7 @@ long CCountriesTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		sprintf(query, "select * from %s where descr like '%%%s%%'", TABLE, filter.descr.c_str());
+		sprintf(query, "select * from %s where `name` like '%%%s%%'", TABLE, filter.name.c_str());
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -104,7 +104,7 @@ long CCountriesTable::Find(tTableMap** data, const tDATA& filter)
 			tDATA el = {0};
 			
 			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.name = qRes->getString(2);
 		
 			table->insert(make_pair(el.id, el));
 		}
@@ -131,7 +131,7 @@ long CCountriesTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`descr`) values('%s')", TABLE, rec.descr.c_str());
+		sprintf(query, "insert into %s(`name`) values('%s')", TABLE, rec.name.c_str());
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -188,7 +188,7 @@ long CCountriesTable::GetRow(unsigned int nId, tDATA& data)
 		}
 		qRes->next();
 		data.id = qRes->getInt(1);
-		data.descr = qRes->getString(2);
+		data.name = qRes->getString(2);
 		
 		res = UDF_OK;
 	}while(0);

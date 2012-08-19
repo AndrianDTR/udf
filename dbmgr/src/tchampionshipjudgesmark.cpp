@@ -57,7 +57,7 @@ long CChampionshipJudgesMarkTable::GetTable(tTableSet** data)
             el.judgeId = qRes->getUInt(2);
             el.teamId = qRes->getUInt(3);
             el.catId = qRes->getInt(4);
-            el.mark =  = qRes->getInt(5);
+            //el.mark =  = qRes->getInt(5);
 			
 			table->insert(el);
 		}
@@ -99,7 +99,7 @@ or `judge_id` = %d or `cat_id` = %d or `team_id` = %d or `mark` = %d"
             , filter.judgeId
             , filter.catId
             , filter.teamId
-            , filter.mark);
+            , filter.nMark);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -117,7 +117,7 @@ or `judge_id` = %d or `cat_id` = %d or `team_id` = %d or `mark` = %d"
             el.judgeId = qRes->getUInt(2);
             el.teamId = qRes->getUInt(3);
             el.catId = qRes->getInt(4);
-            el.mark =  = qRes->getInt(5);
+            el.nMark = qRes->getInt(5);
 		
 			table->insert(el);
 		}
@@ -150,7 +150,7 @@ long CChampionshipJudgesMarkTable::AddRow(tDATA& rec)
             , rec.judgeId
             , rec.teamId
             , rec.catId
-            , rec.mark);
+            , rec.nMark);
         m_pConnection->Execute(query);
 		
 		rec.championshipId = m_pConnection->GetLastInsertId();
@@ -210,7 +210,7 @@ long CChampionshipJudgesMarkTable::GetRow(unsigned int nId, tDATA& data)
         data.judgeId = qRes->getUInt(2);
         data.teamId = qRes->getUInt(3);
         data.catId = qRes->getInt(4);
-        data.mark =  = qRes->getInt(5);
+        data.nMark = qRes->getInt(5);
 		
 		res = UDF_OK;
 	}while(0);

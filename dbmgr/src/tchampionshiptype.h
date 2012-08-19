@@ -1,5 +1,5 @@
-#ifndef __tAgeCode_h__
-#define __tAgeCode_h__
+#ifndef __tChampionshipType_h__
+#define __tChampionshipType_h__
 
 #include "dbconnection.h"
 #include "dbtable.h"
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class CChampionshipTyteTable : public CDbTable
+class CChampionshipTypeTable : public CDbTable
 {
 public:
 	typedef struct{
@@ -23,8 +23,8 @@ protected:
 	CDbConnection* m_pConnection;
 	
 public:
-    CChampionshipTyteTable(CDbConnection* pCon);
-    virtual ~CChampionshipTyteTable(void);
+    CChampionshipTypeTable(CDbConnection* pCon);
+    virtual ~CChampionshipTypeTable(void);
 
 public:
     virtual long		GetTable(tTableMap** data);
@@ -34,4 +34,4 @@ public:
     virtual long		GetRow(unsigned int nId, tDATA& data);
 };
 
-#endif //__tAgeCode_h__
+#endif //__tChampionshipType_h____tChampionshipType_h__

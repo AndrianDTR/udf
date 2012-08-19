@@ -1,5 +1,5 @@
-#ifndef __DbConnection_h__
-#define __DbConnection_h__
+#ifndef __dbconnection_h__
+#define __dbconnection_h__
 
 #include "string"
 
@@ -26,4 +26,4 @@ public:
 	unsigned long long	GetLastInsertId();
 };
 
-#endif //__DbConnection_h__
+#endif //__dbconnection_h__

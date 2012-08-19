@@ -1,5 +1,5 @@
-#ifndef __DbTable_h__
-#define __DbTable_h__
+#ifndef __dbtable_h__
+#define __dbtable_h__
 
 #include "dbconnection.h"
 
@@ -38,4 +38,4 @@ public:
 	virtual long		Reload(){};
 };
 
-#endif //__DbTable_h__
+#endif //__dbtable_h__

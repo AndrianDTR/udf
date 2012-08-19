@@ -1,24 +1,28 @@
-#ifndef __tAgeCode_h__
-#define __tAgeCode_h__
+#ifndef __tCities_h__
+#define __tCities_h__
 
 #include "dbconnection.h"
 #include "dbtable.h"
 
-#include "map"
+#include "set"
 
 using namespace std;
 
 class CCitiesTable : public CDbTable
 {
 public:
-	typedef struct{
+	struct tDATA{
 		unsigned int	id;
 		unsigned int	countryId;
 		std::string		Name;
-	} tDATA;
+		bool operator< (const tDATA& _x) const{ 
+			return id < _x.id 
+				&& countryId < _x.countryId;
+		};
+	};
 
-	typedef map<unsigned int, tDATA> tTableMap;
-	typedef map<unsigned int, tDATA>::iterator tTableIt;
+	typedef set<tDATA> tTableSet;
+	typedef set<tDATA>::iterator tTableIt;
 	
 protected:
 	CDbConnection* m_pConnection;
@@ -28,11 +32,11 @@ public:
     virtual ~CCitiesTable(void);
 
 public:
-    virtual long		GetTable(tTableMap** data);
-    virtual long		Find(tTableMap** data, const tDATA& filter);
+    virtual long		GetTable(tTableSet** data);
+    virtual long		Find(tTableSet** data, const tDATA& filter);
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);
 };
 
-#endif //__tAgeCode_h__
+#endif //__tCities_h__
