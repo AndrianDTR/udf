@@ -25,6 +25,11 @@
 #define TABLE_LIGA								"liga"
 #define TABLE_TRAINERS							"treners"
 
+#define MAX_QUERY_LEN							500
+
+#include "stdio.h"
+#include "string.h"
+
 class CDbTable
 {
 public:

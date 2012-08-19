@@ -18,55 +18,9 @@ CChampionshipTable::~CChampionshipTable(void)
 
 long CChampionshipTable::GetTable(tTableMap** data)
 {
-	long res = UDF_E_FAIL;
+	tDATA filter = {0};
 	
-	do
-	{
-		char				query[500] = {0};
-		tTableMap*	table = NULL;
-		sql::ResultSet*		qRes = NULL;
-		
-		if(! m_pConnection)
-		{
-			res = UDF_E_NOCONNECTION;
-			break;
-		}
-		
-		table = new tTableMap();
-		if(!table)
-		{
-			res = UDF_E_NOMEMORY;
-			break;
-		}
-		
-		sprintf(query, "select * from %s", TABLE);
-		qRes = m_pConnection->ExecuteQuery(query);
-		if(!qRes)
-		{
-			res = UDF_E_EXECUTE_QUERY_FAILED;
-			break;
-		}
-		
-		table->clear();
-		
-		while( qRes && qRes->next())
-		{
-			tDATA el = {0};
-			
-			el.id = qRes->getUInt(1);
-			el.type = qRes->getInt(2);
-			el.name = qRes->getString(3);
-			el.aditionalInfo  = qRes->getString(4);
-			el.city = qRes->getUInt(5);
-			
-			table->insert(make_pair(el.id, el));
-		}
-		
-		*data = table;
-		res = UDF_OK;
-	}while(0);
-	
-	return res;
+	return Find(data, filter);
 }
 
 long CChampionshipTable::Find(tTableMap** data, const tDATA& filter)
@@ -75,9 +29,11 @@ long CChampionshipTable::Find(tTableMap** data, const tDATA& filter)
 	
 	do
 	{
-		char 				query[500] = {0};
-		tTableMap*		table = NULL;
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
+		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -92,12 +48,44 @@ long CChampionshipTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		sprintf(query, "select * from %s where `name` like '%%%s%%' or `aditional_info` like '%%%s%%' or `city` = %d or `type` = %d"
-		, TABLE
-		, filter.name.c_str()
-		, filter.aditionalInfo.c_str()
-		, filter.city
-		, filter.type);
+		if (!filter.name.empty())
+		{
+			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!filter.aditionalInfo.empty())
+		{
+			sprintf(tmp, "%sand `aditional_info` like '%%%s%%' ", query, filter.aditionalInfo.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (filter.city != -1)
+		{
+			sprintf(tmp, "%sand `city` like %d ", query, filter.city);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (filter.type != -1)
+		{
+			sprintf(tmp, "%sand `type` like %d ", query, filter.type);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+		}
+		else
+		{
+			sprintf(query, "select * from %s", TABLE);
+		}
+		
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{

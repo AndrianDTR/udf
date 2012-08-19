@@ -18,52 +18,9 @@ CAgeCodeTable::~CAgeCodeTable(void)
 
 long CAgeCodeTable::GetTable(tTableMap** data)
 {
-	long res = UDF_E_FAIL;
+	tDATA filter = {0};
 	
-	do
-	{
-		char				query[500] = {0};
-		tTableMap*	table = NULL;
-		sql::ResultSet*		qRes = NULL;
-		
-		if(! m_pConnection)
-		{
-			res = UDF_E_NOCONNECTION;
-			break;
-		}
-		
-		table = new tTableMap();
-		if(!table)
-		{
-			res = UDF_E_NOMEMORY;
-			break;
-		}
-		
-		sprintf(query, "select * from %s", TABLE);
-		qRes = m_pConnection->ExecuteQuery(query);
-		if(!qRes)
-		{
-			res = UDF_E_EXECUTE_QUERY_FAILED;
-			break;
-		}
-		
-		table->clear();
-		
-		while( qRes && qRes->next())
-		{
-			tDATA el = {0};
-			
-			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
-		
-			table->insert(make_pair(el.id, el));
-		}
-		
-		*data = table;
-		res = UDF_OK;
-	}while(0);
-	
-	return res;
+	return Find(data, filter);
 }
 
 long CAgeCodeTable::Find(tTableMap** data, const tDATA& filter)
@@ -72,9 +29,11 @@ long CAgeCodeTable::Find(tTableMap** data, const tDATA& filter)
 	
 	do
 	{
-		char 				query[500] = {0};
-		tTableMap*		table = NULL;
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
+		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -89,7 +48,23 @@ long CAgeCodeTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		sprintf(query, "select * from %s where descr like '%%%s%%'", TABLE, filter.descr.c_str());
+		if (!filter.descr.empty())
+		{
+			sprintf(tmp, "%sand `descr` like '%%%s%%' ", query, filter.descr.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+		}
+		else
+		{
+			sprintf(query, "select * from %s", TABLE);
+		}
+		
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{

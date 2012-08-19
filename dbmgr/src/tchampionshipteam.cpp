@@ -18,55 +18,9 @@ CChampionshipTeamsTable::~CChampionshipTeamsTable(void)
 
 long CChampionshipTeamsTable::GetTable(tTableSet** data)
 {
-	long res = UDF_E_FAIL;
+	tDATA filter = {0};
 	
-	do
-	{
-		char				query[500] = {0};
-		tTableSet*			table = NULL;
-		sql::ResultSet*		qRes = NULL;
-		
-		if(! m_pConnection)
-		{
-			res = UDF_E_NOCONNECTION;
-			break;
-		}
-		
-		table = new tTableSet();
-		if(!table)
-		{
-			res = UDF_E_NOMEMORY;
-			break;
-		}
-		
-		sprintf(query, "select * from %s", TABLE);
-		qRes = m_pConnection->ExecuteQuery(query);
-		if(!qRes)
-		{
-			res = UDF_E_EXECUTE_QUERY_FAILED;
-			break;
-		}
-		
-		table->clear();
-		
-		while( qRes && qRes->next())
-		{
-			tDATA el = {0};
-			
-			el.id = qRes->getUInt(1);
-			el.dancerId = qRes->getUInt(2);
-			el.championshipId = qRes->getUInt(3);
-			el.compositionName = qRes->getString(4);
-			el.startNumber = qRes->getUInt(5);
-		
-			table->insert(el);
-		}
-		
-		*data = table;
-		res = UDF_OK;
-	}while(0);
-	
-	return res;
+	return Find(data, filter);
 }
 
 long CChampionshipTeamsTable::Find(tTableSet** data, const tDATA& filter)
@@ -75,9 +29,11 @@ long CChampionshipTeamsTable::Find(tTableSet** data, const tDATA& filter)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
 		tTableSet*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
+		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -92,14 +48,44 @@ long CChampionshipTeamsTable::Find(tTableSet** data, const tDATA& filter)
 			break;
 		}
 		
-		sprintf(query, "select * from %s where (``=%d and ``=%d and ``=%d) \
-or `` like %s or ``=%d"
-		, TABLE
-		, filter.id
-		, filter.dancerId
-		, filter.championshipId
-		, filter.compositionName.c_str()
-		, filter.startNumber);
+		if (filter.championshipId != -1)
+		{
+			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (filter.dancerId != -1)
+		{
+			sprintf(tmp, "%sand `dancer_id` like %d ", query, filter.dancerId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!filter.compositionName.empty())
+		{
+			sprintf(tmp, "%sand `composition_name` like '%%%s%%' ", query, filter.compositionName.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (filter.startNumber != -1)
+		{
+			sprintf(tmp, "%sand `start_number` like %d ", query, filter.startNumber);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+				
+		if(useFilter)
+		{
+			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+		}
+		else
+		{
+			sprintf(query, "select * from %s", TABLE);
+		}
+				
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{

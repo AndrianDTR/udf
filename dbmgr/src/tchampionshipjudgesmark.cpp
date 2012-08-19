@@ -18,55 +18,9 @@ CChampionshipJudgesMarkTable::~CChampionshipJudgesMarkTable(void)
 
 long CChampionshipJudgesMarkTable::GetTable(tTableSet** data)
 {
-	long res = UDF_E_FAIL;
+	tDATA filter = {0};
 	
-	do
-	{
-		char				query[500] = {0};
-		tTableSet*      	table = NULL;
-		sql::ResultSet*		qRes = NULL;
-		
-		if(! m_pConnection)
-		{
-			res = UDF_E_NOCONNECTION;
-			break;
-		}
-		
-		table = new tTableSet();
-		if(!table)
-		{
-			res = UDF_E_NOMEMORY;
-			break;
-		}
-		
-		sprintf(query, "select * from %s", TABLE);
-		qRes = m_pConnection->ExecuteQuery(query);
-		if(!qRes)
-		{
-			res = UDF_E_EXECUTE_QUERY_FAILED;
-			break;
-		}
-		
-		table->clear();
-		
-		while( qRes && qRes->next())
-		{
-			tDATA el = {0};
-			
-            el.championshipId = qRes->getUInt64(1);
-            el.judgeId = qRes->getUInt(2);
-            el.teamId = qRes->getUInt(3);
-            el.catId = qRes->getInt(4);
-            //el.mark =  = qRes->getInt(5);
-			
-			table->insert(el);
-		}
-		
-		*data = table;
-		res = UDF_OK;
-	}while(0);
-	
-	return res;
+	return Find(data, filter);
 }
 
 long CChampionshipJudgesMarkTable::Find(tTableSet** data, const tDATA& filter)
@@ -75,9 +29,11 @@ long CChampionshipJudgesMarkTable::Find(tTableSet** data, const tDATA& filter)
 	
 	do
 	{
-		char 				query[500] = {0};
-		tTableSet*  		table = NULL;
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		tTableSet*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
+		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -92,14 +48,51 @@ long CChampionshipJudgesMarkTable::Find(tTableSet** data, const tDATA& filter)
 			break;
 		}
 		
-		sprintf(query, "select * from %s where `championship_id` = %d \
-or `judge_id` = %d or `cat_id` = %d or `team_id` = %d or `mark` = %d"
-            , TABLE
-            , filter.championshipId
-            , filter.judgeId
-            , filter.catId
-            , filter.teamId
-            , filter.nMark);
+		if (filter.catId != -1)
+		{
+			sprintf(tmp, "%sand `cat_id` like %d ", query, filter.catId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (filter.championshipId != -1)
+		{
+			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (filter.judgeId != -1)
+		{
+			sprintf(tmp, "%sand `judge_id` like %d ", query, filter.judgeId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (filter.teamId != -1)
+		{
+			sprintf(tmp, "%sand `team_id` like %d ", query, filter.teamId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (filter.nMark != -1)
+		{
+			sprintf(tmp, "%sand `mark` = %d ", query, filter.nMark);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+				
+		if(useFilter)
+		{
+			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+		}
+		else
+		{
+			sprintf(query, "select * from %s", TABLE);
+		}
+		
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
