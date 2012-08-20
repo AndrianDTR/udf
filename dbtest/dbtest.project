@@ -9,12 +9,6 @@
   <Dependencies/>
   <VirtualDirectory Name="src">
     <File Name="main.cpp"/>
-    <File Name="agecategorytest.h"/>
-    <File Name="agecategorytest.cpp"/>
-    <File Name="ctestbase.h"/>
-    <File Name="ctestbase.cpp"/>
-    <File Name="agecodetest.cpp"/>
-    <File Name="agecodetest.h"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

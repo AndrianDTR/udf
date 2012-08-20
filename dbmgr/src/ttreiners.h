@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class CTarinersTable : public CDbTable
+class CTrainersTable : public CDbTable
 {
 public:
 	typedef struct{
@@ -16,7 +16,6 @@ public:
 		unsigned int	clubId;
 		std::string		name;
 		std::string		bd;
-		unsigned int	cityId;
 		std::string		phone;
 		std::string		contactInfo;
 		std::string		email;
@@ -31,8 +30,8 @@ protected:
 	CDbConnection* m_pConnection;
 	
 public:
-    CTarinersTable(CDbConnection* pCon);
-    virtual ~CTarinersTable(void);
+    CTrainersTable(CDbConnection* pCon);
+    virtual ~CTrainersTable(void);
 
 public:
     virtual long		GetTable(tTableMap** data);
@@ -40,6 +39,7 @@ public:
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);
+	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
 };
 
 #endif //__tTariners_h__

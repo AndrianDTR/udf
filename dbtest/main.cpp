@@ -4,132 +4,1805 @@
 #include "dbconnection.h"
 #include "connection_data.h"
 
-#include "agecategorytest.h"
-#include "agecodetest.h"
+#include "tagecode.h"
+#include "tagecategory.h"
+#include "tcategories.h"
+#include "tchampionship.h"
+#include "tchampionshipcategories.h"
+#include "tchampionshipjudgesmark.h"
+#include "tchampionshipjudgesteam.h"
+#include "tchampionshipteam.h"
+#include "tchampionshipteamcategories.h"
+#include "tchampionshiptype.h"
+#include "tcities.h"
+#include "tclubs.h"
+#include "tcountries.h"
+#include "tdancers.h"
+#include "tdancetypes.h"
+#include "tgender.h"
+#include "tjudges.h"
+#include "tjudgescategorieshave.h"
+#include "tjudgescategoriesname.h"
+#include "tliga.h"
+#include "ttreiners.h"
+
+long testTAgeCategory(CDbConnection* pCon);
+long testTAgeCode(CDbConnection* pCon);
+long testTCategories(CDbConnection* pCon);
+long testTChampionship(CDbConnection* pCon);
+long testTChampionshipCategories(CDbConnection* pCon);
+long testTChampionshipJudgesMark(CDbConnection* pCon);
+long testTChampionshipJudgesTeam(CDbConnection* pCon);
+long testTChampionshipTeams(CDbConnection* pCon);
+long testTChampionshipTeamCategories(CDbConnection* pCon);
+long testTChampionshipType(CDbConnection* pCon);
+long testTCities(CDbConnection* pCon);
+long testTClubs(CDbConnection* pCon);
+long testTCountries(CDbConnection* pCon);
+long testTDancers(CDbConnection* pCon);		
+long testTDanceTypes(CDbConnection* pCon);
+long testTGender(CDbConnection* pCon);
+long testTJudges(CDbConnection* pCon);
+long testTJudgesCategoriesHave(CDbConnection* pCon);
+long testTJudgesCategoriesName(CDbConnection* pCon);
+long testTLiga(CDbConnection* pCon);
+long testTTrainers(CDbConnection* pCon);
 
 int main(int argc, char **argv)
 {
 	long res = UDF_E_FAIL;
 	do
 	{
-		CDbConnection* m_pCon = new CDbConnection();
-		res = m_pCon->Open(szUrl, szUser, szPass, szSchema);
+		CDbConnection* pCon = new CDbConnection();
+		res = pCon->Open(szUrl, szUser, szPass, szSchema);
 		if(UDF_OK != res)
-			break;
-		/*
-		//
-		// CAgeCategory
-		// 
-		CAgeCategoryTable ageCatTbl(m_pCon);
-		CAgeCategoryTable::tTableMap* m;
-		CAgeCategoryTable::tTableIt it;
-		
-		CAgeCategoryTable::tDATA ageCatData;
-		ageCatData.descr = string("Test Дорослі-8");
-		
-		// Add row
-		res = ageCatTbl.AddRow(ageCatData);
-		if(UDF_OK != res)
-			break;
-		printf("CAgeCategoryTable::AddRow ID = %d, res = %d, %s\n", ageCatData.id, res, GetErrorMsg(res).c_str());
-		
-		// Get row
-		res = ageCatTbl.GetRow(ageCatData.id, ageCatData);
-		if(UDF_OK != res)
-			break;
-		printf("CAgeCategoryTable::GetRow ID = %d, res = %d, %s\n", ageCatData.id, res, GetErrorMsg(res).c_str());
-		
-		// Find record
-		res = ageCatTbl.Find(&m, ageCatData);
-		if(UDF_OK != res)
-			break;
-		printf("CAgeCategoryTable::Find res = %d, %s\n", res, GetErrorMsg(res).c_str());
-		
-		it = m->begin();
-		while(it != m->end())
 		{
-			printf("%d = %s\n", it->first, it->second.descr.c_str());
-			it++;
+			printf("Connection open error. ErrCODE: %ld, MSG %s\n", res, GetErrorMsg(res).c_str());
+			break;
 		}
 		
-		// Get table
-		res = ageCatTbl.GetTable(&m);
-		if(UDF_OK != res)
-			break;
-		printf("CAgeCategoryTable::GetTable res = %d, %s\n", res, GetErrorMsg(res).c_str());
-		
-		it = m->begin();
-		while(it != m->end())
-		{
-			printf("%d = %s\n", it->first, it->second.descr.c_str());
-			it++;
-		}
-		
-		// Remove row
-		res = ageCatTbl.DelRow(ageCatData.id);
-		if(UDF_OK != res)
-			break;
-		printf("CAgeCategoryTable::DelRow ID = %d, res = %d, %s\n", ageCatData.id, res, GetErrorMsg(res).c_str());
-		
-		//
-		// CAgeCode
-		// 
-		CAgeCodeTable ageCodeTbl(m_pCon);
-		CAgeCodeTable::tTableMap* ageCodeM;
-		CAgeCodeTable::tTableIt ageCodeIt;
-		
-		CAgeCodeTable::tDATA ageCodeData;
-		ageCodeData.descr = string("Test Дорослі-8");
-		
-		// Add row
-		res = ageCodeTbl.AddRow(ageCodeData);
-		if(UDF_OK != res)
-			break;
-		printf("CAgeCodeTable::AddRow ID = %d, res = %d, %s\n", ageCodeData.id, res, GetErrorMsg(res).c_str());
-		
-		// Get row
-		res = ageCodeTbl.GetRow(ageCodeData.id, ageCodeData);
-		if(UDF_OK != res)
-			break;
-		printf("CAgeCodeTable::GetRow ID = %d, res = %d, %s\n", ageCodeData.id, res, GetErrorMsg(res).c_str());
-		
-		// Find record
-		res = ageCodeTbl.Find(&ageCodeM, ageCodeData);
-		if(UDF_OK != res)
-			break;
-		printf("CAgeCodeTable::Find res = %d, %s\n", res, GetErrorMsg(res).c_str());
-		
-		ageCodeIt = ageCodeM->begin();
-		while(ageCodeIt != ageCodeM->end())
-		{
-			printf("%d = %s\n", ageCodeIt->first, ageCodeIt->second.descr.c_str());
-			ageCodeIt++;
-		}
-		
-		// Get table
-		res = ageCodeTbl.GetTable(&ageCodeM);
-		if(UDF_OK != res)
-			break;
-		printf("CAgeCodeTable::GetTable res = %d, %s\n", res, GetErrorMsg(res).c_str());
-		
-		ageCodeIt = ageCodeM->begin();
-		while(ageCodeIt != ageCodeM->end())
-		{
-			printf("%d = %s\n", ageCodeIt->first, ageCodeIt->second.descr.c_str());
-			ageCodeIt++;
-		}
-		
-		// Remove row
-		res = ageCodeTbl.DelRow(ageCodeData.id);
-		if(UDF_OK != res)
-			break;
-		printf("CAgeCodeTable::DelRow ID = %d, res = %d, %s\n", ageCodeData.id, res, GetErrorMsg(res).c_str());
-		//*/
-		
-		
+		testTAgeCategory(pCon);
+		testTAgeCode(pCon);
+		//testTCategories(pCon);
+		testTChampionship(pCon);
+		//testTChampionshipCategories(pCon);
+		//testTChampionshipJudgesMark(pCon);
+		//testTChampionshipJudgesTeam(pCon);
+		//testTChampionshipTeams(pCon);
+		//testTChampionshipTeamCategories(pCon);
+		testTChampionshipType(pCon);
+		//testTCities(pCon);
+		testTClubs(pCon);
+		testTCountries(pCon);
+		//testTDancers(pCon);
+		testTDanceTypes(pCon);
+		testTGender(pCon);
+		testTJudges(pCon);
+		//testTJudgesCategoriesHave(pCon);
+		testTJudgesCategoriesName(pCon);
+		testTLiga(pCon);
+		testTTrainers(pCon);
+			
+		printf("\n\n------------- PASSED -------------\n\n\n");
 	}while(0);
 	
-	printf("Open OK, res = %d, %s\n", res, GetErrorMsg(res).c_str());
-	
 	return 0;
+}
+
+long testTAgeCategory(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CAgeCategoryTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CAgeCategoryTable tbl(pCon);
+		CAgeCategoryTable::tTableMap* tmap;
+		CAgeCategoryTable::tTableIt it;
+		
+		CAgeCategoryTable::tDATA data = {0};
+		data.descr = string("Test Дорослі-8");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u = %s\n", it->first, it->second.descr.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.descr = string("XXXXX-8");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%d = %s\n", it->first, it->second.descr.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTAgeCode(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CAgeCodeTable::";
+	printf("\n\nEnter to %s\n", cName);
+	
+	do
+	{
+		CAgeCodeTable tbl(pCon);
+		CAgeCodeTable::tTableMap* tmap;
+		CAgeCodeTable::tTableIt it;
+		
+		CAgeCodeTable::tDATA data = {0};
+		data.descr = string("Test Дорослі-8");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u = %s\n", it->first, it->second.descr.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.descr = string("XXXXX-8");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%d = %s\n", it->first, it->second.descr.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTCategories(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CCategoriesTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CCategoriesTable tbl(pCon);
+		CCategoriesTable::tTableMap* tmap;
+		CCategoriesTable::tTableIt it;
+		
+		CCategoriesTable::tDATA data = {0};
+		data.dance = 100;
+		data.liga = 100;
+		data.gender = 100;
+				
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u, %d\n", it->first
+				, it->second.dance
+				, it->second.liga
+				, it->second.gender);
+			it++;
+		}
+		
+		// Update row
+		data.dance = 200;
+		//data.liga = 300;
+		data.gender = 200;
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u, %d\n", it->first
+				, it->second.dance
+				, it->second.liga
+				, it->second.gender);
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTChampionship(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CChampionshipTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CChampionshipTable tbl(pCon);
+		CChampionshipTable::tTableMap* tmap;
+		CChampionshipTable::tTableIt it;
+		
+		CChampionshipTable::tDATA data = {0};
+		data.type = 1;
+		data.name = string("Test Дорослі-8");
+		data.city = 1;
+		data.aditionalInfo = string("AdditionalInfo 1");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %d, %s, %d, %s\n"
+				, it->first
+				, it->second.type
+				, it->second.name.c_str()
+				, it->second.city
+				, it->second.aditionalInfo.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.type = 2;
+		data.name = string("XXXXXX-8");
+		data.city = 2;
+		data.aditionalInfo = string("AdditionalInfo 2");
+		
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %d, %s, %d, %s\n"
+				, it->first
+				, it->second.type
+				, it->second.name.c_str()
+				, it->second.city
+				, it->second.aditionalInfo.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTChampionshipCategories(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CChampionshipCategotiesTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CChampionshipCategotiesTable tbl(pCon);
+		CChampionshipCategotiesTable::tTableMap* tmap;
+		CChampionshipCategotiesTable::tTableIt it;
+		
+		CChampionshipCategotiesTable::tDATA data = {0};
+		data.catId = 11;
+		data.championshipId = 12;
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u\n"
+				, it->first
+				, it->second.catId
+				, it->second.championshipId);
+			it++;
+		}
+		
+		// Update row
+		data.catId = 21;
+		data.championshipId = 22;
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u\n"
+				, it->first
+				, it->second.catId
+				, it->second.championshipId);
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTChampionshipJudgesMark(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CChampionshipJudgesMarkTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CChampionshipJudgesMarkTable tbl(pCon);
+		CChampionshipJudgesMarkTable::tTableMap* tmap;
+		CChampionshipJudgesMarkTable::tTableIt it;
+		
+		CChampionshipJudgesMarkTable::tDATA data = {0};
+		data.catId = 11;
+		data.championshipId = 12;
+		data.judgeId = 13;
+		data.teamId = 14;
+		data.nMark = 15;
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u, %u, %u, %u\n"
+				, it->first
+				, it->second.championshipId
+				, it->second.teamId
+				, it->second.catId
+				, it->second.judgeId
+				, it->second.nMark);
+			it++;
+		}
+		
+		// Update row
+		data.catId = 21;
+		data.championshipId = 22;
+		data.judgeId = 23;
+		data.teamId = 24;
+		data.nMark = 25;
+		
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u, %u, %u, %u\n"
+				, it->first
+				, it->second.championshipId
+				, it->second.teamId
+				, it->second.catId
+				, it->second.judgeId
+				, it->second.nMark);
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTChampionshipJudgesTeam(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CChampionshipJudgesTeamTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CChampionshipJudgesTeamTable tbl(pCon);
+		CChampionshipJudgesTeamTable::tTableMap* tmap;
+		CChampionshipJudgesTeamTable::tTableIt it;
+		
+		CChampionshipJudgesTeamTable::tDATA data = {0};
+		data.championshipId = 11;
+		data.judjeId = 12;
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u\n"
+				, it->first
+				, it->second.championshipId
+				, it->second.judjeId);
+			it++;
+		}
+		
+		// Update row
+		data.championshipId = 21;
+		data.judjeId = 22;
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u\n"
+				, it->first
+				, it->second.championshipId
+				, it->second.judjeId);
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTChampionshipTeams(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CChampionshipTeamsTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CChampionshipTeamsTable tbl(pCon);
+		CChampionshipTeamsTable::tTableMap* tmap;
+		CChampionshipTeamsTable::tTableIt it;
+		
+		CChampionshipTeamsTable::tDATA data = {0};
+		data.championshipId = 11;
+		data.dancerId = 12;
+		data.startNumber =13;
+		data.compositionName = string("Test Дорослі-8");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u, %u, %s\n"
+				, it->first
+				, it->second.championshipId
+				, it->second.dancerId
+				, it->second.startNumber
+				, it->second.compositionName.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.championshipId = 21;
+		data.dancerId = 22;
+		data.startNumber =23;
+		data.compositionName = string("XXXXX-8");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u, %u, %s\n"
+				, it->first
+				, it->second.championshipId
+				, it->second.dancerId
+				, it->second.startNumber
+				, it->second.compositionName.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTChampionshipTeamCategories(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CChampionshipTeamCategoriesTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CChampionshipTeamCategoriesTable tbl(pCon);
+		CChampionshipTeamCategoriesTable::tTableMap* tmap;
+		CChampionshipTeamCategoriesTable::tTableIt it;
+		
+		CChampionshipTeamCategoriesTable::tDATA data = {0};
+		data.teamId = 11;
+		data.catId = 12;
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u\n"
+				, it->first
+				, it->second.teamId
+				, it->second.catId);
+			it++;
+		}
+		
+		// Update row
+		data.teamId = 21;
+		data.catId = 22;
+		
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u\n"
+				, it->first
+				, it->second.teamId
+				, it->second.catId);
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTChampionshipType(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CChampionshipTypeTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CChampionshipTypeTable tbl(pCon);
+		CChampionshipTypeTable::tTableMap* tmap;
+		CChampionshipTypeTable::tTableIt it;
+		
+		CChampionshipTypeTable::tDATA data = {0};
+		data.name = string("Test Дорослі-8");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.name = string("XXXXX-8");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%d = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTCities(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CCitiesTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CCitiesTable tbl(pCon);
+		CCitiesTable::tTableMap* tmap;
+		CCitiesTable::tTableIt it;
+		
+		CCitiesTable::tDATA data = {0};
+		data.countryId = 1;
+		data.Name = string("Test Дорослі-8");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %d, %s\n", it->first, it->second.countryId, it->second.Name.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.countryId = 2;
+		data.Name = string("XXXXX-8");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %d, %s\n", it->first, it->second.countryId, it->second.Name.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTClubs(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CClubsTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CClubsTable tbl(pCon);
+		CClubsTable::tTableMap* tmap;
+		CClubsTable::tTableIt it;
+		
+		CClubsTable::tDATA data = {0};
+		data.city = 11;
+		data.name = string("Test Дорослі-8");
+		data.login = string("Test login1");
+		data.pass = string("Test pass1");
+		data.email = string("Test email1");
+		data.contacts = string("Test contacts1");
+		data.web = string("Test web1");
+		data.location = string("Test location1");
+		data.pay_date = string("Test pay1");
+		data.exp_date = string("Test exp1");
+		data.director = string("Test director1");
+		data.director_bd = string("Test dir bd1");
+		data.director_email = string("Test dir em1");
+		data.director_phone = string("Test dir ph1");
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n"
+				, it->first
+				, it->second.city
+				, it->second.name.c_str()
+				, it->second.login.c_str()
+				, it->second.pass.c_str()
+				, it->second.email.c_str()
+				, it->second.contacts.c_str()
+				, it->second.web.c_str()
+				, it->second.location.c_str()
+				, it->second.pay_date.c_str()
+				, it->second.exp_date.c_str()
+				, it->second.director.c_str()
+				, it->second.director_bd.c_str()
+				, it->second.director_email.c_str()
+				, it->second.director_phone.c_str()
+				);
+			it++;
+		}
+		
+		// Update row
+		data.city = 4;
+		data.name = string("Test XXXX");
+		data.login = string("Test login2");
+		data.pass = string("Test pass2");
+		data.email = string("Test email2");
+		data.contacts = string("Test contacts2");
+		data.web = string("Test web2");
+		data.location = string("Test location2");
+		data.pay_date = string("Test pay2");
+		data.exp_date = string("Test exp2");
+		data.director = string("Test director2");
+		data.director_bd = string("Test dir bd2");
+		data.director_email = string("Test dir em2");
+		data.director_phone = string("Test dir ph2");
+		
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n"
+				, it->first
+				, it->second.city
+				, it->second.name.c_str()
+				, it->second.login.c_str()
+				, it->second.pass.c_str()
+				, it->second.email.c_str()
+				, it->second.contacts.c_str()
+				, it->second.web.c_str()
+				, it->second.location.c_str()
+				, it->second.pay_date.c_str()
+				, it->second.exp_date.c_str()
+				, it->second.director.c_str()
+				, it->second.director_bd.c_str()
+				, it->second.director_email.c_str()
+				, it->second.director_phone.c_str()
+				);
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTCountries(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CCountriesTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CCountriesTable tbl(pCon);
+		CCountriesTable::tTableMap* tmap;
+		CCountriesTable::tTableIt it;
+		
+		CCountriesTable::tDATA data = {0};
+		data.name = string("Test Дорослі-8");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.name = string("XXXXX-8");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%d = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTDancers(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CDancersTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CDancersTable tbl(pCon);
+		CDancersTable::tTableMap* tmap;
+		CDancersTable::tTableIt it;
+		
+		CDancersTable::tDATA data = {0};
+		data.clubId = 3;
+		data.trainerId = 1;
+		data.raiting = 1;
+		data.liga = 1;
+		data.gender = 1;
+		data.city = 1;
+		data.regBook = string("Test RB1");
+		data.name = string("Test name1");
+		data.bd = string("Test bd1");
+		data.pay_date = string("Test pay1");
+		data.exp_date = string("Test exp1");
+		data.reg_date = string("Test reg1");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u, %u, %u, %u, %u, %s, %s, %s, %s, %s, %s\n"
+				, it->first
+				, it->second.clubId
+				, it->second.trainerId
+				, it->second.raiting
+				, it->second.gender
+				, it->second.liga
+				, it->second.city
+				, it->second.regBook.c_str()
+				, it->second.name.c_str()
+				, it->second.bd.c_str()
+				, it->second.pay_date.c_str()
+				, it->second.exp_date.c_str()
+				, it->second.reg_date.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.clubId = 2;
+		data.trainerId = 2;
+		data.raiting = 2;
+		data.liga = 2;
+		data.gender = 2;
+		data.city = 2;
+		data.regBook = string("Test RB2");
+		data.name = string("Test name2");
+		data.bd = string("Test bd2");
+		data.pay_date = string("Test pay2");
+		data.exp_date = string("Test exp2");
+		data.reg_date = string("Test reg2");
+		
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u, %u, %u, %u, %u, %s, %s, %s, %s, %s, %s\n"
+				, it->first
+				, it->second.clubId
+				, it->second.trainerId
+				, it->second.raiting
+				, it->second.gender
+				, it->second.liga
+				, it->second.city
+				, it->second.regBook.c_str()
+				, it->second.name.c_str()
+				, it->second.bd.c_str()
+				, it->second.pay_date.c_str()
+				, it->second.exp_date.c_str()
+				, it->second.reg_date.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTDanceTypes(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CDanceTypesTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CDanceTypesTable tbl(pCon);
+		CDanceTypesTable::tTableMap* tmap;
+		CDanceTypesTable::tTableIt it;
+		
+		CDanceTypesTable::tDATA data = {0};
+		data.name = string("Test Дорослі-8");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.name = string("XXXXX-8");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%d = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTGender(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CGenderTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CGenderTable tbl(pCon);
+		CGenderTable::tTableMap* tmap;
+		CGenderTable::tTableIt it;
+		
+		CGenderTable::tDATA data = {0};
+		data.name = string("Test Дорослі-8");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.name = string("XXXXX-8");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%d = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTJudges(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CJudgesTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CJudgesTable tbl(pCon);
+		CJudgesTable::tTableMap* tmap;
+		CJudgesTable::tTableIt it;
+		
+		CJudgesTable::tDATA data = {0};
+		data.countryId = 1;
+		data.cityId = 2;
+		data.clubId = 3;
+		data.name = string("Test name1");
+		data.attestationInfo = string("Test attestation inf1");
+		data.pay_date = string("Test pay1");
+		data.exp_date = string("Test exp1");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u, %u, %s, %s, %s, %s\n"
+				, it->first
+				, it->second.countryId
+				, it->second.cityId
+				, it->second.clubId
+				, it->second.name.c_str()
+				, it->second.attestationInfo.c_str()
+				, it->second.pay_date.c_str()
+				, it->second.exp_date.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.countryId = 21;
+		data.cityId = 22;
+		data.clubId = 23;
+		data.name = string("Test name2");
+		data.attestationInfo = string("Test attestation inf2");
+		data.pay_date = string("Test pay2");
+		data.exp_date = string("Test exp2");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u, %u, %s, %s, %s, %s\n"
+				, it->first
+				, it->second.countryId
+				, it->second.cityId
+				, it->second.clubId
+				, it->second.name.c_str()
+				, it->second.attestationInfo.c_str()
+				, it->second.pay_date.c_str()
+				, it->second.exp_date.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	printf("\n\nEnter to %s\n", cName);
+	return res;
+}
+
+long testTJudgesCategoriesHave(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CJudgesCategoriesHaveTable::";
+	
+	do
+	{
+		CJudgesCategoriesHaveTable tbl(pCon);
+		CJudgesCategoriesHaveTable::tTableMap* tmap;
+		CJudgesCategoriesHaveTable::tTableIt it;
+		
+		CJudgesCategoriesHaveTable::tDATA data = {0};
+		data.judgeId = 11;
+		data.judCatId = 12;
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u\n"
+				, it->first
+				, it->second.judgeId
+				, it->second.judCatId);
+			it++;
+		}
+		
+		// Update row
+		data.judgeId = 21;
+		data.judCatId = 22;
+		
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %u\n"
+				, it->first
+				, it->second.judgeId
+				, it->second.judCatId);
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTJudgesCategoriesName(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CJudgesCategoriesNameTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CJudgesCategoriesNameTable tbl(pCon);
+		CJudgesCategoriesNameTable::tTableMap* tmap;
+		CJudgesCategoriesNameTable::tTableIt it;
+		
+		CJudgesCategoriesNameTable::tDATA data = {0};
+		data.name = string("Test Дорослі-8");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.name = string("XXXXX-8");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%d = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTLiga(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CLigaTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CLigaTable tbl(pCon);
+		CLigaTable::tTableMap* tmap;
+		CLigaTable::tTableIt it;
+		
+		CLigaTable::tDATA data = {0};
+		data.name = string("Test Дорослі-8");
+		
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.name = string("XXXXX-8");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%d = %s\n", it->first, it->second.name.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+	}while(0);
+	
+	return res;
+}
+
+long testTTrainers(CDbConnection* pCon)
+{
+	long res = UDF_E_FAIL;
+	const char*	cName = "CTarinersTable::";
+	printf("\n\nEnter to %s\n", cName);
+	do
+	{
+		CTrainersTable tbl(pCon);
+		CTrainersTable::tTableMap* tmap;
+		CTrainersTable::tTableIt it;
+		
+		CTrainersTable::tDATA data = {0};
+		data.clubId = 2;
+		data.name = string("Test name1");
+		data.bd = string("Test bd1");
+		data.phone = string("Test ph1");
+		data.contactInfo = string("Test contactinfo1");
+		data.email = string("Test em1");
+		data.pay_date = string("Test pay1");
+		data.exp_date = string("Test exp1");
+				
+		// Add row
+		res = tbl.AddRow(data);
+		if(UDF_OK != res)
+			break;
+		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get row
+		res = tbl.GetRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Find record
+		res = tbl.Find(&tmap, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s\n"
+				, it->first
+				, it->second.clubId
+				, it->second.name.c_str()
+				, it->second.bd.c_str()
+				, it->second.phone.c_str()
+				, it->second.contactInfo.c_str()
+				, it->second.email.c_str()
+				, it->second.pay_date.c_str()
+				, it->second.exp_date.c_str());
+			it++;
+		}
+		
+		// Update row
+		data.clubId = 3;
+		data.name = string("Test name2");
+		data.bd = string("Test bd2");
+		data.phone = string("Test ph2");
+		data.contactInfo = string("Test contactinfo2");
+		data.email = string("Test em2");
+		data.pay_date = string("Test pay2");
+		data.exp_date = string("Test exp2");
+		res = tbl.UpdateRow(data.id, data);
+		if(UDF_OK != res)
+			break;
+		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		
+		// Get table
+		res = tbl.GetTable(&tmap);
+		if(UDF_OK != res)
+			break;
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		it = tmap->begin();
+		while(it != tmap->end())
+		{
+			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s\n"
+				, it->first
+				, it->second.clubId
+				, it->second.name.c_str()
+				, it->second.bd.c_str()
+				, it->second.phone.c_str()
+				, it->second.contactInfo.c_str()
+				, it->second.email.c_str()
+				, it->second.pay_date.c_str()
+				, it->second.exp_date.c_str());
+			it++;
+		}
+		
+		// Remove row
+		res = tbl.DelRow(data.id);
+		if(UDF_OK != res)
+			break;
+		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
+		//*/
+	}while(0);
+	
+	return res;
 }

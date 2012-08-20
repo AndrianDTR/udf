@@ -4,7 +4,7 @@
 #include "dbconnection.h"
 #include "dbtable.h"
 
-#include "set"
+#include "map"
 
 using namespace std;
 
@@ -15,14 +15,10 @@ public:
 		unsigned int	id;
 		unsigned int	countryId;
 		std::string		Name;
-		bool operator< (const tDATA& _x) const{ 
-			return id < _x.id 
-				&& countryId < _x.countryId;
-		};
 	};
 
-	typedef set<tDATA> tTableMap;
-	typedef set<tDATA>::iterator tTableIt;
+	typedef map<unsigned int, tDATA> tTableMap;
+	typedef map<unsigned int, tDATA>::iterator tTableIt;
 	
 protected:
 	CDbConnection* m_pConnection;
@@ -37,6 +33,7 @@ public:
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);
+	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
 };
 
 #endif //__tCities_h__

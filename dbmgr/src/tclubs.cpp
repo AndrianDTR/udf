@@ -50,7 +50,7 @@ long CClubsTable::Find(tTableMap** data, const tDATA& filter)
 		
 		if (filter.city != -1)
 		{
-			sprintf(tmp, "%sand `country_id` like %d ", query, filter.city);
+			sprintf(tmp, "%sand `city` like %d ", query, filter.city);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -106,28 +106,28 @@ long CClubsTable::Find(tTableMap** data, const tDATA& filter)
 		
 		if (!filter.director.empty())
 		{
-			sprintf(tmp, "%sand `director` like '%%%s%%' ", query, filter.director.c_str());
+			sprintf(tmp, "%sand `director_name` like '%%%s%%' ", query, filter.director.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 			
 		if (!filter.director_bd.empty())
 		{
-			sprintf(tmp, "%sand `director` like '%%%s%%' ", query, filter.director_bd.c_str());
+			sprintf(tmp, "%sand `director_bd` like '%%%s%%' ", query, filter.director_bd.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 			
 		if (!filter.director_phone.empty())
 		{
-			sprintf(tmp, "%sand `director` like '%%%s%%' ", query, filter.director_phone.c_str());
+			sprintf(tmp, "%sand `director_phone` like '%%%s%%' ", query, filter.director_phone.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 			
 		if (!filter.director_email.empty())
 		{
-			sprintf(tmp, "%sand `director` like '%%%s%%' ", query, filter.director_email.c_str());
+			sprintf(tmp, "%sand `director_email` like '%%%s%%' ", query, filter.director_email.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -196,7 +196,9 @@ long CClubsTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s('%s',%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
+		sprintf(query, "insert into %s(`name`,`city`,`login`,`pass`,`email`,`contacts`,\
+		`web`,`location`,`pay_date`,`expire_date`,`director_name`,`director_bd`,`director_phone`,`director_email`) \
+		values('%s',%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
 			, TABLE
 			, rec.name.c_str()
 			, rec.city
@@ -283,6 +285,133 @@ long CClubsTable::GetRow(unsigned int nId, tDATA& data)
 		data.director_phone = qRes->getString(14);
 		data.director_email = qRes->getString(15);
 
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CClubsTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool 				useFilter = false;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+
+		if (data.city != -1)
+		{
+			sprintf(tmp, "%s `city` = %d,", query, data.city);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.name.empty())
+		{
+			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.login.empty())
+		{
+			sprintf(tmp, "%s `login` = '%s',", query, data.login.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.pass.empty())
+		{
+			sprintf(tmp, "%s `pass` = '%s',", query, data.pass.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.email.empty())
+		{
+			sprintf(tmp, "%s `email` = '%s',", query, data.email.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.contacts.empty())
+		{
+			sprintf(tmp, "%s `contacts` = '%s',", query, data.contacts.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.web.empty())
+		{
+			sprintf(tmp, "%s `web` = '%s',", query, data.web.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.location.empty())
+		{
+			sprintf(tmp, "%s `location` = '%s',", query, data.location.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.pay_date.empty())
+		{
+			sprintf(tmp, "%s `pay_date` = '%s',", query, data.pay_date.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.exp_date.empty())
+		{
+			sprintf(tmp, "%s `expire_date` = '%s',", query, data.exp_date.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.director.empty())
+		{
+			sprintf(tmp, "%s `director_name` = '%s',", query, data.director.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.director_bd.empty())
+		{
+			sprintf(tmp, "%s `director_bd` = '%s',", query, data.director_bd.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.director_phone.empty())
+		{
+			sprintf(tmp, "%s `director_phone` = '%s',", query, data.director_phone.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.director_email.empty())
+		{
+			sprintf(tmp, "%s `director_email` = '%s',", query, data.director_email.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
+		
 		res = UDF_OK;
 	}while(0);
 	

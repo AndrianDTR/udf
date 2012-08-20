@@ -15,9 +15,8 @@ public:
 		unsigned int	id;
 		unsigned int	championshipId;
 		unsigned int	catId;
-		bool operator< (const tDATA& _x) const{ return championshipId < _x.championshipId && catId < _x.catId;};
 	};
-
+	
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
 	

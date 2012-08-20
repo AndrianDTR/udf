@@ -155,9 +155,9 @@ long CDancersTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`club_id`,`trener_id`,`reg_book_num`,\
-		`name`,`raiting`,`liga`,`bd`,`gender`,`pay_date`,`expire_date`) \
-		values(%d,%d,'%s','%s',%d,%d,'%s',%d,'%s','%s','%s')"
+		sprintf(query, "insert into %s(`club_id`,`trener_id`,`reg_book_num`, \
+		`name`,`raiting`,`liga`,`bd`,`gender`,`pay_date`,`expire_date`,`reg_date`) \
+		values(%d, %d, '%s', '%s', %d, %d, '%s', %d, '%s', '%s', '%s' )"
 			, TABLE
 			, rec.clubId
 			, rec.trainerId
@@ -168,7 +168,8 @@ long CDancersTable::AddRow(tDATA& rec)
 			, rec.bd.c_str()
 			, rec.gender
 			, rec.pay_date.c_str()
-			, rec.exp_date.c_str());
+			, rec.exp_date.c_str()
+			, rec.reg_date.c_str());
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -236,6 +237,118 @@ long CDancersTable::GetRow(unsigned int nId, tDATA& data)
 		data.bd = qRes->getString(10);
 		data.bd = qRes->getString(11);
 		data.bd = qRes->getString(12);
+		
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CDancersTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool 				useFilter = false;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		if (data.clubId != -1)
+		{
+			sprintf(tmp, "%s `club_id` = %d ", query, data.clubId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.trainerId != -1)
+		{
+			sprintf(tmp, "%s `trainer_id` = %d ", query, data.trainerId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.raiting != -1)
+		{
+			sprintf(tmp, "%s `raiting` = %d ", query, data.raiting);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.liga != -1)
+		{
+			sprintf(tmp, "%s `liga` = %d ", query, data.liga);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.gender != -1)
+		{
+			sprintf(tmp, "%s `gender` = %d ", query, data.gender);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.city != -1)
+		{
+			sprintf(tmp, "%s `city` = %d ", query, data.city);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.name.empty())
+		{
+			sprintf(tmp, "%s `name` = '%s' ", query, data.name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.bd.empty())
+		{
+			sprintf(tmp, "%s `bd` = '%s' ", query, data.bd.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.regBook.empty())
+		{
+			sprintf(tmp, "%s `reg_book_num` = '%s' ", query, data.regBook.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.pay_date.empty())
+		{
+			sprintf(tmp, "%s `pay_date` = '%s' ", query, data.pay_date.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.exp_date.empty())
+		{
+			sprintf(tmp, "%s `expire_date` = '%s' ", query, data.exp_date.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.reg_date.empty())
+		{
+			sprintf(tmp, "%s `reg_date` = '%s' ", query, data.reg_date.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

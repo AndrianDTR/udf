@@ -43,6 +43,7 @@ public:
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);
+	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
 };
 
 #endif //__tDancers_h__

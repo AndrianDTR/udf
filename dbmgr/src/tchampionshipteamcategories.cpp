@@ -88,7 +88,7 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filte
 			el.id = qRes->getUInt(1);
 			el.catId = qRes->getUInt(2);
 		
-			table->insert(el);
+			table->insert(make_pair(el.id, el));
 		}
 		
 		*data = table;
@@ -174,6 +174,49 @@ long CChampionshipTeamCategoriesTable::GetRow(unsigned int nId, tDATA& data)
 		qRes->next();
 		data.id = qRes->getUInt(1);
 		data.catId = qRes->getUInt(2);
+		
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CChampionshipTeamCategoriesTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool 				useFilter = false;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		if (data.catId != -1)
+		{
+			sprintf(tmp, "%s `category_id` = %d ", query, data.catId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.teamId != -1)
+		{
+			sprintf(tmp, "%s `team_id` = %d ", query, data.teamId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

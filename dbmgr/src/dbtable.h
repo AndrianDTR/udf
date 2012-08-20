@@ -25,7 +25,7 @@
 #define TABLE_LIGA								"liga"
 #define TABLE_TRAINERS							"treners"
 
-#define MAX_QUERY_LEN							500
+#define MAX_QUERY_LEN							1500
 
 #include "stdio.h"
 #include "string.h"

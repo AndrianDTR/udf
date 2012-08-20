@@ -34,6 +34,7 @@ public:
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned long nId);
     virtual long		GetRow(unsigned long nId, tDATA& data);
+	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
 };
 
 #endif //__tCategories_h__

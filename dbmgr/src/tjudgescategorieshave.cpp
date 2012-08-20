@@ -88,7 +88,7 @@ long CJudgesCategoriesHaveTable::Find(tTableMap** data, const tDATA& filter)
 			el.judgeId = qRes->getUInt(1);
 			el.judCatId = qRes->getUInt(2);
 		
-			table->insert(el);
+			table->insert(make_pair(el.id, el));
 		}
 		
 		*data = table;
@@ -174,6 +174,49 @@ long CJudgesCategoriesHaveTable::GetRow(unsigned int nId, tDATA& data)
 		qRes->next();
 		data.judgeId = qRes->getUInt(1);
 		data.judCatId = qRes->getUInt(2);
+		
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CJudgesCategoriesHaveTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool 				useFilter = false;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		if (data.judgeId != -1)
+		{
+			sprintf(tmp, "%s `judge_id` = %d ", query, data.judgeId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.judCatId != -1)
+		{
+			sprintf(tmp, "%s `category_id` = %d ", query, data.judCatId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

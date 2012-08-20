@@ -89,7 +89,7 @@ long CCitiesTable::Find(tTableMap** data, const tDATA& filter)
 			el.countryId = qRes->getUInt(2);
 			el.Name = qRes->getString(3);
 		
-			table->insert(el);
+			table->insert(make_pair(el.id, el));
 		}
 		
 		*data = table;
@@ -176,6 +176,49 @@ long CCitiesTable::GetRow(unsigned int nId, tDATA& data)
 		data.id = qRes->getUInt(1);
 		data.countryId = qRes->getUInt(2);
 		data.Name = qRes->getString(3);
+		
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CCitiesTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool 				useFilter = false;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		if (data.countryId != -1)
+		{
+			sprintf(tmp, "%s `country_id` = %d ", query, data.countryId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.Name.empty())
+		{
+			sprintf(tmp, "%s `name` = '%s' ", query, data.Name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

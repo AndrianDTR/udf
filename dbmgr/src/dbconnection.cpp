@@ -86,8 +86,8 @@ sql::ResultSet* CDbConnection::ExecuteQuery(std::string query)
 	
 	if(m_pStatement)
 	{
-		res = m_pStatement->executeQuery(query);	
 		printf("EXECUTE QUERY: %s \nResult %d\n", query.c_str(), res);
+		res = m_pStatement->executeQuery(query);
 	}
 	
 	return res;
@@ -97,8 +97,8 @@ void CDbConnection::Execute(std::string query)
 {
 	if(m_pStatement)
 	{
-		m_pStatement->execute(query);	
 		printf("EXECUTE: %s \n", query.c_str());
+		m_pStatement->execute(query);	
 	}
 }
 

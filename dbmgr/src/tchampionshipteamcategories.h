@@ -4,7 +4,7 @@
 #include "dbconnection.h"
 #include "dbtable.h"
 
-#include "set"
+#include "map"
 
 using namespace std;
 
@@ -13,12 +13,12 @@ class CChampionshipTeamCategoriesTable : public CDbTable
 public:
 	struct tDATA{
 		unsigned int	id;
+		unsigned int	teamId;
 		unsigned int	catId;
-		bool operator< (const tDATA& _x) const{ return id < _x.id && catId < _x.catId;};
 	};
 
-	typedef set<tDATA> tTableMap;
-	typedef set<tDATA>::iterator tTableIt;
+	typedef map<unsigned int, tDATA> tTableMap;
+	typedef map<unsigned int, tDATA>::iterator tTableIt;
 	
 protected:
 	CDbConnection* m_pConnection;
@@ -33,6 +33,7 @@ public:
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);
+	virtual long		UpdateRow(unsigned int nId, const tDATA& data);
 };
 
 #endif //__tChampionshipTeamCategories_h__

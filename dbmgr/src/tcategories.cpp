@@ -122,7 +122,7 @@ long CCategoriesTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`dance`,`liga`,`gender`) values(%ul, %ul, %ul)", 
+		sprintf(query, "insert into %s(`dance`,`liga`,`gender`) values(%ld, %ld, %ld)", 
 			TABLE, rec.dance, rec.liga, rec.gender);
 		m_pConnection->Execute(query);
 		
@@ -183,6 +183,56 @@ long CCategoriesTable::GetRow(unsigned long nId, tDATA& data)
 		data.dance = qRes->getUInt(2);
 		data.liga = qRes->getInt(3);
 		data.gender = qRes->getInt(4);
+		
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CCategoriesTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool 				useFilter = false;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		if (data.dance != -1)
+		{
+			sprintf(tmp, "%s `dance_id` = %d ", query, data.dance);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.liga != -1)
+		{
+			sprintf(tmp, "%s `liga_id` = %d ", query, data.liga);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.gender != -1)
+		{
+			sprintf(tmp, "%s `gender_id` = %d ", query, data.gender);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);
