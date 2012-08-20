@@ -16,14 +16,14 @@ CChampionshipJudgesMarkTable::~CChampionshipJudgesMarkTable(void)
 {
 }
 
-long CChampionshipJudgesMarkTable::GetTable(tTableSet** data)
+long CChampionshipJudgesMarkTable::GetTable(tTableMap** data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CChampionshipJudgesMarkTable::Find(tTableSet** data, const tDATA& filter)
+long CChampionshipJudgesMarkTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,7 +31,7 @@ long CChampionshipJudgesMarkTable::Find(tTableSet** data, const tDATA& filter)
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableSet*			table = NULL;
+		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
@@ -41,7 +41,7 @@ long CChampionshipJudgesMarkTable::Find(tTableSet** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tTableSet();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -106,13 +106,14 @@ long CChampionshipJudgesMarkTable::Find(tTableSet** data, const tDATA& filter)
 		{
 			tDATA el = {0};
 			
-            el.championshipId = qRes->getUInt64(1);
-            el.judgeId = qRes->getUInt(2);
-            el.teamId = qRes->getUInt(3);
-            el.catId = qRes->getInt(4);
-            el.nMark = qRes->getInt(5);
+			el.id = qRes->getUInt64(1);
+            el.championshipId = qRes->getUInt64(2);
+            el.judgeId = qRes->getUInt(3);
+            el.teamId = qRes->getUInt(4);
+            el.catId = qRes->getInt(5);
+            el.nMark = qRes->getInt(6);
 		
-			table->insert(el);
+			table->insert(make_pair(el.id, el));
 		}
 		
 		*data = table;
@@ -128,7 +129,7 @@ long CChampionshipJudgesMarkTable::AddRow(tDATA& rec)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -146,7 +147,7 @@ long CChampionshipJudgesMarkTable::AddRow(tDATA& rec)
             , rec.nMark);
         m_pConnection->Execute(query);
 		
-		rec.championshipId = m_pConnection->GetLastInsertId();
+		rec.id = m_pConnection->GetLastInsertId();
 		
 		res = UDF_OK;
 	}while(0);
@@ -160,7 +161,7 @@ long CChampionshipJudgesMarkTable::DelRow(unsigned int nId)
 	
 	do
 	{
-		char query[500] = {0};
+		char query[MAX_QUERY_LEN] = {0};
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
@@ -182,7 +183,7 @@ long CChampionshipJudgesMarkTable::GetRow(unsigned int nId, tDATA& data)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -204,6 +205,70 @@ long CChampionshipJudgesMarkTable::GetRow(unsigned int nId, tDATA& data)
         data.teamId = qRes->getUInt(3);
         data.catId = qRes->getInt(4);
         data.nMark = qRes->getInt(5);
+		
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CChampionshipJudgesMarkTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool 				useFilter = false;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		if (data.catId != -1)
+		{
+			sprintf(tmp, "%s `cat_id` = %d ", query, data.catId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.championshipId != -1)
+		{
+			sprintf(tmp, "%s `championship_id` = %d ", query, data.championshipId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.judgeId != -1)
+		{
+			sprintf(tmp, "%s `judge_id` = %d ", query, data.judgeId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.teamId != -1)
+		{
+			sprintf(tmp, "%s `team_id` = %d ", query, data.teamId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.nMark != -1)
+		{
+			sprintf(tmp, "%s `mark` = %d ", query, data.nMark);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

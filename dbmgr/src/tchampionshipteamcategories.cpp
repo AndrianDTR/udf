@@ -16,14 +16,14 @@ CChampionshipTeamCategoriesTable::~CChampionshipTeamCategoriesTable(void)
 {
 }
 
-long CChampionshipTeamCategoriesTable::GetTable(tTableSet** data)
+long CChampionshipTeamCategoriesTable::GetTable(tTableMap** data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CChampionshipTeamCategoriesTable::Find(tTableSet** data, const tDATA& filter)
+long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,7 +31,7 @@ long CChampionshipTeamCategoriesTable::Find(tTableSet** data, const tDATA& filte
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableSet*			table = NULL;
+		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
@@ -41,7 +41,7 @@ long CChampionshipTeamCategoriesTable::Find(tTableSet** data, const tDATA& filte
 			break;
 		}
 		
-		table = new tTableSet();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -104,7 +104,7 @@ long CChampionshipTeamCategoriesTable::AddRow(tDATA& rec)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -133,7 +133,7 @@ long CChampionshipTeamCategoriesTable::DelRow(unsigned int nId)
 	
 	do
 	{
-		char query[500] = {0};
+		char query[MAX_QUERY_LEN] = {0};
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
@@ -155,7 +155,7 @@ long CChampionshipTeamCategoriesTable::GetRow(unsigned int nId, tDATA& data)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)

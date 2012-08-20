@@ -16,14 +16,14 @@ CChampionshipCategotiesTable::~CChampionshipCategotiesTable(void)
 {
 }
 
-long CChampionshipCategotiesTable::GetTable(tTableSet** data)
+long CChampionshipCategotiesTable::GetTable(tTableMap** data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CChampionshipCategotiesTable::Find(tTableSet** data, const tDATA& filter)
+long CChampionshipCategotiesTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,7 +31,7 @@ long CChampionshipCategotiesTable::Find(tTableSet** data, const tDATA& filter)
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableSet*			table = NULL;
+		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
@@ -41,7 +41,7 @@ long CChampionshipCategotiesTable::Find(tTableSet** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tTableSet();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -85,10 +85,11 @@ long CChampionshipCategotiesTable::Find(tTableSet** data, const tDATA& filter)
 		{
 			tDATA el = {0};
 			
-            el.championshipId = qRes->getInt(1);
-            el.catId = qRes->getInt(2);
+			el.id = qRes->getUInt(1);
+            el.championshipId = qRes->getUInt(2);
+            el.catId = qRes->getUInt(3);
 		
-			table->insert(el);
+			table->insert(make_pair(el.id, el));
 		}
 		
 		*data = table;
@@ -104,7 +105,7 @@ long CChampionshipCategotiesTable::AddRow(tDATA& rec)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -119,7 +120,7 @@ long CChampionshipCategotiesTable::AddRow(tDATA& rec)
             , rec.catId);
 		m_pConnection->Execute(query);
 		
-		rec.championshipId = m_pConnection->GetLastInsertId();
+		rec.id = m_pConnection->GetLastInsertId();
 		
 		res = UDF_OK;
 	}while(0);
@@ -127,23 +128,20 @@ long CChampionshipCategotiesTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CChampionshipCategotiesTable::DelRow(const tDATA& filter)
+long CChampionshipCategotiesTable::DelRow(unsigned int nId)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
-		char query[500] = {0};
+		char query[MAX_QUERY_LEN] = {0};
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
 		
-		sprintf(query, "delete from %s where `championshipId` = %d and `cat_id` = %d"
-            , TABLE
-            , filter.championshipId
-            , filter.catId);
+		sprintf(query, "delete from %s where id = %d", TABLE, nId);
 		m_pConnection->Execute(query);
 		
 		res = UDF_OK;
@@ -152,13 +150,13 @@ long CChampionshipCategotiesTable::DelRow(const tDATA& filter)
 	return res;
 }
 
-long CChampionshipCategotiesTable::GetRow(const tDATA& filter, tDATA& data)
+long CChampionshipCategotiesTable::GetRow(unsigned int nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -167,10 +165,9 @@ long CChampionshipCategotiesTable::GetRow(const tDATA& filter, tDATA& data)
 			break;
 		}
 		
-		sprintf(query, "select * from %s where `championshipId` = %d and `cat_id` = %d"
+		sprintf(query, "select * from %s where `id` = %d"
             , TABLE
-            , filter.championshipId
-            , filter.catId);
+            , nId);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -180,6 +177,49 @@ long CChampionshipCategotiesTable::GetRow(const tDATA& filter, tDATA& data)
 		qRes->next();
         data.championshipId = qRes->getInt(1);
         data.catId = qRes->getInt(2);
+		
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CChampionshipCategotiesTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool 				useFilter = false;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		if (data.catId != -1)
+		{
+			sprintf(tmp, "%s `cat_id` = %d ", query, data.catId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.championshipId != -1)
+		{
+			sprintf(tmp, "%s `championship_id` = %d ", query, data.championshipId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

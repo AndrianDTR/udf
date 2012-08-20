@@ -16,14 +16,14 @@ CCitiesTable::~CCitiesTable(void)
 {
 }
 
-long CCitiesTable::GetTable(tTableSet** data)
+long CCitiesTable::GetTable(tTableMap** data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CCitiesTable::Find(tTableSet** data, const tDATA& filter)
+long CCitiesTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,7 +31,7 @@ long CCitiesTable::Find(tTableSet** data, const tDATA& filter)
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableSet*			table = NULL;
+		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
@@ -41,7 +41,7 @@ long CCitiesTable::Find(tTableSet** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tTableSet();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -105,7 +105,7 @@ long CCitiesTable::AddRow(tDATA& rec)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -134,7 +134,7 @@ long CCitiesTable::DelRow(unsigned int nId)
 	
 	do
 	{
-		char query[500] = {0};
+		char query[MAX_QUERY_LEN] = {0};
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
@@ -156,7 +156,7 @@ long CCitiesTable::GetRow(unsigned int nId, tDATA& data)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)

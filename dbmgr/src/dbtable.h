@@ -37,10 +37,10 @@ public:
     virtual ~CDbTable(void){};
 
 public:
-	virtual long		CreateTable(){};
-	virtual long		DropTable(){};
+	virtual long		CreateTable(){ return UDF_OK;};
+	virtual long		DropTable(){ return UDF_OK;};
 	
-	virtual long		Reload(){};
+	virtual long		Reload(){ return UDF_OK;};
 };
 
 #endif //__dbtable_h__

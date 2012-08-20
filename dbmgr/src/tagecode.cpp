@@ -97,7 +97,7 @@ long CAgeCodeTable::AddRow(tDATA& rec)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -123,7 +123,7 @@ long CAgeCodeTable::DelRow(unsigned int nId)
 	
 	do
 	{
-		char query[500] = {0};
+		char query[MAX_QUERY_LEN] = {0};
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
@@ -145,7 +145,7 @@ long CAgeCodeTable::GetRow(unsigned int nId, tDATA& data)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -164,6 +164,29 @@ long CAgeCodeTable::GetRow(unsigned int nId, tDATA& data)
 		qRes->next();
 		data.id = qRes->getInt(1);
 		data.descr = qRes->getString(2);
+		
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CAgeCodeTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		sprintf(query, "update %s set `descr`='%s' where id = %d", TABLE, data.descr.c_str(), nId);
+		m_pConnection->Execute(query);
 		
 		res = UDF_OK;
 	}while(0);

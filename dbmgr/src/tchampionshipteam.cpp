@@ -16,14 +16,14 @@ CChampionshipTeamsTable::~CChampionshipTeamsTable(void)
 {
 }
 
-long CChampionshipTeamsTable::GetTable(tTableSet** data)
+long CChampionshipTeamsTable::GetTable(tTableMap** data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CChampionshipTeamsTable::Find(tTableSet** data, const tDATA& filter)
+long CChampionshipTeamsTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,7 +31,7 @@ long CChampionshipTeamsTable::Find(tTableSet** data, const tDATA& filter)
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableSet*			table = NULL;
+		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
@@ -41,7 +41,7 @@ long CChampionshipTeamsTable::Find(tTableSet** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tTableSet();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -105,7 +105,7 @@ long CChampionshipTeamsTable::Find(tTableSet** data, const tDATA& filter)
 			el.compositionName = qRes->getString(4);
 			el.startNumber = qRes->getUInt(5);
 		
-			table->insert(el);
+			table->insert(make_pair(el.id, el));
 		}
 		
 		*data = table;
@@ -121,7 +121,7 @@ long CChampionshipTeamsTable::AddRow(tDATA& rec)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -153,7 +153,7 @@ long CChampionshipTeamsTable::DelRow(unsigned int nId)
 	
 	do
 	{
-		char query[500] = {0};
+		char query[MAX_QUERY_LEN] = {0};
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
@@ -175,7 +175,7 @@ long CChampionshipTeamsTable::GetRow(unsigned int nId, tDATA& data)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -197,6 +197,63 @@ long CChampionshipTeamsTable::GetRow(unsigned int nId, tDATA& data)
 		data.championshipId = qRes->getUInt(3);
 		data.compositionName = qRes->getString(4);
 		data.startNumber = qRes->getUInt(5);
+		
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CChampionshipTeamsTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool 				useFilter = false;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		if (data.dancerId != -1)
+		{
+			sprintf(tmp, "%s `dancer_id` = %d ", query, data.dancerId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.championshipId != -1)
+		{
+			sprintf(tmp, "%s `championship_id` = %d ", query, data.championshipId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.startNumber != -1)
+		{
+			sprintf(tmp, "%s `start_number` = %d ", query, data.startNumber);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.compositionName.empty())
+		{
+			sprintf(tmp, "%s `team_id` = '%s' ", query, data.compositionName.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

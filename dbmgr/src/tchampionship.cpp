@@ -121,7 +121,7 @@ long CChampionshipTable::AddRow(tDATA& rec)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -152,7 +152,7 @@ long CChampionshipTable::DelRow(unsigned int nId)
 	
 	do
 	{
-		char query[500] = {0};
+		char query[MAX_QUERY_LEN] = {0};
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
@@ -174,7 +174,7 @@ long CChampionshipTable::GetRow(unsigned int nId, tDATA& data)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -196,6 +196,29 @@ long CChampionshipTable::GetRow(unsigned int nId, tDATA& data)
 		data.name = qRes->getString(3);
 		data.aditionalInfo  = qRes->getString(4);
 		data.city = qRes->getUInt(5);
+		
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+long CChampionshipTable::UpdateRow(unsigned int nId, const tDATA& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		sprintf(query, "update %s set `name`='%s' where id = %d", TABLE, data.name.c_str(), nId);
+		m_pConnection->Execute(query);
 		
 		res = UDF_OK;
 	}while(0);

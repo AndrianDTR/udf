@@ -16,14 +16,14 @@ CJudgesCategoriesHaveTable::~CJudgesCategoriesHaveTable(void)
 {
 }
 
-long CJudgesCategoriesHaveTable::GetTable(tTableSet** data)
+long CJudgesCategoriesHaveTable::GetTable(tTableMap** data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CJudgesCategoriesHaveTable::Find(tTableSet** data, const tDATA& filter)
+long CJudgesCategoriesHaveTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,7 +31,7 @@ long CJudgesCategoriesHaveTable::Find(tTableSet** data, const tDATA& filter)
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableSet*			table = NULL;
+		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
@@ -41,7 +41,7 @@ long CJudgesCategoriesHaveTable::Find(tTableSet** data, const tDATA& filter)
 			break;
 		}
 		
-		table = new tTableSet();
+		table = new tTableMap();
 		if(!table)
 		{
 			res = UDF_E_NOMEMORY;
@@ -104,7 +104,7 @@ long CJudgesCategoriesHaveTable::AddRow(tDATA& rec)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
@@ -133,7 +133,7 @@ long CJudgesCategoriesHaveTable::DelRow(unsigned int nId)
 	
 	do
 	{
-		char query[500] = {0};
+		char query[MAX_QUERY_LEN] = {0};
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
@@ -155,7 +155,7 @@ long CJudgesCategoriesHaveTable::GetRow(unsigned int nId, tDATA& data)
 	
 	do
 	{
-		char 				query[500] = {0};
+		char 				query[MAX_QUERY_LEN] = {0};
 		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)

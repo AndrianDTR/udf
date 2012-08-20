@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-#include "connection_data.h"
-
 #include "dberrors.h"
 #include "dbconnection.h"
-#include "tagecategory.h"
-#include "tagecode.h"
+#include "connection_data.h"
+
+#include "agecategorytest.h"
+#include "agecodetest.h"
 
 int main(int argc, char **argv)
 {
@@ -16,10 +16,10 @@ int main(int argc, char **argv)
 		res = m_pCon->Open(szUrl, szUser, szPass, szSchema);
 		if(UDF_OK != res)
 			break;
-		
 		/*
-		 * CAgeCategory
-		 */ 
+		//
+		// CAgeCategory
+		// 
 		CAgeCategoryTable ageCatTbl(m_pCon);
 		CAgeCategoryTable::tTableMap* m;
 		CAgeCategoryTable::tTableIt it;
@@ -71,9 +71,9 @@ int main(int argc, char **argv)
 			break;
 		printf("CAgeCategoryTable::DelRow ID = %d, res = %d, %s\n", ageCatData.id, res, GetErrorMsg(res).c_str());
 		
-		/*
-		 * CAgeCode
-		 */ 
+		//
+		// CAgeCode
+		// 
 		CAgeCodeTable ageCodeTbl(m_pCon);
 		CAgeCodeTable::tTableMap* ageCodeM;
 		CAgeCodeTable::tTableIt ageCodeIt;
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 		if(UDF_OK != res)
 			break;
 		printf("CAgeCodeTable::DelRow ID = %d, res = %d, %s\n", ageCodeData.id, res, GetErrorMsg(res).c_str());
-		
+		//*/
 		
 		
 	}while(0);

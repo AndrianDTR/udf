@@ -63,6 +63,7 @@
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(WorkspacePath)/build/bin" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/build/bin" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -108,6 +109,7 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       ]]>

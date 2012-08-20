@@ -17,7 +17,7 @@ public:
 		bool operator< (const tDATA& _x) const{ return id < _x.id && catId < _x.catId;};
 	};
 
-	typedef set<tDATA> tTableSet;
+	typedef set<tDATA> tTableMap;
 	typedef set<tDATA>::iterator tTableIt;
 	
 protected:
@@ -28,8 +28,8 @@ public:
     virtual ~CChampionshipTeamCategoriesTable(void);
 
 public:
-    virtual long		GetTable(tTableSet** data);
-    virtual long		Find(tTableSet** data, const tDATA& filter);
+    virtual long		GetTable(tTableMap** data);
+    virtual long		Find(tTableMap** data, const tDATA& filter);
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);

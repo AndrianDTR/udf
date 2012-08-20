@@ -4,7 +4,7 @@
 #include "dbconnection.h"
 #include "dbtable.h"
 
-#include "set"
+#include "map"
 
 using namespace std;
 
@@ -17,15 +17,10 @@ public:
 		unsigned int	championshipId;
 		std::string		compositionName;
 		unsigned int	startNumber;
-		
-		bool operator< (const tDATA& _x) const{ 
-			return id < _x.id 
-				&& dancerId < _x.dancerId
-				&& championshipId < _x.championshipId;};
 	};
 
-	typedef set<tDATA> tTableSet;
-	typedef set<tDATA>::iterator tTableIt;
+	typedef map<unsigned int, tDATA> tTableMap;
+	typedef map<unsigned int, tDATA>::iterator tTableIt;
 	
 protected:
 	CDbConnection* m_pConnection;
@@ -35,11 +30,12 @@ public:
     virtual ~CChampionshipTeamsTable(void);
 
 public:
-    virtual long		GetTable(tTableSet** data);
-    virtual long		Find(tTableSet** data, const tDATA& filter);
+    virtual long		GetTable(tTableMap** data);
+    virtual long		Find(tTableMap** data, const tDATA& filter);
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);
+	virtual long		UpdateRow(unsigned int nId, const tDATA& data);
 };
 
 #endif //__tChampionshipTeams_h__
