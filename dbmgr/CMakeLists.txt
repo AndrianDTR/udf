@@ -24,6 +24,7 @@ set( HEADER_FILES
 	src/tchampionshipjudgesmark.h
 	src/tchampionshipjudgesteam.h
 	src/tchampionshipteamcategories.h
+	src/tchampionshipteamdancers.h
 	src/tchampionshipteam.h
 	src/tchampionshiptype.h
 	src/tcities.h
@@ -51,6 +52,7 @@ set( SOURCE_FILES
 	src/tchampionshipjudgesmark.cpp
 	src/tchampionshipjudgesteam.cpp
 	src/tchampionshipteamcategories.cpp
+	src/tchampionshipteamdancers.cpp
 	src/tchampionshipteam.cpp
 	src/tchampionshiptype.cpp
 	src/tcities.cpp

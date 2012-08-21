@@ -50,7 +50,7 @@ long CChampionshipJudgesMarkTable::Find(tTableMap** data, const tDATA& filter)
 		
 		if (filter.catId != -1)
 		{
-			sprintf(tmp, "%sand `cat_id` like %d ", query, filter.catId);
+			sprintf(tmp, "%sand `category_id` like %d ", query, filter.catId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -138,7 +138,7 @@ long CChampionshipJudgesMarkTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-        sprintf(query, "insert into %s(`championship_id`,`judge_id`,`team_id`,`cat_id`,`mark`) values(%d,%d,%d,%d,%d)"
+        sprintf(query, "insert into %s(`championship_id`,`judge_id`,`team_id`,`category_id`,`mark`) values(%d,%d,%d,%d,%d)"
             , TABLE
             , rec.championshipId
             , rec.judgeId
@@ -230,7 +230,7 @@ long CChampionshipJudgesMarkTable::UpdateRow(unsigned int nId, const tDATA& data
 		
 		if (data.catId != -1)
 		{
-			sprintf(tmp, "%s `cat_id` = %d,", query, data.catId);
+			sprintf(tmp, "%s `category_id` = %d,", query, data.catId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

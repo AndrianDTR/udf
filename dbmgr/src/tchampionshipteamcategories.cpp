@@ -48,9 +48,9 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filte
 			break;
 		}
 		
-		if (filter.id != -1)
+		if (filter.teamId != -1)
 		{
-			sprintf(tmp, "%sand `team_id` like %d ", query, filter.id);
+			sprintf(tmp, "%sand `team_id` like %d ", query, filter.teamId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -58,6 +58,13 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filte
 		if (filter.catId != -1)
 		{
 			sprintf(tmp, "%sand `category_id` like %d ", query, filter.catId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+
+		if (!filter.compositionName.empty())
+		{
+			sprintf(tmp, "%sand `composition_name` like '%%%s%%' ", query, filter.compositionName.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -86,7 +93,9 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filte
 			tDATA el = {0};
 			
 			el.id = qRes->getUInt(1);
-			el.catId = qRes->getUInt(2);
+			el.teamId = qRes->getUInt(2);
+			el.catId = qRes->getUInt(3);
+			el.compositionName = qRes->getString(4);
 		
 			table->insert(make_pair(el.id, el));
 		}
@@ -113,10 +122,11 @@ long CChampionshipTeamCategoriesTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`team_id`, `category_id`) values(%d,%d)"
+		sprintf(query, "insert into %s(`team_id`, `category_id`, `composition_name`) values(%d, %d, '%s')"
 			, TABLE
-			, rec.id
-			, rec.catId);
+			, rec.teamId
+			, rec.catId
+			, rec.compositionName.c_str());
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -173,7 +183,9 @@ long CChampionshipTeamCategoriesTable::GetRow(unsigned int nId, tDATA& data)
 		}
 		qRes->next();
 		data.id = qRes->getUInt(1);
-		data.catId = qRes->getUInt(2);
+		data.teamId = qRes->getUInt(2);
+		data.catId = qRes->getUInt(3);
+		data.compositionName = qRes->getString(4);
 		
 		res = UDF_OK;
 	}while(0);

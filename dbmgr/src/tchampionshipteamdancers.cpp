@@ -2,28 +2,28 @@
 #include "stdio.h"
 
 #include "dberrors.h"
-#include "tchampionshipteam.h"
+#include "tchampionshipteamdancers.h"
 
-#define	TABLE	TABLE_CHAMPIONSHIPTEAM
+#define	TABLE	TABLE_CHAMPIONSHIPTEAMCATEGORIES
 
-CChampionshipTeamsTable::CChampionshipTeamsTable(CDbConnection* pCon)
+CChampionshipTeamDancersTable::CChampionshipTeamDancersTable(CDbConnection* pCon)
 : CDbTable(pCon)
 , m_pConnection(pCon)
 {
 }
 
-CChampionshipTeamsTable::~CChampionshipTeamsTable(void)
+CChampionshipTeamDancersTable::~CChampionshipTeamDancersTable(void)
 {
 }
 
-long CChampionshipTeamsTable::GetTable(tTableMap** data)
+long CChampionshipTeamDancersTable::GetTable(tTableMap** data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CChampionshipTeamsTable::Find(tTableMap** data, const tDATA& filter)
+long CChampionshipTeamDancersTable::Find(tTableMap** data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -48,27 +48,20 @@ long CChampionshipTeamsTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		if (filter.championshipId != -1)
+		if (filter.id != -1)
 		{
-			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
+			sprintf(tmp, "%sand `team_id` like %d ", query, filter.id);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.clubId != -1)
+		if (filter.dancerId != -1)
 		{
-			sprintf(tmp, "%sand `club_id` like %d ", query, filter.clubId);
+			sprintf(tmp, "%sand `dancer_id` like %d ", query, filter.dancerId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.startNumber != -1)
-		{
-			sprintf(tmp, "%sand `start_number` like %d ", query, filter.startNumber);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-				
 		if(useFilter)
 		{
 			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
@@ -93,10 +86,8 @@ long CChampionshipTeamsTable::Find(tTableMap** data, const tDATA& filter)
 			tDATA el = {0};
 			
 			el.id = qRes->getUInt(1);
-			el.championshipId = qRes->getUInt(2);
-			el.clubId = qRes->getUInt(3);
-			el.name = qRes->getString(4);
-			el.startNumber = qRes->getUInt(5);
+			el.teamId = qRes->getUInt(2);
+			el.dancerId = qRes->getUInt(3);
 		
 			table->insert(make_pair(el.id, el));
 		}
@@ -108,7 +99,7 @@ long CChampionshipTeamsTable::Find(tTableMap** data, const tDATA& filter)
 	return res;
 }
 
-long CChampionshipTeamsTable::AddRow(tDATA& rec)
+long CChampionshipTeamDancersTable::AddRow(tDATA& rec)
 {
 	long res = UDF_E_FAIL;
 	
@@ -123,12 +114,10 @@ long CChampionshipTeamsTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`championship_id`,`club_id`,`name`,`start_number`) values(%d,%d,'%s',%d)"
-		, TABLE
-		, rec.championshipId
-		, rec.clubId
-		, rec.name.c_str()
-		, rec.startNumber);
+		sprintf(query, "insert into %s(`team_id`, `dancer_id`) values(%d,%d)"
+			, TABLE
+			, rec.teamId
+			, rec.dancerId);
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -139,7 +128,7 @@ long CChampionshipTeamsTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CChampionshipTeamsTable::DelRow(unsigned int nId)
+long CChampionshipTeamDancersTable::DelRow(unsigned int nId)
 {
 	long res = UDF_E_FAIL;
 	
@@ -161,7 +150,7 @@ long CChampionshipTeamsTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CChampionshipTeamsTable::GetRow(unsigned int nId, tDATA& data)
+long CChampionshipTeamDancersTable::GetRow(unsigned int nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -185,10 +174,8 @@ long CChampionshipTeamsTable::GetRow(unsigned int nId, tDATA& data)
 		}
 		qRes->next();
 		data.id = qRes->getUInt(1);
-		data.championshipId = qRes->getUInt(2);
-		data.clubId = qRes->getUInt(3);
-		data.name = qRes->getString(4);
-		data.startNumber = qRes->getUInt(5);
+		data.teamId = qRes->getUInt(2);
+		data.dancerId = qRes->getUInt(3);
 		
 		res = UDF_OK;
 	}while(0);
@@ -196,7 +183,7 @@ long CChampionshipTeamsTable::GetRow(unsigned int nId, tDATA& data)
 	return res;
 }
 
-long CChampionshipTeamsTable::UpdateRow(unsigned int nId, const tDATA& data)
+long CChampionshipTeamDancersTable::UpdateRow(unsigned int nId, const tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -212,30 +199,16 @@ long CChampionshipTeamsTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 		
-		if (data.clubId != -1)
+		if (data.dancerId != -1)
 		{
-			sprintf(tmp, "%s `club_id` = %d,", query, data.clubId);
+			sprintf(tmp, "%s `dancer_id` = %d,", query, data.dancerId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (data.championshipId != -1)
+		if (data.teamId != -1)
 		{
-			sprintf(tmp, "%s `championship_id` = %d,", query, data.championshipId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (data.startNumber != -1)
-		{
-			sprintf(tmp, "%s `start_number` = %d,", query, data.startNumber);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (!data.name.empty())
-		{
-			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
+			sprintf(tmp, "%s `team_id` = %d,", query, data.teamId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

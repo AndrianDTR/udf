@@ -15,6 +15,7 @@ public:
 		unsigned int	id;
 		unsigned int	teamId;
 		unsigned int	catId;
+		std::string		compositionName;
 	};
 
 	typedef map<unsigned int, tDATA> tTableMap;
