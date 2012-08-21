@@ -62,9 +62,9 @@ long CCategoriesTable::Find(tTableMap** data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (filter.gender != -1)
+		if (filter.age_category != -1)
 		{
-			sprintf(tmp, "%sand `gender` like %d ", query, filter.gender);
+			sprintf(tmp, "%sand `age_category` like %d ", query, filter.age_category);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -95,7 +95,7 @@ long CCategoriesTable::Find(tTableMap** data, const tDATA& filter)
 			el.id = qRes->getUInt64(1);
 			el.dance = qRes->getUInt(2);
 			el.liga = qRes->getInt(3);
-			el.gender = qRes->getInt(4);
+			el.age_category = qRes->getInt(4);
 		
 			table->insert(make_pair(el.id, el));
 		}
@@ -114,16 +114,14 @@ long CCategoriesTable::AddRow(tDATA& rec)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
-		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		
-		sprintf(query, "insert into %s(`dance`,`liga`,`gender`) values(%ld, %ld, %ld)", 
-			TABLE, rec.dance, rec.liga, rec.gender);
+		sprintf(query, "insert into %s(`dance`,`liga`,`age_category`) values(%d, %d, %d)", 
+			TABLE, rec.dance, rec.liga, rec.age_category);
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -182,7 +180,7 @@ long CCategoriesTable::GetRow(unsigned long nId, tDATA& data)
 		data.id = qRes->getUInt64(1);
 		data.dance = qRes->getUInt(2);
 		data.liga = qRes->getInt(3);
-		data.gender = qRes->getInt(4);
+		data.age_category = qRes->getInt(4);
 		
 		res = UDF_OK;
 	}while(0);
@@ -208,28 +206,28 @@ long CCategoriesTable::UpdateRow(unsigned int nId, const tDATA& data)
 		
 		if (data.dance != -1)
 		{
-			sprintf(tmp, "%s `dance_id` = %d ", query, data.dance);
+			sprintf(tmp, "%s `dance` = %d,", query, data.dance);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.liga != -1)
 		{
-			sprintf(tmp, "%s `liga_id` = %d ", query, data.liga);
+			sprintf(tmp, "%s `liga` = %d,", query, data.liga);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (data.gender != -1)
+		if (data.age_category != -1)
 		{
-			sprintf(tmp, "%s `gender_id` = %d ", query, data.gender);
+			sprintf(tmp, "%s `age_category` = %d,", query, data.age_category);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if(useFilter)
 		{
-			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			sprintf(tmp, "update %s set %s `id`=%u where `id`=%u", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			m_pConnection->Execute(query);
 		}

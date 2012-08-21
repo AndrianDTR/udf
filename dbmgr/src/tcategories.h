@@ -15,7 +15,7 @@ public:
 		unsigned long	id;
 		unsigned int	dance;
 		int				liga;
-		int				gender;
+		int				age_category;
 	} tDATA;
 
 	typedef map<unsigned int, tDATA> tTableMap;

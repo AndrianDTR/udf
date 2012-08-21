@@ -55,9 +55,9 @@ long CChampionshipTable::Find(tTableMap** data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (!filter.aditionalInfo.empty())
+		if (!filter.additionalInfo.empty())
 		{
-			sprintf(tmp, "%sand `aditional_info` like '%%%s%%' ", query, filter.aditionalInfo.c_str());
+			sprintf(tmp, "%sand `additional_info` like '%%%s%%' ", query, filter.additionalInfo.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -102,7 +102,7 @@ long CChampionshipTable::Find(tTableMap** data, const tDATA& filter)
 			el.id = qRes->getUInt(1);
 			el.type = qRes->getInt(2);
 			el.name = qRes->getString(3);
-			el.aditionalInfo  = qRes->getString(4);
+			el.additionalInfo  = qRes->getString(4);
 			el.city = qRes->getUInt(5);
 			
 			table->insert(make_pair(el.id, el));
@@ -122,19 +122,18 @@ long CChampionshipTable::AddRow(tDATA& rec)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
-		sql::ResultSet*		qRes = NULL;
-		
+				
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`type`, `name`, `aditional_info`, `city`) values(%d, '%s', '%s', %d)"
+		sprintf(query, "insert into %s(`type`, `name`, `additional_info`, `city`) values(%d, '%s', '%s', %d)"
 		, TABLE
 		, rec.type
 		, rec.name.c_str()
-		, rec.aditionalInfo.c_str()
+		, rec.additionalInfo.c_str()
 		, rec.city);
 		m_pConnection->Execute(query);
 		
@@ -153,6 +152,7 @@ long CChampionshipTable::DelRow(unsigned int nId)
 	do
 	{
 		char query[MAX_QUERY_LEN] = {0};
+		
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
@@ -194,7 +194,7 @@ long CChampionshipTable::GetRow(unsigned int nId, tDATA& data)
 		data.id = qRes->getUInt(1);
 		data.type = qRes->getInt(2);
 		data.name = qRes->getString(3);
-		data.aditionalInfo  = qRes->getString(4);
+		data.additionalInfo  = qRes->getString(4);
 		data.city = qRes->getUInt(5);
 		
 		res = UDF_OK;

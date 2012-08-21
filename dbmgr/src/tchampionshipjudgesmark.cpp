@@ -230,42 +230,42 @@ long CChampionshipJudgesMarkTable::UpdateRow(unsigned int nId, const tDATA& data
 		
 		if (data.catId != -1)
 		{
-			sprintf(tmp, "%s `cat_id` = %d ", query, data.catId);
+			sprintf(tmp, "%s `cat_id` = %d,", query, data.catId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.championshipId != -1)
 		{
-			sprintf(tmp, "%s `championship_id` = %d ", query, data.championshipId);
+			sprintf(tmp, "%s `championship_id` = %d,", query, data.championshipId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.judgeId != -1)
 		{
-			sprintf(tmp, "%s `judge_id` = %d ", query, data.judgeId);
+			sprintf(tmp, "%s `judge_id` = %d,", query, data.judgeId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.teamId != -1)
 		{
-			sprintf(tmp, "%s `team_id` = %d ", query, data.teamId);
+			sprintf(tmp, "%s `team_id` = %d,", query, data.teamId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.nMark != -1)
 		{
-			sprintf(tmp, "%s `mark` = %d ", query, data.nMark);
+			sprintf(tmp, "%s `mark` = %d,", query, data.nMark);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if(useFilter)
 		{
-			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			m_pConnection->Execute(query);
 		}

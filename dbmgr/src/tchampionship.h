@@ -15,7 +15,7 @@ public:
 		unsigned long	id;
 		unsigned int	type;
 		std::string		name;
-		std::string		aditionalInfo;
+		std::string		additionalInfo;
 		int				city;
 	} tDATA;
 

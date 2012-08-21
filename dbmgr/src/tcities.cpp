@@ -114,9 +114,9 @@ long CCitiesTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`country_id`,`name`) values(%d,'%s')"
+		sprintf(query, "insert into %s(`country_id`,`name`) values(%d, '%s')"
 			, TABLE
-			, rec.id
+			, rec.countryId
 			, rec.Name.c_str());
 		m_pConnection->Execute(query);
 		
@@ -201,21 +201,21 @@ long CCitiesTable::UpdateRow(unsigned int nId, const tDATA& data)
 		
 		if (data.countryId != -1)
 		{
-			sprintf(tmp, "%s `country_id` = %d ", query, data.countryId);
+			sprintf(tmp, "%s `country_id` = %d,", query, data.countryId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!data.Name.empty())
 		{
-			sprintf(tmp, "%s `name` = '%s' ", query, data.Name.c_str());
+			sprintf(tmp, "%s `name` = '%s',", query, data.Name.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if(useFilter)
 		{
-			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			m_pConnection->Execute(query);
 		}

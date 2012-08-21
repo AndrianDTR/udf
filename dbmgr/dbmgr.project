@@ -17,8 +17,6 @@
     <File Name="src/dberrors.cpp"/>
     <File Name="src/dbutils.cpp"/>
     <File Name="src/dbutils.h"/>
-    <File Name="src/tagecode.cpp"/>
-    <File Name="src/tagecode.h"/>
     <File Name="src/tcategories.cpp"/>
     <File Name="src/tcategories.h"/>
     <File Name="src/tchampionship.cpp"/>
@@ -87,6 +85,7 @@
         <![CDATA[
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -132,6 +131,7 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       

@@ -222,35 +222,35 @@ long CChampionshipTeamsTable::UpdateRow(unsigned int nId, const tDATA& data)
 		
 		if (data.dancerId != -1)
 		{
-			sprintf(tmp, "%s `dancer_id` = %d ", query, data.dancerId);
+			sprintf(tmp, "%s `dancer_id` = %d,", query, data.dancerId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.championshipId != -1)
 		{
-			sprintf(tmp, "%s `championship_id` = %d ", query, data.championshipId);
+			sprintf(tmp, "%s `championship_id` = %d,", query, data.championshipId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.startNumber != -1)
 		{
-			sprintf(tmp, "%s `start_number` = %d ", query, data.startNumber);
+			sprintf(tmp, "%s `start_number` = %d,", query, data.startNumber);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!data.compositionName.empty())
 		{
-			sprintf(tmp, "%s `team_id` = '%s' ", query, data.compositionName.c_str());
+			sprintf(tmp, "%s `team_id` = '%s',", query, data.compositionName.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if(useFilter)
 		{
-			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			m_pConnection->Execute(query);
 		}

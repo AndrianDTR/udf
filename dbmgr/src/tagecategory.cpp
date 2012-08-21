@@ -48,6 +48,13 @@ long CAgeCategoryTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
+		if (filter.code != -1)
+		{
+			sprintf(tmp, "%sand `code` like %d ", query, filter.code);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
 		if (!filter.descr.empty())
 		{
 			sprintf(tmp, "%sand `descr` like '%%%s%%' ", query, filter.descr.c_str());
@@ -106,7 +113,7 @@ long CAgeCategoryTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`descr`) values('%s')", TABLE, rec.descr.c_str());
+		sprintf(query, "insert into %s(`code`,`descr`) values(%d,'%s')", TABLE, rec.code, rec.descr.c_str());
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -163,7 +170,8 @@ long CAgeCategoryTable::GetRow(unsigned int nId, tDATA& data)
 		}
 		qRes->next();
 		data.id = qRes->getInt(1);
-		data.descr = qRes->getString(2);
+		data.code = qRes->getInt(2);
+		data.descr = qRes->getString(3);
 		
 		res = UDF_OK;
 	}while(0);
@@ -178,6 +186,8 @@ long CAgeCategoryTable::UpdateRow(unsigned int nId, const tDATA& data)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -185,8 +195,26 @@ long CAgeCategoryTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 		
-		sprintf(query, "update %s set `descr`='%s' where id = %d", TABLE, data.descr.c_str(), nId);
-		m_pConnection->Execute(query);
+		if (data.code != -1)
+		{
+			sprintf(tmp, "%s `code` = %d,", query, data.code);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.descr.empty())
+		{
+			sprintf(tmp, "%s `descr` = '%s',", query, data.descr.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s `id`=%u where `id`=%u", TABLE, query, nId, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

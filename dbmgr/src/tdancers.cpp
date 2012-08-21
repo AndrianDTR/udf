@@ -30,6 +30,7 @@ long CDancersTable::Find(tTableMap** data, const tDATA& filter)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
 		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
@@ -49,55 +50,64 @@ long CDancersTable::Find(tTableMap** data, const tDATA& filter)
 		
 		if (!filter.name.empty())
 		{
-			sprintf(query, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!filter.clubId != -1)
 		{
-			sprintf(query, "%sand `club_id` = %d ", query, filter.clubId);
+			sprintf(tmp, "%sand `club_id` = %d ", query, filter.clubId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!filter.trainerId != -1)
 		{
-			sprintf(query, "%sand `trener_id` = %d ", query, filter.trainerId);
+			sprintf(tmp, "%sand `trener_id` = %d ", query, filter.trainerId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!filter.regBook.empty())
 		{
-			sprintf(query, "%sand `reg_book_num` like '%%%s%%' ", query, filter.regBook.c_str());
+			sprintf(tmp, "%sand `reg_book_num` like '%%%s%%' ", query, filter.regBook.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!filter.raiting != -1)
 		{
-			sprintf(query, "%sand `raiting` = %d ", query, filter.raiting);
+			sprintf(tmp, "%sand `raiting` = %d ", query, filter.raiting);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!filter.liga != -1)
 		{
-			sprintf(query, "%sand `liga` = %d ", query, filter.liga);
+			sprintf(tmp, "%sand `liga` = %d ", query, filter.liga);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!filter.pay_date.empty())
 		{
-			sprintf(query, "%sand `pay_date` like '%%%s%%' ", query, filter.pay_date.c_str());
+			sprintf(tmp, "%sand `pay_date` like '%%%s%%' ", query, filter.pay_date.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!filter.exp_date.empty())
 		{
-			sprintf(query, "%sand `expire_date` like '%%%s%%' ", query, filter.exp_date.c_str());
+			sprintf(tmp, "%sand `expire_date` like '%%%s%%' ", query, filter.exp_date.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if(useFilter)
 		{
-			sprintf(query, "select * from %s where 1=1 %s", TABLE, query);
+			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
 		}
 		else
 		{
@@ -216,7 +226,6 @@ long CDancersTable::GetRow(unsigned int nId, tDATA& data)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		
 		sprintf(query, "select * from %s where id = %d", TABLE, nId);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
@@ -233,10 +242,10 @@ long CDancersTable::GetRow(unsigned int nId, tDATA& data)
 		data.raiting = qRes->getUInt(6);
 		data.liga = qRes->getInt(7);
 		data.bd = qRes->getString(8);
-		data.liga = qRes->getInt(9);
-		data.bd = qRes->getString(10);
-		data.bd = qRes->getString(11);
-		data.bd = qRes->getString(12);
+		data.gender = qRes->getInt(9);
+		data.pay_date = qRes->getString(10);
+		data.exp_date = qRes->getString(11);
+		data.reg_date = qRes->getString(12);
 		
 		res = UDF_OK;
 	}while(0);
@@ -262,90 +271,83 @@ long CDancersTable::UpdateRow(unsigned int nId, const tDATA& data)
 		
 		if (data.clubId != -1)
 		{
-			sprintf(tmp, "%s `club_id` = %d ", query, data.clubId);
+			sprintf(tmp, "%s `club_id` = %d,", query, data.clubId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.trainerId != -1)
 		{
-			sprintf(tmp, "%s `trainer_id` = %d ", query, data.trainerId);
+			sprintf(tmp, "%s `trener_id` = %d,", query, data.trainerId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.raiting != -1)
 		{
-			sprintf(tmp, "%s `raiting` = %d ", query, data.raiting);
+			sprintf(tmp, "%s `raiting` = %d,", query, data.raiting);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.liga != -1)
 		{
-			sprintf(tmp, "%s `liga` = %d ", query, data.liga);
+			sprintf(tmp, "%s `liga` = %d,", query, data.liga);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.gender != -1)
 		{
-			sprintf(tmp, "%s `gender` = %d ", query, data.gender);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (data.city != -1)
-		{
-			sprintf(tmp, "%s `city` = %d ", query, data.city);
+			sprintf(tmp, "%s `gender` = %d,", query, data.gender);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!data.name.empty())
 		{
-			sprintf(tmp, "%s `name` = '%s' ", query, data.name.c_str());
+			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!data.bd.empty())
 		{
-			sprintf(tmp, "%s `bd` = '%s' ", query, data.bd.c_str());
+			sprintf(tmp, "%s `bd` = '%s',", query, data.bd.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!data.regBook.empty())
 		{
-			sprintf(tmp, "%s `reg_book_num` = '%s' ", query, data.regBook.c_str());
+			sprintf(tmp, "%s `reg_book_num` = '%s',", query, data.regBook.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!data.pay_date.empty())
 		{
-			sprintf(tmp, "%s `pay_date` = '%s' ", query, data.pay_date.c_str());
+			sprintf(tmp, "%s `pay_date` = '%s',", query, data.pay_date.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!data.exp_date.empty())
 		{
-			sprintf(tmp, "%s `expire_date` = '%s' ", query, data.exp_date.c_str());
+			sprintf(tmp, "%s `expire_date` = '%s',", query, data.exp_date.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (!data.reg_date.empty())
 		{
-			sprintf(tmp, "%s `reg_date` = '%s' ", query, data.reg_date.c_str());
+			sprintf(tmp, "%s `reg_date` = '%s',", query, data.reg_date.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		if(useFilter)
 		{
-			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			m_pConnection->Execute(query);
 		}

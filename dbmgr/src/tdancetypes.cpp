@@ -54,7 +54,14 @@ long CDanceTypesTable::Find(tTableMap** data, const tDATA& filter)
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
-						
+		
+		if (filter.code != -1)
+		{
+			sprintf(tmp, "%sand `code` like %d ", query, filter.code);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
 		if(useFilter)
 		{
 			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
@@ -106,7 +113,7 @@ long CDanceTypesTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`name`) values('%s')", TABLE, rec.name.c_str());
+		sprintf(query, "insert into %s(`code`,`name`) values(%d,'%s')", TABLE, rec.code, rec.name.c_str());
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -163,7 +170,8 @@ long CDanceTypesTable::GetRow(unsigned int nId, tDATA& data)
 		}
 		qRes->next();
 		data.id = qRes->getInt(1);
-		data.name = qRes->getString(2);
+		data.code = qRes->getInt(2);
+		data.name = qRes->getString(3);
 		
 		res = UDF_OK;
 	}while(0);
@@ -178,6 +186,8 @@ long CDanceTypesTable::UpdateRow(unsigned int nId, const tDATA& data)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -185,8 +195,26 @@ long CDanceTypesTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 		
-		sprintf(query, "update %s set `name`='%s' where id = %d", TABLE, data.name.c_str(), nId);
-		m_pConnection->Execute(query);
+		if (data.code != -1)
+		{
+			sprintf(tmp, "%s `code` = %d,", query, data.code);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.name.empty())
+		{
+			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s `id`=%u where `id`=%u", TABLE, query, nId, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

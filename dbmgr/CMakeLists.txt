@@ -17,7 +17,6 @@ set( HEADER_FILES
 	src/dbconnection.h
 	src/dbtable.h
 	src/tagecategory.h
-	src/tagecode.h
 	src/tcategories.h
 	src/tchampionship.h
 	src/tchampionshipcategories.h
@@ -45,7 +44,6 @@ set( SOURCE_FILES
 	src/dbutils.cpp
 	src/dbconnection.cpp
 	src/tagecategory.cpp
-	src/tagecode.cpp
 	src/tcategories.cpp
 	src/tchampionship.cpp
 	src/tchampionshipcategories.cpp

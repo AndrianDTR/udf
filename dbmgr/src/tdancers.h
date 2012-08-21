@@ -21,7 +21,6 @@ public:
 		int				liga;
 		std::string		bd;
 		int 			gender;
-		unsigned int	city;
 		std::string		pay_date;
 		std::string		exp_date;
 		std::string		reg_date;

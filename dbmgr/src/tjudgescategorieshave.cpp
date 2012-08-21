@@ -113,13 +113,13 @@ long CJudgesCategoriesHaveTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(%d, %d)"
+		sprintf(query, "insert into %s(`judge_id`,`cat_id`) values(%d, %d)"
 			, TABLE
 			, rec.judgeId
 			, rec.judCatId);
 		m_pConnection->Execute(query);
 		
-		//rec.id = m_pConnection->GetLastInsertId();
+		rec.id = m_pConnection->GetLastInsertId();
 		
 		res = UDF_OK;
 	}while(0);
@@ -199,21 +199,21 @@ long CJudgesCategoriesHaveTable::UpdateRow(unsigned int nId, const tDATA& data)
 		
 		if (data.judgeId != -1)
 		{
-			sprintf(tmp, "%s `judge_id` = %d ", query, data.judgeId);
+			sprintf(tmp, "%s `judge_id` = %d,", query, data.judgeId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.judCatId != -1)
 		{
-			sprintf(tmp, "%s `category_id` = %d ", query, data.judCatId);
+			sprintf(tmp, "%s `cat_id` = %d,", query, data.judCatId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if(useFilter)
 		{
-			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			m_pConnection->Execute(query);
 		}

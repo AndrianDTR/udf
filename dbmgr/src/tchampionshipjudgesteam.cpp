@@ -200,21 +200,21 @@ long CChampionshipJudgesTeamTable::UpdateRow(unsigned int nId, const tDATA& data
 		
 		if (data.championshipId != -1)
 		{
-			sprintf(tmp, "%s `championship_id` = %d ", query, data.championshipId);
+			sprintf(tmp, "%s `championship_id` = %d,", query, data.championshipId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (data.judjeId != -1)
 		{
-			sprintf(tmp, "%s `judge_id` = %d ", query, data.judjeId);
+			sprintf(tmp, "%s `judge_id` = %d,", query, data.judjeId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if(useFilter)
 		{
-			sprintf(tmp, "update %s set %s where `id`=%d", TABLE, query, nId);
+			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			m_pConnection->Execute(query);
 		}
