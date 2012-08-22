@@ -1,5 +1,8 @@
 #include <stdio.h>
 
+
+#include "common.h"
+
 #include "dberrors.h"
 #include "dbconnection.h"
 #include "connection_data.h"
@@ -83,7 +86,7 @@ int main(int argc, char **argv)
 		if(UDF_OK == testTLiga(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 		if(UDF_OK == testTTrainers(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 			
-		printf("\n\n------------- FINISH -------------\n\n\n");
+		printf("------------- FINISH -------------\n");
 	}while(0);
 	
 	return 0;

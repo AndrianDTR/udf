@@ -30,6 +30,10 @@ set( ALL_FILES ${HEADER_FILES} ${SOURCE_FILES} ${PLATFORM_HEADER_FILES} ${PLATFO
 # Set module name
 set( MODULE_NAME "dbtest" )
 
+if(UDF_DEBUG STREQUAL yes)
+	ADD_DEFINITIONS(-D_DEBUG=1)
+endif()
+
 # Set module link properties
 add_executable( ${MODULE_NAME} ${HEADER_FILES} ${SOURCE_FILES} )
 add_dependencies( ${MODULE_NAME} dbmgr )

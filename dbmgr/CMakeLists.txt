@@ -96,6 +96,11 @@ IF (UNIX)
 		${BOOST_PATH}
 		)
 	
+	if(UDF_DEBUG STREQUAL yes)
+		MESSAGE(STATUS "DEBUG BUILD.")
+		ADD_DEFINITIONS(-D_DEBUG=1)
+	endif()
+	
 	ADD_DEFINITIONS(-DBIG_JOINS=1 -fno-strict-aliasing -g)
 	
 	TARGET_LINK_LIBRARIES(${MODULE_NAME} ${MYSQL_CONN_INCLUDE}/libmysqlcppconn-static.a; mysqlclient_r)

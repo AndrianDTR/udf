@@ -5,6 +5,8 @@ cmake_policy(SET CMP0003 NEW)
 
 project(UDF)
 
+option(UDF_DEBUG "Build with debug info."  no)
+
 option(WITH_WX_WIDGETS "Build wxWidgets libs."  no)
 option(WITH_BOOST "Build BOOST lib."  no)
 option(WITH_MYSQL_CONNECTOR "Build MySQL connector lib."  no)

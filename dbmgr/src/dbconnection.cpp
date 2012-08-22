@@ -1,5 +1,6 @@
-#include "stdio.h"
+#include "string"
 
+#include "common.h"
 #include "dberrors.h"
 #include "dbconnection.h"
 
@@ -86,9 +87,7 @@ sql::ResultSet* CDbConnection::ExecuteQuery(std::string query)
 	
 	if(m_pStatement)
 	{
-#ifdef _DEBUG
-		printf("EXECUTE QUERY: %s \nResult %d\n", query.c_str(), res);
-#endif //_DEBUG
+		DEBUG_PRINTF("EXECUTE QUERY: %s \nResult %d", query.c_str(), res);
 		res = m_pStatement->executeQuery(query);
 	}
 	
@@ -99,9 +98,7 @@ void CDbConnection::Execute(std::string query)
 {
 	if(m_pStatement)
 	{
-#ifdef _DEBUG
-		printf("EXECUTE: %s \n", query.c_str());
-#endif //_DEBUG
+		DEBUG_PRINTF("EXECUTE: %s \n", query.c_str());
 		m_pStatement->execute(query);	
 	}
 }
@@ -120,9 +117,7 @@ unsigned long long CDbConnection::GetLastInsertId()
 			}
 			qRes->next();
 			res = qRes->getUInt64(1);
-#ifdef _DEBUG
-			printf("GetLast insert id: %ld \n", res);
-#endif //_DEBUG
+			DEBUG_PRINTF("GetLast insert id: %ld", res);
 		}
 	}while(0);
 	

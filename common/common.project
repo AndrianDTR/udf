@@ -25,6 +25,7 @@
       <Environment EnvVarSetName="&lt;Use Workspace Settings&gt;" DbgSetName="&lt;Use Global Settings&gt;">
         <![CDATA[
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -56,8 +57,7 @@
   </Settings>
   <VirtualDirectory Name="src">
     <File Name="src/version.h"/>
-    <File Name="src/datatypes.h"/>
-    <File Name="src/errorcodes.h"/>
+    <File Name="src/common.h"/>
   </VirtualDirectory>
   <Dependencies Name="Debug"/>
 </CodeLite_Project>

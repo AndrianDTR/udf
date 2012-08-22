@@ -18,23 +18,8 @@ CDbManager::CDbManager()
 		if(UDF_OK != res)
 			break;
 		
-		CAgeCategoryTable tbl(m_pCon);
-		CAgeCategoryTable::tTableMap* m;
-		
-		res = tbl.GetTable(&m);
-		if(UDF_OK != res)
-			break;
-			
-		CAgeCategoryTable::tTableIt it = m->begin();
-		while(it != m->end())
-		{
-			printf("%d = %s\n", it->first, it->second.descr.c_str());
-			it++;
-		}
-		
 	}while(0);
 	
-	printf("Open OK, res = %d, %s\n", res, GetErrorMsg(res).c_str());
 }
 
 CDbManager::~CDbManager()

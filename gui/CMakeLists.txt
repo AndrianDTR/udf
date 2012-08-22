@@ -69,6 +69,10 @@ add_dependencies( ${MODULE_NAME} dbmgr wx_build)
 target_link_libraries( ${MODULE_NAME} dbmgr )
 set_target_properties( ${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS "GUI_BUILD_MODULE" )
 
+if(UDF_DEBUG STREQUAL yes)
+	ADD_DEFINITIONS(-D_DEBUG=1)
+endif()
+
 # Add module include directories
 include_directories(
 	${UDF_SOURCE_DIR}/common/src 
