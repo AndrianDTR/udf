@@ -16,14 +16,14 @@ CChampionshipTypeTable::~CChampionshipTypeTable(void)
 {
 }
 
-long CChampionshipTypeTable::GetTable(tTableMap** data)
+long CChampionshipTypeTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CChampionshipTypeTable::Find(tTableMap** data, const tDATA& filter)
+long CChampionshipTypeTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,20 +31,12 @@ long CChampionshipTypeTable::Find(tTableMap** data, const tDATA& filter)
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
-			break;
-		}
-		
-		table = new tTableMap();
-		if(!table)
-		{
-			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
@@ -72,7 +64,7 @@ long CChampionshipTypeTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table->clear();
+		data.clear();
 		
 		while( qRes && qRes->next())
 		{
@@ -81,10 +73,9 @@ long CChampionshipTypeTable::Find(tTableMap** data, const tDATA& filter)
 			el.id = qRes->getInt(1);
 			el.name = qRes->getString(2);
 		
-			table->insert(make_pair(el.id, el));
+			data.insert(make_pair(el.id, el));
 		}
 		
-		*data = table;
 		res = UDF_OK;
 	}while(0);
 	

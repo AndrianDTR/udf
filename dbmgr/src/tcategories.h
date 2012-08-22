@@ -31,8 +31,8 @@ public:
     virtual ~CCategoriesTable(void);
 
 public:
-    virtual long		GetTable(tTableMap** data);
-    virtual long		Find(tTableMap** data, const tDATA& filter);
+    virtual long		GetTable(tTableMap& data);
+    virtual long		Find(tTableMap& data, const tDATA& filter);
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned long nId);
     virtual long		GetRow(unsigned long nId, tDATA& data);

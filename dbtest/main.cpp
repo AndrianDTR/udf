@@ -100,7 +100,7 @@ long testTAgeCategory(CDbConnection* pCon)
 	do
 	{
 		CAgeCategoryTable tbl(pCon);
-		CAgeCategoryTable::tTableMap* tmap;
+		CAgeCategoryTable::tTableMap tmap;
 		CAgeCategoryTable::tTableIt it;
 		
 		CAgeCategoryTable::tDATA data = {0};
@@ -120,13 +120,13 @@ long testTAgeCategory(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u = %s\n", it->first, it->second.descr.c_str());
 			it++;
@@ -141,13 +141,13 @@ long testTAgeCategory(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%d = %s\n", it->first, it->second.descr.c_str());
 			it++;
@@ -171,7 +171,7 @@ long testTCategories(CDbConnection* pCon)
 	do
 	{
 		CCategoriesTable tbl(pCon);
-		CCategoriesTable::tTableMap* tmap;
+		CCategoriesTable::tTableMap tmap;
 		CCategoriesTable::tTableIt it;
 		
 		CCategoriesTable::tDATA data = {0};
@@ -192,13 +192,13 @@ long testTCategories(CDbConnection* pCon)
 		printf("%sGetRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u, %d\n", it->first
 				, it->second.dance
@@ -217,13 +217,13 @@ long testTCategories(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u, %d\n", it->first
 				, it->second.dance
@@ -250,7 +250,7 @@ long testTChampionship(CDbConnection* pCon)
 	do
 	{
 		CChampionshipTable tbl(pCon);
-		CChampionshipTable::tTableMap* tmap;
+		CChampionshipTable::tTableMap tmap;
 		CChampionshipTable::tTableIt it;
 		
 		CChampionshipTable::tDATA data = {0};
@@ -272,13 +272,13 @@ long testTChampionship(CDbConnection* pCon)
 		printf("%sGetRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %d, %s, %d, %s\n"
 				, it->first
@@ -301,13 +301,13 @@ long testTChampionship(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %ld, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %d, %s, %d, %s\n"
 				, it->first
@@ -336,7 +336,7 @@ long testTChampionshipCategories(CDbConnection* pCon)
 	do
 	{
 		CChampionshipCategotiesTable tbl(pCon);
-		CChampionshipCategotiesTable::tTableMap* tmap;
+		CChampionshipCategotiesTable::tTableMap tmap;
 		CChampionshipCategotiesTable::tTableIt it;
 		
 		CChampionshipCategotiesTable::tDATA data = {0};
@@ -356,13 +356,13 @@ long testTChampionshipCategories(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u\n"
 				, it->first
@@ -380,13 +380,13 @@ long testTChampionshipCategories(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u\n"
 				, it->first
@@ -413,7 +413,7 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 	do
 	{
 		CChampionshipJudgesMarkTable tbl(pCon);
-		CChampionshipJudgesMarkTable::tTableMap* tmap;
+		CChampionshipJudgesMarkTable::tTableMap tmap;
 		CChampionshipJudgesMarkTable::tTableIt it;
 		
 		CChampionshipJudgesMarkTable::tDATA data = {0};
@@ -436,13 +436,13 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u, %u, %u, %u\n"
 				, it->first
@@ -467,13 +467,13 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u, %u, %u, %u\n"
 				, it->first
@@ -503,7 +503,7 @@ long testTChampionshipJudgesTeam(CDbConnection* pCon)
 	do
 	{
 		CChampionshipJudgesTeamTable tbl(pCon);
-		CChampionshipJudgesTeamTable::tTableMap* tmap;
+		CChampionshipJudgesTeamTable::tTableMap tmap;
 		CChampionshipJudgesTeamTable::tTableIt it;
 		
 		CChampionshipJudgesTeamTable::tDATA data = {0};
@@ -523,13 +523,13 @@ long testTChampionshipJudgesTeam(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u\n"
 				, it->first
@@ -547,13 +547,13 @@ long testTChampionshipJudgesTeam(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u\n"
 				, it->first
@@ -580,7 +580,7 @@ long testTChampionshipTeams(CDbConnection* pCon)
 	do
 	{
 		CChampionshipTeamsTable tbl(pCon);
-		CChampionshipTeamsTable::tTableMap* tmap;
+		CChampionshipTeamsTable::tTableMap tmap;
 		CChampionshipTeamsTable::tTableIt it;
 		
 		CChampionshipTeamsTable::tDATA data = {0};
@@ -602,13 +602,13 @@ long testTChampionshipTeams(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u, %u, %s\n"
 				, it->first
@@ -630,15 +630,14 @@ long testTChampionshipTeams(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		tmap->clear();
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		
-		printf("%sGetTable res = %ld, %s, mapLen = %d\n", cName, res, GetErrorMsg(res).c_str(), tmap->size());
+		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u, %u, %s\n"
 				, it->first
@@ -667,7 +666,7 @@ long testTChampionshipTeamCategories(CDbConnection* pCon)
 	do
 	{
 		CChampionshipTeamCategoriesTable tbl(pCon);
-		CChampionshipTeamCategoriesTable::tTableMap* tmap;
+		CChampionshipTeamCategoriesTable::tTableMap tmap;
 		CChampionshipTeamCategoriesTable::tTableIt it;
 		
 		CChampionshipTeamCategoriesTable::tDATA data = {0};
@@ -688,13 +687,13 @@ long testTChampionshipTeamCategories(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u\n"
 				, it->first
@@ -714,13 +713,13 @@ long testTChampionshipTeamCategories(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u\n"
 				, it->first
@@ -747,7 +746,7 @@ long testTChampionshipTeamDancers(CDbConnection* pCon)
 	do
 	{
 		CChampionshipTeamDancersTable tbl(pCon);
-		CChampionshipTeamDancersTable::tTableMap* tmap;
+		CChampionshipTeamDancersTable::tTableMap tmap;
 		CChampionshipTeamDancersTable::tTableIt it;
 		
 		CChampionshipTeamDancersTable::tDATA data = {0};
@@ -767,13 +766,13 @@ long testTChampionshipTeamDancers(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u\n"
 				, it->first
@@ -792,13 +791,13 @@ long testTChampionshipTeamDancers(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u\n"
 				, it->first
@@ -825,7 +824,7 @@ long testTChampionshipType(CDbConnection* pCon)
 	do
 	{
 		CChampionshipTypeTable tbl(pCon);
-		CChampionshipTypeTable::tTableMap* tmap;
+		CChampionshipTypeTable::tTableMap tmap;
 		CChampionshipTypeTable::tTableIt it;
 		
 		CChampionshipTypeTable::tDATA data = {0};
@@ -844,13 +843,13 @@ long testTChampionshipType(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -864,13 +863,13 @@ long testTChampionshipType(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%d = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -894,7 +893,7 @@ long testTCities(CDbConnection* pCon)
 	do
 	{
 		CCitiesTable tbl(pCon);
-		CCitiesTable::tTableMap* tmap;
+		CCitiesTable::tTableMap tmap;
 		CCitiesTable::tTableIt it;
 		
 		CCitiesTable::tDATA data = {0};
@@ -914,13 +913,13 @@ long testTCities(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %d, %s\n", it->first, it->second.countryId, it->second.Name.c_str());
 			it++;
@@ -935,13 +934,13 @@ long testTCities(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %d, %s\n", it->first, it->second.countryId, it->second.Name.c_str());
 			it++;
@@ -965,7 +964,7 @@ long testTClubs(CDbConnection* pCon)
 	do
 	{
 		CClubsTable tbl(pCon);
-		CClubsTable::tTableMap* tmap;
+		CClubsTable::tTableMap tmap;
 		CClubsTable::tTableIt it;
 		
 		CClubsTable::tDATA data = {0};
@@ -996,13 +995,13 @@ long testTClubs(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n"
 				, it->first
@@ -1046,13 +1045,13 @@ long testTClubs(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n"
 				, it->first
@@ -1092,7 +1091,7 @@ long testTCountries(CDbConnection* pCon)
 	do
 	{
 		CCountriesTable tbl(pCon);
-		CCountriesTable::tTableMap* tmap;
+		CCountriesTable::tTableMap tmap;
 		CCountriesTable::tTableIt it;
 		
 		CCountriesTable::tDATA data = {0};
@@ -1111,13 +1110,13 @@ long testTCountries(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -1131,13 +1130,13 @@ long testTCountries(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%d = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -1161,7 +1160,7 @@ long testTDancers(CDbConnection* pCon)
 	do
 	{
 		CDancersTable tbl(pCon);
-		CDancersTable::tTableMap* tmap;
+		CDancersTable::tTableMap tmap;
 		CDancersTable::tTableIt it;
 		
 		CDancersTable::tDATA data = {0};
@@ -1190,13 +1189,13 @@ long testTDancers(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u, %u, %u, %u, %u, %s, %s, %s, %s, %s\n"
 				, it->first
@@ -1233,13 +1232,13 @@ long testTDancers(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u, %u, %u, %u, %s, %s, %s, %s, %s, %s\n"
 				, it->first
@@ -1275,7 +1274,7 @@ long testTDanceTypes(CDbConnection* pCon)
 	do
 	{
 		CDanceTypesTable tbl(pCon);
-		CDanceTypesTable::tTableMap* tmap;
+		CDanceTypesTable::tTableMap tmap;
 		CDanceTypesTable::tTableIt it;
 		
 		CDanceTypesTable::tDATA data = {0};
@@ -1294,13 +1293,13 @@ long testTDanceTypes(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -1314,13 +1313,13 @@ long testTDanceTypes(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%d = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -1344,7 +1343,7 @@ long testTGender(CDbConnection* pCon)
 	do
 	{
 		CGenderTable tbl(pCon);
-		CGenderTable::tTableMap* tmap;
+		CGenderTable::tTableMap tmap;
 		CGenderTable::tTableIt it;
 		
 		CGenderTable::tDATA data = {0};
@@ -1363,13 +1362,13 @@ long testTGender(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -1383,13 +1382,13 @@ long testTGender(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%d = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -1413,7 +1412,7 @@ long testTJudges(CDbConnection* pCon)
 	do
 	{
 		CJudgesTable tbl(pCon);
-		CJudgesTable::tTableMap* tmap;
+		CJudgesTable::tTableMap tmap;
 		CJudgesTable::tTableIt it;
 		
 		CJudgesTable::tDATA data = {0};
@@ -1438,13 +1437,13 @@ long testTJudges(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u, %u, %s, %s, %s, %s\n"
 				, it->first
@@ -1472,13 +1471,13 @@ long testTJudges(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u, %u, %s, %s, %s, %s\n"
 				, it->first
@@ -1510,7 +1509,7 @@ long testTJudgesCategoriesHave(CDbConnection* pCon)
 	do
 	{
 		CJudgesCategoriesHaveTable tbl(pCon);
-		CJudgesCategoriesHaveTable::tTableMap* tmap;
+		CJudgesCategoriesHaveTable::tTableMap tmap;
 		CJudgesCategoriesHaveTable::tTableIt it;
 		
 		CJudgesCategoriesHaveTable::tDATA data = {0};
@@ -1530,13 +1529,13 @@ long testTJudgesCategoriesHave(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u\n"
 				, it->first
@@ -1555,13 +1554,13 @@ long testTJudgesCategoriesHave(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %u\n"
 				, it->first
@@ -1588,7 +1587,7 @@ long testTJudgesCategoriesName(CDbConnection* pCon)
 	do
 	{
 		CJudgesCategoriesNameTable tbl(pCon);
-		CJudgesCategoriesNameTable::tTableMap* tmap;
+		CJudgesCategoriesNameTable::tTableMap tmap;
 		CJudgesCategoriesNameTable::tTableIt it;
 		
 		CJudgesCategoriesNameTable::tDATA data = {0};
@@ -1607,13 +1606,13 @@ long testTJudgesCategoriesName(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -1627,13 +1626,13 @@ long testTJudgesCategoriesName(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%d = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -1657,7 +1656,7 @@ long testTLiga(CDbConnection* pCon)
 	do
 	{
 		CLigaTable tbl(pCon);
-		CLigaTable::tTableMap* tmap;
+		CLigaTable::tTableMap tmap;
 		CLigaTable::tTableIt it;
 		
 		CLigaTable::tDATA data = {0};
@@ -1676,13 +1675,13 @@ long testTLiga(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -1696,13 +1695,13 @@ long testTLiga(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%d = %s\n", it->first, it->second.name.c_str());
 			it++;
@@ -1726,7 +1725,7 @@ long testTTrainers(CDbConnection* pCon)
 	do
 	{
 		CTrainersTable tbl(pCon);
-		CTrainersTable::tTableMap* tmap;
+		CTrainersTable::tTableMap tmap;
 		CTrainersTable::tTableIt it;
 		
 		CTrainersTable::tDATA data = {0};
@@ -1752,13 +1751,13 @@ long testTTrainers(CDbConnection* pCon)
 		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Find record
-		res = tbl.Find(&tmap, data);
+		res = tbl.Find(tmap, data);
 		if(UDF_OK != res)
 			break;
 		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s\n"
 				, it->first
@@ -1788,13 +1787,13 @@ long testTTrainers(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
-		res = tbl.GetTable(&tmap);
+		res = tbl.GetTable(tmap);
 		if(UDF_OK != res)
 			break;
 		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
 		
-		it = tmap->begin();
-		while(it != tmap->end())
+		it = tmap.begin();
+		while(it != tmap.end())
 		{
 			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s\n"
 				, it->first

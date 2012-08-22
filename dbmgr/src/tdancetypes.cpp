@@ -16,14 +16,14 @@ CDanceTypesTable::~CDanceTypesTable(void)
 {
 }
 
-long CDanceTypesTable::GetTable(tTableMap** data)
+long CDanceTypesTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CDanceTypesTable::Find(tTableMap** data, const tDATA& filter)
+long CDanceTypesTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,20 +31,12 @@ long CDanceTypesTable::Find(tTableMap** data, const tDATA& filter)
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
-			break;
-		}
-		
-		table = new tTableMap();
-		if(!table)
-		{
-			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
@@ -79,19 +71,19 @@ long CDanceTypesTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table->clear();
+		data.clear();
 		
 		while( qRes && qRes->next())
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.name = qRes->getString(2);
+			el.id = qRes->getUInt(1);
+			el.code = qRes->getUInt(2);
+			el.name = qRes->getString(3);
 		
-			table->insert(make_pair(el.id, el));
+			data.insert(make_pair(el.id, el));
 		}
 		
-		*data = table;
 		res = UDF_OK;
 	}while(0);
 	
@@ -169,8 +161,8 @@ long CDanceTypesTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getInt(1);
-		data.code = qRes->getInt(2);
+		data.id = qRes->getUInt(1);
+		data.code = qRes->getUInt(2);
 		data.name = qRes->getString(3);
 		
 		res = UDF_OK;

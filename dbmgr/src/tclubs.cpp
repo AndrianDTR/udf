@@ -16,14 +16,14 @@ CClubsTable::~CClubsTable(void)
 {
 }
 
-long CClubsTable::GetTable(tTableMap** data)
+long CClubsTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CClubsTable::Find(tTableMap** data, const tDATA& filter)
+long CClubsTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,20 +31,12 @@ long CClubsTable::Find(tTableMap** data, const tDATA& filter)
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
-			break;
-		}
-		
-		table = new tTableMap();
-		if(!table)
-		{
-			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
@@ -149,7 +141,7 @@ long CClubsTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table->clear();
+		data.clear();
 		
 		while( qRes && qRes->next())
 		{
@@ -171,10 +163,9 @@ long CClubsTable::Find(tTableMap** data, const tDATA& filter)
 			el.director_phone = qRes->getString(14);
 			el.director_email = qRes->getString(15);
 		
-			table->insert(make_pair(el.id, el));
+			data.insert(make_pair(el.id, el));
 		}
 		
-		*data = table;
 		res = UDF_OK;
 	}while(0);
 	

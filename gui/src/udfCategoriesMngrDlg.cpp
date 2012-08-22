@@ -13,35 +13,28 @@ CategoriesMngrDlg( parent )
 	CDbManager* pMan = CDbManager::Instance();
 	CDbConnection* pCon = pMan->GetConnection();
 	
-	CLigaTable ligaTable(pCon);
-	CDanceTypesTable danceTypesTable(pCon);
-	CAgeCategoryTable ageCatTable(pCon);
-	CCategoriesTable catTable(pCon);
+	CCategoriesTable tableCat(pCon);
+	CCategoriesTable::tTableMap listCat;
+	tableCat.GetTable(listCat);
 	
-	CCategoriesTable::tTableMap* categoriesList = NULL;
-	catTable.GetTable(&categoriesList);
+	CLigaTable tableLiga(pCon);
+	CLigaTable::tTableMap listLiga;
+	tableLiga.GetTable(listLiga);
 	
+	CDanceTypesTable tableDanceTypes(pCon);
+	CDanceTypesTable::tTableMap listDanceTypes;
+	tableDanceTypes.GetTable(listDanceTypes);
 	
-	for(CCategoriesTable::tTableIt it = categoriesList->begin(); it != categoriesList->end(); it++)
+	CAgeCategoryTable tableAgeCat(pCon);
+	CAgeCategoryTable::tTableMap listAgeCat;;
+	tableAgeCat.GetTable(listAgeCat);
+		
+	for(CCategoriesTable::tTableIt it = listCat.begin(); it != listCat.end(); it++)
 	{
 		CCategoriesTable::tDATA data = it->second;
 		
-		CAgeCategoryTable::tDATA ageCat = {0};
-		ageCatTable.GetRow(data.age_category, ageCat);
-		
-		CDanceTypesTable::tDATA danceType = {0};
-		danceTypesTable.GetRow(data.dance, danceType);
-		
-		CLigaTable::tDATA liga = {0};
-		ligaTable.GetRow(data.liga, liga);
-		
-		wxString name = wxString::Format("%d%d%02d", ageCat.code, liga.code, danceType.code);
-		m_listCategories->Append(name);
-	}
-	
-	if(categoriesList)
-	{
-		delete categoriesList;
+		int nCount = m_listCategories->GetCount();
+		m_listCategories->Insert(data.shortName, nCount, &data);
 	}
 }
 
@@ -67,5 +60,10 @@ void udfCategoriesMngrDlg::OnDiscard( wxCommandEvent& event )
 
 void udfCategoriesMngrDlg::OnCategorySelected(wxCommandEvent& event)
 {
+	int nItem = m_listCategories->GetSelection();
+	if(nItem > -1)
+	{
+		
+	}
 }
 

@@ -16,14 +16,14 @@ CChampionshipTeamCategoriesTable::~CChampionshipTeamCategoriesTable(void)
 {
 }
 
-long CChampionshipTeamCategoriesTable::GetTable(tTableMap** data)
+long CChampionshipTeamCategoriesTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filter)
+long CChampionshipTeamCategoriesTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,20 +31,12 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filte
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
-			break;
-		}
-		
-		table = new tTableMap();
-		if(!table)
-		{
-			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
@@ -86,7 +78,7 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filte
 			break;
 		}
 		
-		table->clear();
+		data.clear();
 		
 		while( qRes && qRes->next())
 		{
@@ -97,10 +89,9 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap** data, const tDATA& filte
 			el.catId = qRes->getUInt(3);
 			el.compositionName = qRes->getString(4);
 		
-			table->insert(make_pair(el.id, el));
+			data.insert(make_pair(el.id, el));
 		}
 		
-		*data = table;
 		res = UDF_OK;
 	}while(0);
 	

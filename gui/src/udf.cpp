@@ -308,7 +308,7 @@ ChampionshipCategoriesMngrDlg::~ChampionshipCategoriesMngrDlg()
 }
 
 BEGIN_EVENT_TABLE( CategoriesMngrDlg, wxDialog )
-	EVT_LISTBOX( wxID_ANY, CategoriesMngrDlg::_wxFB_OnCategorySelected )
+	EVT_LISTBOX( ID_CATEGORY_LIST, CategoriesMngrDlg::_wxFB_OnCategorySelected )
 	EVT_BUTTON( wxID_ADD, CategoriesMngrDlg::_wxFB_OnAdd )
 	EVT_BUTTON( wxID_REMOVE, CategoriesMngrDlg::_wxFB_OnRemove )
 	EVT_BUTTON( wxID_OK, CategoriesMngrDlg::_wxFB_OnSave )
@@ -335,12 +335,12 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	m_staticText15->Wrap( -1 );
 	bSizer18->Add( m_staticText15, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl5 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrl5 = new wxTextCtrl( this, ID_CATEGORY_LIST_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer18->Add( m_textCtrl5, 1, wxALL|wxEXPAND, 5 );
 	
 	sbSizer10->Add( bSizer18, 0, wxEXPAND, 5 );
 	
-	m_listCategories = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
+	m_listCategories = new wxListBox( this, ID_CATEGORY_LIST, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
 	sbSizer10->Add( m_listCategories, 1, wxALL, 5 );
 	
 	bSizer16->Add( sbSizer10, 0, wxEXPAND|wxALL, 5 );
@@ -383,21 +383,21 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	m_staticText18->Wrap( -1 );
 	fgSizer2->Add( m_staticText18, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_comboDance = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	m_comboDance = new wxComboBox( this, ID_DANCE_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
 	fgSizer2->Add( m_comboDance, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText19 = new wxStaticText( this, wxID_ANY, _("Liga"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText19->Wrap( -1 );
 	fgSizer2->Add( m_staticText19, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_comboLiga = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	m_comboLiga = new wxComboBox( this, ID_LIGA_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
 	fgSizer2->Add( m_comboLiga, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText191 = new wxStaticText( this, wxID_ANY, _("Age"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText191->Wrap( -1 );
 	fgSizer2->Add( m_staticText191, 0, wxALL, 5 );
 	
-	m_comboAge = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	m_comboAge = new wxComboBox( this, ID_AGE_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
 	fgSizer2->Add( m_comboAge, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer181->Add( fgSizer2, 1, wxEXPAND, 5 );
@@ -616,6 +616,21 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxMenuItem* m_menuItem9;
 	m_menuItem9 = new wxMenuItem( m_menu2, wxID_MENU_CAT_MNGR, wxString( _("Manage") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem9 );
+	
+	wxMenuItem* m_separator1;
+	m_separator1 = m_menu2->AppendSeparator();
+	
+	wxMenuItem* m_menuItem62;
+	m_menuItem62 = new wxMenuItem( m_menu2, ID_DANCE_TYPES, wxString( _("Dance types") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem62 );
+	
+	wxMenuItem* m_menuItem7;
+	m_menuItem7 = new wxMenuItem( m_menu2, ID_LIGUES, wxString( _("Ligues") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem7 );
+	
+	wxMenuItem* m_menuItem8;
+	m_menuItem8 = new wxMenuItem( m_menu2, ID_AGE_CATEGORIES, wxString( _("Age gategories") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem8 );
 	
 	m_menuBar->Append( m_menu2, _("Categories") );
 	
@@ -1764,5 +1779,85 @@ StartNumberAssignDlg::StartNumberAssignDlg( wxWindow* parent, wxWindowID id, con
 }
 
 StartNumberAssignDlg::~StartNumberAssignDlg()
+{
+}
+
+BEGIN_EVENT_TABLE( CodeDialog, wxDialog )
+	EVT_BUTTON( wxID_ANY, CodeDialog::_wxFB_OnAdd )
+	EVT_BUTTON( wxID_ANY, CodeDialog::_wxFB_OnRemove )
+	EVT_BUTTON( wxID_OK, CodeDialog::_wxFB_OnSave )
+	EVT_BUTTON( wxID_CALCEL, CodeDialog::_wxFB_OnDiscard )
+END_EVENT_TABLE()
+
+CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer84;
+	bSizer84 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxStaticBoxSizer* m_sbListSizer;
+	m_sbListSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("list") ), wxVERTICAL );
+	
+	m_listBox19 = new wxListBox( this, ID_ITEM_LIST, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
+	m_sbListSizer->Add( m_listBox19, 1, wxALL|wxEXPAND, 5 );
+	
+	bSizer84->Add( m_sbListSizer, 0, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer86;
+	bSizer86 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer85;
+	bSizer85 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpButton79 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer85->Add( m_bpButton79, 0, wxALL, 5 );
+	
+	m_bpButton80 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer85->Add( m_bpButton80, 0, wxALL, 5 );
+	
+	bSizer86->Add( bSizer85, 0, wxALIGN_RIGHT, 5 );
+	
+	wxFlexGridSizer* fgSizer13;
+	fgSizer13 = new wxFlexGridSizer( 2, 2, 0, 0 );
+	fgSizer13->AddGrowableCol( 1 );
+	fgSizer13->SetFlexibleDirection( wxBOTH );
+	fgSizer13->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText82 = new wxStaticText( this, wxID_ANY, _("Code"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText82->Wrap( -1 );
+	fgSizer13->Add( m_staticText82, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textCode = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer13->Add( m_textCode, 1, wxALL|wxEXPAND, 5 );
+	
+	m_staticText83 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText83->Wrap( -1 );
+	fgSizer13->Add( m_staticText83, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer13->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
+	
+	bSizer86->Add( fgSizer13, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer87;
+	bSizer87 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpButton81 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton81->SetDefault(); 
+	bSizer87->Add( m_bpButton81, 0, wxALL, 5 );
+	
+	m_bpButton82 = new wxBitmapButton( this, wxID_CALCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer87->Add( m_bpButton82, 0, wxALL, 5 );
+	
+	bSizer86->Add( bSizer87, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	bSizer84->Add( bSizer86, 1, wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer84 );
+	this->Layout();
+}
+
+CodeDialog::~CodeDialog()
 {
 }

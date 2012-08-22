@@ -16,14 +16,14 @@ CJudgesTable::~CJudgesTable(void)
 {
 }
 
-long CJudgesTable::GetTable(tTableMap** data)
+long CJudgesTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CJudgesTable::Find(tTableMap** data, const tDATA& filter)
+long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -31,20 +31,12 @@ long CJudgesTable::Find(tTableMap** data, const tDATA& filter)
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
 		char 				tmp[MAX_QUERY_LEN] = {0};
-		tTableMap*			table = NULL;
 		sql::ResultSet*		qRes = NULL;
 		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
-			break;
-		}
-		
-		table = new tTableMap();
-		if(!table)
-		{
-			res = UDF_E_NOMEMORY;
 			break;
 		}
 		
@@ -114,7 +106,7 @@ long CJudgesTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		table->clear();
+		data.clear();
 		
 		while( qRes && qRes->next())
 		{
@@ -129,10 +121,9 @@ long CJudgesTable::Find(tTableMap** data, const tDATA& filter)
 			el.pay_date = qRes->getString(7);
 			el.exp_date = qRes->getString(8);
 		
-			table->insert(make_pair(el.id, el));
+			data.insert(make_pair(el.id, el));
 		}
 		
-		*data = table;
 		res = UDF_OK;
 	}while(0);
 	

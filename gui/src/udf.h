@@ -175,6 +175,15 @@ class CategoriesMngrDlg : public wxDialog
 		
 	
 	protected:
+		enum
+		{
+			ID_CATEGORY_LIST_SEARCH = 1000,
+			ID_CATEGORY_LIST,
+			ID_DANCE_LIST,
+			ID_LIGA_LIST,
+			ID_AGE_LIST,
+		};
+		
 		wxStaticText* m_staticText15;
 		wxTextCtrl* m_textCtrl5;
 		wxListBox* m_listCategories;
@@ -314,6 +323,9 @@ class MainFrameBase : public wxFrame
 		enum
 		{
 			wxID_MENU_CAT_MNGR = 1000,
+			ID_DANCE_TYPES,
+			ID_LIGUES,
+			ID_AGE_CATEGORIES,
 			wxID_MENU_CLUBS_MNGR,
 			wxID_MENU_JUDGE_MNGR,
 			ID_ABOUT,
@@ -851,6 +863,52 @@ class StartNumberAssignDlg : public wxDialog
 		
 		StartNumberAssignDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 764,375 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~StartNumberAssignDlg();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class CodeDialog
+///////////////////////////////////////////////////////////////////////////////
+class CodeDialog : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
+		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_ITEM_LIST = 1000,
+			wxID_CALCEL,
+		};
+		
+		wxListBox* m_listBox19;
+		wxBitmapButton* m_bpButton79;
+		wxBitmapButton* m_bpButton80;
+		wxStaticText* m_staticText82;
+		wxTextCtrl* m_textCode;
+		wxStaticText* m_staticText83;
+		wxTextCtrl* m_textName;
+		wxBitmapButton* m_bpButton81;
+		wxBitmapButton* m_bpButton82;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		CodeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Code"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 554,266 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~CodeDialog();
 	
 };
 

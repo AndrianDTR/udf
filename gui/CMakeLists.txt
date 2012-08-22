@@ -20,6 +20,7 @@ set( HEADER_FILES
 	src/udfChampionshipCategoriesMngrDlg.h
 	src/udfChampionshipJudgesTeamMngrDlg.h
 	src/udfClubsMngrDlg.h
+	src/udfCodeDialog.h
 	src/udfDancersMngrDlg.h
 	src/udfDancersTeamMngr.h
 	src/udfDirectorInfo.h
@@ -40,6 +41,7 @@ set( SOURCE_FILES
 	src/udfChampionshipCategoriesMngrDlg.cpp
 	src/udfChampionshipJudgesTeamMngrDlg.cpp
 	src/udfClubsMngrDlg.cpp
+	src/udfCodeDialog.cpp
 	src/udfDancersMngrDlg.cpp
 	src/udfDancersTeamMngr.cpp
 	src/udfDirectorInfo.cpp
