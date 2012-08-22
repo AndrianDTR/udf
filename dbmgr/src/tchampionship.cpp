@@ -62,14 +62,14 @@ long CChampionshipTable::Find(tTableMap** data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (filter.city != -1)
+		if (0 != filter.city)
 		{
 			sprintf(tmp, "%sand `city` like %d ", query, filter.city);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.type != -1)
+		if (0 != filter.type)
 		{
 			sprintf(tmp, "%sand `type` like %d ", query, filter.type);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

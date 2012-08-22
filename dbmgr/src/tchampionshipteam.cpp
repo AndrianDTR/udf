@@ -48,21 +48,21 @@ long CChampionshipTeamsTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		if (filter.championshipId != -1)
+		if (0 != filter.championshipId)
 		{
 			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.clubId != -1)
+		if (0 != filter.clubId)
 		{
 			sprintf(tmp, "%sand `club_id` like %d ", query, filter.clubId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.startNumber != -1)
+		if (0 != filter.startNumber)
 		{
 			sprintf(tmp, "%sand `start_number` like %d ", query, filter.startNumber);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
@@ -100,7 +100,7 @@ long CChampionshipTeamsTable::Find(tTableMap** data, const tDATA& filter)
 		
 			table->insert(make_pair(el.id, el));
 		}
-		
+
 		*data = table;
 		res = UDF_OK;
 	}while(0);

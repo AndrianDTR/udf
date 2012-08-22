@@ -4,7 +4,7 @@
 #include "dberrors.h"
 #include "tchampionshipteamdancers.h"
 
-#define	TABLE	TABLE_CHAMPIONSHIPTEAMCATEGORIES
+#define	TABLE	TABLE_CHAMPIONSHIPTEAMDANCERS
 
 CChampionshipTeamDancersTable::CChampionshipTeamDancersTable(CDbConnection* pCon)
 : CDbTable(pCon)
@@ -48,14 +48,14 @@ long CChampionshipTeamDancersTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		if (filter.id != -1)
+		if (0 != filter.teamId)
 		{
-			sprintf(tmp, "%sand `team_id` like %d ", query, filter.id);
+			sprintf(tmp, "%sand `team_id` like %d ", query, filter.teamId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.dancerId != -1)
+		if (0 != filter.dancerId)
 		{
 			sprintf(tmp, "%sand `dancer_id` like %d ", query, filter.dancerId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

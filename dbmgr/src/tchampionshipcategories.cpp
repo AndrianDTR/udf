@@ -48,14 +48,14 @@ long CChampionshipCategotiesTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		if (filter.catId != -1)
+		if (0 != filter.catId)
 		{
 			sprintf(tmp, "%sand `category_id` like %d ", query, filter.catId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.championshipId != -1)
+		if (0 != filter.championshipId)
 		{
 			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

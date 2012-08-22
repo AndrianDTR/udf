@@ -48,14 +48,14 @@ long CChampionshipJudgesTeamTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		if (filter.championshipId != -1)
+		if (0 != filter.championshipId)
 		{
 			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.judjeId != -1)
+		if (0 != filter.judjeId)
 		{
 			sprintf(tmp, "%sand `judge_id` like %d ", query, filter.judjeId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
@@ -120,7 +120,7 @@ long CChampionshipJudgesTeamTable::AddRow(tDATA& rec)
 			, rec.judjeId);
 		m_pConnection->Execute(query);
 		
-		//rec.id = m_pConnection->GetLastInsertId();
+		rec.id = m_pConnection->GetLastInsertId();
 		
 		res = UDF_OK;
 	}while(0);

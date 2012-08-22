@@ -6,6 +6,8 @@
 #include "cppconn/connection.h"
 #include "cppconn/resultset.h"
 
+#define _DEBUG	1
+
 class CDbConnection
 {
 protected:

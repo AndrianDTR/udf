@@ -55,7 +55,7 @@ long CDanceTypesTable::Find(tTableMap** data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (filter.code != -1)
+		if (0 != filter.code)
 		{
 			sprintf(tmp, "%sand `code` like %d ", query, filter.code);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

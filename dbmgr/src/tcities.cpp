@@ -48,7 +48,7 @@ long CCitiesTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		if (filter.countryId != -1)
+		if (0 != filter.countryId)
 		{
 			sprintf(tmp, "%sand `country_id` like %d ", query, filter.countryId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

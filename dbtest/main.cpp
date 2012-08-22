@@ -66,10 +66,10 @@ int main(int argc, char **argv)
 		if(UDF_OK == testTChampionship(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 		if(UDF_OK == testTChampionshipCategories(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 		if(UDF_OK == testTChampionshipJudgesMark(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
-		//if(UDF_OK == testTChampionshipJudgesTeam(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
-		//if(UDF_OK == testTChampionshipTeams(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
-		//if(UDF_OK == testTChampionshipTeamCategories(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
-		//if(UDF_OK == testTChampionshipTeamDancers(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
+		if(UDF_OK == testTChampionshipJudgesTeam(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
+		if(UDF_OK == testTChampionshipTeams(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
+		if(UDF_OK == testTChampionshipTeamCategories(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
+		if(UDF_OK == testTChampionshipTeamDancers(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 		if(UDF_OK == testTChampionshipType(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 		if(UDF_OK == testTCities(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 		if(UDF_OK == testTClubs(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
@@ -414,10 +414,10 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 		CChampionshipJudgesMarkTable::tTableIt it;
 		
 		CChampionshipJudgesMarkTable::tDATA data = {0};
-		data.catId = 9;
+		data.catId = 10;
 		data.championshipId = 3;
-		data.judgeId = 4;
-		data.teamId = 14;
+		data.judgeId = 2;
+		data.teamId = 2;
 		data.nMark = 15;
 		
 		// Add row
@@ -452,10 +452,10 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 		}
 		
 		// Update row
-		data.catId = 10;
+		data.catId = 8;
 		data.championshipId = 3;
-		data.judgeId = 6;
-		data.teamId = 24;
+		data.judgeId = 5;
+		data.teamId = 3;
 		data.nMark = 5;
 		
 		res = tbl.UpdateRow(data.id, data);
@@ -504,8 +504,8 @@ long testTChampionshipJudgesTeam(CDbConnection* pCon)
 		CChampionshipJudgesTeamTable::tTableIt it;
 		
 		CChampionshipJudgesTeamTable::tDATA data = {0};
-		data.championshipId = 11;
-		data.judjeId = 12;
+		data.championshipId = 3;
+		data.judjeId = 3;
 		
 		// Add row
 		res = tbl.AddRow(data);
@@ -536,8 +536,8 @@ long testTChampionshipJudgesTeam(CDbConnection* pCon)
 		}
 		
 		// Update row
-		data.championshipId = 21;
-		data.judjeId = 22;
+		data.championshipId = 4;
+		data.judjeId = 4;
 		res = tbl.UpdateRow(data.id, data);
 		if(UDF_OK != res)
 			break;
@@ -627,10 +627,12 @@ long testTChampionshipTeams(CDbConnection* pCon)
 		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
 		
 		// Get table
+		tmap->clear();
 		res = tbl.GetTable(&tmap);
 		if(UDF_OK != res)
 			break;
-		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
+		
+		printf("%sGetTable res = %ld, %s, mapLen = %d\n", cName, res, GetErrorMsg(res).c_str(), tmap->size());
 		
 		it = tmap->begin();
 		while(it != tmap->end())
@@ -666,8 +668,9 @@ long testTChampionshipTeamCategories(CDbConnection* pCon)
 		CChampionshipTeamCategoriesTable::tTableIt it;
 		
 		CChampionshipTeamCategoriesTable::tDATA data = {0};
-		data.teamId = 11;
-		data.catId = 12;
+		data.teamId = 1;
+		data.catId = 8;
+		data.compositionName = string("Composition 1");
 		
 		// Add row
 		res = tbl.AddRow(data);
@@ -698,8 +701,9 @@ long testTChampionshipTeamCategories(CDbConnection* pCon)
 		}
 		
 		// Update row
-		data.teamId = 21;
-		data.catId = 22;
+		data.teamId = 3;
+		data.catId = 10;
+		data.compositionName = string("Composition 2");
 		
 		res = tbl.UpdateRow(data.id, data);
 		if(UDF_OK != res)

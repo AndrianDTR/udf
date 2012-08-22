@@ -48,7 +48,7 @@ long CClubsTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		if (filter.city != -1)
+		if (0 != filter.city)
 		{
 			sprintf(tmp, "%sand `city` like %d ", query, filter.city);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

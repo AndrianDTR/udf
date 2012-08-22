@@ -55,14 +55,14 @@ long CDancersTable::Find(tTableMap** data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (!filter.clubId != -1)
+		if (0 != filter.clubId)
 		{
 			sprintf(tmp, "%sand `club_id` = %d ", query, filter.clubId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.trainerId != -1)
+		if (0 != filter.trainerId)
 		{
 			sprintf(tmp, "%sand `trener_id` = %d ", query, filter.trainerId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
@@ -76,14 +76,14 @@ long CDancersTable::Find(tTableMap** data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (!filter.raiting != -1)
+		if (0 != filter.raiting)
 		{
 			sprintf(tmp, "%sand `raiting` = %d ", query, filter.raiting);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.liga != -1)
+		if (0 != filter.liga)
 		{
 			sprintf(tmp, "%sand `liga` = %d ", query, filter.liga);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

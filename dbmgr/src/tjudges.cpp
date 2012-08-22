@@ -55,14 +55,14 @@ long CJudgesTable::Find(tTableMap** data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (!filter.countryId != -1)
+		if (0 != filter.countryId)
 		{
 			sprintf(tmp, "%sand `country` = %d ", query, filter.countryId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.cityId != -1)
+		if (0 != filter.cityId)
 		{
 			sprintf(tmp, "%sand `city` = %d ", query, filter.cityId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
@@ -76,7 +76,7 @@ long CJudgesTable::Find(tTableMap** data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (!filter.clubId != -1)
+		if (0 != filter.clubId)
 		{
 			sprintf(tmp, "%sand `club` = %d ", query, filter.clubId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

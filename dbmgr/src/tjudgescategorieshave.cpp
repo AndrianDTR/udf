@@ -48,14 +48,14 @@ long CJudgesCategoriesHaveTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		if (filter.judgeId != -1)
+		if (0 != filter.judgeId)
 		{
 			sprintf(tmp, "%sand `judge_id` like %d ", query, filter.judgeId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.judCatId != -1)
+		if (0 != filter.judCatId)
 		{
 			sprintf(tmp, "%sand `cat_id` like %d ", query, filter.judCatId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

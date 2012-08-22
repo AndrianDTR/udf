@@ -55,7 +55,7 @@ long CTrainersTable::Find(tTableMap** data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (!filter.clubId != -1)
+		if (0 != filter.clubId)
 		{
 			sprintf(tmp, "%sand `club_id` = %d ", query, filter.clubId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

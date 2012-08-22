@@ -48,21 +48,21 @@ long CCategoriesTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
-		if (filter.dance != -1)
+		if (0 != filter.dance)
 		{
 			sprintf(tmp, "%sand `dance` like %d ", query, filter.dance);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.liga != -1)
+		if (0 != filter.liga)
 		{
 			sprintf(tmp, "%sand `liga` like %d ", query, filter.liga);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (filter.age_category != -1)
+		if (0 != filter.age_category)
 		{
 			sprintf(tmp, "%sand `age_category` like %d ", query, filter.age_category);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
