@@ -69,6 +69,20 @@ long CCategoriesTable::Find(tTableMap** data, const tDATA& filter)
 			useFilter = true;
 		}
 		
+		if (!filter.name.empty())
+		{
+			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!filter.shortName.empty())
+		{
+			sprintf(tmp, "%sand `short_name` like '%%%s%%' ", query, filter.shortName.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
 		if(useFilter)
 		{
 			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
@@ -96,6 +110,8 @@ long CCategoriesTable::Find(tTableMap** data, const tDATA& filter)
 			el.dance = qRes->getUInt(2);
 			el.liga = qRes->getInt(3);
 			el.age_category = qRes->getInt(4);
+			el.name = qRes->getString(5);
+			el.shortName = qRes->getString(6);
 		
 			table->insert(make_pair(el.id, el));
 		}
@@ -120,8 +136,8 @@ long CCategoriesTable::AddRow(tDATA& rec)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		sprintf(query, "insert into %s(`dance`,`liga`,`age_category`) values(%d, %d, %d)", 
-			TABLE, rec.dance, rec.liga, rec.age_category);
+		sprintf(query, "insert into %s(`dance`,`liga`,`age_category`,`name`,`short_name`) values(%d, %d, %d,'%s','%s')", 
+			TABLE, rec.dance, rec.liga, rec.age_category, rec.name.c_str(), rec.shortName.c_str());
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -181,6 +197,9 @@ long CCategoriesTable::GetRow(unsigned long nId, tDATA& data)
 		data.dance = qRes->getUInt(2);
 		data.liga = qRes->getInt(3);
 		data.age_category = qRes->getInt(4);
+		data.name = qRes->getString(5);
+		data.shortName = qRes->getString(6);
+		
 		
 		res = UDF_OK;
 	}while(0);
@@ -204,23 +223,37 @@ long CCategoriesTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 		
-		if (data.dance != -1)
+		if (0 != data.dance)
 		{
 			sprintf(tmp, "%s `dance` = %d,", query, data.dance);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (data.liga != -1)
+		if (0 != data.liga)
 		{
 			sprintf(tmp, "%s `liga` = %d,", query, data.liga);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (data.age_category != -1)
+		if (0 != data.age_category)
 		{
 			sprintf(tmp, "%s `age_category` = %d,", query, data.age_category);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.name.empty())
+		{
+			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.shortName.empty())
+		{
+			sprintf(tmp, "%s `short_name` = '%s',", query, data.shortName.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

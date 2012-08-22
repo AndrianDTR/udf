@@ -16,6 +16,8 @@ public:
 		unsigned int	dance;
 		int				liga;
 		int				age_category;
+		std::string		name;
+		std::string		shortName;
 	} tDATA;
 
 	typedef map<unsigned int, tDATA> tTableMap;

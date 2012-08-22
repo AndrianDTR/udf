@@ -195,7 +195,7 @@ long CAgeCategoryTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 		
-		if (data.code != -1)
+		if (0 != data.code)
 		{
 			sprintf(tmp, "%s `code` = %d,", query, data.code);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

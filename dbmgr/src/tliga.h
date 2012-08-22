@@ -13,6 +13,7 @@ class CLigaTable : public CDbTable
 public:
 	typedef struct{
 		unsigned int	id;
+		unsigned int	code;
 		std::string		name;
 	} tDATA;
 

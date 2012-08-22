@@ -13,6 +13,7 @@ class udfCategoriesMngrDlg : public CategoriesMngrDlg
 {
 protected:
 	// Handlers for CategoriesMngrDlg events.
+	void OnCategorySelected( wxCommandEvent& event );
 	void OnAdd( wxCommandEvent& event );
 	void OnRemove( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );

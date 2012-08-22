@@ -3,6 +3,7 @@
 
 #include "dberrors.h"
 #include "dbconnection.h"
+#include "wx/string.h"
 
 class CDbManager {
 	

@@ -27,6 +27,7 @@ protected:
 	void OnResults( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
+	void OnAboutDlg( wxCommandEvent& event );
 
 private:
 	unsigned long m_nCSid;

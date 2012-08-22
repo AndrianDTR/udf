@@ -48,6 +48,13 @@ long CLigaTable::Find(tTableMap** data, const tDATA& filter)
 			break;
 		}
 		
+		if (0 != filter.code)
+		{
+			sprintf(tmp, "%sand `code` like %d ", query, filter.code);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
 		if (!filter.name.empty())
 		{
 			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
@@ -78,8 +85,9 @@ long CLigaTable::Find(tTableMap** data, const tDATA& filter)
 		{
 			tDATA el = {0};
 			
-			el.id = qRes->getInt(1);
-			el.name = qRes->getString(2);
+			el.id = qRes->getUInt(1);
+			el.code = qRes->getUInt(2);
+			el.name = qRes->getString(3);
 		
 			table->insert(make_pair(el.id, el));
 		}
@@ -106,7 +114,7 @@ long CLigaTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`name`) values('%s')", TABLE, rec.name.c_str());
+		sprintf(query, "insert into %s(`code`,`name`) values(%d,'%s')", TABLE, rec.code, rec.name.c_str());
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -162,8 +170,9 @@ long CLigaTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getInt(1);
-		data.name = qRes->getString(2);
+		data.id = qRes->getUInt(1);
+		data.code = qRes->getUInt(2);
+		data.name = qRes->getString(3);
 		
 		res = UDF_OK;
 	}while(0);
@@ -178,15 +187,35 @@ long CLigaTable::UpdateRow(unsigned int nId, const tDATA& data)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool				useFilter = false;
 		
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
+
+		if (0 != data.code)
+		{
+			sprintf(tmp, "%s `code` = %d,", query, data.code);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
 		
-		sprintf(query, "update %s set `name`='%s' where id = %d", TABLE, data.name.c_str(), nId);
-		m_pConnection->Execute(query);
+		if (!data.name.empty())
+		{
+			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s `id`=%u where `id`=%u", TABLE, query, nId, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

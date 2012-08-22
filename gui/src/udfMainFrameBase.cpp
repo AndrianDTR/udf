@@ -6,6 +6,9 @@
 #include "udfChampionshipJudgesTeamMngrDlg.h"
 #include "udfStartNumberAssignDlg.h"
 
+#include "version.h"
+#include "wx/aboutdlg.h"
+
 udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 :
 MainFrameBase( parent )
@@ -93,3 +96,23 @@ void udfMainFrameBase::OnDiscard( wxCommandEvent& event )
 {
 	// TODO: Implement OnDiscard
 }
+
+void udfMainFrameBase::OnAboutDlg(wxCommandEvent& event)
+{
+	wxAboutDialogInfo info;
+	
+	info.SetName(wxT("Championship calculator."));
+	
+	info.SetVersion(
+		wxString::Format("%d.%d.%d", UDF_VERSION_MAJOR, UDF_VERSION_MINOR, UDF_VERSION_PATCH)
+		);
+	
+	info.SetDescription(wxT("Calculate and print dance championship result."));
+	
+	info.SetWebSite("andrian.yablonsky@gmail.com");
+	
+	info.SetCopyright(wxT("(C) 2012 Andrian Yablonsky."));
+	
+	wxAboutBox(info, this);
+}
+

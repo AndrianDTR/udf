@@ -1,6 +1,7 @@
 #ifndef __dbtable_h__
 #define __dbtable_h__
 
+#include "dberrors.h"
 #include "dbconnection.h"
 
 #define TABLE_AGECATEGORY						"age_category"

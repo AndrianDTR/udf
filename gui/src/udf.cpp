@@ -308,6 +308,7 @@ ChampionshipCategoriesMngrDlg::~ChampionshipCategoriesMngrDlg()
 }
 
 BEGIN_EVENT_TABLE( CategoriesMngrDlg, wxDialog )
+	EVT_LISTBOX( wxID_ANY, CategoriesMngrDlg::_wxFB_OnCategorySelected )
 	EVT_BUTTON( wxID_ADD, CategoriesMngrDlg::_wxFB_OnAdd )
 	EVT_BUTTON( wxID_REMOVE, CategoriesMngrDlg::_wxFB_OnRemove )
 	EVT_BUTTON( wxID_OK, CategoriesMngrDlg::_wxFB_OnSave )
@@ -339,8 +340,8 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	
 	sbSizer10->Add( bSizer18, 0, wxEXPAND, 5 );
 	
-	m_listBox4 = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
-	sbSizer10->Add( m_listBox4, 1, wxALL, 5 );
+	m_listCategories = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
+	sbSizer10->Add( m_listCategories, 1, wxALL, 5 );
 	
 	bSizer16->Add( sbSizer10, 0, wxEXPAND|wxALL, 5 );
 	
@@ -359,7 +360,7 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	bSizer181->Add( bSizer75, 0, wxALIGN_RIGHT, 5 );
 	
 	wxFlexGridSizer* fgSizer2;
-	fgSizer2 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer2 = new wxFlexGridSizer( 5, 2, 0, 0 );
 	fgSizer2->AddGrowableCol( 1 );
 	fgSizer2->SetFlexibleDirection( wxBOTH );
 	fgSizer2->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
@@ -368,29 +369,36 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	m_staticText16->Wrap( -1 );
 	fgSizer2->Add( m_staticText16, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl6 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer2->Add( m_textCtrl6, 0, wxALL|wxEXPAND, 5 );
+	m_textName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer2->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText17 = new wxStaticText( this, wxID_ANY, _("Short name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText17->Wrap( -1 );
 	fgSizer2->Add( m_staticText17, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl7 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer2->Add( m_textCtrl7, 0, wxALL|wxEXPAND, 5 );
+	m_textShortName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer2->Add( m_textShortName, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Dance"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText18->Wrap( -1 );
 	fgSizer2->Add( m_staticText18, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_comboBox4 = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	fgSizer2->Add( m_comboBox4, 0, wxALL|wxEXPAND, 5 );
+	m_comboDance = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer2->Add( m_comboDance, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText19 = new wxStaticText( this, wxID_ANY, _("Liga"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText19->Wrap( -1 );
 	fgSizer2->Add( m_staticText19, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_comboBox5 = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	fgSizer2->Add( m_comboBox5, 0, wxALL|wxEXPAND, 5 );
+	m_comboLiga = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer2->Add( m_comboLiga, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText191 = new wxStaticText( this, wxID_ANY, _("Age"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText191->Wrap( -1 );
+	fgSizer2->Add( m_staticText191, 0, wxALL, 5 );
+	
+	m_comboAge = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer2->Add( m_comboAge, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer181->Add( fgSizer2, 1, wxEXPAND, 5 );
 	
@@ -580,6 +588,7 @@ BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_MENU( wxID_MENU_CAT_MNGR, MainFrameBase::_wxFB_OnMenuCategoryManage )
 	EVT_MENU( wxID_MENU_CLUBS_MNGR, MainFrameBase::_wxFB_OnMenuClubManage )
 	EVT_MENU( wxID_MENU_JUDGE_MNGR, MainFrameBase::_wxFB_OnMenuJudgeManage )
+	EVT_MENU( ID_ABOUT, MainFrameBase::_wxFB_OnAboutDlg )
 	EVT_BUTTON( wxID_CHAMPIONSIP_ADD, MainFrameBase::_wxFB_OnAddChampionsip )
 	EVT_BUTTON( wxID_CHAMPIONSIP_REMOVE, MainFrameBase::_wxFB_OnRemoveChampionship )
 	EVT_BUTTON( wxID_CHAMPIONSHIP_CATEGORIES, MainFrameBase::_wxFB_OnCategoryMngr )
@@ -623,6 +632,13 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_menu5->Append( m_menuItem6 );
 	
 	m_menuBar->Append( m_menu5, _("Judges") );
+	
+	m_menu51 = new wxMenu();
+	wxMenuItem* m_menuItem61;
+	m_menuItem61 = new wxMenuItem( m_menu51, ID_ABOUT, wxString( _("About") ) , _("Show information about program."), wxITEM_NORMAL );
+	m_menu51->Append( m_menuItem61 );
+	
+	m_menuBar->Append( m_menu51, _("Help") );
 	
 	this->SetMenuBar( m_menuBar );
 	

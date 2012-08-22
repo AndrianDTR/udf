@@ -167,6 +167,7 @@ class CategoriesMngrDlg : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnCategorySelected( wxCommandEvent& event ){ OnCategorySelected( event ); }
 		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
 		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
@@ -176,21 +177,24 @@ class CategoriesMngrDlg : public wxDialog
 	protected:
 		wxStaticText* m_staticText15;
 		wxTextCtrl* m_textCtrl5;
-		wxListBox* m_listBox4;
+		wxListBox* m_listCategories;
 		wxBitmapButton* m_bpButton13;
 		wxBitmapButton* m_bpRemove;
 		wxStaticText* m_staticText16;
-		wxTextCtrl* m_textCtrl6;
+		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText17;
-		wxTextCtrl* m_textCtrl7;
+		wxTextCtrl* m_textShortName;
 		wxStaticText* m_staticText18;
-		wxComboBox* m_comboBox4;
+		wxComboBox* m_comboDance;
 		wxStaticText* m_staticText19;
-		wxComboBox* m_comboBox5;
+		wxComboBox* m_comboLiga;
+		wxStaticText* m_staticText191;
+		wxComboBox* m_comboAge;
 		wxBitmapButton* m_bpButton29;
 		wxBitmapButton* m_bpDiscard;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnCategorySelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
@@ -199,7 +203,7 @@ class CategoriesMngrDlg : public wxDialog
 	
 	public:
 		
-		CategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 715,287 ), long style = wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
+		CategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 715,342 ), long style = wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
 		~CategoriesMngrDlg();
 	
 };
@@ -294,6 +298,7 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnMenuCategoryManage( wxCommandEvent& event ){ OnMenuCategoryManage( event ); }
 		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
 		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
+		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
 		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
 		void _wxFB_OnRemoveChampionship( wxCommandEvent& event ){ OnRemoveChampionship( event ); }
 		void _wxFB_OnCategoryMngr( wxCommandEvent& event ){ OnCategoryMngr( event ); }
@@ -311,6 +316,7 @@ class MainFrameBase : public wxFrame
 			wxID_MENU_CAT_MNGR = 1000,
 			wxID_MENU_CLUBS_MNGR,
 			wxID_MENU_JUDGE_MNGR,
+			ID_ABOUT,
 			wxID_CHAMPIONSIP_ADD,
 			wxID_CHAMPIONSIP_REMOVE,
 			wxID_CHAMPIONSHIP_CATEGORIES,
@@ -327,6 +333,7 @@ class MainFrameBase : public wxFrame
 		wxMenu* m_menu2;
 		wxMenu* m_menu3;
 		wxMenu* m_menu5;
+		wxMenu* m_menu51;
 		wxPanel* m_panel1;
 		wxStaticText* m_championshipSearchText;
 		wxTextCtrl* m_textSearch;
@@ -367,6 +374,7 @@ class MainFrameBase : public wxFrame
 		virtual void OnMenuCategoryManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuClubManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuJudgeManage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddChampionsip( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveChampionship( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCategoryMngr( wxCommandEvent& event ) { event.Skip(); }
