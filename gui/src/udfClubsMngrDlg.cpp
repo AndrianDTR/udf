@@ -54,3 +54,4 @@ void udfClubsMngrDlg::OnDiscard( wxCommandEvent& event )
 {
 	// TODO: Implement OnDiscard
 }
+

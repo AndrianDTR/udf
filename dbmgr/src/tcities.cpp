@@ -190,7 +190,7 @@ long CCitiesTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 		
-		if (data.countryId != -1)
+		if (0 != data.countryId)
 		{
 			sprintf(tmp, "%s `country_id` = %d,", query, data.countryId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

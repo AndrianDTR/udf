@@ -23,12 +23,24 @@ IMPLEMENT_APP(MainApp);
 
 bool MainApp::OnInit()
 {
-	CDbManager* dbm = CDbManager::Instance(); 
-	SetTopWindow( new MainFrame( NULL ) );
-	GetTopWindow()->Show();
-	
+	bool res = false;
+	do{
+		try
+		{
+			CDbManager::Instance(); 
+		}
+		catch(...)
+		{
+			wxMessageBox(_("ERROR. Open MySQL connection fail. Program will be closed."), _("Error"),wxOK|wxCENTRE|wxICON_STOP);
+			break;
+		}
+		
+		SetTopWindow( new MainFrame( NULL ) );
+		GetTopWindow()->Show();
+		res = true;
+	}while(0);
 	// true = enter the main loop
-	return true;
+	return res;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

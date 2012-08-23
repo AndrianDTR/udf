@@ -14,7 +14,7 @@ public:
 	typedef struct{
 		unsigned int	id;
 		unsigned int	code;
-		std::string		descr;
+		std::string		name;
 	} tDATA;
 
 	typedef map<unsigned int, tDATA> tTableMap;

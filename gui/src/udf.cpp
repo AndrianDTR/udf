@@ -586,6 +586,9 @@ BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_CLOSE( MainFrameBase::_wxFB_OnCloseFrame )
 	EVT_MENU( wxID_EXIT, MainFrameBase::_wxFB_OnExitClick )
 	EVT_MENU( wxID_MENU_CAT_MNGR, MainFrameBase::_wxFB_OnMenuCategoryManage )
+	EVT_MENU( ID_DANCE_TYPES, MainFrameBase::_wxFB_OnDanceTypesCodeMgr )
+	EVT_MENU( ID_LIGUES, MainFrameBase::_wxFB_OnLigueCodeMgr )
+	EVT_MENU( ID_AGE_CATEGORIES, MainFrameBase::_wxFB_OnAgeCodesMgr )
 	EVT_MENU( wxID_MENU_CLUBS_MNGR, MainFrameBase::_wxFB_OnMenuClubManage )
 	EVT_MENU( wxID_MENU_JUDGE_MNGR, MainFrameBase::_wxFB_OnMenuJudgeManage )
 	EVT_MENU( ID_ABOUT, MainFrameBase::_wxFB_OnAboutDlg )
@@ -1783,10 +1786,12 @@ StartNumberAssignDlg::~StartNumberAssignDlg()
 }
 
 BEGIN_EVENT_TABLE( CodeDialog, wxDialog )
+	EVT_LISTBOX( ID_ITEM_LIST, CodeDialog::_wxFB_OnSelectItem )
 	EVT_BUTTON( wxID_OK, CodeDialog::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CALCEL, CodeDialog::_wxFB_OnDiscard )
-	EVT_BUTTON( wxID_ANY, CodeDialog::_wxFB_OnAdd )
-	EVT_BUTTON( wxID_ANY, CodeDialog::_wxFB_OnRemove )
+	EVT_BUTTON( wxID_ADD, CodeDialog::_wxFB_OnAdd )
+	EVT_BUTTON( wxID_REMOVE, CodeDialog::_wxFB_OnRemove )
+	EVT_BUTTON( wxID_UPDATE, CodeDialog::_wxFB_OnUpdateCode )
 END_EVENT_TABLE()
 
 CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -1796,10 +1801,9 @@ CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxBoxSizer* bSizer84;
 	bSizer84 = new wxBoxSizer( wxHORIZONTAL );
 	
-	wxStaticBoxSizer* m_sbListSizer;
 	m_sbListSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("list") ), wxVERTICAL );
 	
-	m_listItems = new wxListBox( this, ID_ITEM_LIST, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
+	m_listItems = new wxListBox( this, ID_ITEM_LIST, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, wxLB_SINGLE ); 
 	m_sbListSizer->Add( m_listItems, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer84->Add( m_sbListSizer, 0, wxEXPAND|wxALL, 5 );
@@ -1847,11 +1851,14 @@ CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxBoxSizer* bSizer85;
 	bSizer85 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpButton79 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer85->Add( m_bpButton79, 0, wxALL, 5 );
+	m_bpAdd = new wxBitmapButton( this, wxID_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer85->Add( m_bpAdd, 0, wxALL, 5 );
 	
-	m_bpButton80 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer85->Add( m_bpButton80, 0, wxALL, 5 );
+	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer85->Add( m_bpRemove, 0, wxALL, 5 );
+	
+	m_bpAplly = new wxBitmapButton( this, wxID_UPDATE, wxBitmap( button_assign_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer85->Add( m_bpAplly, 0, wxALL, 5 );
 	
 	bSizer86->Add( bSizer85, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	

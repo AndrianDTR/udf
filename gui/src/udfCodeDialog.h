@@ -31,13 +31,15 @@ protected:
 	void OnRemove( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
+	void OnSelectItem( wxCommandEvent& event );
+	void OnUpdateCode( wxCommandEvent& event );
 	
 public:
 	/** Constructor */
 	udfCodeDialog( wxWindow* parent );
 	
 public:
-	void		RefreshList();
+	void 		SetListName(wxString listName);
 	void		AddListItem(unsigned int nId, wxString name, long code);
 	tListMap	GetResultList();
 };

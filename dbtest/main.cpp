@@ -105,7 +105,7 @@ long testTAgeCategory(CDbConnection* pCon)
 		
 		CAgeCategoryTable::tDATA data = {0};
 		data.code = 90;
-		data.descr = string("Test Дорослі-8");
+		data.name = string("Test Дорослі-8");
 		
 		// Add row
 		res = tbl.AddRow(data);
@@ -128,12 +128,12 @@ long testTAgeCategory(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u = %s\n", it->first, it->second.descr.c_str());
+			printf("%u = %s\n", it->first, it->second.name.c_str());
 			it++;
 		}
 		
 		// Update row
-		data.descr = string("XXXXX-8");
+		data.name = string("XXXXX-8");
 		data.code = 99;
 		res = tbl.UpdateRow(data.id, data);
 		if(UDF_OK != res)
@@ -149,7 +149,7 @@ long testTAgeCategory(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%d = %s\n", it->first, it->second.descr.c_str());
+			printf("%d = %s\n", it->first, it->second.name.c_str());
 			it++;
 		}
 		

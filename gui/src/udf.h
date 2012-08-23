@@ -305,6 +305,9 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnCloseFrame( wxCloseEvent& event ){ OnCloseFrame( event ); }
 		void _wxFB_OnExitClick( wxCommandEvent& event ){ OnExitClick( event ); }
 		void _wxFB_OnMenuCategoryManage( wxCommandEvent& event ){ OnMenuCategoryManage( event ); }
+		void _wxFB_OnDanceTypesCodeMgr( wxCommandEvent& event ){ OnDanceTypesCodeMgr( event ); }
+		void _wxFB_OnLigueCodeMgr( wxCommandEvent& event ){ OnLigueCodeMgr( event ); }
+		void _wxFB_OnAgeCodesMgr( wxCommandEvent& event ){ OnAgeCodesMgr( event ); }
 		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
 		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
 		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
@@ -384,6 +387,9 @@ class MainFrameBase : public wxFrame
 		virtual void OnCloseFrame( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnExitClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuCategoryManage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDanceTypesCodeMgr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLigueCodeMgr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAgeCodesMgr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuClubManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuJudgeManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
@@ -875,10 +881,12 @@ class CodeDialog : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnSelectItem( wxCommandEvent& event ){ OnSelectItem( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
 		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
+		void _wxFB_OnUpdateCode( wxCommandEvent& event ){ OnUpdateCode( event ); }
 		
 	
 	protected:
@@ -886,8 +894,10 @@ class CodeDialog : public wxDialog
 		{
 			ID_ITEM_LIST = 1000,
 			wxID_CALCEL,
+			wxID_UPDATE,
 		};
 		
+		wxStaticBoxSizer* m_sbListSizer;
 		wxListBox* m_listItems;
 		wxBitmapButton* m_bpButton81;
 		wxBitmapButton* m_bpButton82;
@@ -896,14 +906,17 @@ class CodeDialog : public wxDialog
 		wxTextCtrl* m_textCode;
 		wxStaticText* m_staticText83;
 		wxTextCtrl* m_textName;
-		wxBitmapButton* m_bpButton79;
-		wxBitmapButton* m_bpButton80;
+		wxBitmapButton* m_bpAdd;
+		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpAplly;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnSelectItem( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdateCode( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

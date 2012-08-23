@@ -47,9 +47,9 @@ long CAgeCategoryTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (!filter.descr.empty())
+		if (!filter.name.empty())
 		{
-			sprintf(tmp, "%sand `descr` like '%%%s%%' ", query, filter.descr.c_str());
+			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -78,7 +78,8 @@ long CAgeCategoryTable::Find(tTableMap& data, const tDATA& filter)
 			tDATA el = {0};
 			
 			el.id = qRes->getInt(1);
-			el.descr = qRes->getString(2);
+			el.code = qRes->getUInt(2);
+			el.name = qRes->getString(3);
 		
 			data.insert(make_pair(el.id, el));
 		}
@@ -104,7 +105,7 @@ long CAgeCategoryTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`code`,`descr`) values(%d,'%s')", TABLE, rec.code, rec.descr.c_str());
+		sprintf(query, "insert into %s(`code`,`name`) values(%d,'%s')", TABLE, rec.code, rec.name.c_str());
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -162,7 +163,7 @@ long CAgeCategoryTable::GetRow(unsigned int nId, tDATA& data)
 		qRes->next();
 		data.id = qRes->getInt(1);
 		data.code = qRes->getInt(2);
-		data.descr = qRes->getString(3);
+		data.name = qRes->getString(3);
 		
 		res = UDF_OK;
 	}while(0);
@@ -193,9 +194,9 @@ long CAgeCategoryTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (!data.descr.empty())
+		if (!data.name.empty())
 		{
-			sprintf(tmp, "%s `descr` = '%s',", query, data.descr.c_str());
+			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

@@ -28,6 +28,10 @@ protected:
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 	void OnAboutDlg( wxCommandEvent& event );
+	
+	void OnDanceTypesCodeMgr( wxCommandEvent& event );
+	void OnLigueCodeMgr( wxCommandEvent& event );
+	void OnAgeCodesMgr( wxCommandEvent& event );
 
 private:
 	unsigned long m_nCSid;

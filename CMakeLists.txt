@@ -24,7 +24,7 @@ set(BOOST_LIB_FILE "boost_1_50_0")
 set(BOOST_PATH "${EXT_LIB_PATH}/${BOOST_LIB_FILE}")
 set(BOOST_INCLUDE "${BOOST_PATH}/boost")
 
-set (WX_LIB_FILE "wxWidgets-2.9.3")
+set (WX_LIB_FILE "wxWidgets-2.9.4")
 set (WX_PATH "${EXT_LIB_PATH}/${WX_LIB_FILE}" )
 
 set(TARGZ_EXT "tar.gz")

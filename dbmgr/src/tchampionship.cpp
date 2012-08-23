@@ -201,6 +201,8 @@ long CChampionshipTable::UpdateRow(unsigned int nId, const tDATA& data)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -208,8 +210,40 @@ long CChampionshipTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 		
-		sprintf(query, "update %s set `name`='%s' where id = %d", TABLE, data.name.c_str(), nId);
-		m_pConnection->Execute(query);
+		if (0 != data.type)
+		{
+			sprintf(tmp, "%s `type` = %d,", query, data.type);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (0 != data.city)
+		{
+			sprintf(tmp, "%s `city` = %d,", query, data.city);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.name.empty())
+		{
+			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.additionalInfo.empty())
+		{
+			sprintf(tmp, "%s `additional_info` = '%s',", query, data.additionalInfo.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			m_pConnection->Execute(query);
+		}
 		
 		res = UDF_OK;
 	}while(0);

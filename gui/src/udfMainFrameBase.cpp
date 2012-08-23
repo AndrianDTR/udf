@@ -6,6 +6,13 @@
 #include "udfChampionshipJudgesTeamMngrDlg.h"
 #include "udfStartNumberAssignDlg.h"
 
+#include "tliga.h"
+#include "tdancetypes.h"
+#include "tagecategory.h"
+
+#include "cdbmanager.h"
+#include "udfCodeDialog.h"
+
 #include "version.h"
 #include "wx/aboutdlg.h"
 
@@ -114,5 +121,178 @@ void udfMainFrameBase::OnAboutDlg(wxCommandEvent& event)
 	info.SetCopyright(wxT("(C) 2012 Andrian Yablonsky."));
 	
 	wxAboutBox(info, this);
+}
+
+void udfMainFrameBase::OnAgeCodesMgr(wxCommandEvent& event)
+{
+	udfCodeDialog dlg(this);
+	dlg.SetTitle(wxT("Age category code manager"));
+	dlg.SetListName(_("Age categories list"));
+	CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+	CAgeCategoryTable::tTableMap list;
+	CAgeCategoryTable	table(pCon);
+	table.GetTable(list);
+	CAgeCategoryTable::tTableIt listIt = list.begin();
+	while(listIt != list.end())
+	{
+		CAgeCategoryTable::tDATA data = listIt->second;
+		dlg.AddListItem(data.id, data.name, data.code);
+		listIt++;
+	}
+	
+	if(dlg.ShowModal() == wxID_OK)
+	{
+		udfCodeDialog::tListMap rList = dlg.GetResultList();
+				
+		listIt = list.begin();
+		while(listIt != list.end())
+		{
+			udfCodeDialog::tListIt rLstIt = rList.find(listIt->first);
+			if(rLstIt == rList.end())
+			{
+				table.DelRow(listIt->first);
+			}
+			else if(rLstIt != rList.end() && rLstIt->first == listIt->first)
+			{
+				CAgeCategoryTable::tDATA data;
+				udfCodeDialog::tDATA cData = rLstIt->second;
+				data.code = cData.code;
+				data.name = cData.name;
+				table.UpdateRow(listIt->first, data);
+				rList.erase(rLstIt);
+			}
+			listIt++;
+		}
+		
+		if(rList.size() > 0)
+		{
+			//insert data here
+			udfCodeDialog::tListIt rLstIt = rList.begin();
+			while(rLstIt != rList.end())
+			{
+				CAgeCategoryTable::tDATA data;
+				udfCodeDialog::tDATA cData = rLstIt->second;
+				data.code = cData.code;
+				data.name = cData.name;
+				table.AddRow(data);
+			}
+		}
+	}
+}
+
+void udfMainFrameBase::OnDanceTypesCodeMgr(wxCommandEvent& event)
+{
+	udfCodeDialog dlg(this);
+	dlg.SetTitle(wxT("Dance types code manager"));
+	dlg.SetListName(_("Dance types list"));
+	
+	CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+	CDanceTypesTable::tTableMap list;
+	CDanceTypesTable	table(pCon);
+	table.GetTable(list);
+	CDanceTypesTable::tTableIt listIt = list.begin();
+	while(listIt != list.end())
+	{
+		CDanceTypesTable::tDATA data = listIt->second;
+		dlg.AddListItem(data.id, data.name, data.code);
+		listIt++;
+	}
+	
+	if(dlg.ShowModal() == wxID_OK)
+	{
+		udfCodeDialog::tListMap rList = dlg.GetResultList();
+				
+		listIt = list.begin();
+		while(listIt != list.end())
+		{
+			udfCodeDialog::tListIt rLstIt = rList.find(listIt->first);
+			if(rLstIt == rList.end())
+			{
+				table.DelRow(listIt->first);
+			}
+			else if(rLstIt != rList.end() && rLstIt->first == listIt->first)
+			{
+				CDanceTypesTable::tDATA data;
+				udfCodeDialog::tDATA cData = rLstIt->second;
+				data.code = cData.code;
+				data.name = cData.name;
+				table.UpdateRow(listIt->first, data);
+				rList.erase(rLstIt);
+			}
+			listIt++;
+		}
+		
+		if(rList.size() > 0)
+		{
+			//insert data here
+			udfCodeDialog::tListIt rLstIt = rList.begin();
+			while(rLstIt != rList.end())
+			{
+				CDanceTypesTable::tDATA data;
+				udfCodeDialog::tDATA cData = rLstIt->second;
+				data.code = cData.code;
+				data.name = cData.name;
+				table.AddRow(data);
+			}
+		}
+	}
+}
+
+void udfMainFrameBase::OnLigueCodeMgr(wxCommandEvent& event)
+{
+	udfCodeDialog dlg(this);
+	dlg.SetTitle(wxT("Ligues code manager"));
+	dlg.SetListName(_("Ligues list"));
+	
+	CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+	CLigaTable::tTableMap list;
+	CLigaTable	table(pCon);
+	table.GetTable(list);
+	CLigaTable::tTableIt listIt = list.begin();
+	while(listIt != list.end())
+	{
+		CLigaTable::tDATA data = listIt->second;
+		dlg.AddListItem(data.id, data.name, data.code);
+		listIt++;
+	}
+	
+	if(dlg.ShowModal() == wxID_OK)
+	{
+		udfCodeDialog::tListMap rList = dlg.GetResultList();
+				
+		listIt = list.begin();
+		while(listIt != list.end())
+		{
+			udfCodeDialog::tListIt rLstIt = rList.find(listIt->first);
+			if(rLstIt == rList.end())
+			{
+				table.DelRow(listIt->first);
+			}
+			else if(rLstIt != rList.end() && rLstIt->first == listIt->first)
+			{
+				CLigaTable::tDATA data;
+				udfCodeDialog::tDATA cData = rLstIt->second;
+				data.code = cData.code;
+				data.name = cData.name;
+				table.UpdateRow(listIt->first, data);
+				rList.erase(rLstIt);
+			}
+			listIt++;
+		}
+		
+		if(rList.size() > 0)
+		{
+			//insert data here
+			udfCodeDialog::tListIt rLstIt = rList.begin();
+			while(rLstIt != rList.end())
+			{
+				CLigaTable::tDATA data;
+				udfCodeDialog::tDATA cData = rLstIt->second;
+				data.code = cData.code;
+				data.name = cData.name;
+				table.AddRow(data);
+			}
+		}
+	}
 }
 
