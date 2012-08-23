@@ -139,7 +139,7 @@ void udfMainFrameBase::OnAgeCodesMgr(wxCommandEvent& event)
 		dlg.AddListItem(data.id, data.name, data.code);
 		listIt++;
 	}
-	
+	dlg.RefreshList();
 	if(dlg.ShowModal() == wxID_OK)
 	{
 		udfCodeDialog::tListMap rList = dlg.GetResultList();
@@ -175,6 +175,7 @@ void udfMainFrameBase::OnAgeCodesMgr(wxCommandEvent& event)
 				data.code = cData.code;
 				data.name = cData.name;
 				table.AddRow(data);
+				rLstIt++;
 			}
 		}
 	}
@@ -197,7 +198,7 @@ void udfMainFrameBase::OnDanceTypesCodeMgr(wxCommandEvent& event)
 		dlg.AddListItem(data.id, data.name, data.code);
 		listIt++;
 	}
-	
+	dlg.RefreshList();
 	if(dlg.ShowModal() == wxID_OK)
 	{
 		udfCodeDialog::tListMap rList = dlg.GetResultList();
@@ -233,6 +234,7 @@ void udfMainFrameBase::OnDanceTypesCodeMgr(wxCommandEvent& event)
 				data.code = cData.code;
 				data.name = cData.name;
 				table.AddRow(data);
+				rLstIt++;
 			}
 		}
 	}
@@ -255,7 +257,7 @@ void udfMainFrameBase::OnLigueCodeMgr(wxCommandEvent& event)
 		dlg.AddListItem(data.id, data.name, data.code);
 		listIt++;
 	}
-	
+	dlg.RefreshList();
 	if(dlg.ShowModal() == wxID_OK)
 	{
 		udfCodeDialog::tListMap rList = dlg.GetResultList();
@@ -270,11 +272,16 @@ void udfMainFrameBase::OnLigueCodeMgr(wxCommandEvent& event)
 			}
 			else if(rLstIt != rList.end() && rLstIt->first == listIt->first)
 			{
-				CLigaTable::tDATA data;
+				CLigaTable::tDATA data = listIt->second;
 				udfCodeDialog::tDATA cData = rLstIt->second;
-				data.code = cData.code;
-				data.name = cData.name;
-				table.UpdateRow(listIt->first, data);
+				
+				if(data.code != cData.code || data.name != cData.name)
+				{
+					data.code = cData.code;
+					data.name = cData.name;
+					table.UpdateRow(listIt->first, data);
+				}
+				
 				rList.erase(rLstIt);
 			}
 			listIt++;
@@ -291,6 +298,7 @@ void udfMainFrameBase::OnLigueCodeMgr(wxCommandEvent& event)
 				data.code = cData.code;
 				data.name = cData.name;
 				table.AddRow(data);
+				rLstIt++;
 			}
 		}
 	}

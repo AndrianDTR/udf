@@ -881,6 +881,7 @@ class CodeDialog : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
 		void _wxFB_OnSelectItem( wxCommandEvent& event ){ OnSelectItem( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
@@ -892,12 +893,15 @@ class CodeDialog : public wxDialog
 	protected:
 		enum
 		{
-			ID_ITEM_LIST = 1000,
+			ID_SEARCH = 1000,
+			ID_ITEM_LIST,
 			wxID_CALCEL,
 			wxID_UPDATE,
 		};
 		
 		wxStaticBoxSizer* m_sbListSizer;
+		wxStaticText* m_staticText84;
+		wxTextCtrl* m_textSearch;
 		wxListBox* m_listItems;
 		wxBitmapButton* m_bpButton81;
 		wxBitmapButton* m_bpButton82;
@@ -911,6 +915,7 @@ class CodeDialog : public wxDialog
 		wxBitmapButton* m_bpAplly;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSelectItem( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }

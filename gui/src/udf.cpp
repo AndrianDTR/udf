@@ -1786,6 +1786,7 @@ StartNumberAssignDlg::~StartNumberAssignDlg()
 }
 
 BEGIN_EVENT_TABLE( CodeDialog, wxDialog )
+	EVT_TEXT( ID_SEARCH, CodeDialog::_wxFB_OnSearch )
 	EVT_LISTBOX( ID_ITEM_LIST, CodeDialog::_wxFB_OnSelectItem )
 	EVT_BUTTON( wxID_OK, CodeDialog::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CALCEL, CodeDialog::_wxFB_OnDiscard )
@@ -1802,6 +1803,18 @@ CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	bSizer84 = new wxBoxSizer( wxHORIZONTAL );
 	
 	m_sbListSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("list") ), wxVERTICAL );
+	
+	wxBoxSizer* bSizer88;
+	bSizer88 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticText84 = new wxStaticText( this, wxID_ANY, _("Search"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText84->Wrap( -1 );
+	bSizer88->Add( m_staticText84, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textSearch = new wxTextCtrl( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer88->Add( m_textSearch, 1, wxALL|wxEXPAND, 5 );
+	
+	m_sbListSizer->Add( bSizer88, 0, wxEXPAND, 5 );
 	
 	m_listItems = new wxListBox( this, ID_ITEM_LIST, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, wxLB_SINGLE ); 
 	m_sbListSizer->Add( m_listItems, 1, wxALL|wxEXPAND, 5 );
