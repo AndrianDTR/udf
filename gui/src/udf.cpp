@@ -1783,10 +1783,10 @@ StartNumberAssignDlg::~StartNumberAssignDlg()
 }
 
 BEGIN_EVENT_TABLE( CodeDialog, wxDialog )
-	EVT_BUTTON( wxID_ANY, CodeDialog::_wxFB_OnAdd )
-	EVT_BUTTON( wxID_ANY, CodeDialog::_wxFB_OnRemove )
 	EVT_BUTTON( wxID_OK, CodeDialog::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CALCEL, CodeDialog::_wxFB_OnDiscard )
+	EVT_BUTTON( wxID_ANY, CodeDialog::_wxFB_OnAdd )
+	EVT_BUTTON( wxID_ANY, CodeDialog::_wxFB_OnRemove )
 END_EVENT_TABLE()
 
 CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -1799,24 +1799,28 @@ CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxStaticBoxSizer* m_sbListSizer;
 	m_sbListSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("list") ), wxVERTICAL );
 	
-	m_listBox19 = new wxListBox( this, ID_ITEM_LIST, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
-	m_sbListSizer->Add( m_listBox19, 1, wxALL|wxEXPAND, 5 );
+	m_listItems = new wxListBox( this, ID_ITEM_LIST, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
+	m_sbListSizer->Add( m_listItems, 1, wxALL|wxEXPAND, 5 );
 	
-	bSizer84->Add( m_sbListSizer, 0, wxEXPAND, 5 );
+	bSizer84->Add( m_sbListSizer, 0, wxEXPAND|wxALL, 5 );
 	
 	wxBoxSizer* bSizer86;
 	bSizer86 = new wxBoxSizer( wxVERTICAL );
 	
-	wxBoxSizer* bSizer85;
-	bSizer85 = new wxBoxSizer( wxHORIZONTAL );
+	wxBoxSizer* bSizer87;
+	bSizer87 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpButton79 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer85->Add( m_bpButton79, 0, wxALL, 5 );
+	m_bpButton81 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton81->SetDefault(); 
+	bSizer87->Add( m_bpButton81, 0, wxALL, 5 );
 	
-	m_bpButton80 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer85->Add( m_bpButton80, 0, wxALL, 5 );
+	m_bpButton82 = new wxBitmapButton( this, wxID_CALCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer87->Add( m_bpButton82, 0, wxALL, 5 );
 	
-	bSizer86->Add( bSizer85, 0, wxALIGN_RIGHT, 5 );
+	bSizer86->Add( bSizer87, 0, wxALIGN_RIGHT, 5 );
+	
+	
+	bSizer86->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer13;
 	fgSizer13 = new wxFlexGridSizer( 2, 2, 0, 0 );
@@ -1840,17 +1844,16 @@ CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	bSizer86->Add( fgSizer13, 1, wxEXPAND, 5 );
 	
-	wxBoxSizer* bSizer87;
-	bSizer87 = new wxBoxSizer( wxHORIZONTAL );
+	wxBoxSizer* bSizer85;
+	bSizer85 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpButton81 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpButton81->SetDefault(); 
-	bSizer87->Add( m_bpButton81, 0, wxALL, 5 );
+	m_bpButton79 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer85->Add( m_bpButton79, 0, wxALL, 5 );
 	
-	m_bpButton82 = new wxBitmapButton( this, wxID_CALCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer87->Add( m_bpButton82, 0, wxALL, 5 );
+	m_bpButton80 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer85->Add( m_bpButton80, 0, wxALL, 5 );
 	
-	bSizer86->Add( bSizer87, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizer86->Add( bSizer85, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	bSizer84->Add( bSizer86, 1, wxEXPAND, 5 );
 	

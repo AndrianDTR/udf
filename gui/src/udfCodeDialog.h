@@ -14,12 +14,13 @@ class udfCodeDialog : public CodeDialog
 {
 public:
 	struct tDATA{
+		unsigned int	nId;
 		wxString		name;
 		long			code;
 	};
 	
-	typedef std::map<unsigned int, tDATAt> tListMap;
-	typedef std::map<unsigned int, tDATAt>::iterator tListIt;
+	typedef std::map<unsigned int, tDATA> tListMap;
+	typedef std::map<unsigned int, tDATA>::iterator tListIt;
 
 private:
 	tListMap	m_listMap;
@@ -36,9 +37,9 @@ public:
 	udfCodeDialog( wxWindow* parent );
 	
 public:
-
-	unsigned int	AddListItem(unsigned int nId, wxString name, long code);
-	
+	void		RefreshList();
+	void		AddListItem(unsigned int nId, wxString name, long code);
+	tListMap	GetResultList();
 };
 
 #endif // __udfCodeDialog__

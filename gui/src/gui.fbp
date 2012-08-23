@@ -16673,7 +16673,7 @@
             <property name="minimum_size"></property>
             <property name="name">CodeDialog</property>
             <property name="pos"></property>
-            <property name="size">554,266</property>
+            <property name="size">549,292</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE</property>
             <property name="subclass"></property>
             <property name="title">Code</property>
@@ -16722,7 +16722,7 @@
                 <property name="permission">none</property>
                 <object class="sizeritem" expanded="1">
                     <property name="border">5</property>
-                    <property name="flag">wxEXPAND</property>
+                    <property name="flag">wxEXPAND|wxALL</property>
                     <property name="proportion">0</property>
                     <object class="wxStaticBoxSizer" expanded="0">
                         <property name="id">wxID_ANY</property>
@@ -16747,7 +16747,7 @@
                                 <property name="id">ID_ITEM_LIST</property>
                                 <property name="maximum_size"></property>
                                 <property name="minimum_size"></property>
-                                <property name="name">m_listBox19</property>
+                                <property name="name">m_listItems</property>
                                 <property name="permission">protected</property>
                                 <property name="pos"></property>
                                 <property name="size">200,-1</property>
@@ -16805,7 +16805,7 @@
                             <property name="proportion">0</property>
                             <object class="wxBoxSizer" expanded="0">
                                 <property name="minimum_size"></property>
-                                <property name="name">bSizer85</property>
+                                <property name="name">bSizer87</property>
                                 <property name="orient">wxHORIZONTAL</property>
                                 <property name="permission">none</property>
                                 <object class="sizeritem" expanded="1">
@@ -16814,9 +16814,9 @@
                                     <property name="proportion">0</property>
                                     <object class="wxBitmapButton" expanded="1">
                                         <property name="bg"></property>
-                                        <property name="bitmap">../res/button_add.xpm; Load From File</property>
+                                        <property name="bitmap">../res/button_ok.xpm; Load From File</property>
                                         <property name="context_help"></property>
-                                        <property name="default">0</property>
+                                        <property name="default">1</property>
                                         <property name="disabled"></property>
                                         <property name="enabled">1</property>
                                         <property name="fg"></property>
@@ -16824,11 +16824,11 @@
                                         <property name="font"></property>
                                         <property name="hidden">0</property>
                                         <property name="hover"></property>
-                                        <property name="id">wxID_ANY</property>
-                                        <property name="label">MyButton</property>
+                                        <property name="id">wxID_OK</property>
+                                        <property name="label">OK</property>
                                         <property name="maximum_size"></property>
                                         <property name="minimum_size"></property>
-                                        <property name="name">m_bpButton79</property>
+                                        <property name="name">m_bpButton81</property>
                                         <property name="permission">protected</property>
                                         <property name="pos"></property>
                                         <property name="selected"></property>
@@ -16843,7 +16843,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
-                                        <event name="OnButtonClick">OnAdd</event>
+                                        <event name="OnButtonClick">OnSave</event>
                                         <event name="OnChar"></event>
                                         <event name="OnEnterWindow"></event>
                                         <event name="OnEraseBackground"></event>
@@ -16875,7 +16875,7 @@
                                     <property name="proportion">0</property>
                                     <object class="wxBitmapButton" expanded="1">
                                         <property name="bg"></property>
-                                        <property name="bitmap">../res/button_delete.xpm; Load From File</property>
+                                        <property name="bitmap">../res/button_cancel.xpm; Load From File</property>
                                         <property name="context_help"></property>
                                         <property name="default">0</property>
                                         <property name="disabled"></property>
@@ -16885,11 +16885,11 @@
                                         <property name="font"></property>
                                         <property name="hidden">0</property>
                                         <property name="hover"></property>
-                                        <property name="id">wxID_ANY</property>
-                                        <property name="label">MyButton</property>
+                                        <property name="id">wxID_CALCEL</property>
+                                        <property name="label">Cancel</property>
                                         <property name="maximum_size"></property>
                                         <property name="minimum_size"></property>
-                                        <property name="name">m_bpButton80</property>
+                                        <property name="name">m_bpButton82</property>
                                         <property name="permission">protected</property>
                                         <property name="pos"></property>
                                         <property name="selected"></property>
@@ -16904,7 +16904,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
-                                        <event name="OnButtonClick">OnRemove</event>
+                                        <event name="OnButtonClick">OnDiscard</event>
                                         <event name="OnChar"></event>
                                         <event name="OnEnterWindow"></event>
                                         <event name="OnEraseBackground"></event>
@@ -16930,6 +16930,16 @@
                                         <event name="OnUpdateUI"></event>
                                     </object>
                                 </object>
+                            </object>
+                        </object>
+                        <object class="sizeritem" expanded="1">
+                            <property name="border">5</property>
+                            <property name="flag">wxEXPAND</property>
+                            <property name="proportion">1</property>
+                            <object class="spacer" expanded="1">
+                                <property name="height">0</property>
+                                <property name="permission">protected</property>
+                                <property name="width">0</property>
                             </object>
                         </object>
                         <object class="sizeritem" expanded="1">
@@ -17184,7 +17194,7 @@
                             <property name="proportion">0</property>
                             <object class="wxBoxSizer" expanded="0">
                                 <property name="minimum_size"></property>
-                                <property name="name">bSizer87</property>
+                                <property name="name">bSizer85</property>
                                 <property name="orient">wxHORIZONTAL</property>
                                 <property name="permission">none</property>
                                 <object class="sizeritem" expanded="1">
@@ -17193,9 +17203,9 @@
                                     <property name="proportion">0</property>
                                     <object class="wxBitmapButton" expanded="1">
                                         <property name="bg"></property>
-                                        <property name="bitmap">../res/button_ok.xpm; Load From File</property>
+                                        <property name="bitmap">../res/button_add.xpm; Load From File</property>
                                         <property name="context_help"></property>
-                                        <property name="default">1</property>
+                                        <property name="default">0</property>
                                         <property name="disabled"></property>
                                         <property name="enabled">1</property>
                                         <property name="fg"></property>
@@ -17203,11 +17213,11 @@
                                         <property name="font"></property>
                                         <property name="hidden">0</property>
                                         <property name="hover"></property>
-                                        <property name="id">wxID_OK</property>
-                                        <property name="label">OK</property>
+                                        <property name="id">wxID_ANY</property>
+                                        <property name="label">MyButton</property>
                                         <property name="maximum_size"></property>
                                         <property name="minimum_size"></property>
-                                        <property name="name">m_bpButton81</property>
+                                        <property name="name">m_bpButton79</property>
                                         <property name="permission">protected</property>
                                         <property name="pos"></property>
                                         <property name="selected"></property>
@@ -17222,7 +17232,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
-                                        <event name="OnButtonClick">OnSave</event>
+                                        <event name="OnButtonClick">OnAdd</event>
                                         <event name="OnChar"></event>
                                         <event name="OnEnterWindow"></event>
                                         <event name="OnEraseBackground"></event>
@@ -17254,7 +17264,7 @@
                                     <property name="proportion">0</property>
                                     <object class="wxBitmapButton" expanded="1">
                                         <property name="bg"></property>
-                                        <property name="bitmap">../res/button_cancel.xpm; Load From File</property>
+                                        <property name="bitmap">../res/button_delete.xpm; Load From File</property>
                                         <property name="context_help"></property>
                                         <property name="default">0</property>
                                         <property name="disabled"></property>
@@ -17264,11 +17274,11 @@
                                         <property name="font"></property>
                                         <property name="hidden">0</property>
                                         <property name="hover"></property>
-                                        <property name="id">wxID_CALCEL</property>
-                                        <property name="label">Cancel</property>
+                                        <property name="id">wxID_ANY</property>
+                                        <property name="label">MyButton</property>
                                         <property name="maximum_size"></property>
                                         <property name="minimum_size"></property>
-                                        <property name="name">m_bpButton82</property>
+                                        <property name="name">m_bpButton80</property>
                                         <property name="permission">protected</property>
                                         <property name="pos"></property>
                                         <property name="selected"></property>
@@ -17283,7 +17293,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
-                                        <event name="OnButtonClick">OnDiscard</event>
+                                        <event name="OnButtonClick">OnRemove</event>
                                         <event name="OnChar"></event>
                                         <event name="OnEnterWindow"></event>
                                         <event name="OnEraseBackground"></event>

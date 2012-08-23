@@ -875,10 +875,10 @@ class CodeDialog : public wxDialog
 	private:
 		
 		// Private event handlers
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
+		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
 		
 	
 	protected:
@@ -888,26 +888,27 @@ class CodeDialog : public wxDialog
 			wxID_CALCEL,
 		};
 		
-		wxListBox* m_listBox19;
-		wxBitmapButton* m_bpButton79;
-		wxBitmapButton* m_bpButton80;
+		wxListBox* m_listItems;
+		wxBitmapButton* m_bpButton81;
+		wxBitmapButton* m_bpButton82;
+		
 		wxStaticText* m_staticText82;
 		wxTextCtrl* m_textCode;
 		wxStaticText* m_staticText83;
 		wxTextCtrl* m_textName;
-		wxBitmapButton* m_bpButton81;
-		wxBitmapButton* m_bpButton82;
+		wxBitmapButton* m_bpButton79;
+		wxBitmapButton* m_bpButton80;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		CodeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Code"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 554,266 ), long style = wxDEFAULT_DIALOG_STYLE );
+		CodeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Code"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 549,292 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~CodeDialog();
 	
 };
