@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-08-22 00:49:40
+-- Date/time:                    2012-08-24 14:52:04
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -21,14 +21,14 @@ DROP TABLE IF EXISTS `age_category`;
 CREATE TABLE IF NOT EXISTS `age_category` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `code` int(10) unsigned NOT NULL DEFAULT '0',
-  `descr` varchar(50) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.age_category: ~12 rows (approximately)
+-- Dumping data for table udf.age_category: ~11 rows (approximately)
 DELETE FROM `age_category`;
 /*!40000 ALTER TABLE `age_category` DISABLE KEYS */;
-INSERT INTO `age_category` (`id`, `code`, `descr`) VALUES
+INSERT INTO `age_category` (`id`, `code`, `name`) VALUES
 	(2, 5, 'Діти до 5 років'),
 	(3, 7, 'Діти до 7 років'),
 	(4, 9, 'Діти до 9 років'),
@@ -39,8 +39,7 @@ INSERT INTO `age_category` (`id`, `code`, `descr`) VALUES
 	(9, 3, 'Дорослі-1 20-30 років'),
 	(10, 4, 'Дорослі-2 31-49 років'),
 	(11, 8, 'Сеньйори від 50 років'),
-	(12, 0, 'Професіонали'),
-	(38, 0, 'Test Дорослі-8');
+	(12, 0, 'Професіонали');
 /*!40000 ALTER TABLE `age_category` ENABLE KEYS */;
 
 
@@ -51,6 +50,8 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `dance` int(10) unsigned NOT NULL,
   `liga` int(10) NOT NULL,
   `age_category` int(10) unsigned NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `short_name` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK__liga` (`liga`),
   KEY `FK_categories_dance_types` (`dance`),
@@ -58,18 +59,18 @@ CREATE TABLE IF NOT EXISTS `categories` (
   CONSTRAINT `FK_categories_age_category` FOREIGN KEY (`age_category`) REFERENCES `age_category` (`id`),
   CONSTRAINT `FK_categories_dance_types` FOREIGN KEY (`dance`) REFERENCES `dance_types` (`id`),
   CONSTRAINT `FK__liga` FOREIGN KEY (`liga`) REFERENCES `liga` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table udf.categories: ~6 rows (approximately)
 DELETE FROM `categories`;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` (`id`, `dance`, `liga`, `age_category`) VALUES
-	(8, 1, 2, 2),
-	(9, 2, 2, 2),
-	(10, 3, 2, 2),
-	(13, 3, 1, 2),
-	(20, 1, 2, 2),
-	(21, 1, 2, 2);
+INSERT INTO `categories` (`id`, `dance`, `liga`, `age_category`, `name`, `short_name`) VALUES
+	(8, 1, 2, 2, 'Діти до 5 років, ССоло дебют, ХІП-ХОП', 'Соло дебют < 5, хіп-хоп'),
+	(9, 2, 2, 2, 'df  kdas', ' afda  l as'),
+	(10, 3, 2, 2, 'sdfjsdh  s', ' fjksd lsfk'),
+	(13, 3, 1, 2, 'ksdfl sdlkfsdlksd', ' sdfkll   ldfdkl'),
+	(20, 1, 2, 2, '   sdk  sddkf', '   akjsdk sdkjdfsd'),
+	(21, 1, 2, 2, 'f liksdsd ', 's slfksdlf');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 
 
@@ -86,14 +87,15 @@ CREATE TABLE IF NOT EXISTS `championship` (
   KEY `FK_championship_championship_type` (`type`),
   CONSTRAINT `FK_championship_championship_type` FOREIGN KEY (`type`) REFERENCES `championship_type` (`id`),
   CONSTRAINT `FK_championship_cities` FOREIGN KEY (`city`) REFERENCES `cities` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship: ~2 rows (approximately)
+-- Dumping data for table udf.championship: ~3 rows (approximately)
 DELETE FROM `championship`;
 /*!40000 ALTER TABLE `championship` DISABLE KEYS */;
 INSERT INTO `championship` (`id`, `type`, `name`, `additional_info`, `city`) VALUES
 	(3, 4, 'jashdjs d ', 'd gdgd hfg ', 1),
-	(4, 1, 'sdf d ddf ', ' diuk kjddl   dflgk ', 1);
+	(4, 1, 'sdf d ddf ', ' diuk kjddl   dflgk ', 1),
+	(37, 1, 'Test Дорослі-8', 'AdditionalInfo 1', 1);
 /*!40000 ALTER TABLE `championship` ENABLE KEYS */;
 
 
@@ -104,19 +106,19 @@ CREATE TABLE IF NOT EXISTS `championship_categories` (
   `championship_id` bigint(20) unsigned NOT NULL,
   `category_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `championship_id` (`championship_id`),
   KEY `category_id` (`category_id`),
-  CONSTRAINT `FK__championship` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  KEY `championship_id` (`championship_id`),
+  CONSTRAINT `FK_championship_categories_categories` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `FK_championship_categories_championship` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_categories: ~2 rows (approximately)
+-- Dumping data for table udf.championship_categories: ~3 rows (approximately)
 DELETE FROM `championship_categories`;
 /*!40000 ALTER TABLE `championship_categories` DISABLE KEYS */;
 INSERT INTO `championship_categories` (`id`, `championship_id`, `category_id`) VALUES
-	(2, 3, 10),
-	(3, 3, 9),
-	(8, 4, 10),
-	(9, 4, 10);
+	(11, 4, 10),
+	(12, 3, 8),
+	(19, 3, 10);
 /*!40000 ALTER TABLE `championship_categories` ENABLE KEYS */;
 
 
@@ -138,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `championship_judges_mark` (
   CONSTRAINT `FK_championship_judges_mark_championship_categories` FOREIGN KEY (`category_id`) REFERENCES `championship_categories` (`category_id`),
   CONSTRAINT `FK_championship_judges_mark_championship_judges_team` FOREIGN KEY (`judge_id`) REFERENCES `championship_judges_team` (`judge_id`),
   CONSTRAINT `FK_championship_judges_mark_championship_team` FOREIGN KEY (`team_id`) REFERENCES `championship_team` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table udf.championship_judges_mark: ~0 rows (approximately)
 DELETE FROM `championship_judges_mark`;
@@ -157,11 +159,19 @@ CREATE TABLE IF NOT EXISTS `championship_judges_team` (
   KEY `championship_id` (`championship_id`),
   CONSTRAINT `FK_championship_judges_team_championship` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`),
   CONSTRAINT `FK_championship_judges_team_judges` FOREIGN KEY (`judge_id`) REFERENCES `judges` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_judges_team: ~0 rows (approximately)
+-- Dumping data for table udf.championship_judges_team: ~7 rows (approximately)
 DELETE FROM `championship_judges_team`;
 /*!40000 ALTER TABLE `championship_judges_team` DISABLE KEYS */;
+INSERT INTO `championship_judges_team` (`id`, `championship_id`, `judge_id`) VALUES
+	(1, 4, 1),
+	(2, 4, 2),
+	(3, 4, 3),
+	(4, 3, 2),
+	(5, 3, 5),
+	(6, 3, 4),
+	(8, 3, 3);
 /*!40000 ALTER TABLE `championship_judges_team` ENABLE KEYS */;
 
 
@@ -180,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `championship_team` (
   CONSTRAINT `FK_championship_team_clubs` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_team: ~0 rows (approximately)
+-- Dumping data for table udf.championship_team: ~3 rows (approximately)
 DELETE FROM `championship_team`;
 /*!40000 ALTER TABLE `championship_team` DISABLE KEYS */;
 INSERT INTO `championship_team` (`id`, `championship_id`, `club_id`, `name`, `start_number`) VALUES
@@ -200,17 +210,17 @@ CREATE TABLE IF NOT EXISTS `championship_team_categories` (
   PRIMARY KEY (`id`),
   KEY `team_id` (`team_id`),
   KEY `category_id` (`category_id`),
-  CONSTRAINT `FK_championshit_team_categories_championship_categories` FOREIGN KEY (`category_id`) REFERENCES `championship_categories` (`category_id`),
-  CONSTRAINT `FK_championshit_team_categories_championship_team` FOREIGN KEY (`team_id`) REFERENCES `championship_team` (`id`)
+  CONSTRAINT `FK_championship_team_categories_championship_categories` FOREIGN KEY (`category_id`) REFERENCES `championship_categories` (`category_id`),
+  CONSTRAINT `FK_championship_team_categories_championship_team` FOREIGN KEY (`team_id`) REFERENCES `championship_team` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_team_categories: ~0 rows (approximately)
+-- Dumping data for table udf.championship_team_categories: ~3 rows (approximately)
 DELETE FROM `championship_team_categories`;
 /*!40000 ALTER TABLE `championship_team_categories` DISABLE KEYS */;
 INSERT INTO `championship_team_categories` (`id`, `team_id`, `category_id`, `composition_name`) VALUES
-	(1, 1, 10, 'cvg vbcvb c'),
-	(4, 1, 9, 'df gdfg  '),
-	(5, 3, 10, 'd fgdfg dffff ff');
+	(1, 1, 8, 'cvg vbcvb c'),
+	(4, 1, 8, 'df gdfg  '),
+	(5, 3, 8, 'd fgdfg dffff ff');
 /*!40000 ALTER TABLE `championship_team_categories` ENABLE KEYS */;
 
 
@@ -227,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `championship_team_dancers` (
   CONSTRAINT `FK_championship_team_dancers_dancers` FOREIGN KEY (`dancer_id`) REFERENCES `dancers` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Dumping data for table udf.championship_team_dancers: ~0 rows (approximately)
+-- Dumping data for table udf.championship_team_dancers: ~5 rows (approximately)
 DELETE FROM `championship_team_dancers`;
 /*!40000 ALTER TABLE `championship_team_dancers` DISABLE KEYS */;
 INSERT INTO `championship_team_dancers` (`id`, `team_id`, `dancer_id`) VALUES
@@ -391,9 +401,9 @@ CREATE TABLE IF NOT EXISTS `dance_types` (
   `code` int(10) unsigned NOT NULL,
   `name` varchar(50) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.dance_types: ~38 rows (approximately)
+-- Dumping data for table udf.dance_types: ~35 rows (approximately)
 DELETE FROM `dance_types`;
 /*!40000 ALTER TABLE `dance_types` DISABLE KEYS */;
 INSERT INTO `dance_types` (`id`, `code`, `name`) VALUES
@@ -416,7 +426,6 @@ INSERT INTO `dance_types` (`id`, `code`, `name`) VALUES
 	(17, 13, 'Belly-dance show'),
 	(18, 14, 'Tabla Belly-dance'),
 	(19, 15, 'Fusion Belly-dance'),
-	(20, 16, ''),
 	(21, 18, 'Belly-dance improvisation'),
 	(22, 19, 'Fitnes Belly-dance'),
 	(23, 22, 'Jazz-funk'),
@@ -432,9 +441,7 @@ INSERT INTO `dance_types` (`id`, `code`, `name`) VALUES
 	(33, 36, 'Stylised nation dance'),
 	(34, 37, 'Bollywood'),
 	(35, 38, 'Flamenco'),
-	(36, 40, 'Salsa'),
-	(48, 0, 'Test ???????-8'),
-	(49, 0, 'Test ???????-8');
+	(36, 40, 'Salsa');
 /*!40000 ALTER TABLE `dance_types` ENABLE KEYS */;
 
 
