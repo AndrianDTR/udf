@@ -1,48 +1,38 @@
 cmake_minimum_required(VERSION 2.6)
 
+include(ExternalProject)
+
 IF (UNIX)
-	if (WITH_BOOST STREQUAL yes)
-	ADD_CUSTOM_TARGET(boost
-		DEPENDS ${BOOST_PATH}.${TARGZ_EXT}
-		COMMAND ${CMAKE_COMMAND} -E tar	-xvzf ${BOOST_PATH}.${TARGZ_EXT}
-		WORKING_DIRECTORY ${EXT_LIB_PATH}
-		COMMENT "Unpacking ${BOOST_PATH}.${TARGZ_EXT}"
-		VERBATIM
-	)
-	endif()
-	if(WITH_MYSQL_CONNECTOR STREQUAL yes)
-	ADD_CUSTOM_TARGET(mysql_connector
-		DEPENDS	boost ${MYSQL_CONN_PATH}.${TARGZ_EXT}
-		COMMAND	${CMAKE_COMMAND} -E tar	-xvzf ${MYSQL_CONN_PATH}.${TARGZ_EXT}
-		WORKING_DIRECTORY ${EXT_LIB_PATH}
-		COMMENT "Unpacking ${MYSQL_CONN_PATH}.${TARGZ_EXT}"
-		VERBATIM
-	)
-	ADD_CUSTOM_TARGET(mysql_connector_lib
-		DEPENDS	mysql_connector
-		COMMAND	cmake -DBOOST_ROOT=${BOOST_PATH} . && make -j8
-		WORKING_DIRECTORY ${MYSQL_CONN_PATH}
-		COMMENT "Build connector lib"
-		VERBATIM
-	)
-	endif()
+	if(${WITH_MYSQL_CONNECTOR} STREQUAL yes)
+		ExternalProject_Add(boost
+			URL ${BOOST_PATH}.${TARGZ_EXT}
+			CONFIGURE_COMMAND echo ""
+			BUILD_COMMAND echo ""
+			INSTALL_COMMAND echo ""
+			BUILD_IN_SOURCE 1
+		)
+		SET(BOOST_INCLUDE_DIR ${UDF_BINARY_DIR}/3rd_party/boost-prefix/src/boost PARENT_SCOPE)
+		SET(BOOST_INCLUDE_DIR_LOCAL ${UDF_BINARY_DIR}/3rd_party/boost-prefix/src/boost)
+		
+		ExternalProject_Add(mysql_connector
+			DEPENDS	boost
+			URL ${MYSQL_CONN_PATH}.${TARGZ_EXT}
+			CONFIGURE_COMMAND cmake -DBOOST_ROOT=${BOOST_INCLUDE_DIR_LOCAL} ${UDF_BINARY_DIR}/3rd_party/mysql_connector-prefix/src/mysql_connector
+			INSTALL_COMMAND echo ""
+			BUILD_IN_SOURCE 1
+		)
+		SET(MYSQL_INCLUDE_DIR ${UDF_BINARY_DIR}/3rd_party/mysql_connector-prefix/src/mysql_connector PARENT_SCOPE)
 	
-	if(WITH_WX_WIDGETS STREQUAL yes)
-	ADD_CUSTOM_TARGET(wx_unpack
-		DEPENDS	${WX_PATH}.${TARBZ2_EXT}
-		COMMAND	${CMAKE_COMMAND} -E tar	-xvf ${WX_PATH}.${TARBZ2_EXT} && mkdir -p ${WX_BUILD_PATH}
-		WORKING_DIRECTORY ${EXT_LIB_PATH}
-		COMMENT "Unpacking ${WX_PATH}.${TARBZ2_EXT}"
-		VERBATIM
-	)
-	
-	ADD_CUSTOM_TARGET(wx_build
-		DEPENDS	wx_unpack ${WX_PATH}
-		COMMAND	../configure --with-gtk --enable-utf8 --disable-shared --with-libpng=builtin --with-zlib=builtin --with-expat=builtin && make -j8
-		WORKING_DIRECTORY ${WX_BUILD_PATH}
-		COMMENT "Unpacking ${WX_PATH}.${TARGZ_EXT}"
-		VERBATIM
-	)
+	endif()
+		
+	if(${WITH_WX_WIDGETS} STREQUAL yes)
+		ExternalProject_Add(wx_widgets
+			DOWNLOAD_COMMAND tar -xvf ${WX_PATH}.${TARBZ2_EXT}
+			CONFIGURE_COMMAND ${UDF_BINARY_DIR}/3rd_party/wx_widgets-prefix/src/wxWidgets-2.9.4/configure --with-gtk --enable-utf8 --disable-shared --with-libpng=builtin --with-zlib=builtin --with-expat=builtin
+			INSTALL_COMMAND echo ""
+		)
+		SET(WX_INCLUDE_DIR ${UDF_BINARY_DIR}/3rd_party/wx_widgets-prefix/src/wxWidgets-2.9.4/include PARENT_SCOPE)
+		SET(WX_LIB_DIR ${UDF_BINARY_DIR}/3rd_party/wx_widgets-prefix/src/x_widgets-build/lib PARENT_SCOPE)
 	endif()
  	
 	

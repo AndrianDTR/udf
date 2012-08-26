@@ -7,9 +7,8 @@ project(UDF)
 
 option(UDF_DEBUG "Build with debug info."  no)
 
-option(WITH_WX_WIDGETS "Build wxWidgets libs."  no)
-option(WITH_BOOST "Build BOOST lib."  no)
-option(WITH_MYSQL_CONNECTOR "Build MySQL connector lib."  no)
+option(WITH_WX_WIDGETS "Build wxWidgets libs."  yes)
+option(WITH_MYSQL_CONNECTOR "Build MySQL connector lib."  yes)
          
 ##########################
 #conf consts
@@ -18,25 +17,22 @@ set ( EXT_LIB_PATH "${UDF_SOURCE_DIR}/3rd_party")
 
 set(MYSQL_CONN_FILE "mysql-connector-c++-1.1.0")
 set(MYSQL_CONN_PATH "${EXT_LIB_PATH}/${MYSQL_CONN_FILE}")
-set(MYSQL_CONN_INCLUDE "${MYSQL_CONN_PATH}/driver")
+set(MYSQL_INCLUDE_DIR)
 
 set(BOOST_LIB_FILE "boost_1_50_0")
 set(BOOST_PATH "${EXT_LIB_PATH}/${BOOST_LIB_FILE}")
-set(BOOST_INCLUDE "${BOOST_PATH}/boost")
+set(BOOST_INCLUDE_DIR)
 
-set (WX_LIB_FILE "wxWidgets-2.9.4")
-set (WX_PATH "${EXT_LIB_PATH}/${WX_LIB_FILE}" )
+set(WX_LIB_FILE "wxWidgets-2.9.4")
+set(WX_PATH "${EXT_LIB_PATH}/${WX_LIB_FILE}" )
+set(WX_INCLUDE_DIR)
+set(WX_LIB_DIR)
 
 set(TARGZ_EXT "tar.gz")
 set(TARBZ2_EXT "tar.bz2")
 ##########################
 
-set ( WX_BUILD_PATH "${WX_PATH}" )
-IF ( UNIX )
-	set ( WX_BUILD_PATH "${WX_PATH}/buildgtk" )
-ENDIF ( UNIX )
-
-add_subdirectory( 3rd_party )
+add_subdirectory( 3rd_party)
 
 IF ( WIN32 )
 	add_definitions(-DBUILD4WIN)

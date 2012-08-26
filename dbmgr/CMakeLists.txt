@@ -87,25 +87,27 @@ add_definitions(-DDBMGR_EXPORTS)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall ")
 
+if(UDF_DEBUG STREQUAL yes)
+	MESSAGE(STATUS "DEBUG BUILD.")
+	ADD_DEFINITIONS(-D_DEBUG=1)
+endif()
+
+INCLUDE_DIRECTORIES(
+	${MYSQL_INCLUDE_DIR}
+	${BOOST_INCLUDE_DIR}
+)
+
 IF (UNIX)
 	
-	LINK_DIRECTORIES(${MYSQL_CONN_INCLUDE})
+	LINK_DIRECTORIES(${MYSQL_INCLUDE_DIR}/diver)
 	
-	INCLUDE_DIRECTORIES(-I/usr/include/mysql
-		${MYSQL_CONN_PATH}
-		${BOOST_PATH}
-		)
-	
-	if(UDF_DEBUG STREQUAL yes)
-		MESSAGE(STATUS "DEBUG BUILD.")
-		ADD_DEFINITIONS(-D_DEBUG=1)
-	endif()
-	
+	INCLUDE_DIRECTORIES(/usr/include/mysql)
+		
 	ADD_DEFINITIONS(-DBIG_JOINS=1 -fno-strict-aliasing -g)
 	
-	TARGET_LINK_LIBRARIES(${MODULE_NAME} ${MYSQL_CONN_INCLUDE}/libmysqlcppconn-static.a; mysqlclient_r)
+	TARGET_LINK_LIBRARIES(${MODULE_NAME} ${MYSQL_INCLUDE_DIR}/driver/libmysqlcppconn-static.a; mysqlclient_r)
 	
-	ADD_DEPENDENCIES(${MODULE_NAME} mysql_connector_lib)
+	ADD_DEPENDENCIES(${MODULE_NAME} mysql_connector)
 
 ELSE( WIN32 )
 	target_link_libraries( ${MODULE_NAME} Winmm )

@@ -44,8 +44,8 @@ set_target_properties( ${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS "DBTEST_BUI
 include_directories(
 	${UDF_SOURCE_DIR}/common/src 
 	${UDF_SOURCE_DIR}/dbmgr/src 
-	${MYSQL_CONN_PATH}
-	${BOOST_PATH}
+	${MYSQL_INCLUDE_DIR}
+	${BOOST_INCLUDE_DIR}
 )
 
 # Add module find lib directories

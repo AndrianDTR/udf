@@ -67,7 +67,7 @@ set( MODULE_NAME "gui" )
 
 # Set module link properties
 add_executable( ${MODULE_NAME} ${HEADER_FILES} ${SOURCE_FILES} )
-add_dependencies( ${MODULE_NAME} dbmgr wx_build)
+add_dependencies( ${MODULE_NAME} dbmgr wx_widgets)
 target_link_libraries( ${MODULE_NAME} dbmgr )
 set_target_properties( ${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS "GUI_BUILD_MODULE" )
 
@@ -79,8 +79,8 @@ endif()
 include_directories(
 	${UDF_SOURCE_DIR}/common/src 
 	${UDF_SOURCE_DIR}/dbmgr/src 
-	${MYSQL_CONN_PATH}
-	${BOOST_PATH}
+	${MYSQL_INCLUDE_DIR}
+	${BOOST_INCLUDE_DIR}
 	src
 	res
 )
@@ -95,7 +95,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -L${UDF_BINARY_DIR}/lib")
 ################################
 ## Add WxWidgets libs
 ################################
-include_directories( ${WX_PATH}/include )
+include_directories( ${WX_INCLUDE_DIR} )
 
 ## platform dependent wxLibs
 if ( WIN32 )
@@ -113,13 +113,16 @@ if ( WIN32 )
 		comctl32)
 	
 else ( WIN32 )
-	include_directories( ${WX_BUILD_PATH}/lib/wx/include/gtk2-unicode-static-2.9 )
+	include_directories( 
+		${WX_LIB_DIR}/wx/include/gtk2-unicode-static-2.9 
+		${WX_INCLUDE_DIR}
+	)
 	
-	link_directories ( ${WX_BUILD_PATH}/lib ) 
+	link_directories ( ${WX_LIB_DIR} ) 
 	
 	add_definitions(-D_FILE_OFFSET_BITS=64 -D__WXGTK__ -pthread)
 	
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${WX_BUILD_PATH}/lib") 
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${WX_LIB_DIR}") 
 		
 	include_directories( ../gui/src/linux )
 	
