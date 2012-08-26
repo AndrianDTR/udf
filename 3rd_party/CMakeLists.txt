@@ -32,7 +32,7 @@ IF (UNIX)
 			INSTALL_COMMAND echo ""
 		)
 		SET(WX_INCLUDE_DIR ${UDF_BINARY_DIR}/3rd_party/wx_widgets-prefix/src/wxWidgets-2.9.4/include PARENT_SCOPE)
-		SET(WX_LIB_DIR ${UDF_BINARY_DIR}/3rd_party/wx_widgets-prefix/src/x_widgets-build/lib PARENT_SCOPE)
+		SET(WX_LIB_DIR ${UDF_BINARY_DIR}/3rd_party/wx_widgets-prefix/src/wx_widgets-build/lib PARENT_SCOPE)
 	endif()
  	
 	
