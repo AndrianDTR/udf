@@ -1879,6 +1879,8 @@ CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	this->SetSizer( bSizer84 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 CodeDialog::~CodeDialog()

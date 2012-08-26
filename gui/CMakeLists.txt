@@ -113,7 +113,7 @@ if ( WIN32 )
 		comctl32)
 	
 else ( WIN32 )
-	include_directories( ${WX_LIB_DIR}wx/include/gtk2-unicode-static-2.9
+	include_directories( ${WX_LIB_DIR}/wx/include/gtk2-unicode-static-2.9
 		${WX_INCLUDE_DIR}
 	)
 	
