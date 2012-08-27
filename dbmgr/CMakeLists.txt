@@ -96,22 +96,25 @@ INCLUDE_DIRECTORIES(
 	${MYSQL_INCLUDE_DIR}
 	${BOOST_INCLUDE_DIR}
 )
+LINK_DIRECTORIES(${MYSQL_INCLUDE_DIR}/diver)
+ADD_DEFINITIONS(-DBIG_JOINS=1 -fno-strict-aliasing -g)
 
 IF (UNIX)
-	
-	LINK_DIRECTORIES(${MYSQL_INCLUDE_DIR}/diver)
-	
 	INCLUDE_DIRECTORIES(/usr/include/mysql)
 		
-	ADD_DEFINITIONS(-DBIG_JOINS=1 -fno-strict-aliasing -g)
-	
 	TARGET_LINK_LIBRARIES(${MODULE_NAME} ${MYSQL_INCLUDE_DIR}/driver/libmysqlcppconn-static.a; mysqlclient_r)
 	
 	ADD_DEPENDENCIES(${MODULE_NAME} mysql_connector)
 
 ELSE( WIN32 )
-	target_link_libraries( ${MODULE_NAME} Winmm )
-	MESSAGE(FATAL_ERROR "Extract MySQL connector for win32 not implemented yet.")
+	INCLUDE_DIRECTORIES(/usr/include/mysql)
+		
+	TARGET_LINK_LIBRARIES(${MODULE_NAME} ${MYSQL_INCLUDE_DIR}/driver/libmysqlcppconn-static.a; mysqlclient_r)
+	
+	ADD_DEPENDENCIES(${MODULE_NAME} mysql_connector)
+
+	
+	MESSAGE(STATUS "Extract MySQL connector for win32 not implemented yet.")
 ELSE( WIN64 )
 	target_link_libraries( ${MODULE_NAME} Winmm )
 	MESSAGE(FATAL_ERROR "Extract MySQL connector for win32 not implemented yet.")
