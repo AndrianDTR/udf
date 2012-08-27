@@ -36,6 +36,33 @@ CategoriesMngrDlg( parent )
 		int nCount = m_listCategories->GetCount();
 		m_listCategories->Insert(data.shortName, nCount, &data);
 	}
+	
+	for(CDanceTypesTable::tTableIt it = listDanceTypes.begin(); it != listDanceTypes.end(); it++)
+	{
+		CDanceTypesTable::tDATA data = it->second;
+		
+		int nPos = m_comboDance->GetCount();
+		m_comboDance->Insert(data.name, nPos, &data);
+	}
+	m_comboDance->AutoComplete(m_comboDance->GetStrings());
+	
+	for(CLigaTable::tTableIt it = listLiga.begin(); it != listLiga.end(); it++)
+	{
+		CLigaTable::tDATA data = it->second;
+		
+		int nPos = m_comboLiga->GetCount();
+		m_comboLiga->Insert(data.name, nPos, &data);
+	}
+	m_comboLiga->AutoComplete(m_comboLiga->GetStrings());
+	
+	for(CAgeCategoryTable::tTableIt it = listAgeCat.begin(); it != listAgeCat.end(); it++)
+	{
+		CAgeCategoryTable::tDATA data = it->second;
+		
+		int nPos = m_comboAge->GetCount();
+		m_comboAge->Insert(data.name, nPos, &data);
+	}
+	m_comboAge->AutoComplete(m_comboAge->GetStrings());
 }
 
 void udfCategoriesMngrDlg::OnAdd( wxCommandEvent& event )

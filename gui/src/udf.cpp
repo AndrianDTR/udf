@@ -35,12 +35,12 @@
 BEGIN_EVENT_TABLE( DancersTeamMngr, wxDialog )
 	EVT_BUTTON( wxID_ADD, DancersTeamMngr::_wxFB_OnAddDancerTeam )
 	EVT_BUTTON( wxID_REMOVE, DancersTeamMngr::_wxFB_OnRemoveTancerTeam )
+	EVT_BUTTON( wxID_OK, DancersTeamMngr::_wxFB_OnSave )
+	EVT_BUTTON( wxID_CANCEL, DancersTeamMngr::_wxFB_OnDiscard )
 	EVT_BUTTON( wxID_ADDDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnAddDancerTeamCategory )
 	EVT_BUTTON( wxID_REMOVEDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnRemoveDancerTeamCategory )
 	EVT_BUTTON( wxID_ADDDANCER, DancersTeamMngr::_wxFB_OnAddDancerTeamDancer )
 	EVT_BUTTON( wxID_REMOVEDANCER, DancersTeamMngr::_wxFB_OnRemoveDancerTeamDancer )
-	EVT_BUTTON( wxID_OK, DancersTeamMngr::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, DancersTeamMngr::_wxFB_OnDiscard )
 END_EVENT_TABLE()
 
 DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -111,6 +111,13 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	m_bpButton14 = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer74->Add( m_bpButton14, 0, wxALL, 5 );
+	
+	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpSave->SetDefault(); 
+	bSizer74->Add( m_bpSave, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer74->Add( m_bpDiscard, 0, wxALL, 5 );
 	
 	bSizer181->Add( bSizer74, 0, wxALIGN_RIGHT, 5 );
 	
@@ -201,24 +208,14 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	bSizer181->Add( sbSizer4, 1, wxEXPAND|wxALL, 5 );
 	
-	wxBoxSizer* bSizer33;
-	bSizer33 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpSave->SetDefault(); 
-	bSizer33->Add( m_bpSave, 0, wxALL, 5 );
-	
-	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer33->Add( m_bpDiscard, 0, wxALL, 5 );
-	
-	bSizer181->Add( bSizer33, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
-	
 	bSizer16->Add( bSizer181, 1, wxEXPAND, 5 );
 	
 	bSizer15->Add( bSizer16, 1, wxEXPAND, 5 );
 	
 	this->SetSizer( bSizer15 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 DancersTeamMngr::~DancersTeamMngr()
@@ -301,6 +298,8 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 	
 	this->SetSizer( bSizer7 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 ChampionshipCategoriesMngrDlg::~ChampionshipCategoriesMngrDlg()
@@ -357,6 +356,13 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer75->Add( m_bpRemove, 0, wxALL, 5 );
 	
+	m_bpButton29 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton29->SetDefault(); 
+	bSizer75->Add( m_bpButton29, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer75->Add( m_bpDiscard, 0, wxALL, 5 );
+	
 	bSizer181->Add( bSizer75, 0, wxALIGN_RIGHT, 5 );
 	
 	wxFlexGridSizer* fgSizer2;
@@ -402,24 +408,14 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	
 	bSizer181->Add( fgSizer2, 1, wxEXPAND, 5 );
 	
-	wxBoxSizer* bSizer33;
-	bSizer33 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpButton29 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpButton29->SetDefault(); 
-	bSizer33->Add( m_bpButton29, 0, wxALL, 5 );
-	
-	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer33->Add( m_bpDiscard, 0, wxALL, 5 );
-	
-	bSizer181->Add( bSizer33, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
-	
 	bSizer16->Add( bSizer181, 1, wxEXPAND, 5 );
 	
 	bSizer15->Add( bSizer16, 1, wxEXPAND, 5 );
 	
 	this->SetSizer( bSizer15 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 CategoriesMngrDlg::~CategoriesMngrDlg()
@@ -491,6 +487,13 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_bpDancersMngr = new wxBitmapButton( this, wxID_DANCERS, wxBitmap( button_user_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer24->Add( m_bpDancersMngr, 0, wxALL, 5 );
 	
+	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpSave->SetDefault(); 
+	bSizer24->Add( m_bpSave, 0, wxALL, 5 );
+	
+	m_bpCancel = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer24->Add( m_bpCancel, 0, wxALL, 5 );
+	
 	bSizer22->Add( bSizer24, 0, wxALIGN_RIGHT, 5 );
 	
 	wxFlexGridSizer* fgSizer3;
@@ -561,13 +564,6 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	wxBoxSizer* bSizer73;
 	bSizer73 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpSave->SetDefault(); 
-	bSizer73->Add( m_bpSave, 0, wxALL, 5 );
-	
-	m_bpCancel = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer73->Add( m_bpCancel, 0, wxALL, 5 );
-	
 	bSizer22->Add( bSizer73, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	bSizer20->Add( bSizer22, 1, wxEXPAND, 5 );
@@ -576,6 +572,8 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	
 	this->SetSizer( bSizer19 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 ClubsMngrDlg::~ClubsMngrDlg()
@@ -594,13 +592,13 @@ BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_MENU( ID_ABOUT, MainFrameBase::_wxFB_OnAboutDlg )
 	EVT_BUTTON( wxID_CHAMPIONSIP_ADD, MainFrameBase::_wxFB_OnAddChampionsip )
 	EVT_BUTTON( wxID_CHAMPIONSIP_REMOVE, MainFrameBase::_wxFB_OnRemoveChampionship )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_SAVE, MainFrameBase::_wxFB_OnSave )
+	EVT_BUTTON( wxID_CHAMPIONSHIPDISCARD, MainFrameBase::_wxFB_OnDiscard )
 	EVT_BUTTON( wxID_CHAMPIONSHIP_CATEGORIES, MainFrameBase::_wxFB_OnCategoryMngr )
 	EVT_BUTTON( wxID_CHAMPIONSHIP_STARTNUMBERMNGR, MainFrameBase::_wxFB_OnStartNumberAssign )
 	EVT_BUTTON( wxID_CHAMPIONSHIP_JUDGESTEAMMNGR, MainFrameBase::_wxFB_OnJudgeMngr )
 	EVT_BUTTON( wxID_CHAMPIONSHIP_SENDINVITATION, MainFrameBase::_wxFB_OnSendInvitation )
 	EVT_BUTTON( wxID_RESULTS, MainFrameBase::_wxFB_OnResults )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_SAVE, MainFrameBase::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CHAMPIONSHIPDISCARD, MainFrameBase::_wxFB_OnDiscard )
 END_EVENT_TABLE()
 
 MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
@@ -702,6 +700,13 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_bpRemove = new wxBitmapButton( m_panel1, wxID_CHAMPIONSIP_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpRemove, 0, wxALL, 5 );
 	
+	m_bpSave = new wxBitmapButton( m_panel1, wxID_CHAMPIONSHIP_SAVE, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpSave->SetDefault(); 
+	bSizer7->Add( m_bpSave, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( m_panel1, wxID_CHAMPIONSHIPDISCARD, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer7->Add( m_bpDiscard, 0, wxALL, 5 );
+	
 	m_bpCategoryMngr = new wxBitmapButton( m_panel1, wxID_CHAMPIONSHIP_CATEGORIES, wxBitmap( button_categories_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpCategoryMngr, 0, wxALL, 5 );
 	
@@ -779,15 +784,15 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_staticText12->Wrap( -1 );
 	sbSizer1->Add( m_staticText12, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_dateRegOpen = new wxDatePickerCtrl( m_panel1, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+	m_dateRegOpen = new wxDatePickerCtrl( m_panel1, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT );
 	sbSizer1->Add( m_dateRegOpen, 0, wxALL, 5 );
 	
 	m_staticText13 = new wxStaticText( m_panel1, wxID_ANY, _("Close date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText13->Wrap( -1 );
 	sbSizer1->Add( m_staticText13, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_dateRegClose = new wxDatePickerCtrl( m_panel1, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
-	sbSizer1->Add( m_dateRegClose, 0, wxALL, 5 );
+	m_dateRegClose = new wxDatePickerCtrl( m_panel1, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT );
+	sbSizer1->Add( m_dateRegClose, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer13->Add( sbSizer1, 0, wxEXPAND|wxALL, 5 );
 	
@@ -797,18 +802,6 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	m_textAdditionalInfo = new wxTextCtrl( m_panel1, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,100 ), wxTE_MULTILINE );
 	bSizer13->Add( m_textAdditionalInfo, 1, wxALL|wxEXPAND, 5 );
-	
-	wxBoxSizer* bSizer35;
-	bSizer35 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpSave = new wxBitmapButton( m_panel1, wxID_CHAMPIONSHIP_SAVE, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpSave->SetDefault(); 
-	bSizer35->Add( m_bpSave, 0, wxALL, 5 );
-	
-	m_bpDiscard = new wxBitmapButton( m_panel1, wxID_CHAMPIONSHIPDISCARD, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer35->Add( m_bpDiscard, 0, wxALL, 5 );
-	
-	bSizer13->Add( bSizer35, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	bSizer6->Add( bSizer13, 1, wxEXPAND, 5 );
 	
@@ -906,6 +899,8 @@ DirectorInfo::DirectorInfo( wxWindow* parent, wxWindowID id, const wxString& tit
 	
 	this->SetSizer( bSizer25 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 DirectorInfo::~DirectorInfo()
@@ -963,6 +958,13 @@ TarinersMngrDlg::TarinersMngrDlg( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	m_bpRemoveTrainer = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer76->Add( m_bpRemoveTrainer, 0, wxALL, 5 );
+	
+	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpSave->SetDefault(); 
+	bSizer76->Add( m_bpSave, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpDiscard, 0, wxALL, 5 );
 	
 	bSizer22->Add( bSizer76, 0, wxALIGN_RIGHT, 5 );
 	
@@ -1031,18 +1033,6 @@ TarinersMngrDlg::TarinersMngrDlg( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	bSizer22->Add( fgSizer3, 1, wxEXPAND, 5 );
 	
-	wxBoxSizer* bSizer24;
-	bSizer24 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpSave->SetDefault(); 
-	bSizer24->Add( m_bpSave, 0, wxALL, 5 );
-	
-	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer24->Add( m_bpDiscard, 0, wxALL, 5 );
-	
-	bSizer22->Add( bSizer24, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
-	
 	bSizer20->Add( bSizer22, 1, wxEXPAND, 5 );
 	
 	bSizer19->Add( bSizer20, 1, wxEXPAND, 5 );
@@ -1051,6 +1041,8 @@ TarinersMngrDlg::TarinersMngrDlg( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	this->SetSizer( bSizer33 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 TarinersMngrDlg::~TarinersMngrDlg()
@@ -1108,6 +1100,13 @@ DancersMngrDlg::DancersMngrDlg( wxWindow* parent, wxWindowID id, const wxString&
 	
 	m_bpRemoveDancer = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_dancerremove_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer77->Add( m_bpRemoveDancer, 0, wxALL, 5 );
+	
+	m_bpButton24 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton24->SetDefault(); 
+	bSizer77->Add( m_bpButton24, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer77->Add( m_bpDiscard, 0, wxALL, 5 );
 	
 	bSizer22->Add( bSizer77, 0, wxALIGN_RIGHT, 5 );
 	
@@ -1207,18 +1206,6 @@ DancersMngrDlg::DancersMngrDlg( wxWindow* parent, wxWindowID id, const wxString&
 	
 	bSizer22->Add( fgSizer3, 1, wxEXPAND, 5 );
 	
-	wxBoxSizer* bSizer24;
-	bSizer24 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpButton24 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpButton24->SetDefault(); 
-	bSizer24->Add( m_bpButton24, 0, wxALL, 5 );
-	
-	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer24->Add( m_bpDiscard, 0, wxALL, 5 );
-	
-	bSizer22->Add( bSizer24, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
-	
 	bSizer20->Add( bSizer22, 1, wxEXPAND, 5 );
 	
 	bSizer19->Add( bSizer20, 1, wxEXPAND, 5 );
@@ -1227,6 +1214,8 @@ DancersMngrDlg::DancersMngrDlg( wxWindow* parent, wxWindowID id, const wxString&
 	
 	this->SetSizer( bSizer33 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 DancersMngrDlg::~DancersMngrDlg()
@@ -1287,6 +1276,8 @@ AccountInfo::AccountInfo( wxWindow* parent, wxWindowID id, const wxString& title
 	
 	this->SetSizer( bSizer44 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 AccountInfo::~AccountInfo()
@@ -1341,6 +1332,13 @@ JudgesMngr::JudgesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer76->Add( m_bpRemove, 0, wxALL, 5 );
+	
+	m_bpButton19 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton19->SetDefault(); 
+	bSizer76->Add( m_bpButton19, 0, wxALL, 5 );
+	
+	m_bpButton20 = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpButton20, 0, wxALL, 5 );
 	
 	bSizer22->Add( bSizer76, 0, wxALIGN_RIGHT, 5 );
 	
@@ -1422,24 +1420,14 @@ JudgesMngr::JudgesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	bSizer22->Add( fgSizer3, 1, wxEXPAND, 5 );
 	
-	wxBoxSizer* bSizer24;
-	bSizer24 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpButton19 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpButton19->SetDefault(); 
-	bSizer24->Add( m_bpButton19, 0, wxALL, 5 );
-	
-	m_bpButton20 = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer24->Add( m_bpButton20, 0, wxALL, 5 );
-	
-	bSizer22->Add( bSizer24, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
-	
 	bSizer20->Add( bSizer22, 1, wxEXPAND, 5 );
 	
 	bSizer19->Add( bSizer20, 1, wxEXPAND, 5 );
 	
 	this->SetSizer( bSizer19 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 JudgesMngr::~JudgesMngr()
@@ -1522,6 +1510,8 @@ TeamCategoryMngrDlg::TeamCategoryMngrDlg( wxWindow* parent, wxWindowID id, const
 	
 	this->SetSizer( bSizer7 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 TeamCategoryMngrDlg::~TeamCategoryMngrDlg()
@@ -1604,6 +1594,8 @@ TeamDancersMngrDlg::TeamDancersMngrDlg( wxWindow* parent, wxWindowID id, const w
 	
 	this->SetSizer( bSizer7 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 TeamDancersMngrDlg::~TeamDancersMngrDlg()
@@ -1686,6 +1678,8 @@ ChampionshipJudgesTeamMngrDlg::ChampionshipJudgesTeamMngrDlg( wxWindow* parent, 
 	
 	this->SetSizer( bSizer7 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 ChampionshipJudgesTeamMngrDlg::~ChampionshipJudgesTeamMngrDlg()
@@ -1779,6 +1773,8 @@ StartNumberAssignDlg::StartNumberAssignDlg( wxWindow* parent, wxWindowID id, con
 	
 	this->SetSizer( bSizer95 );
 	this->Layout();
+	
+	this->Centre( wxBOTH );
 }
 
 StartNumberAssignDlg::~StartNumberAssignDlg()
@@ -1788,11 +1784,11 @@ StartNumberAssignDlg::~StartNumberAssignDlg()
 BEGIN_EVENT_TABLE( CodeDialog, wxDialog )
 	EVT_TEXT( ID_SEARCH, CodeDialog::_wxFB_OnSearch )
 	EVT_LISTBOX( ID_ITEM_LIST, CodeDialog::_wxFB_OnSelectItem )
-	EVT_BUTTON( wxID_OK, CodeDialog::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CALCEL, CodeDialog::_wxFB_OnDiscard )
 	EVT_BUTTON( wxID_ADD, CodeDialog::_wxFB_OnAdd )
 	EVT_BUTTON( wxID_REMOVE, CodeDialog::_wxFB_OnRemove )
 	EVT_BUTTON( wxID_UPDATE, CodeDialog::_wxFB_OnUpdateCode )
+	EVT_BUTTON( wxID_OK, CodeDialog::_wxFB_OnSave )
+	EVT_BUTTON( wxID_CALCEL, CodeDialog::_wxFB_OnDiscard )
 END_EVENT_TABLE()
 
 CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -1826,6 +1822,15 @@ CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	wxBoxSizer* bSizer87;
 	bSizer87 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpAdd = new wxBitmapButton( this, wxID_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer87->Add( m_bpAdd, 0, wxALL, 5 );
+	
+	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer87->Add( m_bpRemove, 0, wxALL, 5 );
+	
+	m_bpAplly = new wxBitmapButton( this, wxID_UPDATE, wxBitmap( button_assign_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer87->Add( m_bpAplly, 0, wxALL, 5 );
 	
 	m_bpButton81 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	m_bpButton81->SetDefault(); 
@@ -1861,19 +1866,8 @@ CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	bSizer86->Add( fgSizer13, 1, wxEXPAND, 5 );
 	
-	wxBoxSizer* bSizer85;
-	bSizer85 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpAdd = new wxBitmapButton( this, wxID_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer85->Add( m_bpAdd, 0, wxALL, 5 );
-	
-	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer85->Add( m_bpRemove, 0, wxALL, 5 );
-	
-	m_bpAplly = new wxBitmapButton( this, wxID_UPDATE, wxBitmap( button_assign_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer85->Add( m_bpAplly, 0, wxALL, 5 );
-	
-	bSizer86->Add( bSizer85, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizer86->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	bSizer84->Add( bSizer86, 1, wxEXPAND, 5 );
 	

@@ -48,12 +48,12 @@ class DancersTeamMngr : public wxDialog
 		// Private event handlers
 		void _wxFB_OnAddDancerTeam( wxCommandEvent& event ){ OnAddDancerTeam( event ); }
 		void _wxFB_OnRemoveTancerTeam( wxCommandEvent& event ){ OnRemoveTancerTeam( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		void _wxFB_OnAddDancerTeamCategory( wxCommandEvent& event ){ OnAddDancerTeamCategory( event ); }
 		void _wxFB_OnRemoveDancerTeamCategory( wxCommandEvent& event ){ OnRemoveDancerTeamCategory( event ); }
 		void _wxFB_OnAddDancerTeamDancer( wxCommandEvent& event ){ OnAddDancerTeamDancer( event ); }
 		void _wxFB_OnRemoveDancerTeamDancer( wxCommandEvent& event ){ OnRemoveDancerTeamDancer( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
 	
 	protected:
@@ -74,6 +74,8 @@ class DancersTeamMngr : public wxDialog
 		wxListBox* m_listBox4;
 		wxBitmapButton* m_bpButton13;
 		wxBitmapButton* m_bpButton14;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText16;
 		wxTextCtrl* m_textCtrl6;
 		wxComboBox* m_comboBox17;
@@ -84,18 +86,16 @@ class DancersTeamMngr : public wxDialog
 		wxListBox* m_listBox21;
 		wxBitmapButton* m_bpAddDancerTeamDancer;
 		wxBitmapButton* m_bpRemoveDancerTeamDancer;
-		wxBitmapButton* m_bpSave;
-		wxBitmapButton* m_bpDiscard;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnAddDancerTeam( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveTancerTeam( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancerTeamCategory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveDancerTeamCategory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancerTeamDancer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveDancerTeamDancer( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -189,6 +189,8 @@ class CategoriesMngrDlg : public wxDialog
 		wxListBox* m_listCategories;
 		wxBitmapButton* m_bpButton13;
 		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpButton29;
+		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText16;
 		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText17;
@@ -199,8 +201,6 @@ class CategoriesMngrDlg : public wxDialog
 		wxComboBox* m_comboLiga;
 		wxStaticText* m_staticText191;
 		wxComboBox* m_comboAge;
-		wxBitmapButton* m_bpButton29;
-		wxBitmapButton* m_bpDiscard;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnCategorySelected( wxCommandEvent& event ) { event.Skip(); }
@@ -212,7 +212,7 @@ class CategoriesMngrDlg : public wxDialog
 	
 	public:
 		
-		CategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 715,342 ), long style = wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
+		CategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 715,284 ), long style = wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
 		~CategoriesMngrDlg();
 	
 };
@@ -256,6 +256,8 @@ class ClubsMngrDlg : public wxDialog
 		wxBitmapButton* m_bpDirectorInfo;
 		wxBitmapButton* m_bpTarinersMngr;
 		wxBitmapButton* m_bpDancersMngr;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpCancel;
 		wxStaticText* m_staticText21;
 		wxTextCtrl* m_textCtrl9;
 		wxStaticText* m_staticText22;
@@ -272,8 +274,6 @@ class ClubsMngrDlg : public wxDialog
 		wxDatePickerCtrl* m_datePicker6;
 		wxStaticText* m_staticText28;
 		wxDatePickerCtrl* m_datePicker7;
-		wxBitmapButton* m_bpSave;
-		wxBitmapButton* m_bpCancel;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnAddClub( wxCommandEvent& event ) { event.Skip(); }
@@ -313,13 +313,13 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
 		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
 		void _wxFB_OnRemoveChampionship( wxCommandEvent& event ){ OnRemoveChampionship( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		void _wxFB_OnCategoryMngr( wxCommandEvent& event ){ OnCategoryMngr( event ); }
 		void _wxFB_OnStartNumberAssign( wxCommandEvent& event ){ OnStartNumberAssign( event ); }
 		void _wxFB_OnJudgeMngr( wxCommandEvent& event ){ OnJudgeMngr( event ); }
 		void _wxFB_OnSendInvitation( wxCommandEvent& event ){ OnSendInvitation( event ); }
 		void _wxFB_OnResults( wxCommandEvent& event ){ OnResults( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
 	
 	protected:
@@ -334,13 +334,13 @@ class MainFrameBase : public wxFrame
 			ID_ABOUT,
 			wxID_CHAMPIONSIP_ADD,
 			wxID_CHAMPIONSIP_REMOVE,
+			wxID_CHAMPIONSHIP_SAVE,
+			wxID_CHAMPIONSHIPDISCARD,
 			wxID_CHAMPIONSHIP_CATEGORIES,
 			wxID_CHAMPIONSHIP_STARTNUMBERMNGR,
 			wxID_CHAMPIONSHIP_JUDGESTEAMMNGR,
 			wxID_CHAMPIONSHIP_SENDINVITATION,
 			wxID_RESULTS,
-			wxID_CHAMPIONSHIP_SAVE,
-			wxID_CHAMPIONSHIPDISCARD,
 		};
 		
 		wxMenuBar* m_menuBar;
@@ -355,6 +355,8 @@ class MainFrameBase : public wxFrame
 		wxListBox* m_listChamlionshipList;
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
 		wxBitmapButton* m_bpCategoryMngr;
 		wxBitmapButton* m_bpStartNumberMngr;
 		wxBitmapButton* m_bpJudgesMngr;
@@ -379,8 +381,6 @@ class MainFrameBase : public wxFrame
 		wxDatePickerCtrl* m_dateRegClose;
 		wxStaticText* m_staticText14;
 		wxTextCtrl* m_textAdditionalInfo;
-		wxBitmapButton* m_bpSave;
-		wxBitmapButton* m_bpDiscard;
 		wxStatusBar* m_statusBar;
 		
 		// Virtual event handlers, overide them in your derived class
@@ -395,13 +395,13 @@ class MainFrameBase : public wxFrame
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddChampionsip( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveChampionship( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCategoryMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnStartNumberAssign( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnJudgeMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSendInvitation( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnResults( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -473,6 +473,8 @@ class TarinersMngrDlg : public wxDialog
 		wxListBox* m_listBox5;
 		wxBitmapButton* m_bpAddTrainer;
 		wxBitmapButton* m_bpRemoveTrainer;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText21;
 		wxTextCtrl* m_textCtrl9;
 		wxStaticText* m_staticText22;
@@ -489,8 +491,6 @@ class TarinersMngrDlg : public wxDialog
 		wxDatePickerCtrl* m_datePicker6;
 		wxStaticText* m_staticText28;
 		wxDatePickerCtrl* m_datePicker7;
-		wxBitmapButton* m_bpSave;
-		wxBitmapButton* m_bpDiscard;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnAddTrainer( wxCommandEvent& event ) { event.Skip(); }
@@ -527,6 +527,8 @@ class DancersMngrDlg : public wxDialog
 		wxListBox* m_listBox5;
 		wxBitmapButton* m_bpAddDancer;
 		wxBitmapButton* m_bpRemoveDancer;
+		wxBitmapButton* m_bpButton24;
+		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText21;
 		wxTextCtrl* m_textCtrl9;
 		wxStaticText* m_staticText54;
@@ -551,8 +553,6 @@ class DancersMngrDlg : public wxDialog
 		wxDatePickerCtrl* m_datePicker7;
 		wxStaticText* m_staticText62;
 		wxDatePickerCtrl* m_datePicker15;
-		wxBitmapButton* m_bpButton24;
-		wxBitmapButton* m_bpDiscard;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnAddDancer( wxCommandEvent& event ) { event.Skip(); }
@@ -624,6 +624,8 @@ class JudgesMngr : public wxDialog
 		wxListBox* m_listBox5;
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpButton19;
+		wxBitmapButton* m_bpButton20;
 		wxStaticText* m_staticText21;
 		wxTextCtrl* m_textCtrl9;
 		wxStaticText* m_staticText22;
@@ -644,8 +646,6 @@ class JudgesMngr : public wxDialog
 		wxDatePickerCtrl* m_datePicker6;
 		wxStaticText* m_staticText28;
 		wxDatePickerCtrl* m_datePicker7;
-		wxBitmapButton* m_bpButton19;
-		wxBitmapButton* m_bpButton20;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnAddJudge( wxCommandEvent& event ) { event.Skip(); }
@@ -883,11 +883,11 @@ class CodeDialog : public wxDialog
 		// Private event handlers
 		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
 		void _wxFB_OnSelectItem( wxCommandEvent& event ){ OnSelectItem( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
 		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
 		void _wxFB_OnUpdateCode( wxCommandEvent& event ){ OnUpdateCode( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
 	
 	protected:
@@ -895,14 +895,17 @@ class CodeDialog : public wxDialog
 		{
 			ID_SEARCH = 1000,
 			ID_ITEM_LIST,
-			wxID_CALCEL,
 			wxID_UPDATE,
+			wxID_CALCEL,
 		};
 		
 		wxStaticBoxSizer* m_sbListSizer;
 		wxStaticText* m_staticText84;
 		wxTextCtrl* m_textSearch;
 		wxListBox* m_listItems;
+		wxBitmapButton* m_bpAdd;
+		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpAplly;
 		wxBitmapButton* m_bpButton81;
 		wxBitmapButton* m_bpButton82;
 		
@@ -910,23 +913,21 @@ class CodeDialog : public wxDialog
 		wxTextCtrl* m_textCode;
 		wxStaticText* m_staticText83;
 		wxTextCtrl* m_textName;
-		wxBitmapButton* m_bpAdd;
-		wxBitmapButton* m_bpRemove;
-		wxBitmapButton* m_bpAplly;
+		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSelectItem( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdateCode( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		CodeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Code"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 549,292 ), long style = wxDEFAULT_DIALOG_STYLE );
+		CodeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Code"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,322 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~CodeDialog();
 	
 };
