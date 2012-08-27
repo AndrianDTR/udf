@@ -125,6 +125,23 @@ void udfMainFrameBase::OnAboutDlg(wxCommandEvent& event)
 
 void udfMainFrameBase::OnAgeCodesMgr(wxCommandEvent& event)
 {
+	ShowAgeCatsMngrDlg();
+}
+
+void udfMainFrameBase::OnDanceTypesCodeMgr(wxCommandEvent& event)
+{
+	ShowDanceTypesMngrDlg();
+}
+
+void udfMainFrameBase::OnLigueCodeMgr(wxCommandEvent& event)
+{
+	ShowLiguesMngrDlg();
+}
+
+int udfMainFrameBase::ShowAgeCatsMngrDlg()
+{
+	int res = wxID_CANCEL;
+	
 	udfCodeDialog dlg(this);
 	dlg.SetTitle(wxT("Age category code manager"));
 	dlg.SetListName(_("Age categories list"));
@@ -140,7 +157,8 @@ void udfMainFrameBase::OnAgeCodesMgr(wxCommandEvent& event)
 		listIt++;
 	}
 	dlg.RefreshList();
-	if(dlg.ShowModal() == wxID_OK)
+	res = dlg.ShowModal();
+	if(res == wxID_OK)
 	{
 		udfCodeDialog::tListMap rList = dlg.GetResultList();
 				
@@ -154,11 +172,14 @@ void udfMainFrameBase::OnAgeCodesMgr(wxCommandEvent& event)
 			}
 			else if(rLstIt != rList.end() && rLstIt->first == listIt->first)
 			{
-				CAgeCategoryTable::tDATA data;
+				CAgeCategoryTable::tDATA data = listIt->second;
 				udfCodeDialog::tDATA cData = rLstIt->second;
-				data.code = cData.code;
-				data.name = cData.name;
-				table.UpdateRow(listIt->first, data);
+				if(data.code != cData.code || data.name != cData.name)
+				{
+					data.code = cData.code;
+					data.name = cData.name;
+					table.UpdateRow(listIt->first, data);
+				}
 				rList.erase(rLstIt);
 			}
 			listIt++;
@@ -179,10 +200,12 @@ void udfMainFrameBase::OnAgeCodesMgr(wxCommandEvent& event)
 			}
 		}
 	}
+	return res;
 }
 
-void udfMainFrameBase::OnDanceTypesCodeMgr(wxCommandEvent& event)
+int udfMainFrameBase::ShowDanceTypesMngrDlg()
 {
+	int res = wxID_CANCEL;
 	udfCodeDialog dlg(this);
 	dlg.SetTitle(wxT("Dance types code manager"));
 	dlg.SetListName(_("Dance types list"));
@@ -199,7 +222,8 @@ void udfMainFrameBase::OnDanceTypesCodeMgr(wxCommandEvent& event)
 		listIt++;
 	}
 	dlg.RefreshList();
-	if(dlg.ShowModal() == wxID_OK)
+	res = dlg.ShowModal();
+	if(res == wxID_OK)
 	{
 		udfCodeDialog::tListMap rList = dlg.GetResultList();
 				
@@ -213,11 +237,14 @@ void udfMainFrameBase::OnDanceTypesCodeMgr(wxCommandEvent& event)
 			}
 			else if(rLstIt != rList.end() && rLstIt->first == listIt->first)
 			{
-				CDanceTypesTable::tDATA data;
-				udfCodeDialog::tDATA cData = rLstIt->second;
-				data.code = cData.code;
-				data.name = cData.name;
-				table.UpdateRow(listIt->first, data);
+				CDanceTypesTable::tDATA data = listIt->second;
+				udfCodeDialog::tDATA& cData = rLstIt->second;
+				if(data.code != cData.code || data.name != cData.name)
+				{
+					data.code = cData.code;
+					data.name = cData.name;
+					table.UpdateRow(listIt->first, data);
+				}
 				rList.erase(rLstIt);
 			}
 			listIt++;
@@ -238,10 +265,13 @@ void udfMainFrameBase::OnDanceTypesCodeMgr(wxCommandEvent& event)
 			}
 		}
 	}
+	return res;
 }
 
-void udfMainFrameBase::OnLigueCodeMgr(wxCommandEvent& event)
+int udfMainFrameBase::ShowLiguesMngrDlg()
 {
+	int res = wxID_CANCEL;
+	
 	udfCodeDialog dlg(this);
 	dlg.SetTitle(wxT("Ligues code manager"));
 	dlg.SetListName(_("Ligues list"));
@@ -258,7 +288,8 @@ void udfMainFrameBase::OnLigueCodeMgr(wxCommandEvent& event)
 		listIt++;
 	}
 	dlg.RefreshList();
-	if(dlg.ShowModal() == wxID_OK)
+	res = dlg.ShowModal();
+	if(res == wxID_OK)
 	{
 		udfCodeDialog::tListMap rList = dlg.GetResultList();
 				
@@ -302,5 +333,7 @@ void udfMainFrameBase::OnLigueCodeMgr(wxCommandEvent& event)
 			}
 		}
 	}
+	
+	return res;
 }
 

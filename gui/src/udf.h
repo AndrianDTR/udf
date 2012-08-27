@@ -167,9 +167,11 @@ class CategoriesMngrDlg : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnCategorySearch( wxCommandEvent& event ){ OnCategorySearch( event ); }
 		void _wxFB_OnCategorySelected( wxCommandEvent& event ){ OnCategorySelected( event ); }
 		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
 		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
+		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
@@ -185,10 +187,11 @@ class CategoriesMngrDlg : public wxDialog
 		};
 		
 		wxStaticText* m_staticText15;
-		wxTextCtrl* m_textCtrl5;
+		wxTextCtrl* m_textSearch;
 		wxListBox* m_listCategories;
 		wxBitmapButton* m_bpButton13;
 		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpButton29;
 		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText16;
@@ -203,9 +206,11 @@ class CategoriesMngrDlg : public wxDialog
 		wxComboBox* m_comboAge;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnCategorySearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCategorySelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		
@@ -406,7 +411,7 @@ class MainFrameBase : public wxFrame
 	
 	public:
 		
-		MainFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Test"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 965,667 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		MainFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 965,667 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		~MainFrameBase();
 	
 };

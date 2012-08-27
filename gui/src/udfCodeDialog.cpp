@@ -48,7 +48,7 @@ void udfCodeDialog::OnUpdateCode(wxCommandEvent& event)
 	
 	if(it != m_listMap.end() && !name.empty() && !code.empty())
 	{
-		tDATA data = it->second;
+		tDATA& data = it->second;
 		data.name = name;
 		code.ToLong(&data.code);
 		m_listItems->SetString(nItem, name);
@@ -90,7 +90,7 @@ void udfCodeDialog::OnSelectItem(wxCommandEvent& event)
 	tListIt it = m_listMap.find(*pnId);
 	if(it != m_listMap.end())
 	{
-		tDATA data = it->second;
+		tDATA& data = it->second;
 		wxString code = wxString::Format(wxT("%ld"), data.code);
 		m_textCode->SetValue(code);
 		m_textName->SetValue(data.name);
@@ -111,7 +111,7 @@ void udfCodeDialog::OnSearch(wxCommandEvent& event)
 	m_listItems->Clear();
 	for(item = m_listMap.begin(); item != m_listMap.end(); item++)
 	{
-		tDATA data = item->second;
+		tDATA& data = item->second;
 		if(data.name.Upper().Contains(search))
 		{
 			int* pnId = new int();
@@ -129,7 +129,7 @@ void udfCodeDialog::RefreshList()
 	m_listItems->Clear();
 	for(item = m_listMap.begin(); item != m_listMap.end(); item++)
 	{
-		tDATA data = item->second;
+		tDATA& data = item->second;
 		int pos = m_listItems->GetCount();
 		int* pnId = new int();
 		*pnId = item->first;

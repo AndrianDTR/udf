@@ -39,6 +39,11 @@ private:
 public:
 	/** Constructor */
 	udfMainFrameBase( wxWindow* parent );
+	
+public:
+	int ShowDanceTypesMngrDlg();
+	int ShowLiguesMngrDlg();
+	int ShowAgeCatsMngrDlg();
 };
 
 #endif // __udfMainFrameBase__

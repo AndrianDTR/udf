@@ -307,9 +307,11 @@ ChampionshipCategoriesMngrDlg::~ChampionshipCategoriesMngrDlg()
 }
 
 BEGIN_EVENT_TABLE( CategoriesMngrDlg, wxDialog )
+	EVT_TEXT( ID_CATEGORY_LIST_SEARCH, CategoriesMngrDlg::_wxFB_OnCategorySearch )
 	EVT_LISTBOX( ID_CATEGORY_LIST, CategoriesMngrDlg::_wxFB_OnCategorySelected )
 	EVT_BUTTON( wxID_ADD, CategoriesMngrDlg::_wxFB_OnAdd )
 	EVT_BUTTON( wxID_REMOVE, CategoriesMngrDlg::_wxFB_OnRemove )
+	EVT_BUTTON( wxID_APPLY, CategoriesMngrDlg::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_OK, CategoriesMngrDlg::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, CategoriesMngrDlg::_wxFB_OnDiscard )
 END_EVENT_TABLE()
@@ -334,8 +336,8 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	m_staticText15->Wrap( -1 );
 	bSizer18->Add( m_staticText15, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl5 = new wxTextCtrl( this, ID_CATEGORY_LIST_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer18->Add( m_textCtrl5, 1, wxALL|wxEXPAND, 5 );
+	m_textSearch = new wxTextCtrl( this, ID_CATEGORY_LIST_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer18->Add( m_textSearch, 1, wxALL|wxEXPAND, 5 );
 	
 	sbSizer10->Add( bSizer18, 0, wxEXPAND, 5 );
 	
@@ -355,6 +357,9 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	
 	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer75->Add( m_bpRemove, 0, wxALL, 5 );
+	
+	m_bpUpdate = new wxBitmapButton( this, wxID_APPLY, wxBitmap( button_assign_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer75->Add( m_bpUpdate, 0, wxALL, 5 );
 	
 	m_bpButton29 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	m_bpButton29->SetDefault(); 
