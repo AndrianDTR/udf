@@ -1035,7 +1035,6 @@ class CitiesMngr : public wxDialog
 	private:
 		
 		// Private event handlers
-		void _wxFB_OnChangeCountry( wxCommandEvent& event ){ OnChangeCountry( event ); }
 		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
 		void _wxFB_OnSelectItem( wxCommandEvent& event ){ OnSelectItem( event ); }
 		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
@@ -1054,8 +1053,6 @@ class CitiesMngr : public wxDialog
 		};
 		
 		wxStaticBoxSizer* m_sbListSizer;
-		wxStaticText* m_staticText82;
-		wxComboBox* m_comboCounty;
 		wxStaticText* m_staticText84;
 		wxTextCtrl* m_textSearch;
 		wxListBox* m_listItems;
@@ -1065,12 +1062,13 @@ class CitiesMngr : public wxDialog
 		wxBitmapButton* m_bpButton81;
 		wxBitmapButton* m_bpButton82;
 		
+		wxStaticText* m_staticText82;
+		wxComboBox* m_comboCounty;
 		wxStaticText* m_staticText83;
 		wxTextCtrl* m_textName;
 		
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnChangeCountry( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSelectItem( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }

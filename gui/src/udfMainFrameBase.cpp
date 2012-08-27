@@ -448,8 +448,8 @@ void udfMainFrameBase::RefreshCountries()
 
 void udfMainFrameBase::OnCitiesMngr(wxCommandEvent& event)
 {
-	//udfCitiesMngr	dlg(this);
-	//dlg.ShowModal();
+	udfCitiesMngr	dlg(this);
+	dlg.ShowModal();
 }
 
 void udfMainFrameBase::OnCountriesMngr(wxCommandEvent& event)

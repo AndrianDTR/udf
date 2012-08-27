@@ -45,7 +45,7 @@ set( SOURCE_FILES
 	src/udfClubsMngrDlg.cpp
 	src/udfCodeDialog.cpp
 	src/udfCountriesMngr.cpp
-	src/udfCitiesMngr.h
+	src/udfCitiesMngr.cpp
 	src/udfDancersMngrDlg.cpp
 	src/udfDancersTeamMngr.cpp
 	src/udfDirectorInfo.cpp

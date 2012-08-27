@@ -2046,7 +2046,6 @@ CountriesMngr::~CountriesMngr()
 }
 
 BEGIN_EVENT_TABLE( CitiesMngr, wxDialog )
-	EVT_COMBOBOX( wxID_ANY, CitiesMngr::_wxFB_OnChangeCountry )
 	EVT_TEXT( ID_SEARCH, CitiesMngr::_wxFB_OnSearch )
 	EVT_LISTBOX( ID_ITEM_LIST, CitiesMngr::_wxFB_OnSelectItem )
 	EVT_BUTTON( wxID_ADD, CitiesMngr::_wxFB_OnAdd )
@@ -2068,14 +2067,7 @@ CitiesMngr::CitiesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxBoxSizer* bSizer90;
 	bSizer90 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticText82 = new wxStaticText( this, wxID_ANY, _("County"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText82->Wrap( -1 );
-	bSizer90->Add( m_staticText82, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_comboCounty = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer90->Add( m_comboCounty, 0, wxALL, 5 );
-	
-	m_sbListSizer->Add( bSizer90, 0, 0, 5 );
+	m_sbListSizer->Add( bSizer90, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer88;
 	bSizer88 = new wxBoxSizer( wxHORIZONTAL );
@@ -2122,10 +2114,17 @@ CitiesMngr::CitiesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	bSizer86->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer13;
-	fgSizer13 = new wxFlexGridSizer( 1, 2, 0, 0 );
+	fgSizer13 = new wxFlexGridSizer( 2, 2, 0, 0 );
 	fgSizer13->AddGrowableCol( 1 );
 	fgSizer13->SetFlexibleDirection( wxBOTH );
 	fgSizer13->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText82 = new wxStaticText( this, wxID_ANY, _("County"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText82->Wrap( -1 );
+	fgSizer13->Add( m_staticText82, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_comboCounty = new wxComboBox( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer13->Add( m_comboCounty, 1, wxALL|wxEXPAND, 5 );
 	
 	m_staticText83 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText83->Wrap( -1 );

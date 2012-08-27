@@ -9,7 +9,7 @@
 	{	\
 		char modInfo[300] = {0};	\
 		std::string fmt = std::string(FMT);	\
-		sprintf(modInfo, "\n----------------------------------------------------------------\nDebug info:\nFile: %s: %d\n%s\n----------------------------------------------------------------\n\n", __FILE__, __LINE__, fmt.c_str());	\
+		sprintf(modInfo, "\n----------------------------------------------------------------\nDebug info:\nFile: %s: %d\nFunction: %s\n%s\n----------------------------------------------------------------\n\n", __FILE__, __LINE__, __FUNCTION__, fmt.c_str());	\
 		printf(modInfo, __VA_ARGS__);\
 	}
 #else

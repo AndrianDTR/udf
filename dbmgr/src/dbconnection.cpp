@@ -7,7 +7,7 @@
 #include "cppconn/driver.h"
 #include "cppconn/statement.h"
 //#include "cppconn/prepared_statement.h"
-//#include "cppconn/exception.h"
+#include "cppconn/exception.h"
 //#include "cppconn/warning.h"
 
 using namespace sql;
@@ -85,21 +85,46 @@ sql::ResultSet* CDbConnection::ExecuteQuery(std::string query)
 {
 	sql::ResultSet* res = NULL;
 	
-	if(m_pStatement)
+	try
 	{
-		DEBUG_PRINTF("EXECUTE QUERY: %s \nResult %d", query.c_str(), res);
-		res = m_pStatement->executeQuery(query);
+		if(m_pStatement)
+		{
+			DEBUG_PRINTF("EXECUTE QUERY: %s \nResult %d", query.c_str(), res);
+			res = m_pStatement->executeQuery(query);
+		}
 	}
-	
+	catch(sql::SQLException &e)
+	{
+		fprintf(std::cerr,"ERROR: %s\n", e.what());
+		fprintf(std::cerr,"(MySQL error code: %d)\n",e.getErrorCode());
+	}
+	catch(std::runtime_error &e)
+	{
+		fprintf(std::cerr,"ERROR: Runtime error: %s\n", e.what());
+		fprintf(std::cerr,"(MySQL error code: %d)\n",e.getErrorCode());
+	}
 	return res;
 }
 
 void CDbConnection::Execute(std::string query)
 {
-	if(m_pStatement)
+	try
 	{
-		DEBUG_PRINTF("EXECUTE: %s \n", query.c_str());
-		m_pStatement->execute(query);	
+		if(m_pStatement)
+		{
+			DEBUG_PRINTF("EXECUTE: %s \n", query.c_str());
+			m_pStatement->execute(query);	
+		}
+	}
+	catch(sql::SQLException &e)
+	{
+		fprintf(std::cerr,"ERROR: %s\n", e.what());
+		fprintf(std::cerr,"(MySQL error code: %d)\n",e.getErrorCode());
+	}
+	catch(std::runtime_error &e)
+	{
+		fprintf(std::cerr,"ERROR: Runtime error: %s\n", e.what());
+		fprintf(std::cerr,"(MySQL error code: %d)\n",e.getErrorCode());
 	}
 }
 
