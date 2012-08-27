@@ -216,12 +216,19 @@ void udfCategoriesMngrDlg::OnCategorySearch(wxCommandEvent& event)
 
 void udfCategoriesMngrDlg::OnUpdate(wxCommandEvent& event)
 {
-	unsigned int nItem = m_listCategories->GetSelection();
-	int* pnId = (int*)m_listCategories->GetClientData(nItem);
-	CCategoriesTable::tTableIt it = m_Categories.find(*pnId);
-	
-	if(it != m_Categories.end())
+	do
 	{
+		int nItem = m_listCategories->GetSelection();
+		
+		if(-1 == nItem)
+			break;
+			
+		int nId = *(int*)m_listCategories->GetClientData(nItem);
+		CCategoriesTable::tTableIt it = m_Categories.find(nId);
+		
+		if(it == m_Categories.end())
+			break;
+			
 		CCategoriesTable::tDATA& data = it->second;
 		
 		data.name = m_textName->GetValue();
@@ -236,7 +243,8 @@ void udfCategoriesMngrDlg::OnUpdate(wxCommandEvent& event)
 		
 		int nAgeCat = GetSelectedAgeCat();
 		data.age_category = *(int*)m_comboAge->GetClientData(nAgeCat);
-	}
+		
+	}while(0);
 }
 
 int udfCategoriesMngrDlg::GetSelectedAgeCat()

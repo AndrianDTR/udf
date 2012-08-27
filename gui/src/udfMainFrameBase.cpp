@@ -10,17 +10,35 @@
 #include "tdancetypes.h"
 #include "tagecategory.h"
 
-#include "cdbmanager.h"
 #include "udfCodeDialog.h"
 
 #include "version.h"
 #include "wx/aboutdlg.h"
 
 udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
-:
-MainFrameBase( parent )
+: MainFrameBase( parent )
+, m_pCon(NULL)
 {
+	m_pCon = CDbManager::Instance()->GetConnection();
+	
+	RefreshData();
+}
 
+void udfMainFrameBase::RefreshData()
+{
+	CChampionshipTable table(m_pCon);
+	table.GetTable(m_Championships);
+	
+	m_listChamlionship->Clear();
+	
+	CChampionshipTable::tTableIt it = m_Championships.begin();
+	while(it != m_Championships.end())
+	{
+		CChampionshipTable::tDATA& data = it->second;
+		int nPos = m_listChamlionship->GetCount();
+		m_listChamlionship->Insert(data.name, nPos, (void*)&it->first);
+		it++;
+	}
 }
 
 void udfMainFrameBase::OnCloseFrame( wxCloseEvent& event )
@@ -53,17 +71,12 @@ void udfMainFrameBase::OnMenuJudgeManage( wxCommandEvent& event )
 
 void udfMainFrameBase::OnAddChampionsip( wxCommandEvent& event )
 {
-	m_nCSid = -1;
 	m_textName->SetValue(_("New cnampionship name"));
-	
 }
 
 void udfMainFrameBase::OnRemoveChampionship( wxCommandEvent& event )
 {
-	if(m_nCSid != -1)
-	{
-		// TODO: Implement Remove from DB
-	}
+
 }
 
 void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
@@ -335,5 +348,13 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 	}
 	
 	return res;
+}
+
+void udfMainFrameBase::OnChampionshipSelect(wxCommandEvent& event)
+{
+}
+
+void udfMainFrameBase::OnSearch(wxCommandEvent& event)
+{
 }
 

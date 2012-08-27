@@ -316,6 +316,8 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
 		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
 		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnChampionshipSelect( wxCommandEvent& event ){ OnChampionshipSelect( event ); }
 		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
 		void _wxFB_OnRemoveChampionship( wxCommandEvent& event ){ OnRemoveChampionship( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
@@ -337,6 +339,7 @@ class MainFrameBase : public wxFrame
 			wxID_MENU_CLUBS_MNGR,
 			wxID_MENU_JUDGE_MNGR,
 			ID_ABOUT,
+			ID_CAMPIONSHIPLIST,
 			wxID_CHAMPIONSIP_ADD,
 			wxID_CHAMPIONSIP_REMOVE,
 			wxID_CHAMPIONSHIP_SAVE,
@@ -357,7 +360,7 @@ class MainFrameBase : public wxFrame
 		wxPanel* m_panel1;
 		wxStaticText* m_championshipSearchText;
 		wxTextCtrl* m_textSearch;
-		wxListBox* m_listChamlionshipList;
+		wxListBox* m_listChamlionship;
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
 		wxBitmapButton* m_bpSave;
@@ -398,6 +401,8 @@ class MainFrameBase : public wxFrame
 		virtual void OnMenuClubManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuJudgeManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnChampionshipSelect( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddChampionsip( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveChampionship( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
@@ -520,18 +525,27 @@ class DancersMngrDlg : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnDancerSelect( wxCommandEvent& event ){ OnDancerSelect( event ); }
 		void _wxFB_OnAddDancer( wxCommandEvent& event ){ OnAddDancer( event ); }
 		void _wxFB_OnRemoveDancer( wxCommandEvent& event ){ OnRemoveDancer( event ); }
+		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
 	
 	protected:
+		enum
+		{
+			ID_SEARCH = 1000,
+		};
+		
 		wxStaticText* m_staticText78;
-		wxTextCtrl* m_textCtrl38;
+		wxTextCtrl* m_textSearch;
 		wxListBox* m_listBox5;
 		wxBitmapButton* m_bpAddDancer;
 		wxBitmapButton* m_bpRemoveDancer;
+		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpButton24;
 		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText21;
@@ -560,8 +574,11 @@ class DancersMngrDlg : public wxDialog
 		wxDatePickerCtrl* m_datePicker15;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDancerSelect( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveDancer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		
