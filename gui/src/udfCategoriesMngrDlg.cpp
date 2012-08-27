@@ -114,6 +114,8 @@ void udfCategoriesMngrDlg::OnRemove( wxCommandEvent& event )
 
 void udfCategoriesMngrDlg::OnSave( wxCommandEvent& event )
 {
+	OnUpdate(event);
+	
 	CCategoriesTable table(m_pCon);
 	CCategoriesTable::tTableMap storedCats;
 	table.GetTable(storedCats);
@@ -161,7 +163,6 @@ void udfCategoriesMngrDlg::OnSave( wxCommandEvent& event )
 		}
 	}
 	
-	
 	EndModal(wxID_OK);
 }
 
@@ -195,18 +196,17 @@ void udfCategoriesMngrDlg::OnCategorySelected(wxCommandEvent& event)
 
 void udfCategoriesMngrDlg::OnCategorySearch(wxCommandEvent& event)
 {
-	CCategoriesTable::tTableMap sarchMap = m_Categories;
 	wxString search = m_textSearch->GetValue().Upper();
 	CCategoriesTable::tTableIt item;
 	
 	m_listCategories->Clear();
-	for(item = sarchMap.begin(); item != sarchMap.end(); item++)
+	for(item = m_Categories.begin(); item != m_Categories.end(); item++)
 	{
 		CCategoriesTable::tDATA data = item->second;
 		wxString name(data.name);
 		wxString sname(data.shortName);
 		
-		if(name.Upper().Contains(search) or sname.Upper().Contains(search))
+		if(name.Upper().Contains(search) || sname.Upper().Contains(search))
 		{
 			int pos = m_listCategories->GetCount();
 			m_listCategories->Insert(data.shortName, pos, (void*)&item->first);

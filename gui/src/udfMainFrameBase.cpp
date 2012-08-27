@@ -11,9 +11,14 @@
 #include "tagecategory.h"
 
 #include "udfCodeDialog.h"
+#include "udfCitiesMngr.h"
+#include "udfCountriesMngr.h"
 
 #include "version.h"
 #include "wx/aboutdlg.h"
+#include "wx/msgdlg.h"
+
+#include "common.h"
 
 udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 : MainFrameBase( parent )
@@ -71,7 +76,20 @@ void udfMainFrameBase::OnMenuJudgeManage( wxCommandEvent& event )
 
 void udfMainFrameBase::OnAddChampionsip( wxCommandEvent& event )
 {
-	m_textName->SetValue(_("New cnampionship name"));
+	CChampionshipTable::tDATA data = {0};
+	data.id = -m_listChamlionship->GetCount();
+	
+	data.type = *(int*)m_comboType->GetClientData(m_comboType->GetSelection());
+	data.city = *(int*)m_comboCity->GetClientData(m_comboCity->GetSelection());
+	
+	data.name = m_textName->GetValue();
+	data.additionalInfo = m_textAdditionalInfo->GetValue();
+	data.address = m_textAddress->GetValue();
+	data.date = m_dateDate->GetValue().Format(_(""));
+	data.regOpenDate = m_dateRegOpen->GetValue().Format(_(""));
+	data.regCloseDate = m_dateRegClose->GetValue().Format(_(""));
+	
+	m_Championships.insert(std::make_pair(data.id, data));
 }
 
 void udfMainFrameBase::OnRemoveChampionship( wxCommandEvent& event )
@@ -358,3 +376,84 @@ void udfMainFrameBase::OnSearch(wxCommandEvent& event)
 {
 }
 
+int udfMainFrameBase::GetSelectedCity()
+{
+	int res = -1;
+	while(1)
+	{
+		wxString value = m_comboCity->GetValue();
+		res = m_comboCity->FindString(value);
+		if(-1 != res)
+			break;
+		
+		if(wxNO == wxMessageBox(_("Selected 'City' not present in database. Insert it?")
+			, _("Incorrect value")
+			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
+			, this)
+		)
+			break;
+		
+		CountriesMngr	dlg(this);
+		if(wxID_OK != dlg.ShowModal())
+			break;
+		
+		RefreshCities();
+		m_comboCity->SetValue(value);
+		DEBUG_PRINTF("Country %d", res);
+	}
+	
+	return res;
+}
+
+int udfMainFrameBase::GetSelectedCountry()
+{
+	int res = -1;
+	while(1)
+	{
+		wxString value = m_comboCountry->GetValue();
+		res = m_comboCountry->FindString(value);
+		if(-1 != res)
+			break;
+		
+		if(wxNO == wxMessageBox(_("Selected 'Country' not present in database. Insert it?")
+			, _("Incorrect value")
+			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
+			, this)
+		)
+			break;
+		
+		CitiesMngr	dlg(this);
+		if(wxID_OK != dlg.ShowModal())
+			break;
+		
+		RefreshCountries();
+		m_comboCountry->SetValue(value);
+		DEBUG_PRINTF("Country %d", res);
+	}
+	
+	return res;
+}
+
+void udfMainFrameBase::OnCountryChanged(wxCommandEvent& event)
+{
+}
+
+void udfMainFrameBase::RefreshCities()
+{
+}
+
+void udfMainFrameBase::RefreshCountries()
+{
+}
+
+void udfMainFrameBase::OnCitiesMngr(wxCommandEvent& event)
+{
+	//udfCitiesMngr	dlg(this);
+	//dlg.ShowModal();
+}
+
+void udfMainFrameBase::OnCountriesMngr(wxCommandEvent& event)
+{
+	udfCountriesMngr	dlg(this);
+	dlg.ShowModal();
+}

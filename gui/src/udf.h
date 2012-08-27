@@ -31,7 +31,6 @@
 #include <wx/dateevt.h>
 #include <wx/menu.h>
 #include <wx/panel.h>
-#include <wx/statusbr.h>
 #include <wx/frame.h>
 #include <wx/checkbox.h>
 
@@ -315,6 +314,8 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnAgeCodesMgr( wxCommandEvent& event ){ OnAgeCodesMgr( event ); }
 		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
 		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
+		void _wxFB_OnCountriesMngr( wxCommandEvent& event ){ OnCountriesMngr( event ); }
+		void _wxFB_OnCitiesMngr( wxCommandEvent& event ){ OnCitiesMngr( event ); }
 		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
 		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
 		void _wxFB_OnChampionshipSelect( wxCommandEvent& event ){ OnChampionshipSelect( event ); }
@@ -327,17 +328,29 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnJudgeMngr( wxCommandEvent& event ){ OnJudgeMngr( event ); }
 		void _wxFB_OnSendInvitation( wxCommandEvent& event ){ OnSendInvitation( event ); }
 		void _wxFB_OnResults( wxCommandEvent& event ){ OnResults( event ); }
+		void _wxFB_OnCountryChanged( wxCommandEvent& event ){ OnCountryChanged( event ); }
 		
 	
 	protected:
 		enum
 		{
-			wxID_MENU_CAT_MNGR = 1000,
+			ID_CS_ADD = 1000,
+			ID_CS_REMOVE,
+			ID_CS_UPDATE,
+			ID_CS_CATEGORIES,
+			ID_CS_STARTNUMB,
+			ID_CS_JUDGESTEAM,
+			ID_CS_INVITATIONS,
+			ID_CS_RESULTS,
+			ID_CS_RAITING,
+			wxID_MENU_CAT_MNGR,
 			ID_DANCE_TYPES,
 			ID_LIGUES,
 			ID_AGE_CATEGORIES,
 			wxID_MENU_CLUBS_MNGR,
 			wxID_MENU_JUDGE_MNGR,
+			ID_COUNTRIES,
+			ID_CITIES,
 			ID_ABOUT,
 			ID_CAMPIONSHIPLIST,
 			wxID_CHAMPIONSIP_ADD,
@@ -353,9 +366,11 @@ class MainFrameBase : public wxFrame
 		
 		wxMenuBar* m_menuBar;
 		wxMenu* m_menuFile;
+		wxMenu* m_menu8;
 		wxMenu* m_menu2;
 		wxMenu* m_menu3;
 		wxMenu* m_menu5;
+		wxMenu* m_menu6;
 		wxMenu* m_menu51;
 		wxPanel* m_panel1;
 		wxStaticText* m_championshipSearchText;
@@ -389,7 +404,6 @@ class MainFrameBase : public wxFrame
 		wxDatePickerCtrl* m_dateRegClose;
 		wxStaticText* m_staticText14;
 		wxTextCtrl* m_textAdditionalInfo;
-		wxStatusBar* m_statusBar;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnCloseFrame( wxCloseEvent& event ) { event.Skip(); }
@@ -400,6 +414,8 @@ class MainFrameBase : public wxFrame
 		virtual void OnAgeCodesMgr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuClubManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuJudgeManage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCountriesMngr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCitiesMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChampionshipSelect( wxCommandEvent& event ) { event.Skip(); }
@@ -412,6 +428,7 @@ class MainFrameBase : public wxFrame
 		virtual void OnJudgeMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSendInvitation( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnResults( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCountryChanged( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -918,7 +935,6 @@ class CodeDialog : public wxDialog
 			ID_SEARCH = 1000,
 			ID_ITEM_LIST,
 			wxID_UPDATE,
-			wxID_CALCEL,
 		};
 		
 		wxStaticBoxSizer* m_sbListSizer;
@@ -951,6 +967,123 @@ class CodeDialog : public wxDialog
 		
 		CodeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Code"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,322 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~CodeDialog();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class CountriesMngr
+///////////////////////////////////////////////////////////////////////////////
+class CountriesMngr : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnSelectItem( wxCommandEvent& event ){ OnSelectItem( event ); }
+		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
+		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
+		void _wxFB_OnUpdateCode( wxCommandEvent& event ){ OnUpdateCode( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_SEARCH = 1000,
+			ID_ITEM_LIST,
+			wxID_UPDATE,
+		};
+		
+		wxStaticText* m_staticText84;
+		wxTextCtrl* m_textSearch;
+		wxListBox* m_listItems;
+		wxBitmapButton* m_bpAdd;
+		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpAplly;
+		wxBitmapButton* m_bpButton81;
+		wxBitmapButton* m_bpButton82;
+		
+		wxStaticText* m_staticText83;
+		wxTextCtrl* m_textName;
+		
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectItem( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdateCode( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		CountriesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Countries manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,239 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~CountriesMngr();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class CitiesMngr
+///////////////////////////////////////////////////////////////////////////////
+class CitiesMngr : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnChangeCountry( wxCommandEvent& event ){ OnChangeCountry( event ); }
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnSelectItem( wxCommandEvent& event ){ OnSelectItem( event ); }
+		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
+		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
+		void _wxFB_OnUpdateCode( wxCommandEvent& event ){ OnUpdateCode( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_SEARCH = 1000,
+			ID_ITEM_LIST,
+			wxID_UPDATE,
+		};
+		
+		wxStaticBoxSizer* m_sbListSizer;
+		wxStaticText* m_staticText82;
+		wxComboBox* m_comboCounty;
+		wxStaticText* m_staticText84;
+		wxTextCtrl* m_textSearch;
+		wxListBox* m_listItems;
+		wxBitmapButton* m_bpAdd;
+		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpAplly;
+		wxBitmapButton* m_bpButton81;
+		wxBitmapButton* m_bpButton82;
+		
+		wxStaticText* m_staticText83;
+		wxTextCtrl* m_textName;
+		
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnChangeCountry( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectItem( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdateCode( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		CitiesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Cities manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 599,322 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~CitiesMngr();
 	
 };
 

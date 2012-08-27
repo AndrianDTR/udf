@@ -21,6 +21,8 @@ set( HEADER_FILES
 	src/udfChampionshipJudgesTeamMngrDlg.h
 	src/udfClubsMngrDlg.h
 	src/udfCodeDialog.h
+	src/udfCountriesMngr.h
+	src/udfCitiesMngr.h
 	src/udfDancersMngrDlg.h
 	src/udfDancersTeamMngr.h
 	src/udfDirectorInfo.h
@@ -42,6 +44,8 @@ set( SOURCE_FILES
 	src/udfChampionshipJudgesTeamMngrDlg.cpp
 	src/udfClubsMngrDlg.cpp
 	src/udfCodeDialog.cpp
+	src/udfCountriesMngr.cpp
+	src/udfCitiesMngr.h
 	src/udfDancersMngrDlg.cpp
 	src/udfDancersTeamMngr.cpp
 	src/udfDirectorInfo.cpp

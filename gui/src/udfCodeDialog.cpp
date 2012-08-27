@@ -57,6 +57,7 @@ void udfCodeDialog::OnUpdateCode(wxCommandEvent& event)
 
 void udfCodeDialog::OnSave( wxCommandEvent& event )
 {
+	OnUpdateCode(event);
 	EndModal(wxID_OK);
 }
 

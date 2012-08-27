@@ -47,6 +47,27 @@ long CChampionshipTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
+		if (!filter.date.empty())
+		{
+			sprintf(tmp, "%sand `date` like '%%%s%%' ", query, filter.date.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!filter.regOpenDate.empty())
+		{
+			sprintf(tmp, "%sand `reg_open` like '%%%s%%' ", query, filter.regOpenDate.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!filter.regCloseDate.empty())
+		{
+			sprintf(tmp, "%sand `reg_close` like '%%%s%%' ", query, filter.regCloseDate.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
 		if (!filter.additionalInfo.empty())
 		{
 			sprintf(tmp, "%sand `additional_info` like '%%%s%%' ", query, filter.additionalInfo.c_str());
@@ -120,12 +141,18 @@ long CChampionshipTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`type`, `name`, `additional_info`, `city`) values(%d, '%s', '%s', %d)"
+		sprintf(query, "insert into %s(`type`, `name`, `additional_info`, `city`, \
+		`address`, `date`, `reg_open`, `reg_close`) values(%d, '%s', '%s', %d, '%s','%s','%s','%s')"
 		, TABLE
 		, rec.type
 		, rec.name.c_str()
 		, rec.additionalInfo.c_str()
-		, rec.city);
+		, rec.city
+		, rec.address.c_str()
+		, rec.date.c_str()
+		, rec.regOpenDate.c_str()
+		, rec.regCloseDate.c_str()
+		);
 		m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -187,6 +214,10 @@ long CChampionshipTable::GetRow(unsigned int nId, tDATA& data)
 		data.name = qRes->getString(3);
 		data.additionalInfo  = qRes->getString(4);
 		data.city = qRes->getUInt(5);
+		data.address = qRes->getString(6);
+		data.date = qRes->getString(7);
+		data.regOpenDate = qRes->getString(8);
+		data.regCloseDate = qRes->getString(9);
 		
 		res = UDF_OK;
 	}while(0);
@@ -234,6 +265,34 @@ long CChampionshipTable::UpdateRow(unsigned int nId, const tDATA& data)
 		if (!data.additionalInfo.empty())
 		{
 			sprintf(tmp, "%s `additional_info` = '%s',", query, data.additionalInfo.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.address.empty())
+		{
+			sprintf(tmp, "%s `address` = '%s',", query, data.address.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.date.empty())
+		{
+			sprintf(tmp, "%s `date` = '%s',", query, data.date.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.regOpenDate.empty())
+		{
+			sprintf(tmp, "%s `reg_open` = '%s',", query, data.regOpenDate.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.regCloseDate.empty())
+		{
+			sprintf(tmp, "%s `reg_close` = '%s',", query, data.regCloseDate.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
