@@ -95,13 +95,12 @@ sql::ResultSet* CDbConnection::ExecuteQuery(std::string query)
 	}
 	catch(sql::SQLException &e)
 	{
-		fprintf(std::cerr,"ERROR: %s\n", e.what());
-		fprintf(std::cerr,"(MySQL error code: %d)\n",e.getErrorCode());
+		fprintf(stderr,"ERROR: %s\n", e.what());
+		fprintf(stderr,"(MySQL error code: %d)\n",e.getErrorCode());
 	}
 	catch(std::runtime_error &e)
 	{
-		fprintf(std::cerr,"ERROR: Runtime error: %s\n", e.what());
-		fprintf(std::cerr,"(MySQL error code: %d)\n",e.getErrorCode());
+		fprintf(stderr,"ERROR: Runtime error: %s\n", e.what());
 	}
 	return res;
 }
@@ -118,13 +117,12 @@ void CDbConnection::Execute(std::string query)
 	}
 	catch(sql::SQLException &e)
 	{
-		fprintf(std::cerr,"ERROR: %s\n", e.what());
-		fprintf(std::cerr,"(MySQL error code: %d)\n",e.getErrorCode());
+		fprintf(stderr,"ERROR: %s\n", e.what());
+		fprintf(stderr,"(MySQL error code: %d)\n",e.getErrorCode());
 	}
 	catch(std::runtime_error &e)
 	{
-		fprintf(std::cerr,"ERROR: Runtime error: %s\n", e.what());
-		fprintf(std::cerr,"(MySQL error code: %d)\n",e.getErrorCode());
+		fprintf(stderr,"ERROR: Runtime error: %s\n", e.what());
 	}
 }
 
