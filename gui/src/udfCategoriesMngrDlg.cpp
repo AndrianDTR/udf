@@ -99,8 +99,8 @@ void udfCategoriesMngrDlg::OnAdd( wxCommandEvent& event )
 	data.age_category = *(int*)m_comboAge->GetClientData(nAgeCat);
 	
 	CCategoriesTable::tTableIt it = m_Categories.insert(std::make_pair(data.id, data)).first;
-	nItem = m_listCategories->Append(data.shortName);
-	m_listCategories->SetClientData(nItem, (void*)&it->first);
+	m_listCategories->Insert(data.shortName, nItem, (void*)&it->first);
+	m_listCategories->SetSelection(nItem);
 }
 
 void udfCategoriesMngrDlg::OnRemove( wxCommandEvent& event )
