@@ -1,5 +1,6 @@
 #include "udfCategoriesMngrDlg.h"
 
+#include "string_def.h"
 #include "common.h"
 
 #include "wx/msgdlg.h"
@@ -179,17 +180,17 @@ void udfCategoriesMngrDlg::OnCategorySelected(wxCommandEvent& event)
 	
 	if(it != m_Categories.end())
 	{
-		CCategoriesTable::tDATA currCategory = it->second;
+		CCategoriesTable::tDATA& currCategory = it->second;
 		m_textName->SetValue(currCategory.name);
 		m_textShortName->SetValue(currCategory.shortName);
 		
-		CDanceTypesTable::tDATA dance = m_DanceTypes.find(currCategory.dance)->second;
+		CDanceTypesTable::tDATA& dance = m_DanceTypes.find(currCategory.dance)->second;
 		m_comboDance->SetValue(dance.name);
 		
-		CLigaTable::tDATA liga = m_Ligues.find(currCategory.liga)->second;
+		CLigaTable::tDATA& liga = m_Ligues.find(currCategory.liga)->second;
 		m_comboLiga->SetValue(liga.name);
 		
-		CAgeCategoryTable::tDATA age = m_AgeCats.find(currCategory.age_category)->second;
+		CAgeCategoryTable::tDATA& age = m_AgeCats.find(currCategory.age_category)->second;
 		m_comboAge->SetValue(age.name);
 	}
 }
@@ -202,7 +203,7 @@ void udfCategoriesMngrDlg::OnCategorySearch(wxCommandEvent& event)
 	m_listCategories->Clear();
 	for(item = m_Categories.begin(); item != m_Categories.end(); item++)
 	{
-		CCategoriesTable::tDATA data = item->second;
+		CCategoriesTable::tDATA& data = item->second;
 		wxString name(data.name);
 		wxString sname(data.shortName);
 		
@@ -257,8 +258,9 @@ int udfCategoriesMngrDlg::GetSelectedAgeCat()
 		if(-1 != res)
 			break;
 		
-		if(wxNO == wxMessageBox(_("Selected 'Age category' not present in database. Insert it?")
-			, _("Incorrect value")
+		if(wxNO == wxMessageBox(
+			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_AGE_CATEGORY)
+			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
 		)
@@ -270,7 +272,6 @@ int udfCategoriesMngrDlg::GetSelectedAgeCat()
 		
 		RefreshAgeCategories();
 		m_comboAge->SetValue(value);
-		DEBUG_PRINTF("Age %d", res);
 	}
 	
 	return res;
@@ -286,8 +287,9 @@ int udfCategoriesMngrDlg::GetSelectedDanceType()
 		if(-1 != res)
 			break;
 		
-		if(wxNO == wxMessageBox(_("Selected 'Dance type' not present in database. Insert it?")
-			, _("Incorrect value")
+		if(wxNO == wxMessageBox(
+			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_DANCE_TYPE)
+			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
 		)
@@ -299,7 +301,6 @@ int udfCategoriesMngrDlg::GetSelectedDanceType()
 		
 		RefreshDanceTypes();
 		m_comboDance->SetValue(value);
-		DEBUG_PRINTF("Dance %d", res);
 	}
 	
 	return res;
@@ -315,8 +316,9 @@ int udfCategoriesMngrDlg::GetSelectedLigue()
 		if(-1 != res)
 			break;
 		
-		if(wxNO == wxMessageBox(_("Selected 'Ligue' not present in database. Insert it?")
-			, _("Incorrect value")
+		if(wxNO == wxMessageBox(
+			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_LIGUE)
+			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
 		)
@@ -328,7 +330,6 @@ int udfCategoriesMngrDlg::GetSelectedLigue()
 		
 		RefreshLigues();
 		m_comboLiga->SetValue(value);
-		DEBUG_PRINTF("Age %d", res);
 	}
 	
 	return res;

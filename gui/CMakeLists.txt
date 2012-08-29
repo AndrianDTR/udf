@@ -12,12 +12,15 @@
 # Configuration for module: gucefGUI
 
 set( HEADER_FILES 
+	src/string_def.h
+	src/udfexceptions.h
 	src/cdbmanager.h
 	src/main.h
 	src/udf.h
 	src/udfAccountInfo.h
 	src/udfCategoriesMngrDlg.h
 	src/udfChampionshipCategoriesMngrDlg.h
+	src/udfChampionshipTypeMngr.h
 	src/udfChampionshipJudgesTeamMngrDlg.h
 	src/udfClubsMngrDlg.h
 	src/udfCodeDialog.h
@@ -35,12 +38,14 @@ set( HEADER_FILES
 )
 
 set( SOURCE_FILES 
+	src/udfexceptions.cpp
 	src/cdbmanager.cpp
 	src/main.cpp
 	src/udf.cpp
 	src/udfAccountInfo.cpp
 	src/udfCategoriesMngrDlg.cpp
 	src/udfChampionshipCategoriesMngrDlg.cpp
+	src/udfChampionshipTypeMngr.cpp
 	src/udfChampionshipJudgesTeamMngrDlg.cpp
 	src/udfClubsMngrDlg.cpp
 	src/udfCodeDialog.cpp

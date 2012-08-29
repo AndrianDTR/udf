@@ -109,11 +109,9 @@ long CChampionshipCategotiesTable::AddRow(tDATA& rec)
             , TABLE
             , rec.championshipId
             , rec.catId);
-		m_pConnection->Execute(query);
+		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
-		
-		res = UDF_OK;
 	}while(0);
 	
 	return res;
@@ -133,9 +131,7 @@ long CChampionshipCategotiesTable::DelRow(unsigned int nId)
 		}
 		
 		sprintf(query, "delete from %s where id = %d", TABLE, nId);
-		m_pConnection->Execute(query);
-		
-		res = UDF_OK;
+		res = m_pConnection->Execute(query);
 	}while(0);
 	
 	return res;
@@ -209,10 +205,9 @@ long CChampionshipCategotiesTable::UpdateRow(unsigned int nId, const tDATA& data
 		{
 			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			m_pConnection->Execute(query);
+			res = m_pConnection->Execute(query);
 		}
-		
-		res = UDF_OK;
+
 	}while(0);
 	
 	return res;

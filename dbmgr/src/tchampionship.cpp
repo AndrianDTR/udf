@@ -1,6 +1,7 @@
 
-#include "stdio.h"
+#include "common.h"
 
+#include "dbutils.h"
 #include "dberrors.h"
 #include "tchampionship.h"
 
@@ -47,23 +48,23 @@ long CChampionshipTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (!filter.date.empty())
+		if (0 != filter.date)
 		{
-			sprintf(tmp, "%sand `date` like '%%%s%%' ", query, filter.date.c_str());
+			sprintf(tmp, "%sand `date` like '%%%s%%' ", query, date2str(filter.date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.regOpenDate.empty())
+		if (0 != filter.regOpenDate)
 		{
-			sprintf(tmp, "%sand `reg_open` like '%%%s%%' ", query, filter.regOpenDate.c_str());
+			sprintf(tmp, "%sand `reg_open` like '%%%s%%' ", query, date2str(filter.regOpenDate).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.regCloseDate.empty())
+		if (0 != filter.regCloseDate)
 		{
-			sprintf(tmp, "%sand `reg_close` like '%%%s%%' ", query, filter.regCloseDate.c_str());
+			sprintf(tmp, "%sand `reg_close` like '%%%s%%' ", query, date2str(filter.regCloseDate).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -75,6 +76,13 @@ long CChampionshipTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
+		if (!filter.address.empty())
+		{
+			sprintf(tmp, "%sand `address` like '%%%s%%' ", query, filter.address.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+				
 		if (0 != filter.city)
 		{
 			sprintf(tmp, "%sand `city` like %d ", query, filter.city);
@@ -117,6 +125,10 @@ long CChampionshipTable::Find(tTableMap& data, const tDATA& filter)
 			el.name = qRes->getString(3);
 			el.additionalInfo  = qRes->getString(4);
 			el.city = qRes->getUInt(5);
+			el.address  = qRes->getString(6);
+			el.date = str2date(qRes->getString(7));
+			el.regOpenDate = str2date(qRes->getString(8));
+			el.regCloseDate = str2date(qRes->getString(9));
 			
 			data.insert(make_pair(el.id, el));
 		}
@@ -149,15 +161,14 @@ long CChampionshipTable::AddRow(tDATA& rec)
 		, rec.additionalInfo.c_str()
 		, rec.city
 		, rec.address.c_str()
-		, rec.date.c_str()
-		, rec.regOpenDate.c_str()
-		, rec.regCloseDate.c_str()
+		, date2str(rec.date).c_str()
+		, date2str(rec.regOpenDate).c_str()
+		, date2str(rec.regCloseDate).c_str()
 		);
-		m_pConnection->Execute(query);
+		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
-		
-		res = UDF_OK;
+
 	}while(0);
 	
 	return res;
@@ -178,9 +189,7 @@ long CChampionshipTable::DelRow(unsigned int nId)
 		}
 		
 		sprintf(query, "delete from %s where id = %d", TABLE, nId);
-		m_pConnection->Execute(query);
-		
-		res = UDF_OK;
+		res = m_pConnection->Execute(query);
 	}while(0);
 	
 	return res;
@@ -215,9 +224,9 @@ long CChampionshipTable::GetRow(unsigned int nId, tDATA& data)
 		data.additionalInfo  = qRes->getString(4);
 		data.city = qRes->getUInt(5);
 		data.address = qRes->getString(6);
-		data.date = qRes->getString(7);
-		data.regOpenDate = qRes->getString(8);
-		data.regCloseDate = qRes->getString(9);
+		data.date = str2date(qRes->getString(7));
+		data.regOpenDate = str2date(qRes->getString(8));
+		data.regCloseDate = str2date(qRes->getString(9));
 		
 		res = UDF_OK;
 	}while(0);
@@ -276,23 +285,23 @@ long CChampionshipTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (!data.date.empty())
+		if (0 != data.date)
 		{
-			sprintf(tmp, "%s `date` = '%s',", query, data.date.c_str());
+			sprintf(tmp, "%s `date` = '%s',", query, date2str(data.date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!data.regOpenDate.empty())
+		if (0 != data.regOpenDate)
 		{
-			sprintf(tmp, "%s `reg_open` = '%s',", query, data.regOpenDate.c_str());
+			sprintf(tmp, "%s `reg_open` = '%s',", query, date2str(data.regOpenDate).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!data.regCloseDate.empty())
+		if (0 != data.regCloseDate)
 		{
-			sprintf(tmp, "%s `reg_close` = '%s',", query, data.regCloseDate.c_str());
+			sprintf(tmp, "%s `reg_close` = '%s',", query, date2str(data.regCloseDate).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -301,10 +310,9 @@ long CChampionshipTable::UpdateRow(unsigned int nId, const tDATA& data)
 		{
 			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			m_pConnection->Execute(query);
+			res = m_pConnection->Execute(query);
 		}
-		
-		res = UDF_OK;
+
 	}while(0);
 	
 	return res;

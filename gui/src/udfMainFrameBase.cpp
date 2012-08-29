@@ -5,6 +5,7 @@
 #include "udfJudgesMngr.h"
 #include "udfChampionshipJudgesTeamMngrDlg.h"
 #include "udfStartNumberAssignDlg.h"
+#include "udfChampionshipTypeMngr.h"
 
 #include "tliga.h"
 #include "tdancetypes.h"
@@ -18,7 +19,9 @@
 #include "wx/aboutdlg.h"
 #include "wx/msgdlg.h"
 
+#include "udfexceptions.h"
 #include "common.h"
+#include "string_def.h"
 
 udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 : MainFrameBase( parent )
@@ -26,22 +29,25 @@ udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
 	
-	RefreshData();
+	RefreshList();
+	RefreshCities();
+	RefreshTypes();
 }
 
-void udfMainFrameBase::RefreshData()
+void udfMainFrameBase::RefreshList()
 {
 	CChampionshipTable table(m_pCon);
 	table.GetTable(m_Championships);
 	
-	m_listChamlionship->Clear();
+	m_listChampionship->Clear();
 	
 	CChampionshipTable::tTableIt it = m_Championships.begin();
 	while(it != m_Championships.end())
 	{
 		CChampionshipTable::tDATA& data = it->second;
-		int nPos = m_listChamlionship->GetCount();
-		m_listChamlionship->Insert(data.name, nPos, (void*)&it->first);
+		int nPos = m_listChampionship->GetCount();
+		m_listChampionship->Insert(data.name, nPos, (void*)&it->first);
+		
 		it++;
 	}
 }
@@ -56,86 +62,287 @@ void udfMainFrameBase::OnExitClick( wxCommandEvent& event )
 	// TODO: Implement OnExitClick
 }
 
-void udfMainFrameBase::OnMenuCategoryManage( wxCommandEvent& event )
+void udfMainFrameBase::RefreshTypes()
 {
-	udfCategoriesMngrDlg dlg(this);
-	dlg.ShowModal();
+	CChampionshipTypeTable table(m_pCon);
+	table.GetTable(m_ChampionshipTypes);
+	
+	m_comboType->Clear();
+	
+	CChampionshipTypeTable::tTableIt it = m_ChampionshipTypes.begin();
+	while(it != m_ChampionshipTypes.end())
+	{
+		CChampionshipTypeTable::tDATA& data = it->second;
+		int nPos = m_comboType->GetCount();
+		m_comboType->Insert(data.name, nPos, (void*)&it->first);
+		it++;
+	}
+	m_comboType->AutoComplete(m_comboType->GetStrings());
 }
 
-void udfMainFrameBase::OnMenuClubManage( wxCommandEvent& event )
+void udfMainFrameBase::RefreshCities()
 {
-	udfClubsMngrDlg dlg(this);
-	dlg.ShowModal();
+	RefreshCountries();
+	
+	CCitiesTable table(m_pCon);
+	table.GetTable(m_Cities);
+	
+	m_comboCity->Clear();
+	
+	CCitiesTable::tTableIt it = m_Cities.begin();
+	while(it != m_Cities.end())
+	{
+		CCitiesTable::tDATA& data = it->second;
+		int nPos = m_comboCity->GetCount();
+		
+		CCountriesTable::tTableIt cIt = m_Countries.find(data.countryId);
+		if(cIt != m_Countries.end())
+		{
+			CCountriesTable::tDATA& cData = cIt->second;
+			wxString city = wxString::Format(STR_FORMAT_CITY_NAME, data.Name, cData.name);
+			m_comboCity->Insert(city, nPos, (void*)&it->first);
+		}
+		it++;
+	}
+	m_comboCity->AutoComplete(m_comboCity->GetStrings());
 }
 
-void udfMainFrameBase::OnMenuJudgeManage( wxCommandEvent& event )
+int udfMainFrameBase::GetSelectedType()
 {
-	udfJudgesMngr dlg(this);
-	dlg.ShowModal();
+	int res = -1;
+	while(1)
+	{
+		wxString value = m_comboType->GetValue();
+		res = m_comboType->FindString(value);
+		if(-1 != res)
+			break;
+		if(wxNO == wxMessageBox(
+			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_CHAMPIONSHIP_TYPE)
+			, STR_INCORRECT_VALUE
+			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
+			, this)
+		)
+			break;
+		
+		udfChampionshipTypeMngr dlg(this);
+		if(wxID_OK != dlg.ShowModal())
+			break;
+		
+		RefreshTypes();
+		m_comboType->SetValue(value);
+	}
+	
+	return res;
+}
+
+bool udfMainFrameBase::ValidateValues()
+{
+	bool res = false;
+	do
+	{
+		if(-1 == GetSelectedType())
+			break;
+		
+		if(-1 == GetSelectedCity())
+			break;
+		//Add date validation here
+		
+		res = true;
+	}while(0);
+	
+	return res;
+}
+
+int udfMainFrameBase::GetSelectedCity()
+{
+	int res = -1;
+	while(1)
+	{
+		wxString value = m_comboCity->GetValue();
+		res = m_comboCity->FindString(value);
+		if(-1 != res)
+			break;
+		if(wxNO == wxMessageBox(
+			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_CITY)
+			, STR_INCORRECT_VALUE
+			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
+			, this)
+		)
+			break;
+		
+		udfCitiesMngr dlg(this);
+		if(wxID_OK != dlg.ShowModal())
+			break;
+		
+		RefreshCountries();
+		m_comboCity->SetValue(value);
+	}
+	
+	return res;
+}
+
+void udfMainFrameBase::RefreshCountries()
+{
+	CCountriesTable table(m_pCon);
+	table.GetTable(m_Countries);
 }
 
 void udfMainFrameBase::OnAddChampionsip( wxCommandEvent& event )
 {
-	CChampionshipTable::tDATA data = {0};
-	data.id = -m_listChamlionship->GetCount();
-	
-	data.type = *(int*)m_comboType->GetClientData(m_comboType->GetSelection());
-	data.city = *(int*)m_comboCity->GetClientData(m_comboCity->GetSelection());
-	
-	data.name = m_textName->GetValue();
-	data.additionalInfo = m_textAdditionalInfo->GetValue();
-	data.address = m_textAddress->GetValue();
-	data.date = m_dateDate->GetValue().Format(_(""));
-	data.regOpenDate = m_dateRegOpen->GetValue().Format(_(""));
-	data.regCloseDate = m_dateRegClose->GetValue().Format(_(""));
-	
-	m_Championships.insert(std::make_pair(data.id, data));
+	do
+	{
+		if(! ValidateValues())
+			break;
+		
+		CChampionshipTable::tDATA data = {0};
+		data.type = *(int*)m_comboType->GetClientData(GetSelectedType());
+		data.city = *(int*)m_comboCity->GetClientData(GetSelectedCity());
+		
+		data.name = m_textChName->GetValue();
+		data.additionalInfo = m_textAdditionalInfo->GetValue();
+		data.address = m_textAddress->GetValue();
+		data.date = m_dateDate->GetValue().GetTicks();
+		data.regOpenDate = m_dateRegOpen->GetValue().GetTicks();
+		data.regCloseDate = m_dateRegClose->GetValue().GetTicks();
+		
+		CChampionshipTable table(m_pCon);
+		TEST_BREAK(UDF_OK, table.AddRow(data), STR_ERR_ADD_CHAMPIONSHIP_FAILED);
+			
+		CChampionshipTable::tTableIt it = m_Championships.insert(std::make_pair(data.id, data)).first;
+		int nPos = m_listChampionship->GetCount();
+		m_listChampionship->Insert(data.name, nPos, (void*)&it->first);
+	}while(0);
 }
 
 void udfMainFrameBase::OnRemoveChampionship( wxCommandEvent& event )
 {
-
-}
-
-void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
-{
-	udfChampionshipCategoriesMngrDlg dlg(this);
-	dlg.ShowModal();
-}
-
-void udfMainFrameBase::OnStartNumberAssign( wxCommandEvent& event )
-{
-	udfStartNumberAssignDlg dlg(this);
-	dlg.ShowModal();
-}
-
-void udfMainFrameBase::OnJudgeMngr( wxCommandEvent& event )
-{
-	udfChampionshipJudgesTeamMngrDlg dlg(this);
-	dlg.ShowModal();
-}
-
-void udfMainFrameBase::OnSendInvitation( wxCommandEvent& event )
-{
-	// TODO: Implement OnSendInvitation
-}
-
-void udfMainFrameBase::OnResults( wxCommandEvent& event )
-{
-	// TODO: Implement OnResults
+	do
+	{
+		int nItem = m_listChampionship->GetSelection();
+		if(nItem == -1)
+			break;
+		int nId = *(int*)m_listChampionship->GetClientData(nItem);
+		CChampionshipTable table(m_pCon);
+		
+		TEST_BREAK(UDF_OK, table.DelRow(nId), STR_ERR_DEL_CHAMPIONSHIP_FAILED);
+		
+		m_Championships.erase(nId);
+		m_listChampionship->Delete(nItem);
+	}while(0);
 }
 
 void udfMainFrameBase::OnSave( wxCommandEvent& event )
 {
-	// TODO: Implement OnSave
+	do
+	{
+		if(! ValidateValues())
+			break;
+		
+		int nItem = m_listChampionship->GetSelection();
+		if(nItem == -1)
+			break;
+		int nId = *(int*)m_listChampionship->GetClientData(nItem);
+		
+		CChampionshipTable::tTableIt it = m_Championships.find(nId);
+		if(it == m_Championships.end())
+			break;
+		
+		CChampionshipTable::tDATA& data = it->second;
+		data.type = *(int*)m_comboType->GetClientData(GetSelectedType());
+		data.city = *(int*)m_comboCity->GetClientData(GetSelectedCity());
+		
+		data.name = m_textChName->GetValue();
+		data.additionalInfo = m_textAdditionalInfo->GetValue();
+		data.address = m_textAddress->GetValue();
+		data.date = m_dateDate->GetValue().GetTicks();
+		data.regOpenDate = m_dateRegOpen->GetValue().GetTicks();
+		data.regCloseDate = m_dateRegClose->GetValue().GetTicks();
+		
+		CChampionshipTable table(m_pCon);
+		TEST_BREAK(UDF_OK, table.UpdateRow(nId, data), STR_ERR_UPD_CHAMPIONSHIP_FAILED);
+		m_listChampionship->SetString(nItem, data.name);
+	}while(0);
 }
 
 void udfMainFrameBase::OnDiscard( wxCommandEvent& event )
 {
-	// TODO: Implement OnDiscard
+	int nItem = m_listChampionship->GetSelection();
+	m_listChampionship->SetSelection(nItem);
+	OnSelectChampionship(event);
 }
 
-void udfMainFrameBase::OnAboutDlg(wxCommandEvent& event)
+void udfMainFrameBase::OnSelectChampionship(wxCommandEvent& event)
+{
+	do
+	{
+		int nItem = m_listChampionship->GetSelection();
+		if(nItem == -1)
+			break;
+		
+		int nId = *(int*)m_listChampionship->GetClientData(nItem);
+		
+		CChampionshipTable::tTableIt it = m_Championships.find(nId);
+		if(it == m_Championships.end())
+			break;
+		CChampionshipTable::tDATA& data = it->second;
+		m_textChName->SetValue(data.name);
+		m_textAddress->SetValue(data.address);
+		m_textAdditionalInfo->SetValue(data.additionalInfo);
+		
+		CChampionshipTypeTable::tTableIt typeIt = m_ChampionshipTypes.find(data.type);
+		if(typeIt == m_ChampionshipTypes.end())
+			break;
+		CChampionshipTypeTable::tDATA& typeData = typeIt->second;
+		m_comboType->SetValue(typeData.name);
+		
+		CCitiesTable::tTableIt cityIt = m_Cities.find(data.city);
+		if(cityIt == m_Cities.end())
+			break;
+		CCitiesTable::tDATA& cityData = cityIt->second;
+		CCountriesTable::tTableIt countryIt = m_Countries.find(cityData.countryId);
+		if(countryIt == m_Countries.end())
+			break;
+		CCountriesTable::tDATA& countryData = countryIt->second;
+		wxString city = wxString::Format(STR_FORMAT_CITY_NAME, cityData.Name, countryData.name);
+		m_comboCity->SetValue(city);
+		
+		wxDateTime dt = wxDateTime::Now();
+		dt.Set(data.date);
+		m_dateDate->SetValue(dt);
+		
+		wxDateTime odt = wxDateTime::Now();
+		odt.Set(data.regOpenDate);
+		m_dateRegOpen->SetValue(odt);
+		
+		wxDateTime cdt = wxDateTime::Now();
+		cdt.Set(data.regCloseDate);
+		m_dateRegClose->SetValue(cdt);
+	}while(0);
+}
+
+void udfMainFrameBase::OnSearch(wxCommandEvent& event)
+{
+	wxString search = m_textSearch->GetValue().Upper();
+	CChampionshipTable::tTableIt item;
+	
+	m_listChampionship->Clear();
+	for(item = m_Championships.begin(); item != m_Championships.end(); item++)
+	{
+		CChampionshipTable::tDATA& data = item->second;
+		wxString name(data.name);
+		
+		if(name.Upper().Contains(search))
+		{
+			int pos = m_listChampionship->GetCount();
+			m_listChampionship->Insert(data.name, pos, (void*)&item->first);
+		}
+	}
+}
+
+/****************************************************************
+ * Dialogs
+ ****************************************************************/
+ void udfMainFrameBase::OnAboutDlg(wxCommandEvent& event)
 {
 	wxAboutDialogInfo info;
 	
@@ -174,8 +381,8 @@ int udfMainFrameBase::ShowAgeCatsMngrDlg()
 	int res = wxID_CANCEL;
 	
 	udfCodeDialog dlg(this);
-	dlg.SetTitle(wxT("Age category code manager"));
-	dlg.SetListName(_("Age categories list"));
+	dlg.SetTitle(STR_AGE_CATEGORY_CODE_MNGR);
+	dlg.SetListName(STR_AGE_CATEGORY_CODE_LIST);
 	CDbConnection* pCon = CDbManager::Instance()->GetConnection();
 	CAgeCategoryTable::tTableMap list;
 	CAgeCategoryTable	table(pCon);
@@ -238,8 +445,8 @@ int udfMainFrameBase::ShowDanceTypesMngrDlg()
 {
 	int res = wxID_CANCEL;
 	udfCodeDialog dlg(this);
-	dlg.SetTitle(wxT("Dance types code manager"));
-	dlg.SetListName(_("Dance types list"));
+	dlg.SetTitle(STR_DANCE_TYPES_CODE_MNGR);
+	dlg.SetListName(STR_DANCE_TYPES_CODE_LIST);
 	
 	CDbConnection* pCon = CDbManager::Instance()->GetConnection();
 	CDanceTypesTable::tTableMap list;
@@ -304,8 +511,8 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 	int res = wxID_CANCEL;
 	
 	udfCodeDialog dlg(this);
-	dlg.SetTitle(wxT("Ligues code manager"));
-	dlg.SetListName(_("Ligues list"));
+	dlg.SetTitle(STR_LIGUES_CODE_MNGR);
+	dlg.SetListName(STR_LIGUES_CODE_LIST);
 	
 	CDbConnection* pCon = CDbManager::Instance()->GetConnection();
 	CLigaTable::tTableMap list;
@@ -368,92 +575,81 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 	return res;
 }
 
-void udfMainFrameBase::OnChampionshipSelect(wxCommandEvent& event)
+void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
 {
+	udfChampionshipCategoriesMngrDlg dlg(this);
+	dlg.ShowModal();
 }
 
-void udfMainFrameBase::OnSearch(wxCommandEvent& event)
+void udfMainFrameBase::OnStartNumberAssign( wxCommandEvent& event )
 {
+	udfStartNumberAssignDlg dlg(this);
+	dlg.ShowModal();
 }
 
-int udfMainFrameBase::GetSelectedCity()
+void udfMainFrameBase::OnJudgeMngr( wxCommandEvent& event )
 {
-	int res = -1;
-	while(1)
-	{
-		wxString value = m_comboCity->GetValue();
-		res = m_comboCity->FindString(value);
-		if(-1 != res)
-			break;
-		
-		if(wxNO == wxMessageBox(_("Selected 'City' not present in database. Insert it?")
-			, _("Incorrect value")
-			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
-			, this)
-		)
-			break;
-		
-		CountriesMngr	dlg(this);
-		if(wxID_OK != dlg.ShowModal())
-			break;
-		
-		RefreshCities();
-		m_comboCity->SetValue(value);
-		DEBUG_PRINTF("Country %d", res);
-	}
-	
-	return res;
+	udfChampionshipJudgesTeamMngrDlg dlg(this);
+	dlg.ShowModal();
 }
 
-int udfMainFrameBase::GetSelectedCountry()
+void udfMainFrameBase::OnSendInvitation( wxCommandEvent& event )
 {
-	int res = -1;
-	while(1)
-	{
-		wxString value = m_comboCountry->GetValue();
-		res = m_comboCountry->FindString(value);
-		if(-1 != res)
-			break;
-		
-		if(wxNO == wxMessageBox(_("Selected 'Country' not present in database. Insert it?")
-			, _("Incorrect value")
-			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
-			, this)
-		)
-			break;
-		
-		CitiesMngr	dlg(this);
-		if(wxID_OK != dlg.ShowModal())
-			break;
-		
-		RefreshCountries();
-		m_comboCountry->SetValue(value);
-		DEBUG_PRINTF("Country %d", res);
-	}
-	
-	return res;
+	// TODO: Implement OnSendInvitation
 }
 
-void udfMainFrameBase::OnCountryChanged(wxCommandEvent& event)
+void udfMainFrameBase::OnResults( wxCommandEvent& event )
 {
-}
-
-void udfMainFrameBase::RefreshCities()
-{
-}
-
-void udfMainFrameBase::RefreshCountries()
-{
+	// TODO: Implement OnResults
 }
 
 void udfMainFrameBase::OnCitiesMngr(wxCommandEvent& event)
 {
+	wxString val = m_comboCity->GetValue();
+	
 	udfCitiesMngr	dlg(this);
 	dlg.ShowModal();
+	RefreshCities();
+	
+	m_comboCity->SetValue(val);
 }
 
 void udfMainFrameBase::OnCountriesMngr(wxCommandEvent& event)
 {
+	wxString val = m_comboCity->GetValue();
+	
 	udfCountriesMngr	dlg(this);
 	dlg.ShowModal();
+	RefreshCities();
+	
+	m_comboCity->SetValue(val);
+}
+
+void udfMainFrameBase::OnMenuCategoryManage( wxCommandEvent& event )
+{
+	udfCategoriesMngrDlg dlg(this);
+	dlg.ShowModal();
+}
+
+void udfMainFrameBase::OnMenuClubManage( wxCommandEvent& event )
+{
+	udfClubsMngrDlg dlg(this);
+	dlg.ShowModal();
+}
+
+void udfMainFrameBase::OnMenuJudgeManage( wxCommandEvent& event )
+{
+	udfJudgesMngr dlg(this);
+	dlg.ShowModal();
+}
+
+void udfMainFrameBase::OnMenuChampionshipTypes(wxCommandEvent& event)
+{
+	wxString val = m_comboType->GetValue();
+	
+	udfChampionshipTypeMngr dlg(this);
+	dlg.ShowModal();
+	RefreshTypes();
+	
+	m_comboType->SetValue(val);
 }

@@ -2,6 +2,7 @@
 
 #include "wx/msgdlg.h"
 
+#include "string_def.h"
 #include "common.h"
 #include "udfCountriesMngr.h"
 
@@ -21,7 +22,6 @@ udfCitiesMngr::udfCitiesMngr( wxWindow* parent )
 		CCitiesTable::tDATA& city = it->second;
 		int nPos = m_listItems->GetCount();
 		m_listItems->Insert(city.Name, nPos, (void*)&it->first);
-		DEBUG_PRINTF("City Pos: %d, %d, %s", nPos, city.id, city.Name.c_str());
 		it++;
 	}
 	RefreshCountries();
@@ -200,8 +200,9 @@ int udfCitiesMngr::GetSelectedCountry()
 		if(-1 != res)
 			break;
 		
-		if(wxNO == wxMessageBox(_("Selected 'Country' not present in database. Insert it?")
-			, _("Incorrect value")
+		if(wxNO == wxMessageBox(
+			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_COUNTRY)
+			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
 		)
