@@ -22,7 +22,7 @@ public:
 	
 	sql::Connection*	GetSqlConnection(){return m_pConnection;};
 	sql::ResultSet*		ExecuteQuery(std::string query);
-	void				Execute(std::string query);
+	long				Execute(std::string query);
 	unsigned long long	GetLastInsertId();
 };
 

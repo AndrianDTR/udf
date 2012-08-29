@@ -106,11 +106,9 @@ long CLigaTable::AddRow(tDATA& rec)
 		}
 		
 		sprintf(query, "insert into %s(`code`,`name`) values(%d,'%s')", TABLE, rec.code, rec.name.c_str());
-		m_pConnection->Execute(query);
+		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
-		
-		res = UDF_OK;
 	}while(0);
 	
 	return res;
@@ -130,9 +128,7 @@ long CLigaTable::DelRow(unsigned int nId)
 		}
 		
 		sprintf(query, "delete from %s where id = %d", TABLE, nId);
-		m_pConnection->Execute(query);
-		
-		res = UDF_OK;
+		res = m_pConnection->Execute(query);
 	}while(0);
 	
 	return res;
@@ -205,10 +201,9 @@ long CLigaTable::UpdateRow(unsigned int nId, const tDATA& data)
 		{
 			sprintf(tmp, "update %s set %s `id`=%u where `id`=%u", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			m_pConnection->Execute(query);
+			res = m_pConnection->Execute(query);
 		}
-		
-		res = UDF_OK;
+
 	}while(0);
 	
 	return res;

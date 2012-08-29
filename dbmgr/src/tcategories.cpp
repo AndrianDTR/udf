@@ -129,11 +129,9 @@ long CCategoriesTable::AddRow(tDATA& rec)
 		}
 		sprintf(query, "insert into %s(`dance`,`liga`,`age_category`,`name`,`short_name`) values(%d, %d, %d,'%s','%s')", 
 			TABLE, rec.dance, rec.liga, rec.age_category, rec.name.c_str(), rec.shortName.c_str());
-		m_pConnection->Execute(query);
+		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
-		
-		res = UDF_OK;
 	}while(0);
 	
 	return res;
@@ -153,7 +151,7 @@ long CCategoriesTable::DelRow(unsigned long nId)
 		}
 		
 		sprintf(query, "delete from %s where id = %d", TABLE, nId);
-		m_pConnection->Execute(query);
+		res = m_pConnection->Execute(query);
 		
 		res = UDF_OK;
 	}while(0);
@@ -253,10 +251,9 @@ long CCategoriesTable::UpdateRow(unsigned int nId, const tDATA& data)
 		{
 			sprintf(tmp, "update %s set %s `id`=%u where `id`=%u", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			m_pConnection->Execute(query);
+			res = m_pConnection->Execute(query);
 		}
-		
-		res = UDF_OK;
+
 	}while(0);
 	
 	return res;

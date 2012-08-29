@@ -105,8 +105,9 @@ sql::ResultSet* CDbConnection::ExecuteQuery(std::string query)
 	return res;
 }
 
-void CDbConnection::Execute(std::string query)
+long CDbConnection::Execute(std::string query)
 {
+	long res = UDF_E_EXECUTE_QUERY_FAILED;
 	try
 	{
 		if(m_pStatement)
@@ -114,6 +115,7 @@ void CDbConnection::Execute(std::string query)
 			DEBUG_PRINTF("EXECUTE: %s \n", query.c_str());
 			m_pStatement->execute(query);	
 		}
+		res = UDF_OK;
 	}
 	catch(sql::SQLException &e)
 	{
@@ -124,6 +126,7 @@ void CDbConnection::Execute(std::string query)
 	{
 		fprintf(stderr,"ERROR: Runtime error: %s\n", e.what());
 	}
+	return res;
 }
 
 unsigned long long CDbConnection::GetLastInsertId()
@@ -140,7 +143,7 @@ unsigned long long CDbConnection::GetLastInsertId()
 			}
 			qRes->next();
 			res = qRes->getUInt64(1);
-			DEBUG_PRINTF("GetLast insert id: %ld", res);
+			DEBUG_PRINTF("Get last insert id: %ld", res);
 		}
 	}while(0);
 	

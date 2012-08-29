@@ -18,9 +18,9 @@ public:
 		std::string		additionalInfo;
 		int				city;
 		std::string		address;
-		std::string		date;
-		std::string		regOpenDate;
-		std::string		regCloseDate;
+		time_t			date;
+		time_t			regOpenDate;
+		time_t			regCloseDate;
 	} tDATA;
 
 	typedef map<unsigned int, tDATA> tTableMap;
