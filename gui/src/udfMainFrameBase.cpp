@@ -80,6 +80,12 @@ void udfMainFrameBase::RefreshTypes()
 	m_comboType->AutoComplete(m_comboType->GetStrings());
 }
 
+void udfMainFrameBase::RefreshCountries()
+{
+	CCountriesTable table(m_pCon);
+	table.GetTable(m_Countries);
+}
+
 void udfMainFrameBase::RefreshCities()
 {
 	RefreshCountries();
@@ -145,7 +151,21 @@ bool udfMainFrameBase::ValidateValues()
 		
 		if(-1 == GetSelectedCity())
 			break;
-		//Add date validation here
+		
+		wxDateTime date = m_dateDate->GetValue();
+		wxDateTime open = m_dateRegOpen->GetValue();
+		wxDateTime close = m_dateRegClose->GetValue();
+		
+		if(close >= date)
+		{
+			ShowWarning(STR_WARN_REGCLOSE_GREATTHEN_ChDATE);
+			break;
+		}
+		if(open >= close)
+		{
+			ShowWarning(STR_WARN_REGOPEN_GREATTHEN_REGCLOSE);
+			break;
+		}
 		
 		res = true;
 	}while(0);
@@ -179,12 +199,6 @@ int udfMainFrameBase::GetSelectedCity()
 	}
 	
 	return res;
-}
-
-void udfMainFrameBase::RefreshCountries()
-{
-	CCountriesTable table(m_pCon);
-	table.GetTable(m_Countries);
 }
 
 void udfMainFrameBase::OnAddChampionsip( wxCommandEvent& event )
@@ -235,12 +249,13 @@ void udfMainFrameBase::OnSave( wxCommandEvent& event )
 {
 	do
 	{
-		if(! ValidateValues())
-			break;
-		
 		int nItem = m_listChampionship->GetSelection();
 		if(nItem == -1)
 			break;
+		
+		if(! ValidateValues())
+			break;
+				
 		int nId = *(int*)m_listChampionship->GetClientData(nItem);
 		
 		CChampionshipTable::tTableIt it = m_Championships.find(nId);
@@ -266,9 +281,14 @@ void udfMainFrameBase::OnSave( wxCommandEvent& event )
 
 void udfMainFrameBase::OnDiscard( wxCommandEvent& event )
 {
-	int nItem = m_listChampionship->GetSelection();
-	m_listChampionship->SetSelection(nItem);
-	OnSelectChampionship(event);
+	do{
+		int nItem = m_listChampionship->GetSelection();
+		if(-1 == nItem)
+			break;
+					
+		m_listChampionship->SetSelection(nItem);
+		OnSelectChampionship(event);
+	}while(0);
 }
 
 void udfMainFrameBase::OnSelectChampionship(wxCommandEvent& event)

@@ -2,6 +2,7 @@
 #include "stdio.h"
 
 #include "dberrors.h"
+#include "dbutils.h"
 #include "tclubs.h"
 
 #define	TABLE	TABLE_CLUBS
@@ -68,23 +69,23 @@ long CClubsTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (!filter.location.empty())
+		if (!filter.additionalInfo.empty())
 		{
-			sprintf(tmp, "%sand `location` like '%%%s%%' ", query, filter.location.c_str());
+			sprintf(tmp, "%sand `location` like '%%%s%%' ", query, filter.additionalInfo.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.pay_date.empty())
+		if (0 != filter.pay_date)
 		{
-			sprintf(tmp, "%sand `pay_date` like '%%%s%%' ", query, filter.pay_date.c_str());
+			sprintf(tmp, "%sand `pay_date` like '%%%s%%' ", query, date2str(filter.pay_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.exp_date.empty())
+		if (0 != filter.exp_date)
 		{
-			sprintf(tmp, "%sand `expire_date` like '%%%s%%' ", query, filter.exp_date.c_str());
+			sprintf(tmp, "%sand `expire_date` like '%%%s%%' ", query, date2str(filter.exp_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -155,9 +156,9 @@ long CClubsTable::Find(tTableMap& data, const tDATA& filter)
 			el.email = qRes->getString(6);
 			el.contacts = qRes->getString(7);
 			el.web = qRes->getString(8);
-			el.location = qRes->getString(9);
-			el.pay_date = qRes->getString(10);
-			el.exp_date = qRes->getString(11);
+			el.additionalInfo = qRes->getString(9);
+			el.pay_date = str2date(qRes->getString(10));
+			el.exp_date = str2date(qRes->getString(11));
 			el.director = qRes->getString(12);
 			el.director_bd = qRes->getString(13);
 			el.director_phone = qRes->getString(14);
@@ -198,9 +199,9 @@ long CClubsTable::AddRow(tDATA& rec)
 			, rec.email.c_str()
 			, rec.contacts.c_str()
 			, rec.web.c_str()
-			, rec.location.c_str()
-			, rec.pay_date.c_str()
-			, rec.exp_date.c_str()
+			, rec.additionalInfo.c_str()
+			, date2str(rec.pay_date).c_str()
+			, date2str(rec.exp_date).c_str()
 			, rec.director.c_str()
 			, rec.director_bd.c_str()
 			, rec.director_phone.c_str()
@@ -266,9 +267,9 @@ long CClubsTable::GetRow(unsigned int nId, tDATA& data)
 		data.email = qRes->getString(6);
 		data.contacts = qRes->getString(7);
 		data.web = qRes->getString(8);
-		data.location = qRes->getString(9);
-		data.pay_date = qRes->getString(10);
-		data.exp_date = qRes->getString(11);
+		data.additionalInfo = qRes->getString(9);
+		data.pay_date = str2date(qRes->getString(10));
+		data.exp_date = str2date(qRes->getString(11));
 		data.director = qRes->getString(12);
 		data.director_bd = qRes->getString(13);
 		data.director_phone = qRes->getString(14);
@@ -345,23 +346,23 @@ long CClubsTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (!data.location.empty())
+		if (!data.additionalInfo.empty())
 		{
-			sprintf(tmp, "%s `location` = '%s',", query, data.location.c_str());
+			sprintf(tmp, "%s `location` = '%s',", query, data.additionalInfo.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!data.pay_date.empty())
+		if (0 != data.pay_date)
 		{
-			sprintf(tmp, "%s `pay_date` = '%s',", query, data.pay_date.c_str());
+			sprintf(tmp, "%s `pay_date` = '%s',", query, date2str(data.pay_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!data.exp_date.empty())
+		if (0 != data.exp_date)
 		{
-			sprintf(tmp, "%s `expire_date` = '%s',", query, data.exp_date.c_str());
+			sprintf(tmp, "%s `expire_date` = '%s',", query, date2str(data.exp_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

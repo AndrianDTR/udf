@@ -9,10 +9,10 @@ AccountInfo( parent )
 
 void udfAccountInfo::OnSave( wxCommandEvent& event )
 {
-	// TODO: Implement OnSave
+	EndModal(wxID_OK);
 }
 
 void udfAccountInfo::OnDiscard( wxCommandEvent& event )
 {
-	// TODO: Implement OnDiscard
+	EndModal(wxID_CANCEL);
 }

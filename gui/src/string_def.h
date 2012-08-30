@@ -48,6 +48,10 @@ STR_DEFINITION(STR_ERR_ADD_CHAMPIONSHIP_FAILED, "Championship could not be added
 STR_DEFINITION(STR_ERR_UPD_CHAMPIONSHIP_FAILED, "Championship could not be updated.");
 STR_DEFINITION(STR_ERR_DEL_CHAMPIONSHIP_FAILED, "Championship could not be removed.");
 
+////////////////////////////////////////////////////////////////////////////////////
+STR_DEFINITION(STR_WARN_REGCLOSE_GREATTHEN_ChDATE, "Championship date must be lower then reg close date.");
+STR_DEFINITION(STR_WARN_REGOPEN_GREATTHEN_REGCLOSE, "Championship reg open date must be lower then reg close date.");
+
 STR_DEFINITION(STR_FORMAT_DATE, "%04d-%02d-%02d");
 STR_DEFINITION(STR_INCORRECT_VALUE, "Incorrect value");
 STR_DEFINITION(STR_NOT_IN_DB_INSERT, "Selected '%s' not present in database. Insert it?");

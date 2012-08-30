@@ -180,6 +180,8 @@ class CategoriesMngrDlg : public wxDialog
 		{
 			ID_CATEGORY_LIST_SEARCH = 1000,
 			ID_CATEGORY_LIST,
+			ID_NAME,
+			ID_SHORTNAME,
 			ID_DANCE_LIST,
 			ID_LIGA_LIST,
 			ID_AGE_LIST,
@@ -230,6 +232,8 @@ class ClubsMngrDlg : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnSelectClub( wxCommandEvent& event ){ OnSelectClub( event ); }
 		void _wxFB_OnAddClub( wxCommandEvent& event ){ OnAddClub( event ); }
 		void _wxFB_OnRemoveClub( wxCommandEvent& event ){ OnRemoveClub( event ); }
 		void _wxFB_OnAccountInfo( wxCommandEvent& event ){ OnAccountInfo( event ); }
@@ -243,17 +247,27 @@ class ClubsMngrDlg : public wxDialog
 	protected:
 		enum
 		{
-			wxID_ADDCLUB = 1000,
+			ID_SEARCH = 1000,
+			ID_CLUBLIST,
+			wxID_ADDCLUB,
 			wxID_REMOVECLUB,
 			wxID_ACCOUNTINFO,
 			wxID_DIRECTORINFO,
 			wxID_TRAINERS,
 			wxID_DANCERS,
+			ID_NAME,
+			ID_CITY,
+			ID_ADDRESS,
+			ID_EMAIL,
+			ID_WEB,
+			ID_INFO,
+			ID_PAYDATE,
+			ID_EXPDATE,
 		};
 		
 		wxStaticText* m_staticText20;
-		wxTextCtrl* m_textCtrl8;
-		wxListBox* m_listBox5;
+		wxTextCtrl* m_textSearch;
+		wxListBox* m_listClubs;
 		wxBitmapButton* m_bpAddClub;
 		wxBitmapButton* m_bpRemoveClub;
 		wxBitmapButton* m_bpAccountInfo;
@@ -263,23 +277,25 @@ class ClubsMngrDlg : public wxDialog
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpCancel;
 		wxStaticText* m_staticText21;
-		wxTextCtrl* m_textCtrl9;
+		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText22;
-		wxComboBox* m_comboBox6;
+		wxComboBox* m_comboCity;
 		wxStaticText* m_staticText23;
-		wxTextCtrl* m_textCtrl10;
+		wxTextCtrl* m_textAddress;
 		wxStaticText* m_staticText24;
-		wxTextCtrl* m_textCtrl11;
+		wxTextCtrl* m_textEmail;
 		wxStaticText* m_staticText25;
-		wxTextCtrl* m_textCtrl12;
+		wxTextCtrl* m_textWeb;
 		wxStaticText* m_staticText26;
-		wxTextCtrl* m_textCtrl13;
+		wxTextCtrl* m_textInfo;
 		wxStaticText* m_staticText27;
-		wxDatePickerCtrl* m_datePicker6;
+		wxDatePickerCtrl* m_datePay;
 		wxStaticText* m_staticText28;
-		wxDatePickerCtrl* m_datePicker7;
+		wxDatePickerCtrl* m_dateExp;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectClub( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddClub( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveClub( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAccountInfo( wxCommandEvent& event ) { event.Skip(); }
@@ -308,12 +324,12 @@ class MainFrameBase : public wxFrame
 		// Private event handlers
 		void _wxFB_OnCloseFrame( wxCloseEvent& event ){ OnCloseFrame( event ); }
 		void _wxFB_OnExitClick( wxCommandEvent& event ){ OnExitClick( event ); }
+		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
 		void _wxFB_OnMenuCategoryManage( wxCommandEvent& event ){ OnMenuCategoryManage( event ); }
 		void _wxFB_OnDanceTypesCodeMgr( wxCommandEvent& event ){ OnDanceTypesCodeMgr( event ); }
 		void _wxFB_OnLigueCodeMgr( wxCommandEvent& event ){ OnLigueCodeMgr( event ); }
 		void _wxFB_OnAgeCodesMgr( wxCommandEvent& event ){ OnAgeCodesMgr( event ); }
 		void _wxFB_OnMenuChampionshipTypes( wxCommandEvent& event ){ OnMenuChampionshipTypes( event ); }
-		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
 		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
 		void _wxFB_OnCountriesMngr( wxCommandEvent& event ){ OnCountriesMngr( event ); }
 		void _wxFB_OnCitiesMngr( wxCommandEvent& event ){ OnCitiesMngr( event ); }
@@ -344,11 +360,12 @@ class MainFrameBase : public wxFrame
 			ID_CS_INVITATIONS,
 			ID_CS_RESULTS,
 			ID_CS_RAITING,
+			wxID_MENU_CLUBS_MNGR,
 			wxID_MENU_CAT_MNGR,
 			ID_DANCE_TYPES,
 			ID_LIGUES,
 			ID_AGE_CATEGORIES,
-			wxID_MENU_CLUBS_MNGR,
+			ID_ChTYPES_MNGR,
 			wxID_MENU_JUDGE_MNGR,
 			ID_COUNTRIES,
 			ID_CITIES,
@@ -378,7 +395,6 @@ class MainFrameBase : public wxFrame
 		wxMenu* m_menuFile;
 		wxMenu* m_menu8;
 		wxMenu* m_menu2;
-		wxMenu* m_menu3;
 		wxMenu* m_menu5;
 		wxMenu* m_menu6;
 		wxMenu* m_menu51;
@@ -416,12 +432,12 @@ class MainFrameBase : public wxFrame
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnCloseFrame( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnExitClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuClubManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuCategoryManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDanceTypesCodeMgr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLigueCodeMgr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAgeCodesMgr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuChampionshipTypes( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMenuClubManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuJudgeManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCountriesMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCitiesMngr( wxCommandEvent& event ) { event.Skip(); }
@@ -943,6 +959,8 @@ class CodeDialog : public wxDialog
 			ID_SEARCH = 1000,
 			ID_ITEM_LIST,
 			wxID_UPDATE,
+			ID_CODE,
+			ID_NAME,
 		};
 		
 		wxStaticBoxSizer* m_sbListSizer;
@@ -1002,6 +1020,7 @@ class CountriesMngr : public wxDialog
 			ID_SEARCH = 1000,
 			ID_ITEM_LIST,
 			wxID_UPDATE,
+			ID_NAME,
 		};
 		
 		wxStaticText* m_staticText84;
@@ -1058,6 +1077,7 @@ class ChampionshipTypeMngr : public wxDialog
 			ID_SEARCH = 1000,
 			ID_ITEM_LIST,
 			wxID_UPDATE,
+			ID_NAME,
 		};
 		
 		wxStaticText* m_staticText84;
@@ -1114,6 +1134,7 @@ class CitiesMngr : public wxDialog
 			ID_SEARCH = 1000,
 			ID_ITEM_LIST,
 			wxID_UPDATE,
+			ID_NAME,
 		};
 		
 		wxStaticBoxSizer* m_sbListSizer;
