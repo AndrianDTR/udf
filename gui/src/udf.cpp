@@ -21,6 +21,7 @@
 #include "../res/button_left.xpm"
 #include "../res/button_leftall.xpm"
 #include "../res/button_ok.xpm"
+#include "../res/button_other.xpm"
 #include "../res/button_raiting.xpm"
 #include "../res/button_random.xpm"
 #include "../res/button_results.xpm"
@@ -431,6 +432,7 @@ CategoriesMngrDlg::~CategoriesMngrDlg()
 
 BEGIN_EVENT_TABLE( ClubsMngrDlg, wxDialog )
 	EVT_BUTTON( wxID_ADDCLUB, ClubsMngrDlg::_wxFB_OnAddClub )
+	EVT_BUTTON( wxID_APPLY, ClubsMngrDlg::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_REMOVECLUB, ClubsMngrDlg::_wxFB_OnRemoveClub )
 	EVT_BUTTON( wxID_ACCOUNTINFO, ClubsMngrDlg::_wxFB_OnAccountInfo )
 	EVT_BUTTON( wxID_DIRECTORINFO, ClubsMngrDlg::_wxFB_OnDirectorInfo )
@@ -479,16 +481,19 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_bpAddClub = new wxBitmapButton( this, wxID_ADDCLUB, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer24->Add( m_bpAddClub, 0, wxALL, 5 );
 	
+	m_bpUpdate = new wxBitmapButton( this, wxID_APPLY, wxBitmap( button_update2_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer24->Add( m_bpUpdate, 0, wxALL, 5 );
+	
 	m_bpRemoveClub = new wxBitmapButton( this, wxID_REMOVECLUB, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer24->Add( m_bpRemoveClub, 0, wxALL, 5 );
 	
 	m_bpAccountInfo = new wxBitmapButton( this, wxID_ACCOUNTINFO, wxBitmap( button_account_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer24->Add( m_bpAccountInfo, 0, wxALL, 5 );
 	
-	m_bpDirectorInfo = new wxBitmapButton( this, wxID_DIRECTORINFO, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpDirectorInfo = new wxBitmapButton( this, wxID_DIRECTORINFO, wxBitmap( button_other_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer24->Add( m_bpDirectorInfo, 0, wxALL, 5 );
 	
-	m_bpTarinersMngr = new wxBitmapButton( this, wxID_TRAINERS, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpTarinersMngr = new wxBitmapButton( this, wxID_TRAINERS, wxBitmap( button_other_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer24->Add( m_bpTarinersMngr, 0, wxALL, 5 );
 	
 	m_bpDancersMngr = new wxBitmapButton( this, wxID_DANCERS, wxBitmap( button_user_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
@@ -556,15 +561,25 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_staticText27->Wrap( -1 );
 	fgSizer3->Add( m_staticText27, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
+<<<<<<< HEAD
 	m_datePicker6 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
 	fgSizer3->Add( m_datePicker6, 0, wxALL, 5 );
+=======
+	m_datePay = new wxDatePickerCtrl( this, ID_PAYDATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	fgSizer3->Add( m_datePay, 0, wxALL, 5 );
+>>>>>>> 3cca194... Manage Clubs functional has been implemented
 	
 	m_staticText28 = new wxStaticText( this, wxID_ANY, _("Exp. date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText28->Wrap( -1 );
 	fgSizer3->Add( m_staticText28, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
+<<<<<<< HEAD
 	m_datePicker7 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
 	fgSizer3->Add( m_datePicker7, 0, wxALL, 5 );
+=======
+	m_dateExp = new wxDatePickerCtrl( this, ID_EXPDATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	fgSizer3->Add( m_dateExp, 0, wxALL, 5 );
+>>>>>>> 3cca194... Manage Clubs functional has been implemented
 	
 	bSizer22->Add( fgSizer3, 1, wxEXPAND, 5 );
 	
@@ -849,14 +864,14 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_staticText12->Wrap( -1 );
 	sbSizer1->Add( m_staticText12, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_dateRegOpen = new wxDatePickerCtrl( m_panel1, ID_REG_OPEN, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT );
+	m_dateRegOpen = new wxDatePickerCtrl( m_panel1, ID_REG_OPEN, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	sbSizer1->Add( m_dateRegOpen, 0, wxALL, 5 );
 	
 	m_staticText13 = new wxStaticText( m_panel1, wxID_ANY, _("Close date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText13->Wrap( -1 );
 	sbSizer1->Add( m_staticText13, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_dateRegClose = new wxDatePickerCtrl( m_panel1, ID_REG_CLOSE, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT );
+	m_dateRegClose = new wxDatePickerCtrl( m_panel1, ID_REG_CLOSE, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	sbSizer1->Add( m_dateRegClose, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer13->Add( sbSizer1, 0, wxEXPAND|wxALL, 5 );
@@ -909,43 +924,29 @@ DirectorInfo::DirectorInfo( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_staticText29->Wrap( -1 );
 	fgSizer4->Add( m_staticText29, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl14 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer4->Add( m_textCtrl14, 0, wxALL|wxEXPAND, 5 );
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer4->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText30 = new wxStaticText( this, wxID_ANY, _("Birth date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText30->Wrap( -1 );
 	fgSizer4->Add( m_staticText30, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_datePicker8 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
-	fgSizer4->Add( m_datePicker8, 0, wxALL, 5 );
+	m_dateBd = new wxDatePickerCtrl( this, ID_BD, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	fgSizer4->Add( m_dateBd, 0, wxALL, 5 );
 	
 	m_staticText31 = new wxStaticText( this, wxID_ANY, _("Phone"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText31->Wrap( -1 );
 	fgSizer4->Add( m_staticText31, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl15 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer4->Add( m_textCtrl15, 0, wxALL|wxEXPAND, 5 );
+	m_textPhone = new wxTextCtrl( this, ID_PHONE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer4->Add( m_textPhone, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText32 = new wxStaticText( this, wxID_ANY, _("E-mail"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText32->Wrap( -1 );
 	fgSizer4->Add( m_staticText32, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl16 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer4->Add( m_textCtrl16, 0, wxALL|wxEXPAND, 5 );
-	
-	m_staticText33 = new wxStaticText( this, wxID_ANY, _("Pay date"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText33->Wrap( -1 );
-	fgSizer4->Add( m_staticText33, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_datePicker9 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
-	fgSizer4->Add( m_datePicker9, 0, wxALL, 5 );
-	
-	m_staticText34 = new wxStaticText( this, wxID_ANY, _("Exp. date"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText34->Wrap( -1 );
-	fgSizer4->Add( m_staticText34, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_datePicker10 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
-	fgSizer4->Add( m_datePicker10, 0, wxALL, 5 );
+	m_textEmail = new wxTextCtrl( this, ID_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer4->Add( m_textEmail, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer25->Add( fgSizer4, 1, wxEXPAND, 5 );
 	
@@ -1085,14 +1086,14 @@ TarinersMngrDlg::TarinersMngrDlg( wxWindow* parent, wxWindowID id, const wxStrin
 	m_staticText27->Wrap( -1 );
 	fgSizer3->Add( m_staticText27, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_datePicker6 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+	m_datePicker6 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_datePicker6, 0, wxALL, 5 );
 	
 	m_staticText28 = new wxStaticText( this, wxID_ANY, _("Exp. date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText28->Wrap( -1 );
 	fgSizer3->Add( m_staticText28, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_datePicker7 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+	m_datePicker7 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_datePicker7, 0, wxALL, 5 );
 	
 	bSizer22->Add( fgSizer3, 1, wxEXPAND, 5 );
@@ -1257,21 +1258,21 @@ DancersMngrDlg::DancersMngrDlg( wxWindow* parent, wxWindowID id, const wxString&
 	m_staticText27->Wrap( -1 );
 	fgSizer3->Add( m_staticText27, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_datePicker6 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+	m_datePicker6 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_datePicker6, 0, wxALL, 5 );
 	
 	m_staticText28 = new wxStaticText( this, wxID_ANY, _("Exp. date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText28->Wrap( -1 );
 	fgSizer3->Add( m_staticText28, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_datePicker7 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+	m_datePicker7 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_datePicker7, 0, wxALL, 5 );
 	
 	m_staticText62 = new wxStaticText( this, wxID_ANY, _("Reg date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText62->Wrap( -1 );
 	fgSizer3->Add( m_staticText62, 0, wxALL, 5 );
 	
-	m_datePicker15 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+	m_datePicker15 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_datePicker15, 0, wxALL, 5 );
 	
 	bSizer22->Add( fgSizer3, 1, wxEXPAND, 5 );
@@ -1293,6 +1294,7 @@ DancersMngrDlg::~DancersMngrDlg()
 }
 
 BEGIN_EVENT_TABLE( AccountInfo, wxDialog )
+	EVT_CHECKBOX( wxID_ANY, AccountInfo::_wxFB_OnShowPass )
 	EVT_BUTTON( wxID_OK, AccountInfo::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, AccountInfo::_wxFB_OnDiscard )
 END_EVENT_TABLE()
@@ -1314,21 +1316,21 @@ AccountInfo::AccountInfo( wxWindow* parent, wxWindowID id, const wxString& title
 	m_staticText56->Wrap( -1 );
 	fgSizer7->Add( m_staticText56, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl28 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer7->Add( m_textCtrl28, 0, wxALL|wxEXPAND, 5 );
+	m_textLogin = new wxTextCtrl( this, ID_LOGIN, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer7->Add( m_textLogin, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText57 = new wxStaticText( this, wxID_ANY, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText57->Wrap( -1 );
 	fgSizer7->Add( m_staticText57, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl29 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer7->Add( m_textCtrl29, 0, wxALL|wxEXPAND, 5 );
+	m_textPass = new wxTextCtrl( this, ID_PASS, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+	fgSizer7->Add( m_textPass, 0, wxALL|wxEXPAND, 5 );
 	
 	
 	fgSizer7->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_checkBox1 = new wxCheckBox( this, wxID_ANY, _("Show password"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer7->Add( m_checkBox1, 0, wxALL, 5 );
+	m_checkShowPass = new wxCheckBox( this, wxID_ANY, _("Show password"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer7->Add( m_checkShowPass, 0, wxALL, 5 );
 	
 	bSizer44->Add( fgSizer7, 1, wxEXPAND, 5 );
 	
@@ -1478,14 +1480,14 @@ JudgesMngr::JudgesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_staticText27->Wrap( -1 );
 	fgSizer3->Add( m_staticText27, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_datePicker6 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+	m_datePicker6 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_datePicker6, 0, wxALL, 5 );
 	
 	m_staticText28 = new wxStaticText( this, wxID_ANY, _("Exp. date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText28->Wrap( -1 );
 	fgSizer3->Add( m_staticText28, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_datePicker7 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+	m_datePicker7 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_datePicker7, 0, wxALL, 5 );
 	
 	bSizer22->Add( fgSizer3, 1, wxEXPAND, 5 );

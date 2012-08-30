@@ -231,6 +231,7 @@ class ClubsMngrDlg : public wxDialog
 		
 		// Private event handlers
 		void _wxFB_OnAddClub( wxCommandEvent& event ){ OnAddClub( event ); }
+		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnRemoveClub( wxCommandEvent& event ){ OnRemoveClub( event ); }
 		void _wxFB_OnAccountInfo( wxCommandEvent& event ){ OnAccountInfo( event ); }
 		void _wxFB_OnDirectorInfo( wxCommandEvent& event ){ OnDirectorInfo( event ); }
@@ -255,6 +256,7 @@ class ClubsMngrDlg : public wxDialog
 		wxTextCtrl* m_textCtrl8;
 		wxListBox* m_listBox5;
 		wxBitmapButton* m_bpAddClub;
+		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpRemoveClub;
 		wxBitmapButton* m_bpAccountInfo;
 		wxBitmapButton* m_bpDirectorInfo;
@@ -281,6 +283,7 @@ class ClubsMngrDlg : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnAddClub( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveClub( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAccountInfo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDirectorInfo( wxCommandEvent& event ) { event.Skip(); }
@@ -292,7 +295,7 @@ class ClubsMngrDlg : public wxDialog
 	
 	public:
 		
-		ClubsMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Clubs manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 785,477 ), long style = wxDEFAULT_DIALOG_STYLE );
+		ClubsMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Clubs manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 896,471 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~ClubsMngrDlg();
 	
 };
@@ -460,18 +463,22 @@ class DirectorInfo : public wxDialog
 		
 	
 	protected:
+		enum
+		{
+			ID_NAME = 1000,
+			ID_BD,
+			ID_PHONE,
+			ID_EMAIL,
+		};
+		
 		wxStaticText* m_staticText29;
-		wxTextCtrl* m_textCtrl14;
+		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText30;
-		wxDatePickerCtrl* m_datePicker8;
+		wxDatePickerCtrl* m_dateBd;
 		wxStaticText* m_staticText31;
-		wxTextCtrl* m_textCtrl15;
+		wxTextCtrl* m_textPhone;
 		wxStaticText* m_staticText32;
-		wxTextCtrl* m_textCtrl16;
-		wxStaticText* m_staticText33;
-		wxDatePickerCtrl* m_datePicker9;
-		wxStaticText* m_staticText34;
-		wxDatePickerCtrl* m_datePicker10;
+		wxTextCtrl* m_textEmail;
 		wxBitmapButton* m_bpButton25;
 		wxBitmapButton* m_bpButton26;
 		
@@ -482,7 +489,7 @@ class DirectorInfo : public wxDialog
 	
 	public:
 		
-		DirectorInfo( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Director info"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 435,300 ), long style = wxDEFAULT_DIALOG_STYLE );
+		DirectorInfo( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Director info"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 459,230 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~DirectorInfo();
 	
 };
@@ -624,21 +631,29 @@ class AccountInfo : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnShowPass( wxCommandEvent& event ){ OnShowPass( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
 	
 	protected:
-		wxStaticText* m_staticText56;
-		wxTextCtrl* m_textCtrl28;
-		wxStaticText* m_staticText57;
-		wxTextCtrl* m_textCtrl29;
+		enum
+		{
+			ID_LOGIN = 1000,
+			ID_PASS,
+		};
 		
-		wxCheckBox* m_checkBox1;
+		wxStaticText* m_staticText56;
+		wxTextCtrl* m_textLogin;
+		wxStaticText* m_staticText57;
+		wxTextCtrl* m_textPass;
+		
+		wxCheckBox* m_checkShowPass;
 		wxBitmapButton* m_bpButton39;
 		wxBitmapButton* m_bpButton40;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnShowPass( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		

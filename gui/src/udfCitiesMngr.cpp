@@ -171,11 +171,9 @@ void udfCitiesMngr::OnSave( wxCommandEvent& event )
 	
 	if(m_Cities.size() > 0)
 	{
-		//insert data here
 		CCitiesTable::tTableIt rLstIt = m_Cities.begin();
 		while(rLstIt != m_Cities.end())
 		{
-			DEBUG_PRINTF("INS %d", rLstIt->first);
 			CCitiesTable::tDATA& data = rLstIt->second;
 			table.AddRow(data);
 			rLstIt++;

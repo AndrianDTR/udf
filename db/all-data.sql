@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-08-24 14:52:04
+-- Date/time:                    2012-08-30 22:58:20
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -80,22 +80,26 @@ CREATE TABLE IF NOT EXISTS `championship` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `type` int(10) unsigned NOT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `additional_info` varchar(250) DEFAULT NULL,
+  `additional_info` text,
   `city` int(10) unsigned NOT NULL,
+  `address` text,
+  `date` date DEFAULT NULL,
+  `reg_open` date DEFAULT NULL,
+  `reg_close` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_championship_cities` (`city`),
   KEY `FK_championship_championship_type` (`type`),
   CONSTRAINT `FK_championship_championship_type` FOREIGN KEY (`type`) REFERENCES `championship_type` (`id`),
   CONSTRAINT `FK_championship_cities` FOREIGN KEY (`city`) REFERENCES `cities` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table udf.championship: ~3 rows (approximately)
 DELETE FROM `championship`;
 /*!40000 ALTER TABLE `championship` DISABLE KEYS */;
-INSERT INTO `championship` (`id`, `type`, `name`, `additional_info`, `city`) VALUES
-	(3, 4, 'jashdjs d ', 'd gdgd hfg ', 1),
-	(4, 1, 'sdf d ddf ', ' diuk kjddl   dflgk ', 1),
-	(37, 1, 'Test Дорослі-8', 'AdditionalInfo 1', 1);
+INSERT INTO `championship` (`id`, `type`, `name`, `additional_info`, `city`, `address`, `date`, `reg_open`, `reg_close`) VALUES
+	(3, 4, 'jashdjs d ', 'd gdgd hfg ', 1, 'jhdj jfhas jh', '2012-08-28', '2012-08-28', '2012-08-29'),
+	(4, 1, 'sdf d ddf ', ' diuk kjddl   dflgk ', 1, NULL, NULL, NULL, NULL),
+	(5, 1, 'AAAAAA', 'ZZZZZZ', 1, 'QQQQQ', '2012-09-01', '2012-08-30', '2012-08-31');
 /*!40000 ALTER TABLE `championship` ENABLE KEYS */;
 
 
@@ -255,16 +259,18 @@ CREATE TABLE IF NOT EXISTS `championship_type` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_type: ~4 rows (approximately)
+-- Dumping data for table udf.championship_type: ~6 rows (approximately)
 DELETE FROM `championship_type`;
 /*!40000 ALTER TABLE `championship_type` DISABLE KEYS */;
 INSERT INTO `championship_type` (`id`, `name`) VALUES
 	(1, 'Обласні'),
 	(2, 'Рейтингові'),
 	(3, 'Belly dance'),
-	(4, 'Latino bit');
+	(4, 'Latino bit'),
+	(7, 'Latino'),
+	(9, 'LatinoQQ');
 /*!40000 ALTER TABLE `championship_type` ENABLE KEYS */;
 
 
@@ -279,23 +285,19 @@ CREATE TABLE IF NOT EXISTS `cities` (
   CONSTRAINT `FK_cities_countries` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.cities: ~13 rows (approximately)
+-- Dumping data for table udf.cities: ~9 rows (approximately)
 DELETE FROM `cities`;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
 INSERT INTO `cities` (`id`, `country_id`, `name`) VALUES
 	(1, 1, 'Lviv'),
 	(2, 1, 'Kyiv'),
-	(3, 2, 'Moscow'),
-	(4, 2, 'rostov na donu'),
-	(5, 1, 'Test Дорослі-8'),
-	(6, 1, 'test 1'),
+	(3, 3, 'Moscow'),
+	(4, 3, 'rostov na donu'),
 	(7, 1, 'test 2'),
-	(8, 1, 'test 3'),
-	(9, 1, 'test 4'),
-	(10, 2, 'test 5'),
 	(11, 2, 'test 6'),
-	(12, 1, 'ternopil'),
-	(14, 1, 'Test Дорослі-8');
+	(12, 1, 'Ternopil'),
+	(13, 1, 'Lutsk'),
+	(14, 1, 'AAAA');
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 
 
@@ -308,9 +310,9 @@ CREATE TABLE IF NOT EXISTS `clubs` (
   `login` varchar(20) DEFAULT NULL,
   `pass` varchar(50) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `contacts` varchar(150) DEFAULT NULL,
+  `contacts` text,
   `web` varchar(50) DEFAULT NULL,
-  `location` varchar(150) DEFAULT NULL,
+  `additional_info` text,
   `pay_date` date DEFAULT NULL,
   `expire_date` date DEFAULT NULL,
   `director_name` varchar(50) DEFAULT NULL,
@@ -325,14 +327,11 @@ CREATE TABLE IF NOT EXISTS `clubs` (
 -- Dumping data for table udf.clubs: ~7 rows (approximately)
 DELETE FROM `clubs`;
 /*!40000 ALTER TABLE `clubs` DISABLE KEYS */;
-INSERT INTO `clubs` (`id`, `name`, `city`, `login`, `pass`, `email`, `contacts`, `web`, `location`, `pay_date`, `expire_date`, `director_name`, `director_bd`, `director_phone`, `director_email`) VALUES
+INSERT INTO `clubs` (`id`, `name`, `city`, `login`, `pass`, `email`, `contacts`, `web`, `additional_info`, `pay_date`, `expire_date`, `director_name`, `director_bd`, `director_phone`, `director_email`) VALUES
 	(2, 'Test Дорослі-8', 11, 'Test login1', 'Test pass1', 'Test email1', 'Test contacts1', 'Test web1', 'Test location1', '0000-00-00', '0000-00-00', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
 	(3, 'Test Дорослі-8', 11, 'Test login1', 'Test pass1', 'Test email1', 'Test contacts1', 'Test web1', 'Test location1', '0000-00-00', '0000-00-00', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
 	(4, 'Test Дорослі-8', 11, 'Test login1', 'Test pass1', 'Test email1', 'Test contacts1', 'Test web1', 'Test location1', '0000-00-00', '0000-00-00', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
-	(5, 'Test Дорослі-8', 11, 'Test login1', 'Test pass1', 'Test email1', 'Test contacts1', 'Test web1', 'Test location1', '0000-00-00', '0000-00-00', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
-	(6, 'Test Дорослі-8', 11, 'Test login1', 'Test pass1', 'Test email1', 'Test contacts1', 'Test web1', 'Test location1', '0000-00-00', '0000-00-00', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
-	(7, 'Test XXXX', 7, 'Test login2', 'Test pass2', 'Test email2', 'Test contacts2', 'Test web2', 'Test location2', '0000-00-00', '0000-00-00', 'Test director2', '0000-00-00', 'Test dir ph2', 'Test dir em2'),
-	(8, 'Test Дорослі-8', 11, 'Test login1', 'Test pass1', 'Test email1', 'Test contacts1', 'Test web1', 'Test location1', '0000-00-00', '0000-00-00', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1');
+	(7, 'QQQQQQQQQ', 1, 'QQQQQQ', 'QAZXSW', 'BBBBBB', 'AAAAAA', 'CCCC', 'ZZZZZZZZ', '2012-09-30', '2013-09-30', 'Director 12', '2012-12-12', '+380674391881', 'A@A.com');
 /*!40000 ALTER TABLE `clubs` ENABLE KEYS */;
 
 
@@ -340,16 +339,26 @@ INSERT INTO `clubs` (`id`, `name`, `city`, `login`, `pass`, `email`, `contacts`,
 DROP TABLE IF EXISTS `countries`;
 CREATE TABLE IF NOT EXISTS `countries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.countries: ~2 rows (approximately)
+-- Dumping data for table udf.countries: ~12 rows (approximately)
 DELETE FROM `countries`;
 /*!40000 ALTER TABLE `countries` DISABLE KEYS */;
 INSERT INTO `countries` (`id`, `name`) VALUES
 	(1, 'Ukraine'),
-	(2, 'Russia');
+	(2, 'Pakistan'),
+	(3, 'Russia'),
+	(4, 'Romania'),
+	(5, 'Iraq'),
+	(6, 'Iran'),
+	(7, 'Moldova'),
+	(8, 'XXX'),
+	(9, 'XXXXX'),
+	(10, 'ZZZZ'),
+	(11, 'AAAAA'),
+	(12, 'ZZZZ1');
 /*!40000 ALTER TABLE `countries` ENABLE KEYS */;
 
 
@@ -470,7 +479,7 @@ CREATE TABLE IF NOT EXISTS `judges` (
   `country` int(10) unsigned NOT NULL,
   `city` int(10) unsigned NOT NULL,
   `club` bigint(20) unsigned NOT NULL,
-  `attestation_info` varchar(100) DEFAULT NULL,
+  `attestation_info` text,
   `pay_date` date DEFAULT NULL,
   `expire_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)

@@ -25,7 +25,7 @@ public:
 		std::string		exp_date;
 		
 		std::string		director;
-		std::string		director_bd;
+		time_t			director_bd;
 		std::string		director_phone;
 		std::string		director_email;
 	} tDATA;
