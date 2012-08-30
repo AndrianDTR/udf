@@ -5178,7 +5178,7 @@
                 </object>
             </object>
         </object>
-        <object class="Frame" expanded="0">
+        <object class="Frame" expanded="1">
             <property name="bg"></property>
             <property name="center">wxBOTH</property>
             <property name="context_help"></property>
@@ -5234,7 +5234,7 @@
             <event name="OnSetFocus"></event>
             <event name="OnSize"></event>
             <event name="OnUpdateUI"></event>
-            <object class="wxMenuBar" expanded="0">
+            <object class="wxMenuBar" expanded="1">
                 <property name="bg"></property>
                 <property name="context_help"></property>
                 <property name="enabled">1</property>
@@ -5447,7 +5447,7 @@
                     </object>
                 </object>
                 <object class="wxMenu" expanded="1">
-                    <property name="label">Manager</property>
+                    <property name="label">Manage</property>
                     <property name="name">m_menu2</property>
                     <property name="permission">protected</property>
                     <object class="wxMenuItem" expanded="1">
@@ -5455,7 +5455,7 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help"></property>
-                        <property name="id">wxID_MENU_CLUBS_MNGR</property>
+                        <property name="id">ID_MENU_MNGR_CLUBS</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">Clubs</property>
                         <property name="name">m_menuItem5</property>
@@ -5470,7 +5470,22 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help"></property>
-                        <property name="id">wxID_MENU_CAT_MNGR</property>
+                        <property name="id">ID_MENU_MNGR_JUDGE</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">Judges</property>
+                        <property name="name">m_menuItem6</property>
+                        <property name="permission">none</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">OnMenuJudgeManage</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">ID_MENU_MNGR_CATEGORIES</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">Categories</property>
                         <property name="name">m_menuItem9</property>
@@ -5485,7 +5500,7 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help"></property>
-                        <property name="id">ID_DANCE_TYPES</property>
+                        <property name="id">ID_MENU_MNGR_DANCE_TYPES</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">Dance types</property>
                         <property name="name">m_menuItem62</property>
@@ -5500,7 +5515,7 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help"></property>
-                        <property name="id">ID_LIGUES</property>
+                        <property name="id">ID_MENU_MNGR_LIGUES</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">Ligues</property>
                         <property name="name">m_menuItem7</property>
@@ -5515,7 +5530,7 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help"></property>
-                        <property name="id">ID_AGE_CATEGORIES</property>
+                        <property name="id">ID_MENU_MNGR_AGE_CATEGORIES</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">Age gategories</property>
                         <property name="name">m_menuItem8</property>
@@ -5530,7 +5545,7 @@
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help"></property>
-                        <property name="id">ID_ChTYPES_MNGR</property>
+                        <property name="id">ID_MENU_MNGR_ChTYPES_MNGR</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">Championship types</property>
                         <property name="name">m_menuItem201</property>
@@ -5540,59 +5555,34 @@
                         <event name="OnMenuSelection">OnMenuChampionshipTypes</event>
                         <event name="OnUpdateUI"></event>
                     </object>
-                </object>
-                <object class="wxMenu" expanded="1">
-                    <property name="label">Judges</property>
-                    <property name="name">m_menu5</property>
-                    <property name="permission">protected</property>
                     <object class="wxMenuItem" expanded="1">
                         <property name="bitmap"></property>
                         <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help"></property>
-                        <property name="id">wxID_MENU_JUDGE_MNGR</property>
+                        <property name="id">ID_MENU_MNGR_CITIES</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">Manage</property>
-                        <property name="name">m_menuItem6</property>
-                        <property name="permission">none</property>
-                        <property name="shortcut"></property>
-                        <property name="unchecked_bitmap"></property>
-                        <event name="OnMenuSelection">OnMenuJudgeManage</event>
-                        <event name="OnUpdateUI"></event>
-                    </object>
-                </object>
-                <object class="wxMenu" expanded="1">
-                    <property name="label">Address</property>
-                    <property name="name">m_menu6</property>
-                    <property name="permission">protected</property>
-                    <object class="wxMenuItem" expanded="1">
-                        <property name="bitmap"></property>
-                        <property name="checked">0</property>
-                        <property name="enabled">1</property>
-                        <property name="help"></property>
-                        <property name="id">ID_COUNTRIES</property>
-                        <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">Countries manager</property>
-                        <property name="name">m_menuItem91</property>
-                        <property name="permission">none</property>
-                        <property name="shortcut"></property>
-                        <property name="unchecked_bitmap"></property>
-                        <event name="OnMenuSelection">OnCountriesMngr</event>
-                        <event name="OnUpdateUI"></event>
-                    </object>
-                    <object class="wxMenuItem" expanded="1">
-                        <property name="bitmap"></property>
-                        <property name="checked">0</property>
-                        <property name="enabled">1</property>
-                        <property name="help"></property>
-                        <property name="id">ID_CITIES</property>
-                        <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">Cities manager</property>
+                        <property name="label">Cities</property>
                         <property name="name">m_menuItem10</property>
                         <property name="permission">none</property>
                         <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">OnCitiesMngr</event>
+                        <event name="OnUpdateUI"></event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">ID_MENU_MNGR_COUNTRIES</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">Countries</property>
+                        <property name="name">m_menuItem91</property>
+                        <property name="permission">none</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">OnCountriesMngr</event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -5617,7 +5607,7 @@
                     </object>
                 </object>
             </object>
-            <object class="wxBoxSizer" expanded="1">
+            <object class="wxBoxSizer" expanded="0">
                 <property name="minimum_size"></property>
                 <property name="name">mainSizer</property>
                 <property name="orient">wxVERTICAL</property>
@@ -9577,7 +9567,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="1">
+        <object class="Dialog" expanded="0">
             <property name="bg"></property>
             <property name="center">wxBOTH</property>
             <property name="context_help"></property>
@@ -12055,7 +12045,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="1">
+        <object class="Dialog" expanded="0">
             <property name="bg"></property>
             <property name="center">wxBOTH</property>
             <property name="context_help"></property>

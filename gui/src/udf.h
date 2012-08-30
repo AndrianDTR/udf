@@ -328,14 +328,14 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnCloseFrame( wxCloseEvent& event ){ OnCloseFrame( event ); }
 		void _wxFB_OnExitClick( wxCommandEvent& event ){ OnExitClick( event ); }
 		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
+		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
 		void _wxFB_OnMenuCategoryManage( wxCommandEvent& event ){ OnMenuCategoryManage( event ); }
 		void _wxFB_OnDanceTypesCodeMgr( wxCommandEvent& event ){ OnDanceTypesCodeMgr( event ); }
 		void _wxFB_OnLigueCodeMgr( wxCommandEvent& event ){ OnLigueCodeMgr( event ); }
 		void _wxFB_OnAgeCodesMgr( wxCommandEvent& event ){ OnAgeCodesMgr( event ); }
 		void _wxFB_OnMenuChampionshipTypes( wxCommandEvent& event ){ OnMenuChampionshipTypes( event ); }
-		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
-		void _wxFB_OnCountriesMngr( wxCommandEvent& event ){ OnCountriesMngr( event ); }
 		void _wxFB_OnCitiesMngr( wxCommandEvent& event ){ OnCitiesMngr( event ); }
+		void _wxFB_OnCountriesMngr( wxCommandEvent& event ){ OnCountriesMngr( event ); }
 		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
 		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
 		void _wxFB_OnSelectChampionship( wxCommandEvent& event ){ OnSelectChampionship( event ); }
@@ -363,15 +363,15 @@ class MainFrameBase : public wxFrame
 			ID_CS_INVITATIONS,
 			ID_CS_RESULTS,
 			ID_CS_RAITING,
-			wxID_MENU_CLUBS_MNGR,
-			wxID_MENU_CAT_MNGR,
-			ID_DANCE_TYPES,
-			ID_LIGUES,
-			ID_AGE_CATEGORIES,
-			ID_ChTYPES_MNGR,
-			wxID_MENU_JUDGE_MNGR,
-			ID_COUNTRIES,
-			ID_CITIES,
+			ID_MENU_MNGR_CLUBS,
+			ID_MENU_MNGR_JUDGE,
+			ID_MENU_MNGR_CATEGORIES,
+			ID_MENU_MNGR_DANCE_TYPES,
+			ID_MENU_MNGR_LIGUES,
+			ID_MENU_MNGR_AGE_CATEGORIES,
+			ID_MENU_MNGR_ChTYPES_MNGR,
+			ID_MENU_MNGR_CITIES,
+			ID_MENU_MNGR_COUNTRIES,
 			ID_ABOUT,
 			ID_SEARCH,
 			ID_LIST_CHAMPIONSHIP,
@@ -398,8 +398,6 @@ class MainFrameBase : public wxFrame
 		wxMenu* m_menuFile;
 		wxMenu* m_menu8;
 		wxMenu* m_menu2;
-		wxMenu* m_menu5;
-		wxMenu* m_menu6;
 		wxMenu* m_menu51;
 		wxPanel* m_panel1;
 		wxStaticText* m_championshipSearchText;
@@ -436,14 +434,14 @@ class MainFrameBase : public wxFrame
 		virtual void OnCloseFrame( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnExitClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuClubManage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuJudgeManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuCategoryManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDanceTypesCodeMgr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLigueCodeMgr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAgeCodesMgr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuChampionshipTypes( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMenuJudgeManage( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnCountriesMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCitiesMngr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCountriesMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSelectChampionship( wxCommandEvent& event ) { event.Skip(); }

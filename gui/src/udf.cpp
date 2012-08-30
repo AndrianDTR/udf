@@ -602,15 +602,15 @@ ClubsMngrDlg::~ClubsMngrDlg()
 BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_CLOSE( MainFrameBase::_wxFB_OnCloseFrame )
 	EVT_MENU( wxID_EXIT, MainFrameBase::_wxFB_OnExitClick )
-	EVT_MENU( wxID_MENU_CLUBS_MNGR, MainFrameBase::_wxFB_OnMenuClubManage )
-	EVT_MENU( wxID_MENU_CAT_MNGR, MainFrameBase::_wxFB_OnMenuCategoryManage )
-	EVT_MENU( ID_DANCE_TYPES, MainFrameBase::_wxFB_OnDanceTypesCodeMgr )
-	EVT_MENU( ID_LIGUES, MainFrameBase::_wxFB_OnLigueCodeMgr )
-	EVT_MENU( ID_AGE_CATEGORIES, MainFrameBase::_wxFB_OnAgeCodesMgr )
-	EVT_MENU( ID_ChTYPES_MNGR, MainFrameBase::_wxFB_OnMenuChampionshipTypes )
-	EVT_MENU( wxID_MENU_JUDGE_MNGR, MainFrameBase::_wxFB_OnMenuJudgeManage )
-	EVT_MENU( ID_COUNTRIES, MainFrameBase::_wxFB_OnCountriesMngr )
-	EVT_MENU( ID_CITIES, MainFrameBase::_wxFB_OnCitiesMngr )
+	EVT_MENU( ID_MENU_MNGR_CLUBS, MainFrameBase::_wxFB_OnMenuClubManage )
+	EVT_MENU( ID_MENU_MNGR_JUDGE, MainFrameBase::_wxFB_OnMenuJudgeManage )
+	EVT_MENU( ID_MENU_MNGR_CATEGORIES, MainFrameBase::_wxFB_OnMenuCategoryManage )
+	EVT_MENU( ID_MENU_MNGR_DANCE_TYPES, MainFrameBase::_wxFB_OnDanceTypesCodeMgr )
+	EVT_MENU( ID_MENU_MNGR_LIGUES, MainFrameBase::_wxFB_OnLigueCodeMgr )
+	EVT_MENU( ID_MENU_MNGR_AGE_CATEGORIES, MainFrameBase::_wxFB_OnAgeCodesMgr )
+	EVT_MENU( ID_MENU_MNGR_ChTYPES_MNGR, MainFrameBase::_wxFB_OnMenuChampionshipTypes )
+	EVT_MENU( ID_MENU_MNGR_CITIES, MainFrameBase::_wxFB_OnCitiesMngr )
+	EVT_MENU( ID_MENU_MNGR_COUNTRIES, MainFrameBase::_wxFB_OnCountriesMngr )
 	EVT_MENU( ID_ABOUT, MainFrameBase::_wxFB_OnAboutDlg )
 	EVT_TEXT( ID_SEARCH, MainFrameBase::_wxFB_OnSearch )
 	EVT_LISTBOX( ID_LIST_CHAMPIONSHIP, MainFrameBase::_wxFB_OnSelectChampionship )
@@ -681,48 +681,42 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	m_menu2 = new wxMenu();
 	wxMenuItem* m_menuItem5;
-	m_menuItem5 = new wxMenuItem( m_menu2, wxID_MENU_CLUBS_MNGR, wxString( _("Clubs") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuItem5 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CLUBS, wxString( _("Clubs") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem5 );
 	
+	wxMenuItem* m_menuItem6;
+	m_menuItem6 = new wxMenuItem( m_menu2, ID_MENU_MNGR_JUDGE, wxString( _("Judges") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem6 );
+	
 	wxMenuItem* m_menuItem9;
-	m_menuItem9 = new wxMenuItem( m_menu2, wxID_MENU_CAT_MNGR, wxString( _("Categories") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuItem9 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CATEGORIES, wxString( _("Categories") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem9 );
 	
 	wxMenuItem* m_menuItem62;
-	m_menuItem62 = new wxMenuItem( m_menu2, ID_DANCE_TYPES, wxString( _("Dance types") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuItem62 = new wxMenuItem( m_menu2, ID_MENU_MNGR_DANCE_TYPES, wxString( _("Dance types") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem62 );
 	
 	wxMenuItem* m_menuItem7;
-	m_menuItem7 = new wxMenuItem( m_menu2, ID_LIGUES, wxString( _("Ligues") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuItem7 = new wxMenuItem( m_menu2, ID_MENU_MNGR_LIGUES, wxString( _("Ligues") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem7 );
 	
 	wxMenuItem* m_menuItem8;
-	m_menuItem8 = new wxMenuItem( m_menu2, ID_AGE_CATEGORIES, wxString( _("Age gategories") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuItem8 = new wxMenuItem( m_menu2, ID_MENU_MNGR_AGE_CATEGORIES, wxString( _("Age gategories") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem8 );
 	
 	wxMenuItem* m_menuItem201;
-	m_menuItem201 = new wxMenuItem( m_menu2, ID_ChTYPES_MNGR, wxString( _("Championship types") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuItem201 = new wxMenuItem( m_menu2, ID_MENU_MNGR_ChTYPES_MNGR, wxString( _("Championship types") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem201 );
 	
-	m_menuBar->Append( m_menu2, _("Manager") );
-	
-	m_menu5 = new wxMenu();
-	wxMenuItem* m_menuItem6;
-	m_menuItem6 = new wxMenuItem( m_menu5, wxID_MENU_JUDGE_MNGR, wxString( _("Manage") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu5->Append( m_menuItem6 );
-	
-	m_menuBar->Append( m_menu5, _("Judges") );
-	
-	m_menu6 = new wxMenu();
-	wxMenuItem* m_menuItem91;
-	m_menuItem91 = new wxMenuItem( m_menu6, ID_COUNTRIES, wxString( _("Countries manager") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu6->Append( m_menuItem91 );
-	
 	wxMenuItem* m_menuItem10;
-	m_menuItem10 = new wxMenuItem( m_menu6, ID_CITIES, wxString( _("Cities manager") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu6->Append( m_menuItem10 );
+	m_menuItem10 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CITIES, wxString( _("Cities") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem10 );
 	
-	m_menuBar->Append( m_menu6, _("Address") );
+	wxMenuItem* m_menuItem91;
+	m_menuItem91 = new wxMenuItem( m_menu2, ID_MENU_MNGR_COUNTRIES, wxString( _("Countries") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem91 );
+	
+	m_menuBar->Append( m_menu2, _("Manage") );
 	
 	m_menu51 = new wxMenu();
 	wxMenuItem* m_menuItem61;
