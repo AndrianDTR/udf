@@ -568,35 +568,15 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_staticText27->Wrap( -1 );
 	fgSizer3->Add( m_staticText27, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-	m_datePicker6 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
-	fgSizer3->Add( m_datePicker6, 0, wxALL, 5 );
-=======
 	m_datePay = new wxDatePickerCtrl( this, ID_PAYDATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_datePay, 0, wxALL, 5 );
->>>>>>> 3cca194... Manage Clubs functional has been implemented
-=======
-	m_datePay = new wxDatePickerCtrl( this, ID_PAYDATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
-	fgSizer3->Add( m_datePay, 0, wxALL, 5 );
->>>>>>> origin/develop
 	
 	m_staticText28 = new wxStaticText( this, wxID_ANY, _("Exp. date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText28->Wrap( -1 );
 	fgSizer3->Add( m_staticText28, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-	m_datePicker7 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
-	fgSizer3->Add( m_datePicker7, 0, wxALL, 5 );
-=======
 	m_dateExp = new wxDatePickerCtrl( this, ID_EXPDATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_dateExp, 0, wxALL, 5 );
->>>>>>> 3cca194... Manage Clubs functional has been implemented
-=======
-	m_dateExp = new wxDatePickerCtrl( this, ID_EXPDATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
-	fgSizer3->Add( m_dateExp, 0, wxALL, 5 );
->>>>>>> origin/develop
 	
 	bSizer22->Add( fgSizer3, 1, wxEXPAND, 5 );
 	
@@ -627,12 +607,7 @@ BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_MENU( ID_DANCE_TYPES, MainFrameBase::_wxFB_OnDanceTypesCodeMgr )
 	EVT_MENU( ID_LIGUES, MainFrameBase::_wxFB_OnLigueCodeMgr )
 	EVT_MENU( ID_AGE_CATEGORIES, MainFrameBase::_wxFB_OnAgeCodesMgr )
-<<<<<<< HEAD
-	EVT_MENU( wxID_ANY, MainFrameBase::_wxFB_OnMenuChampionshipTypes )
-	EVT_MENU( wxID_MENU_CLUBS_MNGR, MainFrameBase::_wxFB_OnMenuClubManage )
-=======
 	EVT_MENU( ID_ChTYPES_MNGR, MainFrameBase::_wxFB_OnMenuChampionshipTypes )
->>>>>>> origin/develop
 	EVT_MENU( wxID_MENU_JUDGE_MNGR, MainFrameBase::_wxFB_OnMenuJudgeManage )
 	EVT_MENU( ID_COUNTRIES, MainFrameBase::_wxFB_OnCountriesMngr )
 	EVT_MENU( ID_CITIES, MainFrameBase::_wxFB_OnCitiesMngr )
@@ -725,20 +700,9 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_menuItem8 = new wxMenuItem( m_menu2, ID_AGE_CATEGORIES, wxString( _("Age gategories") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem8 );
 	
-<<<<<<< HEAD
-	wxMenuItem* m_separator3;
-	m_separator3 = m_menu2->AppendSeparator();
-	
-	wxMenuItem* m_menuItem201;
-	m_menuItem201 = new wxMenuItem( m_menu2, wxID_ANY, wxString( _("Championship types") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu2->Append( m_menuItem201 );
-	
-	m_menuBar->Append( m_menu2, _("Manager") );
-=======
 	wxMenuItem* m_menuItem201;
 	m_menuItem201 = new wxMenuItem( m_menu2, ID_ChTYPES_MNGR, wxString( _("Championship types") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem201 );
->>>>>>> origin/develop
 	
 	m_menuBar->Append( m_menu2, _("Manager") );
 	
@@ -849,10 +813,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	fgSizer1->Add( m_staticText4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	m_textChName = new wxTextCtrl( m_panel1, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-<<<<<<< HEAD
-=======
 	m_textChName->SetMaxLength( 100 ); 
->>>>>>> origin/develop
 	fgSizer1->Add( m_textChName, 0, wxEXPAND|wxALL, 5 );
 	
 	m_staticText2 = new wxStaticText( m_panel1, wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2151,12 +2112,8 @@ ChampionshipTypeMngr::ChampionshipTypeMngr( wxWindow* parent, wxWindowID id, con
 	m_staticText83->Wrap( -1 );
 	fgSizer13->Add( m_staticText83, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-<<<<<<< HEAD
-	m_textName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-=======
 	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_textName->SetMaxLength( 50 ); 
->>>>>>> origin/develop
 	fgSizer13->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer86->Add( fgSizer13, 1, wxEXPAND, 5 );

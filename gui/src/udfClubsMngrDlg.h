@@ -39,11 +39,6 @@ protected:
 public:
 	/** Constructor */
 	udfClubsMngrDlg( wxWindow* parent );
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/develop
 	
 public:
 	void	RefreshList();
@@ -53,10 +48,6 @@ public:
 	bool	ValidateData();
 	bool	GetSelectedItemData(CClubsTable::tDATA*& pData);
 	
-<<<<<<< HEAD
->>>>>>> 3cca194... Manage Clubs functional has been implemented
-=======
->>>>>>> origin/develop
 };
 
 #endif // __udfClubsMngrDlg__

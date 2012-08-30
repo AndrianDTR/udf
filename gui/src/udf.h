@@ -333,10 +333,6 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnLigueCodeMgr( wxCommandEvent& event ){ OnLigueCodeMgr( event ); }
 		void _wxFB_OnAgeCodesMgr( wxCommandEvent& event ){ OnAgeCodesMgr( event ); }
 		void _wxFB_OnMenuChampionshipTypes( wxCommandEvent& event ){ OnMenuChampionshipTypes( event ); }
-<<<<<<< HEAD
-		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
-=======
->>>>>>> origin/develop
 		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
 		void _wxFB_OnCountriesMngr( wxCommandEvent& event ){ OnCountriesMngr( event ); }
 		void _wxFB_OnCitiesMngr( wxCommandEvent& event ){ OnCitiesMngr( event ); }
@@ -445,10 +441,6 @@ class MainFrameBase : public wxFrame
 		virtual void OnLigueCodeMgr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAgeCodesMgr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuChampionshipTypes( wxCommandEvent& event ) { event.Skip(); }
-<<<<<<< HEAD
-		virtual void OnMenuClubManage( wxCommandEvent& event ) { event.Skip(); }
-=======
->>>>>>> origin/develop
 		virtual void OnMenuJudgeManage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCountriesMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCitiesMngr( wxCommandEvent& event ) { event.Skip(); }
@@ -1100,10 +1092,7 @@ class ChampionshipTypeMngr : public wxDialog
 			ID_SEARCH = 1000,
 			ID_ITEM_LIST,
 			wxID_UPDATE,
-<<<<<<< HEAD
-=======
 			ID_NAME,
->>>>>>> origin/develop
 		};
 		
 		wxStaticText* m_staticText84;
