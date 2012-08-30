@@ -297,7 +297,7 @@ long CClubsTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 
-		if (data.city != -1)
+		if (0 != data.city)
 		{
 			sprintf(tmp, "%s `city` = %d,", query, data.city);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
