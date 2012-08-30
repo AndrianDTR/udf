@@ -20,9 +20,9 @@ public:
 		std::string		email;
 		std::string		contacts;
 		std::string		web;
-		std::string		location;
-		std::string		pay_date;
-		std::string		exp_date;
+		std::string		additionalInfo;
+		time_t			pay_date;
+		time_t			exp_date;
 		
 		std::string		director;
 		time_t			director_bd;

@@ -383,14 +383,16 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	m_staticText16->Wrap( -1 );
 	fgSizer2->Add( m_staticText16, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName->SetMaxLength( 30 ); 
 	fgSizer2->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText17 = new wxStaticText( this, wxID_ANY, _("Short name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText17->Wrap( -1 );
 	fgSizer2->Add( m_staticText17, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textShortName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textShortName = new wxTextCtrl( this, ID_SHORTNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textShortName->SetMaxLength( 100 ); 
 	fgSizer2->Add( m_textShortName, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Dance"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -431,6 +433,8 @@ CategoriesMngrDlg::~CategoriesMngrDlg()
 }
 
 BEGIN_EVENT_TABLE( ClubsMngrDlg, wxDialog )
+	EVT_TEXT( ID_SEARCH, ClubsMngrDlg::_wxFB_OnSearch )
+	EVT_LISTBOX( ID_CLUBLIST, ClubsMngrDlg::_wxFB_OnSelectClub )
 	EVT_BUTTON( wxID_ADDCLUB, ClubsMngrDlg::_wxFB_OnAddClub )
 	EVT_BUTTON( wxID_APPLY, ClubsMngrDlg::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_REMOVECLUB, ClubsMngrDlg::_wxFB_OnRemoveClub )
@@ -462,13 +466,13 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_staticText20->Wrap( -1 );
 	bSizer23->Add( m_staticText20, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl8 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer23->Add( m_textCtrl8, 1, wxALL|wxEXPAND, 5 );
+	m_textSearch = new wxTextCtrl( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer23->Add( m_textSearch, 1, wxALL|wxEXPAND, 5 );
 	
 	sbSizer8->Add( bSizer23, 0, wxEXPAND, 5 );
 	
-	m_listBox5 = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
-	sbSizer8->Add( m_listBox5, 1, wxALL|wxEXPAND, 5 );
+	m_listClubs = new wxListBox( this, ID_CLUBLIST, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
+	sbSizer8->Add( m_listClubs, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer20->Add( sbSizer8, 0, wxEXPAND|wxALL, 5 );
 	
@@ -519,48 +523,52 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_staticText21->Wrap( -1 );
 	fgSizer3->Add( m_staticText21, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl9 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer3->Add( m_textCtrl9, 0, wxALL|wxEXPAND, 5 );
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName->SetMaxLength( 50 ); 
+	fgSizer3->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText22 = new wxStaticText( this, wxID_ANY, _("City"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText22->Wrap( -1 );
 	fgSizer3->Add( m_staticText22, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_comboBox6 = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	fgSizer3->Add( m_comboBox6, 0, wxALL|wxEXPAND, 5 );
+	m_comboCity = new wxComboBox( this, ID_CITY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer3->Add( m_comboCity, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText23 = new wxStaticText( this, wxID_ANY, _("Address"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText23->Wrap( -1 );
-	fgSizer3->Add( m_staticText23, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer3->Add( m_staticText23, 0, wxALL, 5 );
 	
-	m_textCtrl10 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer3->Add( m_textCtrl10, 0, wxALL|wxEXPAND, 5 );
+	m_textAddress = new wxTextCtrl( this, ID_ADDRESS, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
+	fgSizer3->Add( m_textAddress, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText24 = new wxStaticText( this, wxID_ANY, _("E-mail"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText24->Wrap( -1 );
 	fgSizer3->Add( m_staticText24, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl11 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer3->Add( m_textCtrl11, 0, wxALL|wxEXPAND, 5 );
+	m_textEmail = new wxTextCtrl( this, ID_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textEmail->SetMaxLength( 50 ); 
+	fgSizer3->Add( m_textEmail, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText25 = new wxStaticText( this, wxID_ANY, _("Web"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText25->Wrap( -1 );
 	fgSizer3->Add( m_staticText25, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl12 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer3->Add( m_textCtrl12, 0, wxALL|wxEXPAND, 5 );
+	m_textWeb = new wxTextCtrl( this, ID_WEB, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textWeb->SetMaxLength( 50 ); 
+	fgSizer3->Add( m_textWeb, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText26 = new wxStaticText( this, wxID_ANY, _("Additional info"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText26->Wrap( -1 );
 	fgSizer3->Add( m_staticText26, 0, wxALL, 5 );
 	
-	m_textCtrl13 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,70 ), 0 );
-	fgSizer3->Add( m_textCtrl13, 0, wxALL|wxEXPAND, 5 );
+	m_textInfo = new wxTextCtrl( this, ID_INFO, wxEmptyString, wxDefaultPosition, wxSize( -1,70 ), wxTE_MULTILINE );
+	fgSizer3->Add( m_textInfo, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText27 = new wxStaticText( this, wxID_ANY, _("Pay date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText27->Wrap( -1 );
 	fgSizer3->Add( m_staticText27, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
+<<<<<<< HEAD
 <<<<<<< HEAD
 	m_datePicker6 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
 	fgSizer3->Add( m_datePicker6, 0, wxALL, 5 );
@@ -568,11 +576,16 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_datePay = new wxDatePickerCtrl( this, ID_PAYDATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_datePay, 0, wxALL, 5 );
 >>>>>>> 3cca194... Manage Clubs functional has been implemented
+=======
+	m_datePay = new wxDatePickerCtrl( this, ID_PAYDATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	fgSizer3->Add( m_datePay, 0, wxALL, 5 );
+>>>>>>> origin/develop
 	
 	m_staticText28 = new wxStaticText( this, wxID_ANY, _("Exp. date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText28->Wrap( -1 );
 	fgSizer3->Add( m_staticText28, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
+<<<<<<< HEAD
 <<<<<<< HEAD
 	m_datePicker7 = new wxDatePickerCtrl( this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
 	fgSizer3->Add( m_datePicker7, 0, wxALL, 5 );
@@ -580,6 +593,10 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	m_dateExp = new wxDatePickerCtrl( this, ID_EXPDATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer3->Add( m_dateExp, 0, wxALL, 5 );
 >>>>>>> 3cca194... Manage Clubs functional has been implemented
+=======
+	m_dateExp = new wxDatePickerCtrl( this, ID_EXPDATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	fgSizer3->Add( m_dateExp, 0, wxALL, 5 );
+>>>>>>> origin/develop
 	
 	bSizer22->Add( fgSizer3, 1, wxEXPAND, 5 );
 	
@@ -605,12 +622,17 @@ ClubsMngrDlg::~ClubsMngrDlg()
 BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_CLOSE( MainFrameBase::_wxFB_OnCloseFrame )
 	EVT_MENU( wxID_EXIT, MainFrameBase::_wxFB_OnExitClick )
+	EVT_MENU( wxID_MENU_CLUBS_MNGR, MainFrameBase::_wxFB_OnMenuClubManage )
 	EVT_MENU( wxID_MENU_CAT_MNGR, MainFrameBase::_wxFB_OnMenuCategoryManage )
 	EVT_MENU( ID_DANCE_TYPES, MainFrameBase::_wxFB_OnDanceTypesCodeMgr )
 	EVT_MENU( ID_LIGUES, MainFrameBase::_wxFB_OnLigueCodeMgr )
 	EVT_MENU( ID_AGE_CATEGORIES, MainFrameBase::_wxFB_OnAgeCodesMgr )
+<<<<<<< HEAD
 	EVT_MENU( wxID_ANY, MainFrameBase::_wxFB_OnMenuChampionshipTypes )
 	EVT_MENU( wxID_MENU_CLUBS_MNGR, MainFrameBase::_wxFB_OnMenuClubManage )
+=======
+	EVT_MENU( ID_ChTYPES_MNGR, MainFrameBase::_wxFB_OnMenuChampionshipTypes )
+>>>>>>> origin/develop
 	EVT_MENU( wxID_MENU_JUDGE_MNGR, MainFrameBase::_wxFB_OnMenuJudgeManage )
 	EVT_MENU( ID_COUNTRIES, MainFrameBase::_wxFB_OnCountriesMngr )
 	EVT_MENU( ID_CITIES, MainFrameBase::_wxFB_OnCitiesMngr )
@@ -683,12 +705,13 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_menuBar->Append( m_menu8, _("Championship") );
 	
 	m_menu2 = new wxMenu();
+	wxMenuItem* m_menuItem5;
+	m_menuItem5 = new wxMenuItem( m_menu2, wxID_MENU_CLUBS_MNGR, wxString( _("Clubs") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem5 );
+	
 	wxMenuItem* m_menuItem9;
 	m_menuItem9 = new wxMenuItem( m_menu2, wxID_MENU_CAT_MNGR, wxString( _("Categories") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem9 );
-	
-	wxMenuItem* m_separator1;
-	m_separator1 = m_menu2->AppendSeparator();
 	
 	wxMenuItem* m_menuItem62;
 	m_menuItem62 = new wxMenuItem( m_menu2, ID_DANCE_TYPES, wxString( _("Dance types") ) , wxEmptyString, wxITEM_NORMAL );
@@ -702,6 +725,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_menuItem8 = new wxMenuItem( m_menu2, ID_AGE_CATEGORIES, wxString( _("Age gategories") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem8 );
 	
+<<<<<<< HEAD
 	wxMenuItem* m_separator3;
 	m_separator3 = m_menu2->AppendSeparator();
 	
@@ -710,13 +734,13 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_menu2->Append( m_menuItem201 );
 	
 	m_menuBar->Append( m_menu2, _("Manager") );
+=======
+	wxMenuItem* m_menuItem201;
+	m_menuItem201 = new wxMenuItem( m_menu2, ID_ChTYPES_MNGR, wxString( _("Championship types") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem201 );
+>>>>>>> origin/develop
 	
-	m_menu3 = new wxMenu();
-	wxMenuItem* m_menuItem5;
-	m_menuItem5 = new wxMenuItem( m_menu3, wxID_MENU_CLUBS_MNGR, wxString( _("Manage") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu3->Append( m_menuItem5 );
-	
-	m_menuBar->Append( m_menu3, _("Clubs") );
+	m_menuBar->Append( m_menu2, _("Manager") );
 	
 	m_menu5 = new wxMenu();
 	wxMenuItem* m_menuItem6;
@@ -825,6 +849,10 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	fgSizer1->Add( m_staticText4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	m_textChName = new wxTextCtrl( m_panel1, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+<<<<<<< HEAD
+=======
+	m_textChName->SetMaxLength( 100 ); 
+>>>>>>> origin/develop
 	fgSizer1->Add( m_textChName, 0, wxEXPAND|wxALL, 5 );
 	
 	m_staticText2 = new wxStaticText( m_panel1, wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1926,14 +1954,15 @@ CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_staticText82->Wrap( -1 );
 	fgSizer13->Add( m_staticText82, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCode = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCode = new wxTextCtrl( this, ID_CODE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer13->Add( m_textCode, 1, wxALL|wxEXPAND, 5 );
 	
 	m_staticText83 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText83->Wrap( -1 );
 	fgSizer13->Add( m_staticText83, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName->SetMaxLength( 50 ); 
 	fgSizer13->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer86->Add( fgSizer13, 1, wxEXPAND, 5 );
@@ -2027,7 +2056,8 @@ CountriesMngr::CountriesMngr( wxWindow* parent, wxWindowID id, const wxString& t
 	m_staticText83->Wrap( -1 );
 	fgSizer13->Add( m_staticText83, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName->SetMaxLength( 30 ); 
 	fgSizer13->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer86->Add( fgSizer13, 1, wxEXPAND, 5 );
@@ -2121,7 +2151,12 @@ ChampionshipTypeMngr::ChampionshipTypeMngr( wxWindow* parent, wxWindowID id, con
 	m_staticText83->Wrap( -1 );
 	fgSizer13->Add( m_staticText83, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
+<<<<<<< HEAD
 	m_textName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+=======
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName->SetMaxLength( 50 ); 
+>>>>>>> origin/develop
 	fgSizer13->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer86->Add( fgSizer13, 1, wxEXPAND, 5 );
@@ -2226,7 +2261,8 @@ CitiesMngr::CitiesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_staticText83->Wrap( -1 );
 	fgSizer13->Add( m_staticText83, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName->SetMaxLength( 50 ); 
 	fgSizer13->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer86->Add( fgSizer13, 1, wxEXPAND, 5 );
