@@ -979,7 +979,6 @@ long testTClubs(CDbConnection* pCon)
 		data.web = string("Test web1");
 		data.additionalInfo = string("Test location1");
 		data.director = string("Test director1");
-		data.director_bd = string("Test dir bd1");
 		data.director_email = string("Test dir em1");
 		data.director_phone = string("Test dir ph1");
 		// Add row
@@ -1016,7 +1015,7 @@ long testTClubs(CDbConnection* pCon)
 				, date2str(it->second.pay_date).c_str()
 				, date2str(it->second.exp_date).c_str()
 				, it->second.director.c_str()
-				, it->second.director_bd.c_str()
+				, date2str(it->second.director_bd).c_str()
 				, it->second.director_email.c_str()
 				, it->second.director_phone.c_str()
 				);
@@ -1033,7 +1032,6 @@ long testTClubs(CDbConnection* pCon)
 		data.web = string("Test web2");
 		data.additionalInfo = string("Test location2");
 		data.director = string("Test director2");
-		data.director_bd = string("Test dir bd2");
 		data.director_email = string("Test dir em2");
 		data.director_phone = string("Test dir ph2");
 		
@@ -1064,7 +1062,7 @@ long testTClubs(CDbConnection* pCon)
 				, date2str(it->second.pay_date).c_str()
 				, date2str(it->second.exp_date).c_str()
 				, it->second.director.c_str()
-				, it->second.director_bd.c_str()
+				, date2str(it->second.director_bd).c_str()
 				, it->second.director_email.c_str()
 				, it->second.director_phone.c_str()
 				);

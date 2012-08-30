@@ -32,6 +32,9 @@ protected:
 	void OnDancersMngr( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
+	void OnSelectClub( wxCommandEvent& event );
+	void OnSearch( wxCommandEvent& event );
+	void OnUpdate( wxCommandEvent& event );
 	
 public:
 	/** Constructor */
@@ -42,6 +45,8 @@ public:
 	void	RefreshCities();
 	void	RefreshCountries();
 	int		GetSelectedCity();
+	bool	ValidateData();
+	bool	GetSelectedItemData(CClubsTable::tDATA*& pData);
 	
 };
 

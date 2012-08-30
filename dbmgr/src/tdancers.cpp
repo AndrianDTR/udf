@@ -156,9 +156,9 @@ long CDancersTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`club_id`,`trener_id`,`reg_book_num`, \
-		`name`,`raiting`,`liga`,`bd`,`gender`,`pay_date`,`expire_date`,`reg_date`) \
-		values(%d, %d, '%s', '%s', %d, %d, '%s', %d, '%s', '%s', '%s' )"
+		sprintf(query, "insert into %s(`club_id`,`trener_id`,`reg_book_num`,"
+		"`name`,`raiting`,`liga`,`bd`,`gender`,`pay_date`,`expire_date`)"
+		"values(%d, %d, '%s', '%s', %d, %d, '%s', %d, '%s', '%s')"
 			, TABLE
 			, rec.clubId
 			, rec.trainerId
@@ -169,8 +169,7 @@ long CDancersTable::AddRow(tDATA& rec)
 			, rec.bd.c_str()
 			, rec.gender
 			, rec.pay_date.c_str()
-			, rec.exp_date.c_str()
-			, rec.reg_date.c_str());
+			, rec.exp_date.c_str());
 		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();

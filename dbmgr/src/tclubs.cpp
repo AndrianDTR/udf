@@ -71,7 +71,7 @@ long CClubsTable::Find(tTableMap& data, const tDATA& filter)
 		
 		if (!filter.additionalInfo.empty())
 		{
-			sprintf(tmp, "%sand `location` like '%%%s%%' ", query, filter.additionalInfo.c_str());
+			sprintf(tmp, "%sand `additional_info` like '%%%s%%' ", query, filter.additionalInfo.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -104,9 +104,9 @@ long CClubsTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 			
-		if (!filter.director_bd.empty())
+		if (0 != filter.director_bd)
 		{
-			sprintf(tmp, "%sand `director_bd` like '%%%s%%' ", query, filter.director_bd.c_str());
+			sprintf(tmp, "%sand `director_bd` like '%%%s%%' ", query, date2str(filter.director_bd).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -160,7 +160,7 @@ long CClubsTable::Find(tTableMap& data, const tDATA& filter)
 			el.pay_date = str2date(qRes->getString(10));
 			el.exp_date = str2date(qRes->getString(11));
 			el.director = qRes->getString(12);
-			el.director_bd = qRes->getString(13);
+			el.director_bd = str2date(qRes->getString(13));
 			el.director_phone = qRes->getString(14);
 			el.director_email = qRes->getString(15);
 		
@@ -189,7 +189,7 @@ long CClubsTable::AddRow(tDATA& rec)
 		}
 		
 		sprintf(query, "insert into %s(`name`,`city`,`login`,`pass`,`email`,`contacts`,\
-		`web`,`location`,`pay_date`,`expire_date`,`director_name`,`director_bd`,`director_phone`,`director_email`) \
+		`web`,`additional_info`,`pay_date`,`expire_date`,`director_name`,`director_bd`,`director_phone`,`director_email`) \
 		values('%s',%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"
 			, TABLE
 			, rec.name.c_str()
@@ -203,7 +203,7 @@ long CClubsTable::AddRow(tDATA& rec)
 			, date2str(rec.pay_date).c_str()
 			, date2str(rec.exp_date).c_str()
 			, rec.director.c_str()
-			, rec.director_bd.c_str()
+			, date2str(rec.director_bd).c_str()
 			, rec.director_phone.c_str()
 			, rec.director_email.c_str());
 		res = m_pConnection->Execute(query);
@@ -271,7 +271,7 @@ long CClubsTable::GetRow(unsigned int nId, tDATA& data)
 		data.pay_date = str2date(qRes->getString(10));
 		data.exp_date = str2date(qRes->getString(11));
 		data.director = qRes->getString(12);
-		data.director_bd = qRes->getString(13);
+		data.director_bd =  str2date(qRes->getString(13));
 		data.director_phone = qRes->getString(14);
 		data.director_email = qRes->getString(15);
 
@@ -297,7 +297,7 @@ long CClubsTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 
-		if (data.city != -1)
+		if (0 != data.city)
 		{
 			sprintf(tmp, "%s `city` = %d,", query, data.city);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
@@ -348,7 +348,7 @@ long CClubsTable::UpdateRow(unsigned int nId, const tDATA& data)
 		
 		if (!data.additionalInfo.empty())
 		{
-			sprintf(tmp, "%s `location` = '%s',", query, data.additionalInfo.c_str());
+			sprintf(tmp, "%s `additional_info` = '%s',", query, data.additionalInfo.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -374,9 +374,9 @@ long CClubsTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (!data.director_bd.empty())
+		if (0 != data.director_bd)
 		{
-			sprintf(tmp, "%s `director_bd` = '%s',", query, data.director_bd.c_str());
+			sprintf(tmp, "%s `director_bd` = '%s',", query, date2str(data.director_bd).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

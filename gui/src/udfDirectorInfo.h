@@ -19,6 +19,15 @@ protected:
 public:
 	/** Constructor */
 	udfDirectorInfo( wxWindow* parent );
+public:
+	void		SetName(wxString value);
+	void		SetBd(time_t date);
+	void		SetEmail(wxString value);
+	void		SetPhone(wxString value);
+	wxString	GetName();
+	time_t		GetBd();
+	wxString	GetEmail();
+	wxString	GetPhone();
 };
 
 #endif // __udfDirectorInfo__

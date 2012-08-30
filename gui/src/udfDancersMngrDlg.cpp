@@ -19,10 +19,10 @@ void udfDancersMngrDlg::OnRemoveDancer( wxCommandEvent& event )
 
 void udfDancersMngrDlg::OnSave( wxCommandEvent& event )
 {
-	// TODO: Implement OnSave
+	EndModal(wxID_OK);
 }
 
 void udfDancersMngrDlg::OnDiscard( wxCommandEvent& event )
 {
-	// TODO: Implement OnDiscard
+	EndModal(wxID_CANCEL);
 }

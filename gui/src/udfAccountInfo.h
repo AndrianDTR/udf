@@ -15,10 +15,17 @@ protected:
 	// Handlers for AccountInfo events.
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
-	
+	void OnShowPass( wxCommandEvent& event );
+
 public:
 	/** Constructor */
 	udfAccountInfo( wxWindow* parent );
+	
+public:
+	wxString	GetLogin();
+	void		SetLogin(wxString login);
+	wxString	GetPass();
+	void		SetPass(wxString pass);
 };
 
 #endif // __udfAccountInfo__

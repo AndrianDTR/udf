@@ -19,10 +19,10 @@ void udfTarinersMngrDlg::OnRemoveTrainer( wxCommandEvent& event )
 
 void udfTarinersMngrDlg::OnSave( wxCommandEvent& event )
 {
-	// TODO: Implement OnSave
+	EndModal(wxID_OK);
 }
 
 void udfTarinersMngrDlg::OnDiscard( wxCommandEvent& event )
 {
-	// TODO: Implement OnDiscard
+	EndModal(wxID_CANCEL);
 }
