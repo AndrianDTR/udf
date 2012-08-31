@@ -34,6 +34,16 @@ udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 	RefreshTypes();
 }
 
+void udfMainFrameBase::OnCloseFrame( wxCloseEvent& event )
+{
+	// TODO: Implement OnCloseFrame
+}
+
+void udfMainFrameBase::OnExitClick( wxCommandEvent& event )
+{
+	// TODO: Implement OnExitClick
+}
+
 void udfMainFrameBase::RefreshList()
 {
 	CChampionshipTable table(m_pCon);
@@ -50,16 +60,6 @@ void udfMainFrameBase::RefreshList()
 		
 		it++;
 	}
-}
-
-void udfMainFrameBase::OnCloseFrame( wxCloseEvent& event )
-{
-	// TODO: Implement OnCloseFrame
-}
-
-void udfMainFrameBase::OnExitClick( wxCommandEvent& event )
-{
-	// TODO: Implement OnExitClick
 }
 
 void udfMainFrameBase::RefreshTypes()

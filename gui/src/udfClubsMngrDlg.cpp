@@ -250,7 +250,7 @@ void udfClubsMngrDlg::OnSave( wxCommandEvent& event )
 		}
 	}
 	
-	EndModal(wxID_OK);
+	//EndModal(wxID_OK);
 }
 
 void udfClubsMngrDlg::OnDiscard( wxCommandEvent& event )
@@ -392,7 +392,7 @@ void udfClubsMngrDlg::OnTrainersMngr( wxCommandEvent& event )
 		if(!GetSelectedItemData(pData))
 			break;
 		
-		udfTarinersMngrDlg dlg(this);
+		udfTarinersMngrDlg dlg(this, pData->id);
 		if(wxID_OK != dlg.ShowModal())
 			break;
 			

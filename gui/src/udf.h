@@ -517,39 +517,61 @@ class TarinersMngrDlg : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnSelectTrainer( wxCommandEvent& event ){ OnSelectTrainer( event ); }
 		void _wxFB_OnAddTrainer( wxCommandEvent& event ){ OnAddTrainer( event ); }
+		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnRemoveTrainer( wxCommandEvent& event ){ OnRemoveTrainer( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
 	
 	protected:
+		enum
+		{
+			ID_SEARCH = 1000,
+			ID_TRAINERS_LIST,
+			wxID_UPDATE,
+			ID_NAME,
+			ID_CLUB,
+			ID_PHONE,
+			ID_EMAIL,
+			ID_BD,
+			ID_INFO,
+			ID_PAY,
+			ID_EXPIRE,
+		};
+		
 		wxStaticText* m_staticText20;
-		wxTextCtrl* m_textCtrl8;
-		wxListBox* m_listBox5;
+		wxTextCtrl* m_textSearch;
+		wxListBox* m_listTrainers;
 		wxBitmapButton* m_bpAddTrainer;
+		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpRemoveTrainer;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText21;
-		wxTextCtrl* m_textCtrl9;
+		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText22;
-		wxComboBox* m_comboBox6;
+		wxComboBox* m_comboClub;
 		wxStaticText* m_staticText23;
-		wxTextCtrl* m_textCtrl10;
+		wxTextCtrl* m_textPhone;
 		wxStaticText* m_staticText24;
-		wxTextCtrl* m_textCtrl11;
+		wxTextCtrl* m_textEmail;
 		wxStaticText* m_staticText25;
-		wxTextCtrl* m_textCtrl12;
+		wxDatePickerCtrl* m_dateBd;
 		wxStaticText* m_staticText26;
-		wxTextCtrl* m_textCtrl13;
+		wxTextCtrl* m_textInfo;
 		wxStaticText* m_staticText27;
-		wxDatePickerCtrl* m_datePicker6;
+		wxDatePickerCtrl* m_datePay;
 		wxStaticText* m_staticText28;
-		wxDatePickerCtrl* m_datePicker7;
+		wxDatePickerCtrl* m_dateExp;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectTrainer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddTrainer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveTrainer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
@@ -584,40 +606,52 @@ class DancersMngrDlg : public wxDialog
 		enum
 		{
 			ID_SEARCH = 1000,
+			ID_NAME,
+			ID_REGBOOK,
+			ID_RAITING,
+			ID_CLUB,
+			ID_TRAINER,
+			ID_LIGA,
+			ID_GENDER,
+			ID_BD,
+			ID_INFO,
+			ID_PAY,
+			ID_EXPIRE,
+			ID_REG,
 		};
 		
 		wxStaticText* m_staticText78;
 		wxTextCtrl* m_textSearch;
-		wxListBox* m_listBox5;
+		wxListBox* m_listDancers;
 		wxBitmapButton* m_bpAddDancer;
 		wxBitmapButton* m_bpRemoveDancer;
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpButton24;
 		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText21;
-		wxTextCtrl* m_textCtrl9;
-		wxStaticText* m_staticText54;
-		wxStaticText* m_staticText55;
-		wxStaticText* m_staticText22;
-		wxComboBox* m_comboBox6;
-		wxStaticText* m_staticText61;
-		wxComboBox* m_comboBox13;
-		wxStaticText* m_staticText63;
-		wxComboBox* m_comboBox15;
+		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText23;
-		wxTextCtrl* m_textCtrl10;
+		wxTextCtrl* m_textRegbook;
+		wxStaticText* m_staticText54;
+		wxStaticText* m_staticRaiting;
+		wxStaticText* m_staticText22;
+		wxComboBox* m_comboClub;
+		wxStaticText* m_staticText61;
+		wxComboBox* m_comboTrainer;
+		wxStaticText* m_staticText63;
+		wxComboBox* m_comboLiga;
 		wxStaticText* m_staticText24;
-		wxComboBox* m_comboBox14;
+		wxComboBox* m_comboGender;
 		wxStaticText* m_staticText25;
-		wxTextCtrl* m_textCtrl12;
+		wxDatePickerCtrl* m_dateBd;
 		wxStaticText* m_staticText26;
-		wxTextCtrl* m_textCtrl13;
+		wxTextCtrl* m_textInfo;
 		wxStaticText* m_staticText27;
-		wxDatePickerCtrl* m_datePicker6;
+		wxDatePickerCtrl* m_datePay;
 		wxStaticText* m_staticText28;
-		wxDatePickerCtrl* m_datePicker7;
+		wxDatePickerCtrl* m_dateExp;
 		wxStaticText* m_staticText62;
-		wxDatePickerCtrl* m_datePicker15;
+		wxTextCtrl* m_textReg;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }

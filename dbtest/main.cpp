@@ -1727,12 +1727,9 @@ long testTTrainers(CDbConnection* pCon)
 		CTrainersTable::tDATA data = {0};
 		data.clubId = 2;
 		data.name = string("Test name1");
-		data.bd = string("Test bd1");
 		data.phone = string("Test ph1");
-		data.contactInfo = string("Test contactinfo1");
+		data.additionalInfo = string("Test contactinfo1");
 		data.email = string("Test em1");
-		data.pay_date = string("Test pay1");
-		data.exp_date = string("Test exp1");
 				
 		// Add row
 		res = tbl.AddRow(data);
@@ -1755,28 +1752,23 @@ long testTTrainers(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s\n"
+			printf("%u, %u, %s, %s, %s, %s\n"
 				, it->first
 				, it->second.clubId
 				, it->second.name.c_str()
-				, it->second.bd.c_str()
 				, it->second.phone.c_str()
-				, it->second.contactInfo.c_str()
+				, it->second.additionalInfo.c_str()
 				, it->second.email.c_str()
-				, it->second.pay_date.c_str()
-				, it->second.exp_date.c_str());
+				);
 			it++;
 		}
 		
 		// Update row
 		data.clubId = 3;
 		data.name = string("Test name2");
-		data.bd = string("Test bd2");
 		data.phone = string("Test ph2");
-		data.contactInfo = string("Test contactinfo2");
+		data.additionalInfo = string("Test contactinfo2");
 		data.email = string("Test em2");
-		data.pay_date = string("Test pay2");
-		data.exp_date = string("Test exp2");
 		res = tbl.UpdateRow(data.id, data);
 		if(UDF_OK != res)
 			break;
@@ -1791,16 +1783,14 @@ long testTTrainers(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s\n"
+			printf("%u, %u, %s, %s, %s, %s\n"
 				, it->first
 				, it->second.clubId
 				, it->second.name.c_str()
-				, it->second.bd.c_str()
 				, it->second.phone.c_str()
-				, it->second.contactInfo.c_str()
+				, it->second.additionalInfo.c_str()
 				, it->second.email.c_str()
-				, it->second.pay_date.c_str()
-				, it->second.exp_date.c_str());
+				);
 			it++;
 		}
 		

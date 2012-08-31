@@ -13,8 +13,11 @@ class udfDancersMngrDlg : public DancersMngrDlg
 {
 protected:
 	// Handlers for DancersMngrDlg events.
+	void OnSearch( wxCommandEvent& event );
+	void OnDancerSelect( wxCommandEvent& event );
 	void OnAddDancer( wxCommandEvent& event );
 	void OnRemoveDancer( wxCommandEvent& event );
+	void OnUpdate( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 	

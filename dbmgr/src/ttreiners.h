@@ -15,12 +15,12 @@ public:
 		unsigned int	id;
 		unsigned int	clubId;
 		std::string		name;
-		std::string		bd;
+		time_t			bd;
 		std::string		phone;
-		std::string		contactInfo;
+		std::string		additionalInfo;
 		std::string		email;
-		std::string		pay_date;
-		std::string		exp_date;
+		time_t			pay_date;
+		time_t			exp_date;
 	} tDATA;
 
 	typedef map<unsigned int, tDATA> tTableMap;

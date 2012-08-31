@@ -2,6 +2,7 @@
 #include "stdio.h"
 
 #include "dberrors.h"
+#include "dbutils.h"
 #include "ttreiners.h"
 
 #define	TABLE	TABLE_TRAINERS
@@ -68,23 +69,30 @@ long CTrainersTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (!filter.contactInfo.empty())
+		if (!filter.additionalInfo.empty())
 		{
-			sprintf(tmp, "%sand `contact_info` like '%%%s%%' ", query, filter.contactInfo.c_str());
+			sprintf(tmp, "%sand `contact_info` like '%%%s%%' ", query, filter.additionalInfo.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.pay_date.empty())
+		if (0 != filter.bd)
 		{
-			sprintf(tmp, "%sand `pay_date` like '%%%s%%' ", query, filter.pay_date.c_str());
+			sprintf(tmp, "%sand `bd` like '%%%s%%' ", query, date2str(filter.bd).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.exp_date.empty())
+		if (0 != filter.pay_date)
 		{
-			sprintf(tmp, "%sand `expire_date` like '%%%s%%' ", query, filter.exp_date.c_str());
+			sprintf(tmp, "%sand `pay_date` like '%%%s%%' ", query, date2str(filter.pay_date).c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (0 != filter.exp_date)
+		{
+			sprintf(tmp, "%sand `expire_date` like '%%%s%%' ", query, date2str(filter.exp_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -115,12 +123,12 @@ long CTrainersTable::Find(tTableMap& data, const tDATA& filter)
 			el.id = qRes->getUInt(1);
 			el.clubId = qRes->getUInt(2);
 			el.name = qRes->getString(3);
-			el.bd = qRes->getString(4);
+			el.bd = str2date(qRes->getString(4));
 			el.phone = qRes->getString(5);
-			el.contactInfo = qRes->getString(6);
+			el.additionalInfo = qRes->getString(6);
 			el.email = qRes->getString(7);
-			el.pay_date = qRes->getString(8);
-			el.exp_date = qRes->getString(9);
+			el.pay_date = str2date(qRes->getString(8));
+			el.exp_date = str2date(qRes->getString(9));
 			
 			data.insert(make_pair(el.id, el));
 		}
@@ -151,12 +159,13 @@ long CTrainersTable::AddRow(tDATA& rec)
 		, TABLE
 		, rec.clubId
 		, rec.name.c_str()
-		, rec.bd.c_str()
+		, date2str(rec.bd).c_str()
 		, rec.phone.c_str()
-		, rec.contactInfo.c_str()
+		, rec.additionalInfo.c_str()
 		, rec.email.c_str()
-		, rec.pay_date.c_str()
-		, rec.exp_date.c_str());
+		, date2str(rec.pay_date).c_str()
+		, date2str(rec.exp_date).c_str()
+		);
 		
 		res = m_pConnection->Execute(query);
 		
@@ -212,12 +221,12 @@ long CTrainersTable::GetRow(unsigned int nId, tDATA& data)
 		data.id = qRes->getUInt(1);
 		data.clubId = qRes->getUInt(2);
 		data.name = qRes->getString(3);
-		data.bd = qRes->getString(4);
+		data.bd = str2date(qRes->getString(4));
 		data.phone = qRes->getString(5);
-		data.contactInfo = qRes->getString(6);
+		data.additionalInfo = qRes->getString(6);
 		data.email = qRes->getString(7);
-		data.pay_date = qRes->getString(8);
-		data.exp_date = qRes->getString(9);
+		data.pay_date = str2date(qRes->getString(8));
+		data.exp_date = str2date(qRes->getString(9));
 			
 		
 		res = UDF_OK;
@@ -242,7 +251,7 @@ long CTrainersTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 
-		if (data.clubId != -1)
+		if (0 != data.clubId)
 		{
 			sprintf(tmp, "%s `club_id` = %d,", query, data.clubId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
@@ -256,9 +265,9 @@ long CTrainersTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (!data.bd.empty())
+		if (0 != data.bd)
 		{
-			sprintf(tmp, "%s `bd` = '%s',", query, data.bd.c_str());
+			sprintf(tmp, "%s `bd` = '%s',", query, date2str(data.bd).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -270,9 +279,9 @@ long CTrainersTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (!data.contactInfo.empty())
+		if (!data.additionalInfo.empty())
 		{
-			sprintf(tmp, "%s `contact_info` = '%s',", query, data.contactInfo.c_str());
+			sprintf(tmp, "%s `contact_info` = '%s',", query, data.additionalInfo.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -284,16 +293,16 @@ long CTrainersTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (!data.pay_date.empty())
+		if (0 != data.pay_date)
 		{
-			sprintf(tmp, "%s `pay_date` = '%s',", query, data.pay_date.c_str());
+			sprintf(tmp, "%s `pay_date` = '%s',", query, date2str(data.pay_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!data.exp_date.empty())
+		if (0 != data.exp_date)
 		{
-			sprintf(tmp, "%s `expire_date` = '%s',", query, data.exp_date.c_str());
+			sprintf(tmp, "%s `expire_date` = '%s',", query, date2str(data.exp_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
