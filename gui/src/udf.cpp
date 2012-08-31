@@ -611,6 +611,8 @@ BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_MENU( ID_MENU_MNGR_ChTYPES_MNGR, MainFrameBase::_wxFB_OnMenuChampionshipTypes )
 	EVT_MENU( ID_MENU_MNGR_CITIES, MainFrameBase::_wxFB_OnCitiesMngr )
 	EVT_MENU( ID_MENU_MNGR_COUNTRIES, MainFrameBase::_wxFB_OnCountriesMngr )
+	EVT_MENU( ID_MENU_TOOLS_SYUNC, MainFrameBase::_wxFB_OnMenySync )
+	EVT_MENU( ID_MENU_TOOLS_OPTIONS, MainFrameBase::_wxFB_OnMenuOptions )
 	EVT_MENU( ID_ABOUT, MainFrameBase::_wxFB_OnAboutDlg )
 	EVT_TEXT( ID_SEARCH, MainFrameBase::_wxFB_OnSearch )
 	EVT_LISTBOX( ID_LIST_CHAMPIONSHIP, MainFrameBase::_wxFB_OnSelectChampionship )
@@ -688,6 +690,9 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_menuItem6 = new wxMenuItem( m_menu2, ID_MENU_MNGR_JUDGE, wxString( _("Judges") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem6 );
 	
+	wxMenuItem* m_separator21;
+	m_separator21 = m_menu2->AppendSeparator();
+	
 	wxMenuItem* m_menuItem9;
 	m_menuItem9 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CATEGORIES, wxString( _("Categories") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem9 );
@@ -708,6 +713,9 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_menuItem201 = new wxMenuItem( m_menu2, ID_MENU_MNGR_ChTYPES_MNGR, wxString( _("Championship types") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem201 );
 	
+	wxMenuItem* m_separator3;
+	m_separator3 = m_menu2->AppendSeparator();
+	
 	wxMenuItem* m_menuItem10;
 	m_menuItem10 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CITIES, wxString( _("Cities") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menu2->Append( m_menuItem10 );
@@ -717,6 +725,20 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_menu2->Append( m_menuItem91 );
 	
 	m_menuBar->Append( m_menu2, _("Manage") );
+	
+	m_menu5 = new wxMenu();
+	wxMenuItem* m_menuItem211;
+	m_menuItem211 = new wxMenuItem( m_menu5, ID_MENU_TOOLS_SYUNC, wxString( _("Synchronize DB") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu5->Append( m_menuItem211 );
+	
+	wxMenuItem* m_separator4;
+	m_separator4 = m_menu5->AppendSeparator();
+	
+	wxMenuItem* m_menuItem22;
+	m_menuItem22 = new wxMenuItem( m_menu5, ID_MENU_TOOLS_OPTIONS, wxString( _("Options") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu5->Append( m_menuItem22 );
+	
+	m_menuBar->Append( m_menu5, _("Tools") );
 	
 	m_menu51 = new wxMenu();
 	wxMenuItem* m_menuItem61;

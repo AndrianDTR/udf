@@ -336,6 +336,8 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnMenuChampionshipTypes( wxCommandEvent& event ){ OnMenuChampionshipTypes( event ); }
 		void _wxFB_OnCitiesMngr( wxCommandEvent& event ){ OnCitiesMngr( event ); }
 		void _wxFB_OnCountriesMngr( wxCommandEvent& event ){ OnCountriesMngr( event ); }
+		void _wxFB_OnMenySync( wxCommandEvent& event ){ OnMenySync( event ); }
+		void _wxFB_OnMenuOptions( wxCommandEvent& event ){ OnMenuOptions( event ); }
 		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
 		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
 		void _wxFB_OnSelectChampionship( wxCommandEvent& event ){ OnSelectChampionship( event ); }
@@ -372,6 +374,8 @@ class MainFrameBase : public wxFrame
 			ID_MENU_MNGR_ChTYPES_MNGR,
 			ID_MENU_MNGR_CITIES,
 			ID_MENU_MNGR_COUNTRIES,
+			ID_MENU_TOOLS_SYUNC,
+			ID_MENU_TOOLS_OPTIONS,
 			ID_ABOUT,
 			ID_SEARCH,
 			ID_LIST_CHAMPIONSHIP,
@@ -398,6 +402,7 @@ class MainFrameBase : public wxFrame
 		wxMenu* m_menuFile;
 		wxMenu* m_menu8;
 		wxMenu* m_menu2;
+		wxMenu* m_menu5;
 		wxMenu* m_menu51;
 		wxPanel* m_panel1;
 		wxStaticText* m_championshipSearchText;
@@ -442,6 +447,8 @@ class MainFrameBase : public wxFrame
 		virtual void OnMenuChampionshipTypes( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCitiesMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCountriesMngr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenySync( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuOptions( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSelectChampionship( wxCommandEvent& event ) { event.Skip(); }
