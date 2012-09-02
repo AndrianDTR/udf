@@ -3,12 +3,13 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-08-30 22:58:20
+-- Date/time:                    2012-09-02 21:39:36
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8 */;
 /*!40014 SET FOREIGN_KEY_CHECKS=0 */;
+
 
 -- Dumping database structure for udf
 DROP DATABASE IF EXISTS `udf`;
@@ -322,16 +323,16 @@ CREATE TABLE IF NOT EXISTS `clubs` (
   PRIMARY KEY (`id`),
   KEY `FK_clubs_cities` (`city`),
   CONSTRAINT `FK_clubs_cities` FOREIGN KEY (`city`) REFERENCES `cities` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.clubs: ~7 rows (approximately)
+-- Dumping data for table udf.clubs: ~4 rows (approximately)
 DELETE FROM `clubs`;
 /*!40000 ALTER TABLE `clubs` DISABLE KEYS */;
 INSERT INTO `clubs` (`id`, `name`, `city`, `login`, `pass`, `email`, `contacts`, `web`, `additional_info`, `pay_date`, `expire_date`, `director_name`, `director_bd`, `director_phone`, `director_email`) VALUES
-	(2, 'Test Дорослі-8', 11, 'Test login1', 'Test pass1', 'Test email1', 'Test contacts1', 'Test web1', 'Test location1', '0000-00-00', '0000-00-00', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
-	(3, 'Test Дорослі-8', 11, 'Test login1', 'Test pass1', 'Test email1', 'Test contacts1', 'Test web1', 'Test location1', '0000-00-00', '0000-00-00', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
-	(4, 'Test Дорослі-8', 11, 'Test login1', 'Test pass1', 'Test email1', 'Test contacts1', 'Test web1', 'Test location1', '0000-00-00', '0000-00-00', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
-	(7, 'QQQQQQQQQ', 1, 'QQQQQQ', 'QAZXSW', 'BBBBBB', 'AAAAAA', 'CCCC', 'ZZZZZZZZ', '2012-09-30', '2013-09-30', 'Director 12', '2012-12-12', '+380674391881', 'A@A.com');
+	(2, 'Клуб 1', 1, 'Test login1', 'Test pass1', 'Емейл 1', 'Адреса 1', 'ввв 1', 'Інфо 1', '2001-01-01', '2002-01-01', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
+	(3, 'Клуб 2', 2, 'Test login1', 'Test pass1', 'Емейл 2', 'Адреса 2', 'ввв 2', 'Інфо 2', '2002-02-02', '2003-02-02', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
+	(4, 'Клуб 3', 13, 'Test login1', 'Test pass1', 'Пошта 3', 'Адреса 3', 'немає 3', 'Додаткова інформація 3', '2003-03-03', '2004-03-03', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1'),
+	(7, 'Клуб 4', 12, 'QQQQQQ', 'QAZXSW', 'Електронна пошта 4', 'Поштова Адреса 4', 'тирнет адреса.ком 4', 'Розширена інформація 4', '2004-04-04', '2005-04-04', 'Director 12', '2012-12-12', '+380674391881', 'A@A.com');
 /*!40000 ALTER TABLE `clubs` ENABLE KEYS */;
 
 
@@ -589,9 +590,9 @@ CREATE TABLE IF NOT EXISTS `treners` (
 DELETE FROM `treners`;
 /*!40000 ALTER TABLE `treners` DISABLE KEYS */;
 INSERT INTO `treners` (`id`, `club_id`, `name`, `bd`, `phone`, `contact_info`, `email`, `pay_date`, `expire_date`) VALUES
-	(3, 2, 'Test name1', '0000-00-00', 'Test ph1', 'Test contactinfo1', 'Test em1', '0000-00-00', '0000-00-00'),
-	(4, 2, 'Test name1', '0000-00-00', 'Test ph1', 'Test contactinfo1', 'Test em1', '0000-00-00', '0000-00-00'),
-	(5, 2, 'Test name1', '0000-00-00', 'Test ph1', 'Test contactinfo1', 'Test em1', '0000-00-00', '0000-00-00'),
+	(3, 3, 'Тренер 1', '2001-12-30', '+380674391881', 'інфо 1', 'пошта 1', '2001-12-30', '2002-12-30'),
+	(4, 2, 'Тренер 1', '1970-01-01', 'телефон 1', 'інфо 1', 'пошта 1', '1970-01-01', '1970-12-31'),
+	(5, 2, 'Тренер 2', '1970-12-30', 'телефон 2', 'інфо 2', 'пошта 2', '1970-12-30', '1971-12-30'),
 	(6, 2, 'Test name1', '0000-00-00', 'Test ph1', 'Test contactinfo1', 'Test em1', '0000-00-00', '0000-00-00');
 /*!40000 ALTER TABLE `treners` ENABLE KEYS */;
 /*!40014 SET FOREIGN_KEY_CHECKS=1 */;
