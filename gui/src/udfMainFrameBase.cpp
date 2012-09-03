@@ -597,8 +597,16 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 
 void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
 {
-	udfChampionshipCategoriesMngrDlg dlg(this);
-	dlg.ShowModal();
+	do
+	{
+		int nItem = m_listChampionship->GetSelection();
+		if(-1 != nItem )
+		{
+			int nId = *(int*)m_listChampionship->GetClientData(nItem);
+			udfChampionshipCategoriesMngrDlg dlg(this, nId);
+			dlg.ShowModal();
+		}
+	}while(0);
 }
 
 void udfMainFrameBase::OnStartNumberAssign( wxCommandEvent& event )

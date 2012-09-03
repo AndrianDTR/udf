@@ -1667,10 +1667,10 @@
                                         <property name="fg"></property>
                                         <property name="font"></property>
                                         <property name="hidden">0</property>
-                                        <property name="id">wxID_ANY</property>
+                                        <property name="id">ID_LIST_ALL</property>
                                         <property name="maximum_size"></property>
                                         <property name="minimum_size"></property>
-                                        <property name="name">m_listBox2</property>
+                                        <property name="name">m_listAll</property>
                                         <property name="permission">protected</property>
                                         <property name="pos"></property>
                                         <property name="size"></property>
@@ -2044,10 +2044,10 @@
                                         <property name="fg"></property>
                                         <property name="font"></property>
                                         <property name="hidden">0</property>
-                                        <property name="id">wxID_ANY</property>
+                                        <property name="id">ID_SELECTED_LIST</property>
                                         <property name="maximum_size"></property>
                                         <property name="minimum_size"></property>
-                                        <property name="name">m_listBox3</property>
+                                        <property name="name">m_listSelected</property>
                                         <property name="permission">protected</property>
                                         <property name="pos"></property>
                                         <property name="size"></property>

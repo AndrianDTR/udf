@@ -124,20 +124,22 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 	protected:
 		enum
 		{
-			wxID_ADDALL = 1000,
+			ID_LIST_ALL = 1000,
+			wxID_ADDALL,
 			wxID_ADDONE,
 			wxID_REMOVEONE,
 			wxID_REMOVEALL,
+			ID_SELECTED_LIST,
 		};
 		
 		wxStaticText* m_staticText8;
-		wxListBox* m_listBox2;
+		wxListBox* m_listAll;
 		wxBitmapButton* m_bpAddAll;
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
 		wxBitmapButton* m_bpRemoveAll;
 		wxStaticText* m_staticText9;
-		wxListBox* m_listBox3;
+		wxListBox* m_listSelected;
 		wxBitmapButton* m_bpButton31;
 		wxBitmapButton* m_bpButton32;
 		
