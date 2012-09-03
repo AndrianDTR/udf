@@ -516,9 +516,9 @@ class DirectorInfo : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class TarinersMngrDlg
+/// Class TrainersMngrDlg
 ///////////////////////////////////////////////////////////////////////////////
-class TarinersMngrDlg : public wxDialog 
+class TrainersMngrDlg : public wxDialog 
 {
 	DECLARE_EVENT_TABLE()
 	private:
@@ -586,8 +586,8 @@ class TarinersMngrDlg : public wxDialog
 	
 	public:
 		
-		TarinersMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Trainers"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 777,466 ), long style = wxDEFAULT_DIALOG_STYLE );
-		~TarinersMngrDlg();
+		TrainersMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Trainers"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 777,466 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~TrainersMngrDlg();
 	
 };
 
@@ -613,6 +613,7 @@ class DancersMngrDlg : public wxDialog
 		enum
 		{
 			ID_SEARCH = 1000,
+			ID_DANCERS_LIST,
 			ID_NAME,
 			ID_REGBOOK,
 			ID_RAITING,
@@ -633,7 +634,7 @@ class DancersMngrDlg : public wxDialog
 		wxBitmapButton* m_bpAddDancer;
 		wxBitmapButton* m_bpRemoveDancer;
 		wxBitmapButton* m_bpUpdate;
-		wxBitmapButton* m_bpButton24;
+		wxBitmapButton* m_bpOk;
 		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText21;
 		wxTextCtrl* m_textName;

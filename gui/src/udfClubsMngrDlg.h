@@ -40,13 +40,16 @@ public:
 	/** Constructor */
 	udfClubsMngrDlg( wxWindow* parent );
 	
-public:
+private:
 	void	RefreshList();
 	void	RefreshCities();
 	void	RefreshCountries();
 	int		GetSelectedCity();
 	bool	ValidateData();
 	bool	GetSelectedItemData(CClubsTable::tDATA*& pData);
+
+public:
+	bool	GetNameById(unsigned int id, wxString& name);
 	
 };
 

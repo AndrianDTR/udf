@@ -1,7 +1,7 @@
 #include "udfClubsMngrDlg.h"
 #include "udfAccountInfo.h"
 #include "udfDancersMngrDlg.h"
-#include "udfTarinersMngrDlg.h"
+#include "udfTrainersMngrDlg.h"
 #include "udfDirectorInfo.h"
 #include "udfCitiesMngr.h"
 
@@ -392,7 +392,7 @@ void udfClubsMngrDlg::OnTrainersMngr( wxCommandEvent& event )
 		if(!GetSelectedItemData(pData))
 			break;
 		
-		udfTarinersMngrDlg dlg(this, pData->id);
+		udfTrainersMngrDlg dlg(this, pData->id);
 		if(wxID_OK != dlg.ShowModal())
 			break;
 			
@@ -407,9 +407,38 @@ void udfClubsMngrDlg::OnDancersMngr( wxCommandEvent& event )
 		if(!GetSelectedItemData(pData))
 			break;
 		
-		udfDancersMngrDlg dlg(this);
+		udfDancersMngrDlg dlg(this, pData->id);
 		if(wxID_OK != dlg.ShowModal())
 			break;
 			
 	}while(0);
+}
+
+bool udfClubsMngrDlg::GetNameById(unsigned int id, wxString& name)
+{
+	bool res = false;
+	do
+	{
+		CCountriesTable 		tCountries(m_pCon);
+		CCountriesTable::tDATA 	country = {0};
+		
+		CCitiesTable 			tCities(m_pCon);
+		CCitiesTable::tDATA		city = {0};
+		
+		CClubsTable 			tClubs(m_pCon);
+		CClubsTable::tDATA 		club = {0};
+		
+		if(UDF_OK != tClubs.GetRow(id, club))
+			break;
+		
+		if(UDF_OK != tCities.GetRow(club.city, city))
+			break;
+		
+		if(UDF_OK != tCountries.GetRow(city.countryId, country))
+			break;
+		
+		name = wxString::Format(STR_FORMAT_CLUB_NAME, club.name, city.Name, country.name);
+		res = true;
+	}while(0);
+	return res;
 }

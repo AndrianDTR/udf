@@ -32,7 +32,7 @@ set( HEADER_FILES
 	src/udfJudgesMngr.h
 	src/udfMainFrameBase.h
 	src/udfStartNumberAssignDlg.h
-	src/udfTarinersMngrDlg.h
+	src/udfTrainersMngrDlg.h
 	src/udfTeamCategoryMngrDlg.h
 	src/udfTeamDancersMngrDlg.h
 )
@@ -57,7 +57,7 @@ set( SOURCE_FILES
 	src/udfJudgesMngr.cpp
 	src/udfMainFrameBase.cpp
 	src/udfStartNumberAssignDlg.cpp
-	src/udfTarinersMngrDlg.cpp
+	src/udfTrainersMngrDlg.cpp
 	src/udfTeamCategoryMngrDlg.cpp
 	src/udfTeamDancersMngrDlg.cpp
 )

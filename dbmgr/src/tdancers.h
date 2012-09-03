@@ -15,15 +15,16 @@ public:
 		unsigned int	id;
 		unsigned int	clubId;
 		unsigned int	trainerId;
+		int				liga;
+		int 			gender;
 		std::string		regBook;
 		std::string		name;
+		std::string 	additionalInfo;
 		unsigned int	raiting;
-		int				liga;
-		std::string		bd;
-		int 			gender;
-		std::string		pay_date;
-		std::string		exp_date;
-		std::string		reg_date;
+		time_t			bd;
+		time_t			pay_date;
+		time_t			exp_date;
+		time_t			reg_date;
 	} tDATA;
 
 	typedef map<unsigned int, tDATA> tTableMap;

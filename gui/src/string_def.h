@@ -52,7 +52,6 @@ STR_DEFINITION(STR_ERR_ADD_CLUB_FAILED, "Club could not be added.");
 STR_DEFINITION(STR_ERR_UPD_CLUB_FAILED, "Club could not be updated.");
 STR_DEFINITION(STR_ERR_DEL_CLUB_FAILED, "Club could not be removed.");
 
-
 ////////////////////////////////////////////////////////////////////////////////////
 STR_DEFINITION(STR_WARN_REGCLOSE_GREATTHEN_ChDATE, "Championship date must be lower then reg close date.");
 STR_DEFINITION(STR_WARN_REGOPEN_GREATTHEN_REGCLOSE, "Championship reg open date must be lower then reg close date.");
@@ -61,13 +60,16 @@ STR_DEFINITION(STR_WARN_PAY_GREATTHEN_EXP, "Pay date is greater then expire date
 STR_DEFINITION(STR_FORMAT_DATE, "%04d-%02d-%02d");
 STR_DEFINITION(STR_INCORRECT_VALUE, "Incorrect value");
 STR_DEFINITION(STR_NOT_IN_DB_INSERT, "Selected '%s' not present in database. Insert it?");
-STR_DEFINITION(STR_CITY, "City");
-STR_DEFINITION(STR_COUNTRY, "Country");
-STR_DEFINITION(STR_AGE_CATEGORY, "Age category");
-STR_DEFINITION(STR_DANCE_TYPE, "Dance type");
-STR_DEFINITION(STR_LIGUE, "Ligue");
-STR_DEFINITION(STR_CLUB, "Club");
-STR_DEFINITION(STR_CHAMPIONSHIP_TYPE, "Championship type");
+STR_DEFINITION(STR_NOT_IN_DB, "Selected '%s' not present in database.");
+STR_DEFINITION(STR_CITY, "city");
+STR_DEFINITION(STR_COUNTRY, "country");
+STR_DEFINITION(STR_AGE_CATEGORY, "age category");
+STR_DEFINITION(STR_DANCE_TYPE, "dance type");
+STR_DEFINITION(STR_LIGUE, "ligue");
+STR_DEFINITION(STR_CLUB, "club");
+STR_DEFINITION(STR_TRAINER, "trainer");
+STR_DEFINITION(STR_GENDER, "gender");
+STR_DEFINITION(STR_CHAMPIONSHIP_TYPE, "championship type");
 STR_DEFINITION(STR_FORMAT_CITY_NAME, "%s, %s");
 STR_DEFINITION(STR_FORMAT_CLUB_NAME, "%s, %s, %s");
 STR_DEFINITION(STR_AGE_CATEGORY_CODE_MNGR, "Age category code manager");

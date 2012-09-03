@@ -1167,10 +1167,6 @@ long testTDancers(CDbConnection* pCon)
 		data.gender = 9;
 		data.regBook = string("Test RB1");
 		data.name = string("Test name1");
-		data.bd = string("Test bd1");
-		data.pay_date = string("Test pay1");
-		data.exp_date = string("Test exp1");
-		data.reg_date = string("Test reg1");
 		
 		// Add row
 		res = tbl.AddRow(data);
@@ -1193,7 +1189,7 @@ long testTDancers(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u, %u, %u, %u, %u, %u, %u, %s, %s, %s, %s, %s\n"
+			printf("%u, %u, %u, %u, %u, %u, %u, %s\n"
 				, it->first
 				, it->second.clubId
 				, it->second.trainerId
@@ -1202,10 +1198,7 @@ long testTDancers(CDbConnection* pCon)
 				, it->second.liga
 				, it->second.regBook.c_str()
 				, it->second.name.c_str()
-				, it->second.bd.c_str()
-				, it->second.pay_date.c_str()
-				, it->second.exp_date.c_str()
-				, it->second.reg_date.c_str());
+				);
 			it++;
 		}
 		
@@ -1217,10 +1210,6 @@ long testTDancers(CDbConnection* pCon)
 		data.gender = 10;
 		data.regBook = string("Test RB2");
 		data.name = string("Test name2");
-		data.bd = string("Test bd2");
-		data.pay_date = string("Test pay2");
-		data.exp_date = string("Test exp2");
-		data.reg_date = string("Test reg2");
 		
 		res = tbl.UpdateRow(data.id, data);
 		if(UDF_OK != res)
@@ -1236,7 +1225,7 @@ long testTDancers(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u, %u, %u, %u, %u, %u, %s, %s, %s, %s, %s, %s\n"
+			printf("%u, %u, %u, %u, %u, %u, %s, %s\n"
 				, it->first
 				, it->second.clubId
 				, it->second.trainerId
@@ -1245,10 +1234,7 @@ long testTDancers(CDbConnection* pCon)
 				, it->second.liga
 				, it->second.regBook.c_str()
 				, it->second.name.c_str()
-				, it->second.bd.c_str()
-				, it->second.pay_date.c_str()
-				, it->second.exp_date.c_str()
-				, it->second.reg_date.c_str());
+				);
 			it++;
 		}
 		

@@ -5178,7 +5178,7 @@
                 </object>
             </object>
         </object>
-        <object class="Frame" expanded="1">
+        <object class="Frame" expanded="0">
             <property name="bg"></property>
             <property name="center">wxBOTH</property>
             <property name="context_help"></property>
@@ -8161,7 +8161,7 @@
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
             <property name="minimum_size"></property>
-            <property name="name">TarinersMngrDlg</property>
+            <property name="name">TrainersMngrDlg</property>
             <property name="pos"></property>
             <property name="size">777,466</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE</property>
@@ -9898,7 +9898,7 @@
                                                 <property name="fg"></property>
                                                 <property name="font"></property>
                                                 <property name="hidden">0</property>
-                                                <property name="id">wxID_ANY</property>
+                                                <property name="id">ID_DANCERS_LIST</property>
                                                 <property name="maximum_size"></property>
                                                 <property name="minimum_size"></property>
                                                 <property name="name">m_listDancers</property>
@@ -9968,7 +9968,7 @@
                                                     <property name="proportion">0</property>
                                                     <object class="wxBitmapButton" expanded="1">
                                                         <property name="bg"></property>
-                                                        <property name="bitmap">../res/button_danceradd.xpm; Load From File</property>
+                                                        <property name="bitmap">../res/button_add.xpm; Load From File</property>
                                                         <property name="context_help"></property>
                                                         <property name="default">0</property>
                                                         <property name="disabled"></property>
@@ -10029,7 +10029,7 @@
                                                     <property name="proportion">0</property>
                                                     <object class="wxBitmapButton" expanded="1">
                                                         <property name="bg"></property>
-                                                        <property name="bitmap">../res/button_dancerremove.xpm; Load From File</property>
+                                                        <property name="bitmap">../res/button_delete.xpm; Load From File</property>
                                                         <property name="context_help"></property>
                                                         <property name="default">0</property>
                                                         <property name="disabled"></property>
@@ -10165,7 +10165,7 @@
                                                         <property name="label">Save</property>
                                                         <property name="maximum_size"></property>
                                                         <property name="minimum_size"></property>
-                                                        <property name="name">m_bpButton24</property>
+                                                        <property name="name">m_bpOk</property>
                                                         <property name="permission">protected</property>
                                                         <property name="pos"></property>
                                                         <property name="selected"></property>

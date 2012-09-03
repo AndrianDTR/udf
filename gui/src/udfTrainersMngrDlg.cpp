@@ -1,4 +1,4 @@
-#include "udfTarinersMngrDlg.h"
+#include "udfTrainersMngrDlg.h"
 
 #include "common.h"
 #include "tcountries.h"
@@ -10,8 +10,8 @@
 #include "udfexceptions.h"
 #include "udfClubsMngrDlg.h"
 
-udfTarinersMngrDlg::udfTarinersMngrDlg( wxWindow* parent, unsigned int nClubId )
-: TarinersMngrDlg( parent )
+udfTrainersMngrDlg::udfTrainersMngrDlg( wxWindow* parent, unsigned int nClubId )
+: TrainersMngrDlg( parent )
 , m_nClubId(nClubId)
 , m_pCon(NULL)
 {
@@ -21,8 +21,9 @@ udfTarinersMngrDlg::udfTarinersMngrDlg( wxWindow* parent, unsigned int nClubId )
 	RefreshClubs();
 }
 
-void udfTarinersMngrDlg::RefreshClubs()
+void udfTrainersMngrDlg::RefreshClubs()
 {
+	udfClubsMngrDlg* pClubs = (udfClubsMngrDlg*)GetParent();
 	CClubsTable table(m_pCon);
 	table.GetTable(m_Clubs);
 		
@@ -32,7 +33,7 @@ void udfTarinersMngrDlg::RefreshClubs()
 	{
 		int nPos = m_comboClub->GetCount();
 		wxString club;
-		if(GetClubNameById(it->first, club))
+		if(pClubs->GetNameById(it->first, club))
 			m_comboClub->Insert(club, nPos, (void*)&it->first);
 		
 		it++;
@@ -40,7 +41,7 @@ void udfTarinersMngrDlg::RefreshClubs()
 	m_comboClub->AutoComplete(m_comboClub->GetStrings());
 }
 
-void udfTarinersMngrDlg::RefreshList()
+void udfTrainersMngrDlg::RefreshList()
 {
 	CTrainersTable table(m_pCon);
 	CTrainersTable::tDATA filter = {0};
@@ -60,7 +61,7 @@ void udfTarinersMngrDlg::RefreshList()
 	}
 }
 
-void udfTarinersMngrDlg::OnSelectTrainer(wxCommandEvent& event)
+void udfTrainersMngrDlg::OnSelectTrainer(wxCommandEvent& event)
 {
 	do
 	{
@@ -80,8 +81,9 @@ void udfTarinersMngrDlg::OnSelectTrainer(wxCommandEvent& event)
 		m_textInfo->SetValue(data.additionalInfo);
 		m_textPhone->SetValue(data.phone);
 		
+		udfClubsMngrDlg* pClubs = (udfClubsMngrDlg*)GetParent();
 		wxString clubName;
-		if(GetClubNameById(data.clubId, clubName))
+		if(pClubs->GetNameById(data.clubId, clubName))
 			m_comboClub->SetValue(clubName);
 		
 		m_dateBd->SetValue(wxDateTime(data.bd));
@@ -91,7 +93,7 @@ void udfTarinersMngrDlg::OnSelectTrainer(wxCommandEvent& event)
 	}while(0);
 }
 
-void udfTarinersMngrDlg::OnAddTrainer( wxCommandEvent& event )
+void udfTrainersMngrDlg::OnAddTrainer( wxCommandEvent& event )
 {
 	do
 	{
@@ -118,7 +120,7 @@ void udfTarinersMngrDlg::OnAddTrainer( wxCommandEvent& event )
 	}while(0);
 }
 
-void udfTarinersMngrDlg::OnRemoveTrainer( wxCommandEvent& event )
+void udfTrainersMngrDlg::OnRemoveTrainer( wxCommandEvent& event )
 {
 	do
 	{
@@ -133,7 +135,7 @@ void udfTarinersMngrDlg::OnRemoveTrainer( wxCommandEvent& event )
 	}while(0);
 }
 
-void udfTarinersMngrDlg::OnUpdate(wxCommandEvent& event)
+void udfTrainersMngrDlg::OnUpdate(wxCommandEvent& event)
 {
 	do
 	{
@@ -160,7 +162,7 @@ void udfTarinersMngrDlg::OnUpdate(wxCommandEvent& event)
 	}while(0);
 }
 
-void udfTarinersMngrDlg::OnSave( wxCommandEvent& event )
+void udfTrainersMngrDlg::OnSave( wxCommandEvent& event )
 {
 	CTrainersTable table(m_pCon);
 	CTrainersTable::tTableMap stored;
@@ -218,12 +220,12 @@ void udfTarinersMngrDlg::OnSave( wxCommandEvent& event )
 	EndModal(wxID_OK);
 }
 
-void udfTarinersMngrDlg::OnDiscard( wxCommandEvent& event )
+void udfTrainersMngrDlg::OnDiscard( wxCommandEvent& event )
 {
 	EndModal(wxID_CANCEL);
 }
 
-void udfTarinersMngrDlg::OnSearch(wxCommandEvent& event)
+void udfTrainersMngrDlg::OnSearch(wxCommandEvent& event)
 {
 	wxString search = m_textSearch->GetValue().Upper();
 	CTrainersTable::tTableIt item;
@@ -245,7 +247,7 @@ void udfTarinersMngrDlg::OnSearch(wxCommandEvent& event)
 	}
 }
 
-bool udfTarinersMngrDlg::ValidateData()
+bool udfTrainersMngrDlg::ValidateData()
 {
 	bool res = false;
 	do
@@ -265,36 +267,7 @@ bool udfTarinersMngrDlg::ValidateData()
 	return res;
 }
 
-bool udfTarinersMngrDlg::GetClubNameById(unsigned int id, wxString& name)
-{
-	bool res = false;
-	do
-	{
-		CCountriesTable 		tCountries(m_pCon);
-		CCountriesTable::tDATA 	country = {0};
-		
-		CCitiesTable 			tCities(m_pCon);
-		CCitiesTable::tDATA		city = {0};
-		
-		CClubsTable 			tClubs(m_pCon);
-		CClubsTable::tDATA 		club = {0};
-		
-		if(UDF_OK != tClubs.GetRow(id, club))
-			break;
-		
-		if(UDF_OK != tCities.GetRow(club.city, city))
-			break;
-		
-		if(UDF_OK != tCountries.GetRow(city.countryId, country))
-			break;
-		
-		name = wxString::Format(STR_FORMAT_CLUB_NAME, club.name, city.Name, country.name);
-		res = true;
-	}while(0);
-	return res;
-}
-
-int udfTarinersMngrDlg::GetSelectedClub()
+int udfTrainersMngrDlg::GetSelectedClub()
 {
 	int res = -1;
 	do
@@ -303,7 +276,7 @@ int udfTarinersMngrDlg::GetSelectedClub()
 		res = m_comboClub->FindString(value);
 		if(-1 == res)
 		{
-			ShowWarning(wxString::Format(STR_NOT_IN_DB_INSERT, STR_CLUB));
+			ShowWarning(wxString::Format(STR_NOT_IN_DB, STR_CLUB));
 			break;
 		}
 	}while(0);
@@ -311,7 +284,7 @@ int udfTarinersMngrDlg::GetSelectedClub()
 	return res;
 }
 
-bool udfTarinersMngrDlg::GetSelectedItemData(CTrainersTable::tDATA*& pData)
+bool udfTrainersMngrDlg::GetSelectedItemData(CTrainersTable::tDATA*& pData)
 {
 	bool res = false;
 	do{
@@ -329,5 +302,22 @@ bool udfTarinersMngrDlg::GetSelectedItemData(CTrainersTable::tDATA*& pData)
 		res = true;
 	}while(0);
 	
+	return res;
+}
+
+bool udfTrainersMngrDlg::GetNameById(unsigned int id, wxString& name)
+{
+	bool res = false;
+	do
+	{
+		CTrainersTable 			table(m_pCon);
+		CTrainersTable::tDATA 	data = {0};
+		
+		if(UDF_OK != table.GetRow(id, data))
+			break;
+		
+		name = data.name;
+		res = true;
+	}while(0);
 	return res;
 }
