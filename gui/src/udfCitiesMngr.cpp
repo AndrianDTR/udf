@@ -140,17 +140,16 @@ void udfCitiesMngr::OnSave( wxCommandEvent& event )
 	OnUpdateCode(event);
 	
 	CCitiesTable table(m_pCon);
-	CCitiesTable::tTableMap storedCats;
-	table.GetTable(storedCats);
+	CCitiesTable::tTableMap stored;
+	table.GetTable(stored);
 		
-	CCitiesTable::tTableIt listIt = storedCats.begin();
-	while(listIt != storedCats.end())
+	CCitiesTable::tTableIt listIt = stored.begin();
+	while(listIt != stored.end())
 	{
 		CCitiesTable::tTableIt rLstIt = m_Cities.find(listIt->first);
 		if(rLstIt == m_Cities.end())
 		{
 			table.DelRow(listIt->first);
-			DEBUG_PRINTF("DEL %d", listIt->first);
 		}
 		else if(rLstIt != m_Cities.end() && rLstIt->first == listIt->first)
 		{
@@ -162,7 +161,6 @@ void udfCitiesMngr::OnSave( wxCommandEvent& event )
 				data.Name = cData.Name;
 				data.countryId = cData.countryId;
 				table.UpdateRow(listIt->first, data);
-				DEBUG_PRINTF("UPD %d", listIt->first);
 			}
 			m_Cities.erase(rLstIt);
 		}

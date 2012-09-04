@@ -251,7 +251,7 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 	m_staticText8->Wrap( -1 );
 	bSizer9->Add( m_staticText8, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_listAll = new wxListBox( this, ID_LIST_ALL, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	m_listAll = new wxListBox( this, ID_LIST_ALL, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_MULTIPLE ); 
 	bSizer9->Add( m_listAll, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer8->Add( bSizer9, 1, wxEXPAND, 5 );
@@ -280,7 +280,7 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 	m_staticText9->Wrap( -1 );
 	bSizer11->Add( m_staticText9, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_listSelected = new wxListBox( this, ID_SELECTED_LIST, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	m_listSelected = new wxListBox( this, ID_SELECTED_LIST, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_MULTIPLE ); 
 	bSizer11->Add( m_listSelected, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer8->Add( bSizer11, 1, wxEXPAND, 5 );
