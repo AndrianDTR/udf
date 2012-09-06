@@ -16,9 +16,8 @@
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
-#include <wx/combobox.h>
-#include <wx/sizer.h>
 #include <wx/textctrl.h>
+#include <wx/sizer.h>
 #include <wx/listbox.h>
 #include <wx/statbox.h>
 #include <wx/bitmap.h>
@@ -26,6 +25,7 @@
 #include <wx/icon.h>
 #include <wx/bmpbuttn.h>
 #include <wx/button.h>
+#include <wx/combobox.h>
 #include <wx/dialog.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
@@ -50,6 +50,8 @@ class DancersTeamMngr : public wxDialog
 		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		void _wxFB_OnClubChanged( wxCommandEvent& event ){ OnClubChanged( event ); }
+		void _wxFB_OnSelectClub( wxCommandEvent& event ){ OnSelectClub( event ); }
 		void _wxFB_OnAddDancerTeamCategory( wxCommandEvent& event ){ OnAddDancerTeamCategory( event ); }
 		void _wxFB_OnRemoveDancerTeamCategory( wxCommandEvent& event ){ OnRemoveDancerTeamCategory( event ); }
 		void _wxFB_OnAddDancer2Team( wxCommandEvent& event ){ OnAddDancer2Team( event ); }
@@ -73,8 +75,6 @@ class DancersTeamMngr : public wxDialog
 			wxID_REMOVEDANCER,
 		};
 		
-		wxStaticText* m_staticText89;
-		wxComboBox* m_comboClub;
 		wxStaticText* m_staticText15;
 		wxTextCtrl* m_textSearch;
 		wxListBox* m_listTeams;
@@ -85,6 +85,8 @@ class DancersTeamMngr : public wxDialog
 		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText16;
 		wxTextCtrl* m_textName;
+		wxStaticText* m_staticText89;
+		wxComboBox* m_comboClub;
 		wxComboBox* m_comboCsCategories;
 		wxListBox* m_listTeamCategories;
 		wxBitmapButton* m_bpAddDancerTeamCategory;
@@ -100,6 +102,8 @@ class DancersTeamMngr : public wxDialog
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnClubChanged( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectClub( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancerTeamCategory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveDancerTeamCategory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancer2Team( wxCommandEvent& event ) { event.Skip(); }

@@ -337,11 +337,11 @@ long testTChampionshipCategories(CDbConnection* pCon)
 	printf("\n\nEnter to %s\n", cName);
 	do
 	{
-		CChampionshipCategotiesTable tbl(pCon);
-		CChampionshipCategotiesTable::tTableMap tmap;
-		CChampionshipCategotiesTable::tTableIt it;
+		CChampionshipCategoriesTable tbl(pCon);
+		CChampionshipCategoriesTable::tTableMap tmap;
+		CChampionshipCategoriesTable::tTableIt it;
 		
-		CChampionshipCategotiesTable::tDATA data = {0};
+		CChampionshipCategoriesTable::tDATA data = {0};
 		data.catId = 10;
 		data.championshipId = 3;
 		

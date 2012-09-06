@@ -41,6 +41,8 @@ BEGIN_EVENT_TABLE( DancersTeamMngr, wxDialog )
 	EVT_BUTTON( ID_APPLY, DancersTeamMngr::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_OK, DancersTeamMngr::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, DancersTeamMngr::_wxFB_OnDiscard )
+	EVT_COMBOBOX( ID_SEARCH, DancersTeamMngr::_wxFB_OnClubChanged )
+	EVT_TEXT_ENTER( ID_SEARCH, DancersTeamMngr::_wxFB_OnSelectClub )
 	EVT_BUTTON( wxID_ADDDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnAddDancerTeamCategory )
 	EVT_BUTTON( wxID_REMOVEDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnRemoveDancerTeamCategory )
 	EVT_BUTTON( wxID_ADDDANCER, DancersTeamMngr::_wxFB_OnAddDancer2Team )
@@ -62,21 +64,6 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	wxStaticBoxSizer* sbSizer2;
 	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Teams") ), wxVERTICAL );
-	
-	wxFlexGridSizer* fgSizer13;
-	fgSizer13 = new wxFlexGridSizer( 2, 2, 0, 0 );
-	fgSizer13->AddGrowableCol( 1 );
-	fgSizer13->SetFlexibleDirection( wxBOTH );
-	fgSizer13->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_staticText89 = new wxStaticText( this, wxID_ANY, _("Club"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText89->Wrap( -1 );
-	fgSizer13->Add( m_staticText89, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_comboClub = new wxComboBox( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), 0, NULL, 0 ); 
-	fgSizer13->Add( m_comboClub, 1, wxALL|wxEXPAND, 5 );
-	
-	sbSizer2->Add( fgSizer13, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer18;
 	bSizer18 = new wxBoxSizer( wxHORIZONTAL );
@@ -122,7 +109,7 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	bSizer181->Add( bSizer74, 0, wxALIGN_RIGHT, 5 );
 	
 	wxFlexGridSizer* fgSizer2;
-	fgSizer2 = new wxFlexGridSizer( 1, 2, 0, 0 );
+	fgSizer2 = new wxFlexGridSizer( 2, 2, 0, 0 );
 	fgSizer2->AddGrowableCol( 1 );
 	fgSizer2->SetFlexibleDirection( wxBOTH );
 	fgSizer2->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
@@ -133,6 +120,13 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	m_textName = new wxTextCtrl( this, ID_TEAM_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer2->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText89 = new wxStaticText( this, wxID_ANY, _("Club"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText89->Wrap( -1 );
+	fgSizer2->Add( m_staticText89, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_comboClub = new wxComboBox( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), 0, NULL, 0 ); 
+	fgSizer2->Add( m_comboClub, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer181->Add( fgSizer2, 0, wxEXPAND, 5 );
 	

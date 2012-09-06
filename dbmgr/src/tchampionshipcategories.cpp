@@ -6,24 +6,24 @@
 
 #define	TABLE	TABLE_CHAMPIONSHIPCATEGORIES
 
-CChampionshipCategotiesTable::CChampionshipCategotiesTable(CDbConnection* pCon)
+CChampionshipCategoriesTable::CChampionshipCategoriesTable(CDbConnection* pCon)
 : CDbTable(pCon)
 , m_pConnection(pCon)
 {
 }
 
-CChampionshipCategotiesTable::~CChampionshipCategotiesTable(void)
+CChampionshipCategoriesTable::~CChampionshipCategoriesTable(void)
 {
 }
 
-long CChampionshipCategotiesTable::GetTable(tTableMap& data)
+long CChampionshipCategoriesTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CChampionshipCategotiesTable::Find(tTableMap& data, const tDATA& filter)
+long CChampionshipCategoriesTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -90,7 +90,7 @@ long CChampionshipCategotiesTable::Find(tTableMap& data, const tDATA& filter)
 	return res;
 }
 
-long CChampionshipCategotiesTable::AddRow(tDATA& rec)
+long CChampionshipCategoriesTable::AddRow(tDATA& rec)
 {
 	long res = UDF_E_FAIL;
 	
@@ -117,7 +117,7 @@ long CChampionshipCategotiesTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CChampionshipCategotiesTable::DelRow(unsigned int nId)
+long CChampionshipCategoriesTable::DelRow(unsigned int nId)
 {
 	long res = UDF_E_FAIL;
 	
@@ -137,7 +137,7 @@ long CChampionshipCategotiesTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CChampionshipCategotiesTable::GetRow(unsigned int nId, tDATA& data)
+long CChampionshipCategoriesTable::GetRow(unsigned int nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -171,7 +171,7 @@ long CChampionshipCategotiesTable::GetRow(unsigned int nId, tDATA& data)
 	return res;
 }
 
-long CChampionshipCategotiesTable::UpdateRow(unsigned int nId, const tDATA& data)
+long CChampionshipCategoriesTable::UpdateRow(unsigned int nId, const tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	

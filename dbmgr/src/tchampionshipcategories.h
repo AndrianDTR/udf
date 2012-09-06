@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class CChampionshipCategotiesTable : public CDbTable
+class CChampionshipCategoriesTable : public CDbTable
 {
 public:
 	struct tDATA{
@@ -24,8 +24,8 @@ protected:
 	CDbConnection* m_pConnection;
 	
 public:
-    CChampionshipCategotiesTable(CDbConnection* pCon);
-    virtual ~CChampionshipCategotiesTable(void);
+    CChampionshipCategoriesTable(CDbConnection* pCon);
+    virtual ~CChampionshipCategoriesTable(void);
 
 public:
     virtual long		GetTable(tTableMap& data);

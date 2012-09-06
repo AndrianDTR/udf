@@ -18,7 +18,7 @@ class udfChampionshipCategoriesMngrDlg : public ChampionshipCategoriesMngrDlg
 private:
 	unsigned int 								m_nCSId;
 	CDbConnection*								m_pCon;
-	CChampionshipCategotiesTable::tTableMap		m_ChampionshipsCategories;
+	CChampionshipCategoriesTable::tTableMap		m_ChampionshipsCategories;
 	CCategoriesTable::tTableMap					m_Categories;
 	
 protected:

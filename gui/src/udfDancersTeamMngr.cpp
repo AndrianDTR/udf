@@ -7,6 +7,52 @@ udfDancersTeamMngr::udfDancersTeamMngr( wxWindow* parent, unsigned int nId )
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
 	
+	RefreshList();
+	RefreshClubs();
+	RefreshCategories();
+	
+}
+
+void udfDancersTeamMngr::RefreshList()
+{
+	CChampionshipTeamsTable table(m_pCon);
+	CChampionshipTeamsTable::tDATA filter = {0};
+	filter.championshipId = m_nCSId;
+	table.Find(m_CsTeams, filter);
+	
+	m_listTeams->Clear();
+	
+	CChampionshipTeamsTable::tTableIt it = m_CsTeams.begin();
+	while(it != m_CsTeams.end())
+	{
+		CChampionshipTeamsTable::tDATA& data = it->second;
+		int nPos = m_listTeams->GetCount();
+		m_listTeams->Insert(data.name, nPos, (void*)&it->first);
+		
+		it++;
+	}
+}
+
+void udfDancersTeamMngr::RefreshClubs()
+{
+}
+
+void udfDancersTeamMngr::RefreshCategories()
+{
+	CCategoriesTable(m_pCon).GetTable(m_Categories);
+
+	CChampionshipCategoriesTable table(m_pCon);
+	CChampionshipCategoriesTable::tDATA filter = {0};
+	filter.championshipId = m_nCSId;
+	table.Find(m_CsCategories, filter);
+}
+
+void udfDancersTeamMngr::RefreshDancers()
+{
+}
+
+void udfDancersTeamMngr::RefreshTeamCategories()
+{
 }
 
 void udfDancersTeamMngr::OnAddDancerTeam( wxCommandEvent& event )
@@ -48,3 +94,24 @@ void udfDancersTeamMngr::OnDiscard( wxCommandEvent& event )
 {
 	EndModal(wxID_CANCEL);
 }
+
+int udfDancersTeamMngr::GetSelectedClub()
+{
+}
+
+bool udfDancersTeamMngr::GetSelectedItemData(CDancersTable::tDATA*& pData)
+{
+}
+
+void udfDancersTeamMngr::OnClubChanged(wxCommandEvent& event)
+{
+}
+
+void udfDancersTeamMngr::OnSelectClub(wxCommandEvent& event)
+{
+}
+
+bool udfDancersTeamMngr::ValidateData()
+{
+}
+

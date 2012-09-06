@@ -20,7 +20,7 @@ void udfChampionshipCategoriesMngrDlg::OnAddAll( wxCommandEvent& event )
 	m_ChampionshipsCategories.clear();
 	m_listSelected->Clear();
 	
-	CChampionshipCategotiesTable::tDATA data = {0};
+	CChampionshipCategoriesTable::tDATA data = {0};
 	data.championshipId = m_nCSId;
 		
 	CCategoriesTable::tTableIt it = m_Categories.begin();
@@ -31,7 +31,7 @@ void udfChampionshipCategoriesMngrDlg::OnAddAll( wxCommandEvent& event )
 		data.id = -nPos;
 		data.catId = it->first;
 		
-		CChampionshipCategotiesTable::tTableIt itemIt = 
+		CChampionshipCategoriesTable::tTableIt itemIt = 
 			m_ChampionshipsCategories.insert(std::make_pair(data.id, data)).first;
 		m_listSelected->Insert(cData.shortName, nPos, (void*)&itemIt->first);
 		
@@ -43,7 +43,7 @@ void udfChampionshipCategoriesMngrDlg::OnAdd( wxCommandEvent& event )
 {
 	wxArrayInt	nSelections;
 	m_listAll->GetSelections(nSelections);
-	CChampionshipCategotiesTable::tDATA data = {0};
+	CChampionshipCategoriesTable::tDATA data = {0};
 	data.championshipId = m_nCSId;
 	unsigned int i = 0;
 	for(i = 0; i < nSelections.GetCount() ; ++i)
@@ -59,7 +59,7 @@ void udfChampionshipCategoriesMngrDlg::OnAdd( wxCommandEvent& event )
 				data.id = -nPos;
 				data.catId = it->first;
 				
-				CChampionshipCategotiesTable::tTableIt itemIt = 
+				CChampionshipCategoriesTable::tTableIt itemIt = 
 					m_ChampionshipsCategories.insert(std::make_pair(data.id, data)).first;
 				m_listSelected->Insert(cData.shortName, nPos, (void*)&itemIt->first);
 			}
@@ -88,24 +88,24 @@ void udfChampionshipCategoriesMngrDlg::OnRemoveAll( wxCommandEvent& event )
 
 void udfChampionshipCategoriesMngrDlg::OnSave( wxCommandEvent& event )
 {
-	CChampionshipCategotiesTable table(m_pCon);
-	CChampionshipCategotiesTable::tTableMap stored;
-	CChampionshipCategotiesTable::tDATA filter = {0};
+	CChampionshipCategoriesTable table(m_pCon);
+	CChampionshipCategoriesTable::tTableMap stored;
+	CChampionshipCategoriesTable::tDATA filter = {0};
 	filter.championshipId = m_nCSId;
 	table.Find(stored, filter);
 		
-	CChampionshipCategotiesTable::tTableIt listIt = stored.begin();
+	CChampionshipCategoriesTable::tTableIt listIt = stored.begin();
 	while(listIt != stored.end())
 	{
-		CChampionshipCategotiesTable::tTableIt rLstIt = m_ChampionshipsCategories.find(listIt->first);
+		CChampionshipCategoriesTable::tTableIt rLstIt = m_ChampionshipsCategories.find(listIt->first);
 		if(rLstIt == m_ChampionshipsCategories.end())
 		{
 			table.DelRow(listIt->first);
 		}
 		else if(rLstIt != m_ChampionshipsCategories.end() && rLstIt->first == listIt->first)
 		{
-			CChampionshipCategotiesTable::tDATA& data = listIt->second;
-			CChampionshipCategotiesTable::tDATA& cData = rLstIt->second;
+			CChampionshipCategoriesTable::tDATA& data = listIt->second;
+			CChampionshipCategoriesTable::tDATA& cData = rLstIt->second;
 			if( data.catId != cData.catId)
 			{
 				data.catId = cData.catId;
@@ -118,10 +118,10 @@ void udfChampionshipCategoriesMngrDlg::OnSave( wxCommandEvent& event )
 	
 	if(m_ChampionshipsCategories.size() > 0)
 	{
-		CChampionshipCategotiesTable::tTableIt rLstIt = m_ChampionshipsCategories.begin();
+		CChampionshipCategoriesTable::tTableIt rLstIt = m_ChampionshipsCategories.begin();
 		while(rLstIt != m_ChampionshipsCategories.end())
 		{
-			CChampionshipCategotiesTable::tDATA& data = rLstIt->second;
+			CChampionshipCategoriesTable::tDATA& data = rLstIt->second;
 			table.AddRow(data);
 			rLstIt++;
 		}
@@ -157,14 +157,14 @@ void udfChampionshipCategoriesMngrDlg::RefreshSelectedList()
 	m_ChampionshipsCategories.clear();
 	m_listSelected->Clear();
 	
-	CChampionshipCategotiesTable::tDATA filter = {0};
+	CChampionshipCategoriesTable::tDATA filter = {0};
 	filter.championshipId = m_nCSId;
-	CChampionshipCategotiesTable(m_pCon).Find(m_ChampionshipsCategories, filter);
+	CChampionshipCategoriesTable(m_pCon).Find(m_ChampionshipsCategories, filter);
 	
-	CChampionshipCategotiesTable::tTableIt it = m_ChampionshipsCategories.begin();
+	CChampionshipCategoriesTable::tTableIt it = m_ChampionshipsCategories.begin();
 	while(it != m_ChampionshipsCategories.end())
 	{
-		CChampionshipCategotiesTable::tDATA& data = it->second;
+		CChampionshipCategoriesTable::tDATA& data = it->second;
 		int nPos = m_listSelected->GetCount();
 		
 		CCategoriesTable::tTableIt cIt = m_Categories.find(data.catId);
