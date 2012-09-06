@@ -29,13 +29,8 @@ time_t str2date(std::string str)
     str += " 23:59:59";
 	setlocale(LC_ALL, "POSIX");
     strptime(str.c_str(), "%Y-%m-%d %T", &_date);
-	_date.tm_gmtoff = 0;
-	/*_date.tm_hour = 23;
-	_date.tm_min = 59;
-	_date.tm_sec = 59;
-	*/
-	printf("+++++'%s'+++++++", asctime(&_date));
-    res = mktime(&_date);
+	
+	res = mktime(&_date);
     	
 	return res;
 }

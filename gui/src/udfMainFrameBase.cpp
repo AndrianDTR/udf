@@ -373,10 +373,8 @@ wxDateTime udfMainFrameBase::GetChDateById(unsigned int nId)
 		CChampionshipTable::tTableIt it = m_Championships.find(nId);
 		if(it == m_Championships.end())
 			break;
-
 		CChampionshipTable::tDATA& data = it->second;
 		dt = wxDateTime(data.date);
-		DEBUG_PRINTF("%d", wxDateTime(data.date).GetTicks() == data.date);
 	}while(0);
 	
 	return dt;
@@ -646,8 +644,8 @@ void udfMainFrameBase::OnDancersTeams(wxCommandEvent& event)
 		if(-1 != nItem )
 		{
 			int nId = *(int*)m_listChampionship->GetClientData(nItem);
-			wxString msg;
-			wxMessageBox(wxDateTime::Now().Format(_("%d-%m-%y %H:%M:%S ")) + GetChDateById(nId).Format(_("%d-%m-%y %H:%M:%S ")));
+			wxString msg = wxDateTime::Now().FormatISODate() + wxDateTime::Now().FormatISOTime();
+			wxMessageBox(msg + wxDateTime::Now().Format(_(" %d-%m-%y %H:%M:%S ")) + GetChDateById(nId).Format(_("%d-%m-%y %H:%M:%S ")));
 			if(wxDateTime::Now() > GetChDateById(nId) )
 			{
 				ShowWarning(STR_WARN_DATE_INTHEPAST);
