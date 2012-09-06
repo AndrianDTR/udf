@@ -599,7 +599,6 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 		
 		if(rList.size() > 0)
 		{
-			//insert data here
 			udfCodeDialog::tListIt rLstIt = rList.begin();
 			while(rLstIt != rList.end())
 			{
@@ -625,12 +624,6 @@ void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
 			break;
 		int nId = *(int*)m_listChampionship->GetClientData(nItem);
 		
-		if(wxDateTime::Now() > GetChDateById(nId) )
-		{
-			ShowWarning(STR_WARN_DATE_INTHEPAST);
-			break;
-		}
-		
 		udfChampionshipCategoriesMngrDlg dlg(this, nId);
 		dlg.ShowModal();
 	}while(0);
@@ -644,13 +637,6 @@ void udfMainFrameBase::OnDancersTeams(wxCommandEvent& event)
 		if(-1 != nItem )
 		{
 			int nId = *(int*)m_listChampionship->GetClientData(nItem);
-			wxString msg = wxDateTime::Now().FormatISODate() + wxDateTime::Now().FormatISOTime();
-			wxMessageBox(msg + wxDateTime::Now().Format(_(" %d-%m-%y %H:%M:%S ")) + GetChDateById(nId).Format(_("%d-%m-%y %H:%M:%S ")));
-			if(wxDateTime::Now() > GetChDateById(nId) )
-			{
-				ShowWarning(STR_WARN_DATE_INTHEPAST);
-				break;
-			}
 			
 			udfDancersTeamMngr dlg(this, nId);
 			dlg.ShowModal();
@@ -666,8 +652,17 @@ void udfMainFrameBase::OnStartNumberAssign( wxCommandEvent& event )
 
 void udfMainFrameBase::OnJudgeMngr( wxCommandEvent& event )
 {
-	udfChampionshipJudgesTeamMngrDlg dlg(this);
-	dlg.ShowModal();
+	do
+	{
+		int nItem = m_listChampionship->GetSelection();
+		if(-1 != nItem )
+		{
+			int nId = *(int*)m_listChampionship->GetClientData(nItem);
+			
+			udfChampionshipJudgesTeamMngrDlg dlg(this, nId);
+			dlg.ShowModal();
+		}
+	}while(0);
 }
 
 void udfMainFrameBase::OnSendInvitation( wxCommandEvent& event )

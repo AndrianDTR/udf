@@ -2,6 +2,7 @@
 #include "stdio.h"
 
 #include "dberrors.h"
+#include "dbutils.h"
 #include "tjudges.h"
 
 #define	TABLE	TABLE_JUDGES
@@ -47,9 +48,9 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (0 != filter.countryId)
+		if (0 != filter.practicer)
 		{
-			sprintf(tmp, "%sand `country` = %d ", query, filter.countryId);
+			sprintf(tmp, "%sand `practicer` = '%c' ", query, filter.practicer);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -61,6 +62,27 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
+		if (!filter.phone.empty())
+		{
+			sprintf(tmp, "%sand `phone` like '%%%s%%' ", query, filter.phone.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!filter.email.empty())
+		{
+			sprintf(tmp, "%sand `email` like '%%%s%%' ", query, filter.email.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!filter.additionalInfo.empty())
+		{
+			sprintf(tmp, "%sand `aditional_info` like '%%%s%%' ", query, filter.attestationInfo.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
 		if (!filter.attestationInfo.empty())
 		{
 			sprintf(tmp, "%sand `attestation_info` like '%%%s%%' ", query, filter.attestationInfo.c_str());
@@ -68,23 +90,16 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (0 != filter.clubId)
+		if (0 != filter.pay_date)
 		{
-			sprintf(tmp, "%sand `club` = %d ", query, filter.clubId);
+			sprintf(tmp, "%sand `pay_date` like '%%%s%%' ", query, date2str(filter.pay_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.pay_date.empty())
+		if (0 != filter.exp_date)
 		{
-			sprintf(tmp, "%sand `pay_date` like '%%%s%%' ", query, filter.pay_date.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (!filter.exp_date.empty())
-		{
-			sprintf(tmp, "%sand `expire_date` like '%%%s%%' ", query, filter.exp_date.c_str());
+			sprintf(tmp, "%sand `expire_date` like '%%%s%%' ", query, date2str(filter.exp_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -114,12 +129,14 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 			
 			el.id = qRes->getUInt(1);
 			el.name = qRes->getString(2);
-			el.countryId = qRes->getUInt(3);
-			el.cityId = qRes->getUInt(4);
-			el.clubId = qRes->getUInt(5);
-			el.attestationInfo = qRes->getString(6);
-			el.pay_date = qRes->getString(7);
-			el.exp_date = qRes->getString(8);
+			el.cityId = qRes->getUInt(3);
+			el.practicer = qRes->getString(4)[0];
+			el.attestationInfo = qRes->getString(5);
+			el.phone = qRes->getString(6);
+			el.email = qRes->getString(7);
+			el.additionalInfo = qRes->getString(8);
+			el.pay_date = str2date(qRes->getString(9));
+			el.exp_date = str2date(qRes->getString(10));
 		
 			data.insert(make_pair(el.id, el));
 		}
@@ -137,7 +154,6 @@ long CJudgesTable::AddRow(tDATA& rec)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
-		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
 		{
@@ -145,16 +161,19 @@ long CJudgesTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`name`,`country`,`city`,`club`,\
-		`attestation_info`,`pay_date`,`expire_date`) values('%s', %d, %d, %d, '%s', '%s', '%s')"
+		sprintf(query, "insert into %s(`name`,`city`,`practicer`,`attestation_info`,"
+			"`phone`,`email`,`additional_info`,`pay_date`,`expire_date`)"
+			"values('%s', %d, '%c', '%s', '%s', '%s', '%s', '%s', '%s')"
 			, TABLE
 			, rec.name.c_str()
-			, rec.countryId
 			, rec.cityId
-			, rec.clubId
+			, rec.practicer
 			, rec.attestationInfo.c_str()
-			, rec.pay_date.c_str()
-			, rec.exp_date.c_str());
+			, rec.phone.c_str()
+			, rec.email.c_str()
+			, rec.additionalInfo.c_str()
+			, date2str(rec.pay_date).c_str()
+			, date2str(rec.exp_date).c_str());
 		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -208,12 +227,14 @@ long CJudgesTable::GetRow(unsigned int nId, tDATA& data)
 		qRes->next();
 		data.id = qRes->getUInt(1);
 		data.name = qRes->getString(2);
-		data.countryId = qRes->getUInt(3);
-		data.cityId = qRes->getUInt(4);
-		data.clubId = qRes->getUInt(5);
-		data.attestationInfo = qRes->getString(6);
-		data.pay_date = qRes->getString(7);
-		data.exp_date = qRes->getString(8);
+		data.cityId = qRes->getUInt(3);
+		data.practicer = qRes->getString(4)[0];
+		data.attestationInfo = qRes->getString(5);
+		data.phone = qRes->getString(6);
+		data.email = qRes->getString(7);
+		data.additionalInfo = qRes->getString(8);
+		data.pay_date = str2date(qRes->getString(9));
+		data.exp_date = str2date(qRes->getString(10));
 		
 		res = UDF_OK;
 	}while(0);
@@ -236,31 +257,17 @@ long CJudgesTable::UpdateRow(unsigned int nId, const tDATA& data)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		/*
-			el.cityId = qRes->getUInt(4);
-			el.clubId = qRes->getUInt(5);
-			el.attestationInfo = qRes->getString(6);
-			el.pay_date = qRes->getString(7);
-			el.exp_date = qRes->getString(8);
 		
-		*/
-		if (data.countryId != -1)
-		{
-			sprintf(tmp, "%s `country` = %d,", query, data.countryId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (data.cityId != -1)
+		if (0 != data.cityId)
 		{
 			sprintf(tmp, "%s `city` = %d,", query, data.cityId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (data.clubId != -1)
+		if (0 != data.practicer)
 		{
-			sprintf(tmp, "%s `club` = %d,", query, data.clubId);
+			sprintf(tmp, "%s `practicer` = '%c',", query, data.practicer);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -279,16 +286,37 @@ long CJudgesTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (!data.pay_date.empty())
+		if (!data.phone.empty())
 		{
-			sprintf(tmp, "%s `pay_date` = '%s',", query, data.pay_date.c_str());
+			sprintf(tmp, "%s `phone` = '%s',", query, data.phone.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!data.pay_date.empty())
+		if (!data.email.empty())
 		{
-			sprintf(tmp, "%s `expire_date` = '%s',", query, data.pay_date.c_str());
+			sprintf(tmp, "%s `email` = '%s',", query, data.email.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.additionalInfo.empty())
+		{
+			sprintf(tmp, "%s `additional_info` = '%s',", query, data.additionalInfo.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+			
+		if (0 != data.pay_date)
+		{
+			sprintf(tmp, "%s `pay_date` = '%s',", query, date2str(data.pay_date).c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (0 != data.exp_date)
+		{
+			sprintf(tmp, "%s `expire_date` = '%s',", query, date2str(data.exp_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

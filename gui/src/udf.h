@@ -47,54 +47,63 @@ class DancersTeamMngr : public wxDialog
 		// Private event handlers
 		void _wxFB_OnAddDancerTeam( wxCommandEvent& event ){ OnAddDancerTeam( event ); }
 		void _wxFB_OnRemoveTancerTeam( wxCommandEvent& event ){ OnRemoveTancerTeam( event ); }
+		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		void _wxFB_OnAddDancerTeamCategory( wxCommandEvent& event ){ OnAddDancerTeamCategory( event ); }
 		void _wxFB_OnRemoveDancerTeamCategory( wxCommandEvent& event ){ OnRemoveDancerTeamCategory( event ); }
-		void _wxFB_OnAddDancerTeamDancer( wxCommandEvent& event ){ OnAddDancerTeamDancer( event ); }
-		void _wxFB_OnRemoveDancerTeamDancer( wxCommandEvent& event ){ OnRemoveDancerTeamDancer( event ); }
+		void _wxFB_OnAddDancer2Team( wxCommandEvent& event ){ OnAddDancer2Team( event ); }
+		void _wxFB_OnRemoveDancerFromTeam( wxCommandEvent& event ){ OnRemoveDancerFromTeam( event ); }
 		
 	
 	protected:
 		enum
 		{
-			wxID_ADDDANCERTEAMCATEGORY = 1000,
+			ID_SEARCH = 1000,
+			ID_TEAM_LIST,
+			ID_APPLY,
+			ID_TEAM_NAME,
+			ID_CATEGORIES_COMBO,
+			ID_TEAM_CATS_LIST,
+			wxID_ADDDANCERTEAMCATEGORY,
 			wxID_REMOVEDANCERTEAMCATEGORY,
+			ID_DANCERS_COMBO,
+			ID_DANCERS_LIST,
 			wxID_ADDDANCER,
 			wxID_REMOVEDANCER,
 		};
 		
-		wxStaticText* m_staticText88;
-		wxComboBox* m_comboBox19;
 		wxStaticText* m_staticText89;
-		wxComboBox* m_comboBox20;
+		wxComboBox* m_comboClub;
 		wxStaticText* m_staticText15;
-		wxTextCtrl* m_textCtrl5;
-		wxListBox* m_listBox4;
-		wxBitmapButton* m_bpButton13;
-		wxBitmapButton* m_bpButton14;
+		wxTextCtrl* m_textSearch;
+		wxListBox* m_listTeams;
+		wxBitmapButton* m_bpAdd;
+		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpApply;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText16;
-		wxTextCtrl* m_textCtrl6;
-		wxComboBox* m_comboBox17;
-		wxListBox* m_listBox22;
+		wxTextCtrl* m_textName;
+		wxComboBox* m_comboCsCategories;
+		wxListBox* m_listTeamCategories;
 		wxBitmapButton* m_bpAddDancerTeamCategory;
 		wxBitmapButton* m_bpRemoveDancerTeamCategory;
-		wxComboBox* m_comboBox16;
-		wxListBox* m_listBox21;
+		wxComboBox* m_comboDancers;
+		wxListBox* m_listDancers;
 		wxBitmapButton* m_bpAddDancerTeamDancer;
 		wxBitmapButton* m_bpRemoveDancerTeamDancer;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnAddDancerTeam( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveTancerTeam( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancerTeamCategory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveDancerTeamCategory( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddDancerTeamDancer( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemoveDancerTeamDancer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddDancer2Team( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemoveDancerFromTeam( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -741,6 +750,7 @@ class JudgesMngr : public wxDialog
 		void _wxFB_OnSelectJudge( wxCommandEvent& event ){ OnSelectJudge( event ); }
 		void _wxFB_OnAddJudge( wxCommandEvent& event ){ OnAddJudge( event ); }
 		void _wxFB_OnRemoveJudge( wxCommandEvent& event ){ OnRemoveJudge( event ); }
+		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
@@ -750,6 +760,7 @@ class JudgesMngr : public wxDialog
 		{
 			ID_SEARCH = 1000,
 			ID_LIST_JUDGES,
+			ID_APPLY,
 			ID_NAME,
 			ID_CITY,
 			ID_ATTESTATION,
@@ -766,6 +777,7 @@ class JudgesMngr : public wxDialog
 		wxListBox* m_listJudges;
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpApply;
 		wxBitmapButton* m_bpButton19;
 		wxBitmapButton* m_bpButton20;
 		wxStaticText* m_staticText21;
@@ -792,6 +804,7 @@ class JudgesMngr : public wxDialog
 		virtual void OnSelectJudge( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddJudge( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveJudge( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		
@@ -929,20 +942,22 @@ class ChampionshipJudgesTeamMngrDlg : public wxDialog
 	protected:
 		enum
 		{
-			wxID_ADDALL = 1000,
+			ID_LIST_ALL = 1000,
+			wxID_ADDALL,
 			wxID_ADDONE,
 			wxID_REMOVEONE,
 			wxID_REMOVEALL,
+			ID_SELECTED,
 		};
 		
 		wxStaticText* m_staticText8;
-		wxListBox* m_listBox2;
+		wxListBox* m_listAll;
 		wxBitmapButton* m_bpAddAll;
 		wxBitmapButton* m_bpAddOne;
 		wxBitmapButton* m_bpRemoveOne;
 		wxBitmapButton* m_bpRemoveAll;
 		wxStaticText* m_staticText9;
-		wxListBox* m_listBox3;
+		wxListBox* m_listSelected;
 		wxBitmapButton* m_bpButton31;
 		wxBitmapButton* m_bpButton32;
 		

@@ -38,12 +38,13 @@
 BEGIN_EVENT_TABLE( DancersTeamMngr, wxDialog )
 	EVT_BUTTON( wxID_ADD, DancersTeamMngr::_wxFB_OnAddDancerTeam )
 	EVT_BUTTON( wxID_REMOVE, DancersTeamMngr::_wxFB_OnRemoveTancerTeam )
+	EVT_BUTTON( ID_APPLY, DancersTeamMngr::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_OK, DancersTeamMngr::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, DancersTeamMngr::_wxFB_OnDiscard )
 	EVT_BUTTON( wxID_ADDDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnAddDancerTeamCategory )
 	EVT_BUTTON( wxID_REMOVEDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnRemoveDancerTeamCategory )
-	EVT_BUTTON( wxID_ADDDANCER, DancersTeamMngr::_wxFB_OnAddDancerTeamDancer )
-	EVT_BUTTON( wxID_REMOVEDANCER, DancersTeamMngr::_wxFB_OnRemoveDancerTeamDancer )
+	EVT_BUTTON( wxID_ADDDANCER, DancersTeamMngr::_wxFB_OnAddDancer2Team )
+	EVT_BUTTON( wxID_REMOVEDANCER, DancersTeamMngr::_wxFB_OnRemoveDancerFromTeam )
 END_EVENT_TABLE()
 
 DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -59,30 +60,23 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizer73;
 	bSizer73 = new wxBoxSizer( wxVERTICAL );
 	
+	wxStaticBoxSizer* sbSizer2;
+	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Teams") ), wxVERTICAL );
+	
 	wxFlexGridSizer* fgSizer13;
 	fgSizer13 = new wxFlexGridSizer( 2, 2, 0, 0 );
 	fgSizer13->AddGrowableCol( 1 );
 	fgSizer13->SetFlexibleDirection( wxBOTH );
 	fgSizer13->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText88 = new wxStaticText( this, wxID_ANY, _("Championship"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText88->Wrap( -1 );
-	fgSizer13->Add( m_staticText88, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_comboBox19 = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxSize( 100,-1 ), 0, NULL, 0 ); 
-	fgSizer13->Add( m_comboBox19, 1, wxALL|wxEXPAND, 5 );
-	
 	m_staticText89 = new wxStaticText( this, wxID_ANY, _("Club"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText89->Wrap( -1 );
 	fgSizer13->Add( m_staticText89, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_comboBox20 = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxSize( 100,-1 ), 0, NULL, 0 ); 
-	fgSizer13->Add( m_comboBox20, 1, wxALL|wxEXPAND, 5 );
+	m_comboClub = new wxComboBox( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), 0, NULL, 0 ); 
+	fgSizer13->Add( m_comboClub, 1, wxALL|wxEXPAND, 5 );
 	
-	bSizer73->Add( fgSizer13, 0, wxEXPAND, 5 );
-	
-	wxStaticBoxSizer* sbSizer2;
-	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Teams") ), wxVERTICAL );
+	sbSizer2->Add( fgSizer13, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer18;
 	bSizer18 = new wxBoxSizer( wxHORIZONTAL );
@@ -91,13 +85,13 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	m_staticText15->Wrap( -1 );
 	bSizer18->Add( m_staticText15, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl5 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer18->Add( m_textCtrl5, 1, wxALL|wxEXPAND, 5 );
+	m_textSearch = new wxTextCtrl( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer18->Add( m_textSearch, 1, wxALL|wxEXPAND, 5 );
 	
 	sbSizer2->Add( bSizer18, 0, wxEXPAND, 5 );
 	
-	m_listBox4 = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
-	sbSizer2->Add( m_listBox4, 1, wxALL|wxEXPAND, 5 );
+	m_listTeams = new wxListBox( this, ID_TEAM_LIST, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
+	sbSizer2->Add( m_listTeams, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer73->Add( sbSizer2, 1, wxEXPAND|wxALL, 5 );
 	
@@ -109,11 +103,14 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizer74;
 	bSizer74 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpButton13 = new wxBitmapButton( this, wxID_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer74->Add( m_bpButton13, 0, wxALL, 5 );
+	m_bpAdd = new wxBitmapButton( this, wxID_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer74->Add( m_bpAdd, 0, wxALL, 5 );
 	
-	m_bpButton14 = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer74->Add( m_bpButton14, 0, wxALL, 5 );
+	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer74->Add( m_bpRemove, 0, wxALL, 5 );
+	
+	m_bpApply = new wxBitmapButton( this, ID_APPLY, wxBitmap( button_update2_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer74->Add( m_bpApply, 0, wxALL, 5 );
 	
 	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	m_bpSave->SetDefault(); 
@@ -134,8 +131,8 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	m_staticText16->Wrap( -1 );
 	fgSizer2->Add( m_staticText16, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl6 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer2->Add( m_textCtrl6, 0, wxALL|wxEXPAND, 5 );
+	m_textName = new wxTextCtrl( this, ID_TEAM_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer2->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer181->Add( fgSizer2, 0, wxEXPAND, 5 );
 	
@@ -152,11 +149,11 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizer91;
 	bSizer91 = new wxBoxSizer( wxVERTICAL );
 	
-	m_comboBox17 = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer91->Add( m_comboBox17, 0, wxALL|wxEXPAND, 5 );
+	m_comboCsCategories = new wxComboBox( this, ID_CATEGORIES_COMBO, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	bSizer91->Add( m_comboCsCategories, 0, wxALL|wxEXPAND, 5 );
 	
-	m_listBox22 = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer91->Add( m_listBox22, 0, wxALL|wxEXPAND, 5 );
+	m_listTeamCategories = new wxListBox( this, ID_TEAM_CATS_LIST, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	bSizer91->Add( m_listTeamCategories, 0, wxALL|wxEXPAND, 5 );
 	
 	fgSizer11->Add( bSizer91, 1, wxEXPAND, 5 );
 	
@@ -188,11 +185,11 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	wxBoxSizer* bSizer90;
 	bSizer90 = new wxBoxSizer( wxVERTICAL );
 	
-	m_comboBox16 = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer90->Add( m_comboBox16, 0, wxALL|wxEXPAND, 5 );
+	m_comboDancers = new wxComboBox( this, ID_DANCERS_COMBO, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	bSizer90->Add( m_comboDancers, 0, wxALL|wxEXPAND, 5 );
 	
-	m_listBox21 = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer90->Add( m_listBox21, 1, wxALL|wxEXPAND, 5 );
+	m_listDancers = new wxListBox( this, ID_DANCERS_LIST, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	bSizer90->Add( m_listDancers, 1, wxALL|wxEXPAND, 5 );
 	
 	fgSizer12->Add( bSizer90, 1, wxEXPAND, 5 );
 	
@@ -1376,6 +1373,7 @@ BEGIN_EVENT_TABLE( JudgesMngr, wxDialog )
 	EVT_LISTBOX( ID_LIST_JUDGES, JudgesMngr::_wxFB_OnSelectJudge )
 	EVT_BUTTON( wxID_ADD, JudgesMngr::_wxFB_OnAddJudge )
 	EVT_BUTTON( wxID_REMOVE, JudgesMngr::_wxFB_OnRemoveJudge )
+	EVT_BUTTON( ID_APPLY, JudgesMngr::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_OK, JudgesMngr::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, JudgesMngr::_wxFB_OnDiscard )
 END_EVENT_TABLE()
@@ -1421,6 +1419,9 @@ JudgesMngr::JudgesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer76->Add( m_bpRemove, 0, wxALL, 5 );
+	
+	m_bpApply = new wxBitmapButton( this, ID_APPLY, wxBitmap( button_update2_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpApply, 0, wxALL, 5 );
 	
 	m_bpButton19 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	m_bpButton19->SetDefault(); 
@@ -1477,7 +1478,7 @@ JudgesMngr::JudgesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_staticText26->Wrap( -1 );
 	fgSizer3->Add( m_staticText26, 0, wxALL, 5 );
 	
-	m_textInfo = new wxTextCtrl( this, ID_INFO, wxEmptyString, wxDefaultPosition, wxSize( -1,70 ), 0 );
+	m_textInfo = new wxTextCtrl( this, ID_INFO, wxEmptyString, wxDefaultPosition, wxSize( -1,70 ), wxTE_MULTILINE );
 	fgSizer3->Add( m_textInfo, 0, wxALL|wxEXPAND, 5 );
 	
 	
@@ -1710,8 +1711,8 @@ ChampionshipJudgesTeamMngrDlg::ChampionshipJudgesTeamMngrDlg( wxWindow* parent, 
 	m_staticText8->Wrap( -1 );
 	bSizer9->Add( m_staticText8, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_listBox2 = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer9->Add( m_listBox2, 1, wxALL|wxEXPAND, 5 );
+	m_listAll = new wxListBox( this, ID_LIST_ALL, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	bSizer9->Add( m_listAll, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer8->Add( bSizer9, 1, wxEXPAND, 5 );
 	
@@ -1739,8 +1740,8 @@ ChampionshipJudgesTeamMngrDlg::ChampionshipJudgesTeamMngrDlg( wxWindow* parent, 
 	m_staticText9->Wrap( -1 );
 	bSizer11->Add( m_staticText9, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_listBox3 = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer11->Add( m_listBox3, 1, wxALL|wxEXPAND, 5 );
+	m_listSelected = new wxListBox( this, ID_SELECTED, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	bSizer11->Add( m_listSelected, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer8->Add( bSizer11, 1, wxEXPAND, 5 );
 	

@@ -47,9 +47,9 @@ long CChampionshipJudgesTeamTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (0 != filter.judjeId)
+		if (0 != filter.judgeId)
 		{
-			sprintf(tmp, "%sand `judge_id` like %d ", query, filter.judjeId);
+			sprintf(tmp, "%sand `judge_id` like %d ", query, filter.judgeId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -79,7 +79,7 @@ long CChampionshipJudgesTeamTable::Find(tTableMap& data, const tDATA& filter)
 			
 			el.id = qRes->getUInt(1);
 			el.championshipId = qRes->getUInt(2);
-			el.judjeId = qRes->getUInt(3);
+			el.judgeId = qRes->getUInt(3);
 			
 			data.insert(make_pair(el.id, el));
 		}
@@ -108,7 +108,7 @@ long CChampionshipJudgesTeamTable::AddRow(tDATA& rec)
 		sprintf(query, "insert into %s(`championship_id`,`judge_id`) values(%d,%d)"
 			, TABLE
 			, rec.championshipId
-			, rec.judjeId);
+			, rec.judgeId);
 		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -161,7 +161,7 @@ long CChampionshipJudgesTeamTable::GetRow(unsigned int nId, tDATA& data)
 		}
 		qRes->next();
 		data.championshipId = qRes->getUInt(1);
-		data.judjeId = qRes->getUInt(2);
+		data.judgeId = qRes->getUInt(2);
 		
 		res = UDF_OK;
 	}while(0);
@@ -192,9 +192,9 @@ long CChampionshipJudgesTeamTable::UpdateRow(unsigned int nId, const tDATA& data
 			useFilter = true;
 		}
 		
-		if (data.judjeId != -1)
+		if (data.judgeId != -1)
 		{
-			sprintf(tmp, "%s `judge_id` = %d,", query, data.judjeId);
+			sprintf(tmp, "%s `judge_id` = %d,", query, data.judgeId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

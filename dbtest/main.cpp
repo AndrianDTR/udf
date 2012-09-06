@@ -510,7 +510,7 @@ long testTChampionshipJudgesTeam(CDbConnection* pCon)
 		
 		CChampionshipJudgesTeamTable::tDATA data = {0};
 		data.championshipId = 3;
-		data.judjeId = 3;
+		data.judgeId = 3;
 		
 		// Add row
 		res = tbl.AddRow(data);
@@ -536,13 +536,13 @@ long testTChampionshipJudgesTeam(CDbConnection* pCon)
 			printf("%u, %u, %u\n"
 				, it->first
 				, it->second.championshipId
-				, it->second.judjeId);
+				, it->second.judgeId);
 			it++;
 		}
 		
 		// Update row
 		data.championshipId = 4;
-		data.judjeId = 4;
+		data.judgeId = 4;
 		res = tbl.UpdateRow(data.id, data);
 		if(UDF_OK != res)
 			break;
@@ -560,7 +560,7 @@ long testTChampionshipJudgesTeam(CDbConnection* pCon)
 			printf("%u, %u, %u\n"
 				, it->first
 				, it->second.championshipId
-				, it->second.judjeId);
+				, it->second.judgeId);
 			it++;
 		}
 		
@@ -1398,14 +1398,11 @@ long testTJudges(CDbConnection* pCon)
 		CJudgesTable::tTableIt it;
 		
 		CJudgesTable::tDATA data = {0};
-		data.countryId = 1;
 		data.cityId = 2;
-		data.clubId = 3;
+		data.practicer = 'N';
 		data.name = string("Test name1");
 		data.attestationInfo = string("Test attestation inf1");
-		data.pay_date = string("Test pay1");
-		data.exp_date = string("Test exp1");
-
+		
 		// Add row
 		res = tbl.AddRow(data);
 		if(UDF_OK != res)
@@ -1427,26 +1424,20 @@ long testTJudges(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u, %u, %u, %u, %s, %s, %s, %s\n"
+			printf("%u, %u, %c, %s, %s\n"
 				, it->first
-				, it->second.countryId
 				, it->second.cityId
-				, it->second.clubId
+				, it->second.practicer
 				, it->second.name.c_str()
-				, it->second.attestationInfo.c_str()
-				, it->second.pay_date.c_str()
-				, it->second.exp_date.c_str());
+				, it->second.attestationInfo.c_str());
 			it++;
 		}
 		
 		// Update row
-		data.countryId = 21;
 		data.cityId = 22;
-		data.clubId = 23;
+		data.practicer = 'Y';
 		data.name = string("Test name2");
 		data.attestationInfo = string("Test attestation inf2");
-		data.pay_date = string("Test pay2");
-		data.exp_date = string("Test exp2");
 		res = tbl.UpdateRow(data.id, data);
 		if(UDF_OK != res)
 			break;
@@ -1461,15 +1452,12 @@ long testTJudges(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u, %u, %u, %u, %s, %s, %s, %s\n"
+			printf("%u, %u, %c, %s, %s\n"
 				, it->first
-				, it->second.countryId
 				, it->second.cityId
-				, it->second.clubId
+				, it->second.practicer
 				, it->second.name.c_str()
-				, it->second.attestationInfo.c_str()
-				, it->second.pay_date.c_str()
-				, it->second.exp_date.c_str());
+				, it->second.attestationInfo.c_str());
 			it++;
 		}
 		

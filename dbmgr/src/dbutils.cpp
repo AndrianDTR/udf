@@ -1,8 +1,6 @@
 #include "dbutils.h"
 #include "version.h"
 #include "stdio.h"
-#include "locale.h"
-
 
 void dbmgr_version()
 {
@@ -27,8 +25,7 @@ time_t str2date(std::string str)
 	time_t res;
 	struct tm _date = {0};
     str += " 23:59:59";
-	setlocale(LC_ALL, "POSIX");
-    strptime(str.c_str(), "%Y-%m-%d %T", &_date);
+	strptime(str.c_str(), "%Y-%m-%d %T", &_date);
 	
 	res = mktime(&_date);
     	

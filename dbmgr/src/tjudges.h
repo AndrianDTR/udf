@@ -14,12 +14,14 @@ public:
 	typedef struct{
 		unsigned int	id;
 		std::string		name;
-		unsigned int	countryId;
 		unsigned int	cityId;
-		unsigned int	clubId;
+		std::string		email;
+		std::string		phone;
+		std::string		additionalInfo;
 		std::string		attestationInfo;
-		std::string		pay_date;
-		std::string		exp_date;
+		char			practicer;
+		time_t			pay_date;
+		time_t			exp_date;
 	} tDATA;
 
 	typedef map<unsigned int, tDATA> tTableMap;

@@ -14,6 +14,8 @@
 #include "main.h"
 
 #include "cdbmanager.h"
+
+//#include "locale.h"
 // initialize the application
 IMPLEMENT_APP(MainApp);
 
@@ -25,6 +27,7 @@ bool MainApp::OnInit()
 {
 	bool res = false;
 	do{
+		//setlocale(LC_ALL, "POSIX");
 		try
 		{
 			CDbManager::Instance(); 

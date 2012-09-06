@@ -28,9 +28,13 @@ void udfChampionshipCategoriesMngrDlg::OnAddAll( wxCommandEvent& event )
 	{
 		CCategoriesTable::tDATA& cData = it->second;
 		int nPos = m_listSelected->GetCount();
+		data.id = -nPos;
 		data.catId = it->first;
-		m_ChampionshipsCategories.insert(std::make_pair(it->first, data));
-		m_listSelected->Insert(cData.shortName, nPos, (void*)&it->first);
+		
+		CChampionshipCategotiesTable::tTableIt itemIt = 
+			m_ChampionshipsCategories.insert(std::make_pair(data.id, data)).first;
+		m_listSelected->Insert(cData.shortName, nPos, (void*)&itemIt->first);
+		
 		it++;
 	}
 }
@@ -41,7 +45,7 @@ void udfChampionshipCategoriesMngrDlg::OnAdd( wxCommandEvent& event )
 	m_listAll->GetSelections(nSelections);
 	CChampionshipCategotiesTable::tDATA data = {0};
 	data.championshipId = m_nCSId;
-	int i = 0;
+	unsigned int i = 0;
 	for(i = 0; i < nSelections.GetCount() ; ++i)
 	{
 		int nId = *(int*)m_listAll->GetClientData(nSelections[i]);
@@ -52,10 +56,11 @@ void udfChampionshipCategoriesMngrDlg::OnAdd( wxCommandEvent& event )
 			if(-1 == m_listSelected->FindString(cData.shortName))
 			{
 				int nPos = m_listSelected->GetCount();
+				data.id = -nPos;
 				data.catId = it->first;
 				
 				CChampionshipCategotiesTable::tTableIt itemIt = 
-					m_ChampionshipsCategories.insert(std::make_pair(it->first, data)).first;
+					m_ChampionshipsCategories.insert(std::make_pair(data.id, data)).first;
 				m_listSelected->Insert(cData.shortName, nPos, (void*)&itemIt->first);
 			}
 		}
@@ -85,7 +90,9 @@ void udfChampionshipCategoriesMngrDlg::OnSave( wxCommandEvent& event )
 {
 	CChampionshipCategotiesTable table(m_pCon);
 	CChampionshipCategotiesTable::tTableMap stored;
-	table.GetTable(stored);
+	CChampionshipCategotiesTable::tDATA filter = {0};
+	filter.championshipId = m_nCSId;
+	table.Find(stored, filter);
 		
 	CChampionshipCategotiesTable::tTableIt listIt = stored.begin();
 	while(listIt != stored.end())

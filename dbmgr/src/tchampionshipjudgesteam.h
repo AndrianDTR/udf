@@ -14,7 +14,7 @@ public:
 	struct tDATA{
 		unsigned int	id;
 		unsigned int	championshipId;
-		unsigned int	judjeId;
+		unsigned int	judgeId;
 	};
 
 	typedef map<unsigned int, tDATA> tTableMap;
