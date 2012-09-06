@@ -817,7 +817,7 @@
                                                 <property name="fg"></property>
                                                 <property name="font"></property>
                                                 <property name="hidden">0</property>
-                                                <property name="id">ID_SEARCH</property>
+                                                <property name="id">ID_CLUB</property>
                                                 <property name="maximum_size"></property>
                                                 <property name="minimum_size"></property>
                                                 <property name="name">m_comboClub</property>

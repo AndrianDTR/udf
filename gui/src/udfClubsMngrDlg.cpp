@@ -7,6 +7,7 @@
 
 #include "wx/msgdlg.h"
 
+#include "common.h"
 #include "string_def.h"
 #include "udfexceptions.h"
 
@@ -429,13 +430,19 @@ bool udfClubsMngrDlg::GetNameById(unsigned int id, wxString& name)
 		CClubsTable::tDATA 		club = {0};
 		
 		if(UDF_OK != tClubs.GetRow(id, club))
+		{
 			break;
+		}
 		
 		if(UDF_OK != tCities.GetRow(club.city, city))
+		{
 			break;
+		}
 		
 		if(UDF_OK != tCountries.GetRow(city.countryId, country))
+		{
 			break;
+		}
 		
 		name = wxString::Format(STR_FORMAT_CLUB_NAME, club.name, city.Name, country.name);
 		res = true;

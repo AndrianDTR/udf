@@ -41,8 +41,8 @@ BEGIN_EVENT_TABLE( DancersTeamMngr, wxDialog )
 	EVT_BUTTON( ID_APPLY, DancersTeamMngr::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_OK, DancersTeamMngr::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, DancersTeamMngr::_wxFB_OnDiscard )
-	EVT_COMBOBOX( ID_SEARCH, DancersTeamMngr::_wxFB_OnClubChanged )
-	EVT_TEXT_ENTER( ID_SEARCH, DancersTeamMngr::_wxFB_OnSelectClub )
+	EVT_COMBOBOX( ID_CLUB, DancersTeamMngr::_wxFB_OnClubChanged )
+	EVT_TEXT_ENTER( ID_CLUB, DancersTeamMngr::_wxFB_OnSelectClub )
 	EVT_BUTTON( wxID_ADDDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnAddDancerTeamCategory )
 	EVT_BUTTON( wxID_REMOVEDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnRemoveDancerTeamCategory )
 	EVT_BUTTON( wxID_ADDDANCER, DancersTeamMngr::_wxFB_OnAddDancer2Team )
@@ -125,7 +125,7 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	m_staticText89->Wrap( -1 );
 	fgSizer2->Add( m_staticText89, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_comboClub = new wxComboBox( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), 0, NULL, 0 ); 
+	m_comboClub = new wxComboBox( this, ID_CLUB, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), 0, NULL, 0 ); 
 	fgSizer2->Add( m_comboClub, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer181->Add( fgSizer2, 0, wxEXPAND, 5 );

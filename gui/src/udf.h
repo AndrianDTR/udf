@@ -65,6 +65,7 @@ class DancersTeamMngr : public wxDialog
 			ID_TEAM_LIST,
 			ID_APPLY,
 			ID_TEAM_NAME,
+			ID_CLUB,
 			ID_CATEGORIES_COMBO,
 			ID_TEAM_CATS_LIST,
 			wxID_ADDDANCERTEAMCATEGORY,

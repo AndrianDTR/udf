@@ -1,7 +1,6 @@
 #include "udfTrainersMngrDlg.h"
 
 #include "common.h"
-#include "tcountries.h"
 #include "tcities.h"
 #include "string_def.h"
 
@@ -24,8 +23,7 @@ udfTrainersMngrDlg::udfTrainersMngrDlg( wxWindow* parent, unsigned int nClubId )
 void udfTrainersMngrDlg::RefreshClubs()
 {
 	udfClubsMngrDlg* pClubs = (udfClubsMngrDlg*)GetParent();
-	CClubsTable table(m_pCon);
-	table.GetTable(m_Clubs);
+	CClubsTable(m_pCon).GetTable(m_Clubs);
 		
 	m_comboClub->Clear();
 	CClubsTable::tTableIt it = m_Clubs.begin();

@@ -1,5 +1,12 @@
 #include "udfDancersTeamMngr.h"
 
+#include "common.h"
+#include "string_def.h"
+
+#include "udfexceptions.h"
+
+#include "udfClubsMngrDlg.h"
+
 udfDancersTeamMngr::udfDancersTeamMngr( wxWindow* parent, unsigned int nId )
 : DancersTeamMngr( parent )
 , m_pCon(NULL)
@@ -35,6 +42,25 @@ void udfDancersTeamMngr::RefreshList()
 
 void udfDancersTeamMngr::RefreshClubs()
 {
+	udfClubsMngrDlg pClubs(this);
+	CClubsTable(m_pCon).GetTable(m_Clubs);
+		
+	m_comboClub->Clear();
+	CClubsTable::tTableIt it = m_Clubs.begin();
+	while(it != m_Clubs.end())
+	{
+		int nPos = m_comboClub->GetCount();
+		wxString club;
+		
+		if(pClubs.GetNameById(it->first, club))
+		{
+			const char* name = club.GetData().AsChar();
+			m_comboClub->Insert(club, nPos, (void*)&it->first);
+		}
+		
+		it++;
+	}
+	m_comboClub->AutoComplete(m_comboClub->GetStrings());
 }
 
 void udfDancersTeamMngr::RefreshCategories()
