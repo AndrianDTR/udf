@@ -6,6 +6,7 @@
 #include "udfChampionshipJudgesTeamMngrDlg.h"
 #include "udfStartNumberAssignDlg.h"
 #include "udfChampionshipTypeMngr.h"
+#include "udfDancersTeamMngr.h"
 
 #include "tliga.h"
 #include "tdancetypes.h"
@@ -156,6 +157,11 @@ bool udfMainFrameBase::ValidateValues()
 		wxDateTime open = m_dateRegOpen->GetValue();
 		wxDateTime close = m_dateRegClose->GetValue();
 		
+		if(date < wxDateTime::Now())
+		{
+			ShowWarning(STR_WARN_NOW_GREATTHEN_ChDATE);
+			break;
+		}
 		if(close >= date)
 		{
 			ShowWarning(STR_WARN_REGCLOSE_GREATTHEN_ChDATE);
@@ -236,6 +242,13 @@ void udfMainFrameBase::OnRemoveChampionship( wxCommandEvent& event )
 		if(nItem == -1)
 			break;
 		int nId = *(int*)m_listChampionship->GetClientData(nItem);
+		
+		if(wxDateTime::Now() > GetChDateById(nId) )
+		{
+			ShowWarning(STR_WARN_DATE_INTHEPAST);
+			break;
+		}
+		
 		CChampionshipTable table(m_pCon);
 		
 		TEST_BREAK(UDF_OK, table.DelRow(nId), STR_ERR_DEL_CHAMPIONSHIP_FAILED);
@@ -326,17 +339,10 @@ void udfMainFrameBase::OnSelectChampionship(wxCommandEvent& event)
 		wxString city = wxString::Format(STR_FORMAT_CITY_NAME, cityData.Name, countryData.name);
 		m_comboCity->SetValue(city);
 		
-		wxDateTime dt = wxDateTime::Now();
-		dt.Set(data.date);
-		m_dateDate->SetValue(dt);
+		m_dateDate->SetValue(wxDateTime(data.date));
+		m_dateRegOpen->SetValue(wxDateTime(data.regOpenDate));
+		m_dateRegClose->SetValue(wxDateTime(data.regCloseDate));
 		
-		wxDateTime odt = wxDateTime::Now();
-		odt.Set(data.regOpenDate);
-		m_dateRegOpen->SetValue(odt);
-		
-		wxDateTime cdt = wxDateTime::Now();
-		cdt.Set(data.regCloseDate);
-		m_dateRegClose->SetValue(cdt);
 	}while(0);
 }
 
@@ -357,6 +363,23 @@ void udfMainFrameBase::OnSearch(wxCommandEvent& event)
 			m_listChampionship->Insert(data.name, pos, (void*)&item->first);
 		}
 	}
+}
+
+wxDateTime udfMainFrameBase::GetChDateById(unsigned int nId)
+{
+	wxDateTime dt;
+	do
+	{
+		CChampionshipTable::tTableIt it = m_Championships.find(nId);
+		if(it == m_Championships.end())
+			break;
+
+		CChampionshipTable::tDATA& data = it->second;
+		dt = wxDateTime(data.date);
+		DEBUG_PRINTF("%d", wxDateTime(data.date).GetTicks() == data.date);
+	}while(0);
+	
+	return dt;
 }
 
 /****************************************************************
@@ -600,10 +623,38 @@ void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
 	do
 	{
 		int nItem = m_listChampionship->GetSelection();
+		if(-1 == nItem )
+			break;
+		int nId = *(int*)m_listChampionship->GetClientData(nItem);
+		
+		if(wxDateTime::Now() > GetChDateById(nId) )
+		{
+			ShowWarning(STR_WARN_DATE_INTHEPAST);
+			break;
+		}
+		
+		udfChampionshipCategoriesMngrDlg dlg(this, nId);
+		dlg.ShowModal();
+	}while(0);
+}
+
+void udfMainFrameBase::OnDancersTeams(wxCommandEvent& event)
+{
+	do
+	{
+		int nItem = m_listChampionship->GetSelection();
 		if(-1 != nItem )
 		{
 			int nId = *(int*)m_listChampionship->GetClientData(nItem);
-			udfChampionshipCategoriesMngrDlg dlg(this, nId);
+			wxString msg;
+			wxMessageBox(wxDateTime::Now().Format(_("%d-%m-%y %H:%M:%S ")) + GetChDateById(nId).Format(_("%d-%m-%y %H:%M:%S ")));
+			if(wxDateTime::Now() > GetChDateById(nId) )
+			{
+				ShowWarning(STR_WARN_DATE_INTHEPAST);
+				break;
+			}
+			
+			udfDancersTeamMngr dlg(this, nId);
 			dlg.ShowModal();
 		}
 	}while(0);

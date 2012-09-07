@@ -1,10 +1,12 @@
 #include "udfDancersTeamMngr.h"
 
-udfDancersTeamMngr::udfDancersTeamMngr( wxWindow* parent )
-:
-DancersTeamMngr( parent )
+udfDancersTeamMngr::udfDancersTeamMngr( wxWindow* parent, unsigned int nId )
+: DancersTeamMngr( parent )
+, m_pCon(NULL)
+, m_nCSId(nId)
 {
-
+	m_pCon = CDbManager::Instance()->GetConnection();
+	
 }
 
 void udfDancersTeamMngr::OnAddDancerTeam( wxCommandEvent& event )
@@ -39,10 +41,10 @@ void udfDancersTeamMngr::OnRemoveDancerTeamDancer( wxCommandEvent& event )
 
 void udfDancersTeamMngr::OnSave( wxCommandEvent& event )
 {
-	// TODO: Implement OnSave
+	EndModal(wxID_OK);
 }
 
 void udfDancersTeamMngr::OnDiscard( wxCommandEvent& event )
 {
-	// TODO: Implement OnDiscard
+	EndModal(wxID_CANCEL);
 }

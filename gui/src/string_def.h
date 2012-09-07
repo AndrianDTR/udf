@@ -53,6 +53,9 @@ STR_DEFINITION(STR_ERR_UPD_CLUB_FAILED, "Club could not be updated.");
 STR_DEFINITION(STR_ERR_DEL_CLUB_FAILED, "Club could not be removed.");
 
 ////////////////////////////////////////////////////////////////////////////////////
+STR_DEFINITION(STR_WARN_DATE_INTHEPAST, "Could not be modified during championship or after it.");
+
+STR_DEFINITION(STR_WARN_NOW_GREATTHEN_ChDATE, "Championship date must be great then today.");
 STR_DEFINITION(STR_WARN_REGCLOSE_GREATTHEN_ChDATE, "Championship date must be lower then reg close date.");
 STR_DEFINITION(STR_WARN_REGOPEN_GREATTHEN_REGCLOSE, "Championship reg open date must be lower then reg close date.");
 STR_DEFINITION(STR_WARN_PAY_GREATTHEN_EXP, "Pay date is greater then expire date.");

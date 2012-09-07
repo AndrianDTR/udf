@@ -35,6 +35,7 @@ protected:
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 	void OnAboutDlg( wxCommandEvent& event );
+	void OnDancersTeams( wxCommandEvent& event );
 	
 	void OnDanceTypesCodeMgr( wxCommandEvent& event );
 	void OnLigueCodeMgr( wxCommandEvent& event );
@@ -54,14 +55,16 @@ private:
 	CChampionshipTypeTable::tTableMap 	m_ChampionshipTypes;
 
 protected:
-	void	RefreshList();
-	void	RefreshCities();
-	void	RefreshCountries();
-	void	RefreshTypes();
-	int		GetSelectedCity();
-	int		GetSelectedType();
+	void		RefreshList();
+	void		RefreshCities();
+	void		RefreshCountries();
+	void		RefreshTypes();
+	int			GetSelectedCity();
+	int			GetSelectedType();
 	
-	bool	ValidateValues();
+	bool		ValidateValues();
+	
+	wxDateTime	GetChDateById(unsigned int nId);
 
 public:
 	/** Constructor */

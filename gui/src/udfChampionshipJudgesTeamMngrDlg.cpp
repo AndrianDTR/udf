@@ -29,10 +29,10 @@ void udfChampionshipJudgesTeamMngrDlg::OnRemoveAll( wxCommandEvent& event )
 
 void udfChampionshipJudgesTeamMngrDlg::OnSave( wxCommandEvent& event )
 {
-	// TODO: Implement OnSave
+	EndModal(wxID_CANCEL);
 }
 
 void udfChampionshipJudgesTeamMngrDlg::OnDiscard( wxCommandEvent& event )
 {
-	// TODO: Implement OnDiscard
+	EndModal(wxID_CANCEL);
 }

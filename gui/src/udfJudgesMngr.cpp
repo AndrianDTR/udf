@@ -7,6 +7,16 @@ JudgesMngr( parent )
 
 }
 
+void udfJudgesMngr::OnSearch( wxCommandEvent& event )
+{
+	// TODO: Implement OnSearch
+}
+
+void udfJudgesMngr::OnSelectJudge( wxCommandEvent& event )
+{
+	// TODO: Implement OnSelectJudge
+}
+
 void udfJudgesMngr::OnAddJudge( wxCommandEvent& event )
 {
 	// TODO: Implement OnAddJudge
@@ -19,10 +29,10 @@ void udfJudgesMngr::OnRemoveJudge( wxCommandEvent& event )
 
 void udfJudgesMngr::OnSave( wxCommandEvent& event )
 {
-	// TODO: Implement OnSave
+	EndModal(wxID_CANCEL);
 }
 
 void udfJudgesMngr::OnDiscard( wxCommandEvent& event )
 {
-	// TODO: Implement OnDiscard
+	EndModal(wxID_CANCEL);
 }

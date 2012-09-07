@@ -348,6 +348,7 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		void _wxFB_OnCategoryMngr( wxCommandEvent& event ){ OnCategoryMngr( event ); }
+		void _wxFB_OnDancersTeams( wxCommandEvent& event ){ OnDancersTeams( event ); }
 		void _wxFB_OnStartNumberAssign( wxCommandEvent& event ){ OnStartNumberAssign( event ); }
 		void _wxFB_OnJudgeMngr( wxCommandEvent& event ){ OnJudgeMngr( event ); }
 		void _wxFB_OnSendInvitation( wxCommandEvent& event ){ OnSendInvitation( event ); }
@@ -386,10 +387,12 @@ class MainFrameBase : public wxFrame
 			wxID_CHAMPIONSHIP_SAVE,
 			wxID_CHAMPIONSHIP_DISCARD,
 			wxID_CHAMPIONSHIP_CATEGORIES,
+			ID_TEAMS,
 			wxID_CHAMPIONSHIP_STARTNUMBERMNGR,
 			wxID_CHAMPIONSHIP_JUDGESTEAMMNGR,
 			wxID_CHAMPIONSHIP_SENDINVITATION,
 			wxID_RESULTS,
+			ID_RAITING,
 			ID_NAME,
 			ID_TYPE,
 			ID_DATE,
@@ -415,11 +418,12 @@ class MainFrameBase : public wxFrame
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
 		wxBitmapButton* m_bpCategoryMngr;
+		wxBitmapButton* m_bpDancersTeams;
 		wxBitmapButton* m_bpStartNumberMngr;
 		wxBitmapButton* m_bpJudgesMngr;
 		wxBitmapButton* m_bpSendinvitation;
 		wxBitmapButton* m_bpResults;
-		wxBitmapButton* m_bpButton64;
+		wxBitmapButton* m_bpRaitings;
 		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textChName;
 		wxStaticText* m_staticText2;
@@ -459,6 +463,7 @@ class MainFrameBase : public wxFrame
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCategoryMngr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDancersTeams( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnStartNumberAssign( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnJudgeMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSendInvitation( wxCommandEvent& event ) { event.Skip(); }
@@ -732,6 +737,8 @@ class JudgesMngr : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnSelectJudge( wxCommandEvent& event ){ OnSelectJudge( event ); }
 		void _wxFB_OnAddJudge( wxCommandEvent& event ){ OnAddJudge( event ); }
 		void _wxFB_OnRemoveJudge( wxCommandEvent& event ){ OnRemoveJudge( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
@@ -739,35 +746,50 @@ class JudgesMngr : public wxDialog
 		
 	
 	protected:
+		enum
+		{
+			ID_SEARCH = 1000,
+			ID_LIST_JUDGES,
+			ID_NAME,
+			ID_CITY,
+			ID_ATTESTATION,
+			ID_EMAIL,
+			ID_PHONE,
+			ID_INFO,
+			ID_PRACTICER,
+			ID_PAY,
+			ID_EXP,
+		};
+		
 		wxStaticText* m_staticText20;
-		wxTextCtrl* m_textCtrl8;
-		wxListBox* m_listBox5;
+		wxTextCtrl* m_textSearch;
+		wxListBox* m_listJudges;
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
 		wxBitmapButton* m_bpButton19;
 		wxBitmapButton* m_bpButton20;
 		wxStaticText* m_staticText21;
-		wxTextCtrl* m_textCtrl9;
-		wxStaticText* m_staticText22;
-		wxComboBox* m_comboBox6;
+		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText77;
-		wxComboBox* m_comboBox14;
+		wxComboBox* m_comboCity;
 		wxStaticText* m_staticText23;
-		wxTextCtrl* m_textCtrl10;
+		wxTextCtrl* m_textAttestation;
 		wxStaticText* m_staticText24;
-		wxTextCtrl* m_textCtrl11;
+		wxTextCtrl* m_textEmail;
 		wxStaticText* m_staticText25;
-		wxTextCtrl* m_textCtrl12;
+		wxTextCtrl* m_textPhone;
 		wxStaticText* m_staticText26;
-		wxTextCtrl* m_textCtrl13;
+		wxTextCtrl* m_textInfo;
 		
-		wxCheckBox* m_checkBox2;
+		wxCheckBox* m_checkPracticer;
 		wxStaticText* m_staticText27;
-		wxDatePickerCtrl* m_datePicker6;
+		wxDatePickerCtrl* m_datePay;
 		wxStaticText* m_staticText28;
-		wxDatePickerCtrl* m_datePicker7;
+		wxDatePickerCtrl* m_dateExp;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectJudge( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddJudge( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveJudge( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
@@ -776,7 +798,7 @@ class JudgesMngr : public wxDialog
 	
 	public:
 		
-		JudgesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judges manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 765,557 ), long style = wxDEFAULT_DIALOG_STYLE );
+		JudgesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judges manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 861,463 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~JudgesMngr();
 	
 };

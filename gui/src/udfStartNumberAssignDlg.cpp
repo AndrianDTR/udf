@@ -24,10 +24,10 @@ void udfStartNumberAssignDlg::OnAssign( wxCommandEvent& event )
 
 void udfStartNumberAssignDlg::OnSave( wxCommandEvent& event )
 {
-	// TODO: Implement OnSave
+	EndModal(wxID_CANCEL);
 }
 
 void udfStartNumberAssignDlg::OnDiscard( wxCommandEvent& event )
 {
-	// TODO: Implement OnDiscard
+	EndModal(wxID_CANCEL);
 }

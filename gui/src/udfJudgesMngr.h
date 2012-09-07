@@ -13,6 +13,8 @@ class udfJudgesMngr : public JudgesMngr
 {
 protected:
 	// Handlers for JudgesMngr events.
+	void OnSearch( wxCommandEvent& event );
+	void OnSelectJudge( wxCommandEvent& event );
 	void OnAddJudge( wxCommandEvent& event );
 	void OnRemoveJudge( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
