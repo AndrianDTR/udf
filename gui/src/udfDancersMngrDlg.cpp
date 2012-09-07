@@ -436,3 +436,21 @@ bool udfDancersMngrDlg::ValidateData()
 	return res;
 }
 
+bool udfDancersMngrDlg::GetNameById(unsigned int id, wxString& name)
+{
+	bool res = false;
+	do
+	{
+		CDancersTable 			table(m_pCon);
+		CDancersTable::tDATA 	dancer = {0};
+		
+		if(UDF_OK != table.GetRow(id, dancer))
+		{
+			break;
+		}
+		
+		name = dancer.name;
+		res = true;
+	}while(0);
+	return res;
+}

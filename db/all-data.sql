@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-09-07 20:33:13
+-- Date/time:                    2012-09-07 21:03:35
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -237,7 +237,6 @@ DELETE FROM `championship_team_categories`;
 /*!40000 ALTER TABLE `championship_team_categories` DISABLE KEYS */;
 INSERT INTO `championship_team_categories` (`id`, `team_id`, `category_id`, `composition_name`) VALUES
 	(1, 1, 8, 'cvg vbcvb c'),
-	(4, 1, 8, 'df gdfg  '),
 	(5, 3, 8, 'd fgdfg dffff ff');
 /*!40000 ALTER TABLE `championship_team_categories` ENABLE KEYS */;
 

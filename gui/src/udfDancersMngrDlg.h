@@ -40,7 +40,7 @@ public:
 	/** Constructor */
 	udfDancersMngrDlg( wxWindow* parent, unsigned int nClubId );
 	
-private:
+protected:
 	void	RefreshList();
 	void	RefreshLigues();
 	void	RefreshClubs();
@@ -52,6 +52,9 @@ private:
 	int		GetSelectedGender();
 	bool	ValidateData();
 	bool	GetSelectedItemData(CDancersTable::tDATA*& pData);
+
+public:
+	bool	GetNameById(unsigned int id, wxString& name);	
 };
 
 #endif // __udfDancersMngrDlg__

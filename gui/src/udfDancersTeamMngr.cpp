@@ -7,6 +7,7 @@
 
 #include "udfClubsMngrDlg.h"
 #include "udfCategoriesMngrDlg.h"
+#include "udfDancersMngrDlg.h"
 
 udfDancersTeamMngr::udfDancersTeamMngr( wxWindow* parent, unsigned int nId )
 : DancersTeamMngr( parent )
@@ -100,8 +101,52 @@ void udfDancersTeamMngr::RefreshDancers(int clubId)
 	table.Find(m_Dancers, filter);
 }
 
-void udfDancersTeamMngr::RefreshTeamCategories()
+void udfDancersTeamMngr::RefreshTeamCategories(int teamId)
 {
+	udfCategoriesMngrDlg catDlg(this);
+	CChampionshipTeamCategoriesTable table(m_pCon);
+	CChampionshipTeamCategoriesTable::tDATA filter = {0};
+	filter.teamId = teamId;
+	table.Find(m_CsTmCats, filter);
+	
+	m_listTeamCategories->Clear();
+	CChampionshipTeamCategoriesTable::tTableIt item;
+	for(item = m_CsTmCats.begin(); item != m_CsTmCats.end(); item++)
+	{
+		CChampionshipTeamCategoriesTable::tDATA& data = item->second;
+		
+		wxString catName;
+		if(catDlg.GetNameById(data.catId, catName))
+		{
+			int nPos = m_listTeamCategories->GetCount();
+			m_listTeamCategories->Insert(
+				wxString::Format(STF_FORMAT_TEAM_CATEGORY_NAME, catName, data.compositionName),
+				nPos , (void*)&item->first);
+		}
+	}
+}
+
+void udfDancersTeamMngr::RefreshTeamDancers(int teamId, int clubId)
+{
+	udfDancersMngrDlg dancers(this, clubId);
+	CChampionshipTeamDancersTable table(m_pCon);
+	CChampionshipTeamDancersTable::tDATA filter = {0};
+	filter.teamId = teamId;
+	table.Find(m_CsTmDancers, filter);
+	
+	m_listDancers->Clear();
+	CChampionshipTeamDancersTable::tTableIt item;
+	for(item = m_CsTmDancers.begin(); item != m_CsTmDancers.end(); item++)
+	{
+		CChampionshipTeamDancersTable::tDATA& data = item->second;
+		
+		wxString dancerName;
+		if(dancers.GetNameById(data.dancerId, dancerName))
+		{
+			int nPos = m_listDancers->GetCount();
+			m_listDancers->Insert(dancerName, nPos, (void*)&item->first);
+		}
+	}
 }
 
 void udfDancersTeamMngr::OnSearch( wxCommandEvent& event )
@@ -146,17 +191,9 @@ void udfDancersTeamMngr::OnSelectTeam(wxCommandEvent& event)
 			int nPos = m_comboClub->FindString(clubName);
 			m_comboClub->SetSelection(nPos);
 		}
-				
-		/*
-		wxString catName;
-		udfCategoriesMngrDlg catDlg(this);
-		if(catDlg.GetNameById(data.clubId, catName))
-		{
-			int nPos = m_comboClub->FindString(clubName);
-			m_comboClub->SetSelection(nPos);
-		}
-		*/
-		
+			
+		RefreshTeamCategories(data.id);
+		RefreshTeamDancers(data.id, data.clubId);
 	}while(0);
 }
 
@@ -219,4 +256,3 @@ void udfDancersTeamMngr::OnSelectClub(wxCommandEvent& event)
 bool udfDancersTeamMngr::ValidateData()
 {
 }
-
