@@ -18,6 +18,7 @@ set( HEADER_FILES
 	src/main.h
 	src/udf.h
 	src/udfAccountInfo.h
+	src/udfAddTeamCategory.h
 	src/udfCategoriesMngrDlg.h
 	src/udfChampionshipCategoriesMngrDlg.h
 	src/udfChampionshipTypeMngr.h
@@ -43,6 +44,7 @@ set( SOURCE_FILES
 	src/main.cpp
 	src/udf.cpp
 	src/udfAccountInfo.cpp
+	src/udfAddTeamCategory.cpp
 	src/udfCategoriesMngrDlg.cpp
 	src/udfChampionshipCategoriesMngrDlg.cpp
 	src/udfChampionshipTypeMngr.cpp

@@ -45,6 +45,8 @@ class DancersTeamMngr : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnSelectTeam( wxCommandEvent& event ){ OnSelectTeam( event ); }
 		void _wxFB_OnAddDancerTeam( wxCommandEvent& event ){ OnAddDancerTeam( event ); }
 		void _wxFB_OnRemoveTancerTeam( wxCommandEvent& event ){ OnRemoveTancerTeam( event ); }
 		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
@@ -98,6 +100,8 @@ class DancersTeamMngr : public wxDialog
 		wxBitmapButton* m_bpRemoveDancerTeamDancer;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectTeam( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancerTeam( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveTancerTeam( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
@@ -739,6 +743,45 @@ class AccountInfo : public wxDialog
 		
 		AccountInfo( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Account info"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 384,185 ), long style = wxCAPTION|wxCLOSE_BOX|wxSTAY_ON_TOP );
 		~AccountInfo();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class AddTeamCategory
+///////////////////////////////////////////////////////////////////////////////
+class AddTeamCategory : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_CATEGORY = 1000,
+			ID_PASS,
+		};
+		
+		wxStaticText* m_staticText56;
+		wxStaticText* m_staticCategory;
+		wxStaticText* m_staticText57;
+		wxTextCtrl* m_textComposition;
+		wxBitmapButton* m_bpButton39;
+		wxBitmapButton* m_bpButton40;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		AddTeamCategory( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Add team categort"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 384,163 ), long style = wxCAPTION|wxCLOSE_BOX|wxSTAY_ON_TOP );
+		~AddTeamCategory();
 	
 };
 

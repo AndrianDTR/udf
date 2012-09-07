@@ -36,6 +36,8 @@
 ///////////////////////////////////////////////////////////////////////////
 
 BEGIN_EVENT_TABLE( DancersTeamMngr, wxDialog )
+	EVT_TEXT( ID_SEARCH, DancersTeamMngr::_wxFB_OnSearch )
+	EVT_LISTBOX( ID_TEAM_LIST, DancersTeamMngr::_wxFB_OnSelectTeam )
 	EVT_BUTTON( wxID_ADD, DancersTeamMngr::_wxFB_OnAddDancerTeam )
 	EVT_BUTTON( wxID_REMOVE, DancersTeamMngr::_wxFB_OnRemoveTancerTeam )
 	EVT_BUTTON( ID_APPLY, DancersTeamMngr::_wxFB_OnUpdate )
@@ -1359,6 +1361,63 @@ AccountInfo::AccountInfo( wxWindow* parent, wxWindowID id, const wxString& title
 }
 
 AccountInfo::~AccountInfo()
+{
+}
+
+BEGIN_EVENT_TABLE( AddTeamCategory, wxDialog )
+	EVT_BUTTON( wxID_OK, AddTeamCategory::_wxFB_OnSave )
+	EVT_BUTTON( wxID_CANCEL, AddTeamCategory::_wxFB_OnDiscard )
+END_EVENT_TABLE()
+
+AddTeamCategory::AddTeamCategory( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer44;
+	bSizer44 = new wxBoxSizer( wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer7;
+	fgSizer7 = new wxFlexGridSizer( 3, 2, 0, 0 );
+	fgSizer7->AddGrowableCol( 1 );
+	fgSizer7->SetFlexibleDirection( wxBOTH );
+	fgSizer7->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText56 = new wxStaticText( this, wxID_ANY, _("Category"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText56->Wrap( -1 );
+	fgSizer7->Add( m_staticText56, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticCategory = new wxStaticText( this, ID_CATEGORY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticCategory->Wrap( -1 );
+	fgSizer7->Add( m_staticCategory, 0, wxALL, 5 );
+	
+	m_staticText57 = new wxStaticText( this, wxID_ANY, _("Compocition name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText57->Wrap( -1 );
+	fgSizer7->Add( m_staticText57, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textComposition = new wxTextCtrl( this, ID_PASS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer7->Add( m_textComposition, 0, wxALL|wxEXPAND, 5 );
+	
+	bSizer44->Add( fgSizer7, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer43;
+	bSizer43 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpButton39 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton39->SetDefault(); 
+	bSizer43->Add( m_bpButton39, 0, wxALL, 5 );
+	
+	m_bpButton40 = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer43->Add( m_bpButton40, 0, wxALL, 5 );
+	
+	bSizer44->Add( bSizer43, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	this->SetSizer( bSizer44 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+}
+
+AddTeamCategory::~AddTeamCategory()
 {
 }
 

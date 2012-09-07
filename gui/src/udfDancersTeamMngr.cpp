@@ -6,6 +6,7 @@
 #include "udfexceptions.h"
 
 #include "udfClubsMngrDlg.h"
+#include "udfCategoriesMngrDlg.h"
 
 udfDancersTeamMngr::udfDancersTeamMngr( wxWindow* parent, unsigned int nId )
 : DancersTeamMngr( parent )
@@ -18,6 +19,7 @@ udfDancersTeamMngr::udfDancersTeamMngr( wxWindow* parent, unsigned int nId )
 	RefreshClubs();
 	RefreshCategories();
 	
+	m_listTeams->SetSelection(0);
 }
 
 void udfDancersTeamMngr::RefreshList()
@@ -42,7 +44,7 @@ void udfDancersTeamMngr::RefreshList()
 
 void udfDancersTeamMngr::RefreshClubs()
 {
-	udfClubsMngrDlg pClubs(this);
+	udfClubsMngrDlg clubs(this);
 	CClubsTable(m_pCon).GetTable(m_Clubs);
 		
 	m_comboClub->Clear();
@@ -52,7 +54,7 @@ void udfDancersTeamMngr::RefreshClubs()
 		int nPos = m_comboClub->GetCount();
 		wxString club;
 		
-		if(pClubs.GetNameById(it->first, club))
+		if(clubs.GetNameById(it->first, club))
 		{
 			const char* name = club.GetData().AsChar();
 			m_comboClub->Insert(club, nPos, (void*)&it->first);
@@ -65,20 +67,97 @@ void udfDancersTeamMngr::RefreshClubs()
 
 void udfDancersTeamMngr::RefreshCategories()
 {
-	CCategoriesTable(m_pCon).GetTable(m_Categories);
-
+	udfCategoriesMngrDlg catDlg(this);
+	
 	CChampionshipCategoriesTable table(m_pCon);
 	CChampionshipCategoriesTable::tDATA filter = {0};
 	filter.championshipId = m_nCSId;
 	table.Find(m_CsCategories, filter);
+	
+	m_comboCsCategories->Clear();
+	CChampionshipCategoriesTable::tTableIt it = m_CsCategories.begin();
+	while(it != m_CsCategories.end())
+	{
+		int nPos = m_comboCsCategories->GetCount();
+		CChampionshipCategoriesTable::tDATA& data = it->second;
+		
+		wxString catName;
+		if(catDlg.GetNameById(data.catId, catName))
+		{
+			m_comboCsCategories->Insert(catName, nPos, (void*)&data.catId);
+		}
+		
+		it++;
+	}
+	m_comboCsCategories->AutoComplete(m_comboCsCategories->GetStrings());
 }
 
-void udfDancersTeamMngr::RefreshDancers()
+void udfDancersTeamMngr::RefreshDancers(int clubId)
 {
+	CDancersTable table(m_pCon);
+	CDancersTable::tDATA filter = {0};
+	filter.clubId = clubId;
+	table.Find(m_Dancers, filter);
 }
 
 void udfDancersTeamMngr::RefreshTeamCategories()
 {
+}
+
+void udfDancersTeamMngr::OnSearch( wxCommandEvent& event )
+{
+	wxString search = m_textSearch->GetValue().Upper();
+	CChampionshipTeamsTable::tTableIt item;
+	
+	m_listTeams->Clear();
+	for(item = m_CsTeams.begin(); item != m_CsTeams.end(); item++)
+	{
+		CChampionshipTeamsTable::tDATA& data = item->second;
+		
+		if(wxString(data.name).Upper().Contains(search))
+		{
+			int pos = m_listTeams->GetCount();
+			m_listTeams->Insert(data.name, pos, (void*)&item->first);
+		}
+	}
+}
+
+void udfDancersTeamMngr::OnSelectTeam(wxCommandEvent& event)
+{
+	do
+	{
+		int nItem = m_listTeams->GetSelection();
+		if(nItem == -1)
+			break;
+		
+		int nId = *(int*)m_listTeams->GetClientData(nItem);
+		
+		CChampionshipTeamsTable::tTableIt it = m_CsTeams.find(nId);
+		if(it == m_CsTeams.end())
+			break;
+		
+		CChampionshipTeamsTable::tDATA& data = it->second;
+		m_textName->SetValue(data.name);
+		
+		wxString clubName;
+		udfClubsMngrDlg clubsDlg(this);
+		if(clubsDlg.GetNameById(data.clubId, clubName))
+		{
+			int nPos = m_comboClub->FindString(clubName);
+			m_comboClub->SetSelection(nPos);
+		}
+				
+		/*
+		wxString catName;
+		udfCategoriesMngrDlg catDlg(this);
+		if(catDlg.GetNameById(data.clubId, catName))
+		{
+			int nPos = m_comboClub->FindString(clubName);
+			m_comboClub->SetSelection(nPos);
+		}
+		*/
+		
+	}while(0);
 }
 
 void udfDancersTeamMngr::OnAddDancerTeam( wxCommandEvent& event )

@@ -3,15 +3,12 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-09-02 21:51:54
+-- Date/time:                    2012-09-07 20:32:46
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8 */;
 /*!40014 SET FOREIGN_KEY_CHECKS=0 */;
-
-grant all on *.* to 'andrian'@'127.0.0.1' identified by 'testpass';
-flush privileges;
 
 -- Dumping database structure for udf
 DROP DATABASE IF EXISTS `udf`;
@@ -120,8 +117,8 @@ CREATE TABLE IF NOT EXISTS `championship_judges_team` (
   `championship_id` bigint(20) unsigned NOT NULL,
   `judge_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
+  KEY `FK_championship_judges_team_championship` (`championship_id`),
   KEY `FK_championship_judges_team_judges` (`judge_id`),
-  KEY `championship_id` (`championship_id`),
   CONSTRAINT `FK_championship_judges_team_championship` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`),
   CONSTRAINT `FK_championship_judges_team_judges` FOREIGN KEY (`judge_id`) REFERENCES `judges` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -248,12 +245,13 @@ CREATE TABLE IF NOT EXISTS `dancers` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `club_id` bigint(20) unsigned NOT NULL,
   `trener_id` bigint(20) unsigned NOT NULL,
+  `liga` int(10) NOT NULL,
+  `gender` tinyint(4) unsigned NOT NULL,
   `reg_book_num` varchar(10) DEFAULT NULL,
   `name` varchar(70) DEFAULT NULL,
-  `raiting` bigint(20) unsigned NOT NULL,
-  `liga` int(10) NOT NULL,
+  `aditional_info` varchar(250) DEFAULT NULL,
+  `raiting` bigint(20) unsigned DEFAULT NULL,
   `bd` date DEFAULT NULL,
-  `gender` tinyint(4) unsigned NOT NULL,
   `pay_date` date DEFAULT NULL,
   `expire_date` date DEFAULT NULL,
   `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -299,10 +297,12 @@ DROP TABLE IF EXISTS `judges`;
 CREATE TABLE IF NOT EXISTS `judges` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
-  `country` int(10) unsigned NOT NULL,
   `city` int(10) unsigned NOT NULL,
-  `club` bigint(20) unsigned NOT NULL,
+  `practicer` enum('Y','N') NOT NULL DEFAULT 'N',
   `attestation_info` text,
+  `phone` varchar(20) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `additional_info` text,
   `pay_date` date DEFAULT NULL,
   `expire_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
