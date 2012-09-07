@@ -8,6 +8,7 @@
 #include "udfClubsMngrDlg.h"
 #include "udfCategoriesMngrDlg.h"
 #include "udfDancersMngrDlg.h"
+#include "udfAddTeamCategory.h"
 
 udfDancersTeamMngr::udfDancersTeamMngr( wxWindow* parent, unsigned int nId )
 : DancersTeamMngr( parent )
@@ -95,10 +96,31 @@ void udfDancersTeamMngr::RefreshCategories()
 
 void udfDancersTeamMngr::RefreshDancers(int clubId)
 {
+	udfDancersMngrDlg dancerDlg(this, clubId);
+	
 	CDancersTable table(m_pCon);
 	CDancersTable::tDATA filter = {0};
 	filter.clubId = clubId;
 	table.Find(m_Dancers, filter);
+	
+	DEBUG_PRINTF("========= CLUB %d", clubId);
+	m_comboDancers->Clear();
+	CDancersTable::tTableIt it = m_Dancers.begin();
+	while(it != m_Dancers.end())
+	{
+		int nPos = m_comboDancers->GetCount();
+		CDancersTable::tDATA& data = it->second;
+		DEBUG_PRINTF("========= Dancer %d", it->first);
+		wxString dancerName;
+		if(dancerDlg.GetNameById(data.id, dancerName))
+		{
+			DEBUG_PRINTF("========= INSERT COMBO %d", data.id);
+			m_comboDancers->Insert(dancerName, nPos, (void*)&it->first);
+		}
+		
+		it++;
+	}
+	m_comboDancers->AutoComplete(m_comboDancers->GetStrings());
 }
 
 void udfDancersTeamMngr::RefreshTeamCategories(int teamId)
@@ -121,7 +143,7 @@ void udfDancersTeamMngr::RefreshTeamCategories(int teamId)
 			int nPos = m_listTeamCategories->GetCount();
 			m_listTeamCategories->Insert(
 				wxString::Format(STF_FORMAT_TEAM_CATEGORY_NAME, catName, data.compositionName),
-				nPos , (void*)&item->first);
+				nPos, (void*)&item->first);
 		}
 	}
 }
@@ -193,6 +215,7 @@ void udfDancersTeamMngr::OnSelectTeam(wxCommandEvent& event)
 		}
 			
 		RefreshTeamCategories(data.id);
+		RefreshDancers(data.clubId);
 		RefreshTeamDancers(data.id, data.clubId);
 	}while(0);
 }
@@ -239,6 +262,53 @@ void udfDancersTeamMngr::OnDiscard( wxCommandEvent& event )
 
 int udfDancersTeamMngr::GetSelectedClub()
 {
+	int res = -1;
+	do
+	{
+		wxString value = m_comboClub->GetValue();
+		res = m_comboClub->FindString(value);
+		if(-1 == res)
+		{
+			ShowWarning(wxString::Format(STR_NOT_IN_DB, STR_CLUB));
+			break;
+		}
+	}while(0);
+	
+	return res;
+}
+
+int udfDancersTeamMngr::GetSelectedCategory()
+{
+	int res = -1;
+	do
+	{
+		wxString value = m_comboCsCategories->GetValue();
+		res = m_comboCsCategories->FindString(value);
+		if(-1 == res)
+		{
+			ShowWarning(wxString::Format(STR_NOT_IN_DB, STR_CATEGORY));
+			break;
+		}
+	}while(0);
+	
+	return res;
+}
+
+int udfDancersTeamMngr::GetSelectedDancer()
+{
+	int res = -1;
+	do
+	{
+		wxString value = m_comboDancers->GetValue();
+		res = m_comboDancers->FindString(value);
+		if(-1 == res)
+		{
+			ShowWarning(wxString::Format(STR_NOT_IN_DB, STR_DANCER));
+			break;
+		}
+	}while(0);
+	
+	return res;
 }
 
 bool udfDancersTeamMngr::GetSelectedItemData(CDancersTable::tDATA*& pData)
@@ -256,3 +326,7 @@ void udfDancersTeamMngr::OnSelectClub(wxCommandEvent& event)
 bool udfDancersTeamMngr::ValidateData()
 {
 }
+
+/*
+ * move all GetNameById to UI utils class
+ */

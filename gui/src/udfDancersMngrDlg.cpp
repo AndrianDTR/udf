@@ -336,7 +336,7 @@ int udfDancersMngrDlg::GetSelectedClub()
 		res = m_comboClub->FindString(value);
 		if(-1 == res)
 		{
-			ShowWarning(wxString::Format(STR_NOT_IN_DB_INSERT, STR_CLUB));
+			ShowWarning(wxString::Format(STR_NOT_IN_DB, STR_CLUB));
 			break;
 		}
 	}while(0);

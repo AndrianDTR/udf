@@ -18,7 +18,10 @@ protected:
 	
 public:
 	/** Constructor */
-	udfAddTeamCategory( wxWindow* parent );
+	udfAddTeamCategory( wxWindow* parent, wxString name);
+	
+public:
+	wxString	GetCompisitionName() { return m_textComposition->GetValue();};
 };
 
 #endif // __udfAddTeamCategory__

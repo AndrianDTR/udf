@@ -56,6 +56,8 @@ private:
 	void	RefreshTeamCategories(int teamId);
 	void	RefreshTeamDancers(int teamId, int clubId);
 	int		GetSelectedClub();
+	int		GetSelectedCategory();
+	int		GetSelectedDancer();
 	bool	ValidateData();
 	bool	GetSelectedItemData(CDancersTable::tDATA*& pData);
 };

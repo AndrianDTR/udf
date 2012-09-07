@@ -72,6 +72,8 @@ STR_DEFINITION(STR_NOT_IN_DB_INSERT, "Selected '%s' not present in database. Ins
 STR_DEFINITION(STR_NOT_IN_DB, "Selected '%s' not present in database.");
 STR_DEFINITION(STR_CITY, "city");
 STR_DEFINITION(STR_COUNTRY, "country");
+STR_DEFINITION(STR_CATEGORY, "category");
+STR_DEFINITION(STR_DANCER, "dancer");
 STR_DEFINITION(STR_AGE_CATEGORY, "age category");
 STR_DEFINITION(STR_DANCE_TYPE, "dance type");
 STR_DEFINITION(STR_LIGUE, "ligue");
