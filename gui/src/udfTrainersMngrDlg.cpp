@@ -7,7 +7,7 @@
 #include "wx/msgdlg.h"
 
 #include "udfexceptions.h"
-#include "udfClubsMngrDlg.h"
+#include "udfuiutils.h"
 
 udfTrainersMngrDlg::udfTrainersMngrDlg( wxWindow* parent, unsigned int nClubId )
 : TrainersMngrDlg( parent )
@@ -22,7 +22,6 @@ udfTrainersMngrDlg::udfTrainersMngrDlg( wxWindow* parent, unsigned int nClubId )
 
 void udfTrainersMngrDlg::RefreshClubs()
 {
-	udfClubsMngrDlg* pClubs = (udfClubsMngrDlg*)GetParent();
 	CClubsTable(m_pCon).GetTable(m_Clubs);
 		
 	m_comboClub->Clear();
@@ -30,9 +29,11 @@ void udfTrainersMngrDlg::RefreshClubs()
 	while(it != m_Clubs.end())
 	{
 		int nPos = m_comboClub->GetCount();
-		wxString club;
-		if(pClubs->GetNameById(it->first, club))
+		wxString club = GetClubNameById(it->first);
+		if(!club.IsEmpty())
+		{
 			m_comboClub->Insert(club, nPos, (void*)&it->first);
+		}
 		
 		it++;
 	}
@@ -79,10 +80,11 @@ void udfTrainersMngrDlg::OnSelectTrainer(wxCommandEvent& event)
 		m_textInfo->SetValue(data.additionalInfo);
 		m_textPhone->SetValue(data.phone);
 		
-		udfClubsMngrDlg* pClubs = (udfClubsMngrDlg*)GetParent();
-		wxString clubName;
-		if(pClubs->GetNameById(data.clubId, clubName))
+		wxString clubName = GetClubNameById(data.clubId);
+		if(!clubName.IsEmpty())
+		{
 			m_comboClub->SetValue(clubName);
+		}
 		
 		m_dateBd->SetValue(wxDateTime(data.bd));
 		m_datePay->SetValue(wxDateTime(data.pay_date));
@@ -300,22 +302,5 @@ bool udfTrainersMngrDlg::GetSelectedItemData(CTrainersTable::tDATA*& pData)
 		res = true;
 	}while(0);
 	
-	return res;
-}
-
-bool udfTrainersMngrDlg::GetNameById(unsigned int id, wxString& name)
-{
-	bool res = false;
-	do
-	{
-		CTrainersTable 			table(m_pCon);
-		CTrainersTable::tDATA 	data = {0};
-		
-		if(UDF_OK != table.GetRow(id, data))
-			break;
-		
-		name = data.name;
-		res = true;
-	}while(0);
 	return res;
 }

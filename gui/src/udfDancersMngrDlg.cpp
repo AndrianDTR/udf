@@ -2,9 +2,7 @@
 
 #include "string_def.h"
 #include "udfexceptions.h"
-
-#include "udfClubsMngrDlg.h"
-#include "udfTrainersMngrDlg.h"
+#include "udfuiutils.h"
 
 #include "wx/msgdlg.h"
 
@@ -44,7 +42,6 @@ void udfDancersMngrDlg::RefreshList()
 
 void udfDancersMngrDlg::RefreshClubs()
 {
-	udfClubsMngrDlg* pClubs = (udfClubsMngrDlg*)GetParent();
 	CClubsTable table(m_pCon);
 	table.GetTable(m_Clubs);
 		
@@ -53,8 +50,8 @@ void udfDancersMngrDlg::RefreshClubs()
 	while(it != m_Clubs.end())
 	{
 		int nPos = m_comboClub->GetCount();
-		wxString club;
-		if(pClubs->GetNameById(it->first, club))
+		wxString club = GetClubNameById(it->first);
+		if(!club.IsEmpty())
 			m_comboClub->Insert(club, nPos, (void*)&it->first);
 		
 		it++;
@@ -82,7 +79,6 @@ void udfDancersMngrDlg::RefreshLigues()
 
 void udfDancersMngrDlg::RefreshTrainers()
 {
-	udfTrainersMngrDlg pTrainer(GetParent(), m_nClubId);
 	CTrainersTable::tDATA filter = {0};
 	filter.clubId = m_nClubId;
 	CTrainersTable(m_pCon).Find(m_Trainers, filter);
@@ -92,8 +88,8 @@ void udfDancersMngrDlg::RefreshTrainers()
 	while(it != m_Trainers.end())
 	{
 		int nPos = m_comboTrainer->GetCount();
-		wxString name;
-		if(pTrainer.GetNameById(it->first, name))
+		wxString name = GetTrainerNameById(it->first);
+		if(!name.IsEmpty())
 			m_comboTrainer->Insert(name, nPos, (void*)&it->first);
 		
 		it++;
@@ -160,14 +156,12 @@ void udfDancersMngrDlg::OnDancerSelect( wxCommandEvent& event )
 		m_textInfo->SetValue(data.additionalInfo);
 		m_staticRaiting->SetLabel(wxString::Format(_("%d"), data.raiting));
 		
-		wxString clubName;
-		udfClubsMngrDlg* pClubs = (udfClubsMngrDlg*)GetParent();
-		if(pClubs->GetNameById(data.clubId, clubName))
+		wxString clubName = GetClubNameById(data.clubId);
+		if(!clubName.IsEmpty())
 			m_comboClub->SetValue(clubName);
 		
-		wxString	trainerName;
-		udfTrainersMngrDlg pTrainers(pClubs, m_nClubId);
-		if(pTrainers.GetNameById(data.trainerId, trainerName))
+		wxString	trainerName = GetTrainerNameById(data.trainerId);
+		if(!trainerName.IsEmpty())
 			m_comboTrainer->SetValue(trainerName);
 			
 		CLigaTable::tDATA ligaData = {0};
@@ -433,24 +427,5 @@ bool udfDancersMngrDlg::ValidateData()
 		res = true;
 	}while(0);
 	
-	return res;
-}
-
-bool udfDancersMngrDlg::GetNameById(unsigned int id, wxString& name)
-{
-	bool res = false;
-	do
-	{
-		CDancersTable 			table(m_pCon);
-		CDancersTable::tDATA 	dancer = {0};
-		
-		if(UDF_OK != table.GetRow(id, dancer))
-		{
-			break;
-		}
-		
-		name = dancer.name;
-		res = true;
-	}while(0);
 	return res;
 }

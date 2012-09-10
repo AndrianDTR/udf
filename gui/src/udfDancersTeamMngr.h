@@ -60,6 +60,7 @@ private:
 	int		GetSelectedDancer();
 	bool	ValidateData();
 	bool	GetSelectedItemData(CDancersTable::tDATA*& pData);
+	void 	EnableEditTeam(bool bEdit = true);
 };
 
 #endif // __udfDancersTeamMngr__

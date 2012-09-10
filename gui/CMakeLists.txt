@@ -15,6 +15,7 @@ set( HEADER_FILES
 	src/string_def.h
 	src/udfexceptions.h
 	src/cdbmanager.h
+	src/udfuiutils.h
 	src/main.h
 	src/udf.h
 	src/udfAccountInfo.h
@@ -35,12 +36,12 @@ set( HEADER_FILES
 	src/udfStartNumberAssignDlg.h
 	src/udfTrainersMngrDlg.h
 	src/udfTeamCategoryMngrDlg.h
-	src/udfTeamDancersMngrDlg.h
 )
 
 set( SOURCE_FILES 
 	src/udfexceptions.cpp
 	src/cdbmanager.cpp
+	src/udfuiutils.cpp
 	src/main.cpp
 	src/udf.cpp
 	src/udfAccountInfo.cpp
@@ -61,7 +62,6 @@ set( SOURCE_FILES
 	src/udfStartNumberAssignDlg.cpp
 	src/udfTrainersMngrDlg.cpp
 	src/udfTeamCategoryMngrDlg.cpp
-	src/udfTeamDancersMngrDlg.cpp
 )
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined

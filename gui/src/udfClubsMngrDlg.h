@@ -48,9 +48,6 @@ private:
 	bool	ValidateData();
 	bool	GetSelectedItemData(CClubsTable::tDATA*& pData);
 
-public:
-	bool	GetNameById(unsigned int id, wxString& name);
-	
 };
 
 #endif // __udfClubsMngrDlg__

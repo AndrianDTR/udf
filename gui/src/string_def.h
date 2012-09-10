@@ -56,6 +56,10 @@ STR_DEFINITION(STR_ERR_ADD_JUDGE_FAILED, "Judge could not be added.");
 STR_DEFINITION(STR_ERR_UPD_JUDGE_FAILED, "Judge could not be updated.");
 STR_DEFINITION(STR_ERR_DEL_JUDGE_FAILED, "Judge could not be removed.");
 
+STR_DEFINITION(STR_ERR_ADD_TEAM_FAILED, "Team could not be added.");
+STR_DEFINITION(STR_ERR_UPD_TEAM_FAILED, "Team could not be updated.");
+STR_DEFINITION(STR_ERR_DEL_TEAM_FAILED, "Team could not be removed.");
+
 ////////////////////////////////////////////////////////////////////////////////////
 STR_DEFINITION(STR_WARN_DATE_INTHEPAST, "Could not be modified during championship or after it.");
 

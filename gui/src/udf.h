@@ -331,7 +331,7 @@ class ClubsMngrDlg : public wxDialog
 	
 	public:
 		
-		ClubsMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Clubs manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 896,471 ), long style = wxDEFAULT_DIALOG_STYLE );
+		ClubsMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Clubs manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 895,484 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~ClubsMngrDlg();
 	
 };
@@ -859,7 +859,7 @@ class JudgesMngr : public wxDialog
 	
 	public:
 		
-		JudgesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judges manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 861,463 ), long style = wxDEFAULT_DIALOG_STYLE );
+		JudgesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judges manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 862,483 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~JudgesMngr();
 	
 };
@@ -914,59 +914,6 @@ class TeamCategoryMngrDlg : public wxDialog
 		
 		TeamCategoryMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Team categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 546,317 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~TeamCategoryMngrDlg();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class TeamDancersMngrDlg
-///////////////////////////////////////////////////////////////////////////////
-class TeamDancersMngrDlg : public wxDialog 
-{
-	DECLARE_EVENT_TABLE()
-	private:
-		
-		// Private event handlers
-		void _wxFB_OnAddAll( wxCommandEvent& event ){ OnAddAll( event ); }
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnRemoveAll( wxCommandEvent& event ){ OnRemoveAll( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
-	
-	protected:
-		enum
-		{
-			wxID_ADDALL = 1000,
-			wxID_ADDONE,
-			wxID_REMOVEONE,
-			wxID_REMOVEALL,
-		};
-		
-		wxStaticText* m_staticText8;
-		wxListBox* m_listBox2;
-		wxBitmapButton* m_bpButton9;
-		wxBitmapButton* m_bpButton10;
-		wxBitmapButton* m_bpButton11;
-		wxBitmapButton* m_bpButton12;
-		wxStaticText* m_staticText9;
-		wxListBox* m_listBox3;
-		wxBitmapButton* m_bpButton31;
-		wxBitmapButton* m_bpButton32;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnAddAll( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemoveAll( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		TeamDancersMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Team dancers manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 546,316 ), long style = wxDEFAULT_DIALOG_STYLE );
-		~TeamDancersMngrDlg();
 	
 };
 

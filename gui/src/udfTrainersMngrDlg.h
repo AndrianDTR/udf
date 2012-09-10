@@ -43,9 +43,6 @@ private:
 	bool		ValidateData();
 	bool		GetSelectedItemData(CTrainersTable::tDATA*& pData);
 
-public:
-	bool		GetNameById(unsigned int id, wxString& name);	
-	
 };
 
 #endif // __udfTrainersMngrDlg__

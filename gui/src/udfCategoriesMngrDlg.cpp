@@ -334,22 +334,3 @@ int udfCategoriesMngrDlg::GetSelectedLigue()
 	
 	return res;
 }
-
-
-bool udfCategoriesMngrDlg::GetNameById(unsigned int id, wxString& name)
-{
-	bool res = false;
-	do
-	{
-		CCategoriesTable 		table(m_pCon);
-		CCategoriesTable::tDATA	data = {0};
-		
-		
-		if(UDF_OK != CCategoriesTable(m_pCon).GetRow(id, data))
-			break;
-		
-		name = data.shortName;
-		res = true;
-	}while(0);
-	return res;
-}

@@ -48,9 +48,6 @@ protected:
 	int 	GetSelectedDanceType();
 	int 	GetSelectedLigue();
 	int 	GetSelectedAgeCat();
-	
-public:
-	bool	GetNameById(unsigned int id, wxString& name);
 };
 
 #endif // __udfCategoriesMngrDlg__

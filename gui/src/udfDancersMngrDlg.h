@@ -53,8 +53,6 @@ protected:
 	bool	ValidateData();
 	bool	GetSelectedItemData(CDancersTable::tDATA*& pData);
 
-public:
-	bool	GetNameById(unsigned int id, wxString& name);	
 };
 
 #endif // __udfDancersMngrDlg__

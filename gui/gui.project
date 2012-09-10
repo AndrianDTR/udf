@@ -25,7 +25,6 @@
     <File Name="src/udfCategoriesMngrDlg.h"/>
     <File Name="src/udfStartNumberAssignDlg.h"/>
     <File Name="src/udfTeamCategoryMngrDlg.h"/>
-    <File Name="src/udfTeamDancersMngrDlg.cpp"/>
     <File Name="src/udfClubsMngrDlg.cpp"/>
     <File Name="src/udf.h"/>
     <File Name="src/udfChampionshipCategoriesMngrDlg.cpp"/>
@@ -36,7 +35,6 @@
     <File Name="src/udfAccountInfo.h"/>
     <File Name="src/udfDirectorInfo.h"/>
     <File Name="src/udfChampionshipCategoriesMngrDlg.h"/>
-    <File Name="src/udfTeamDancersMngrDlg.h"/>
     <File Name="src/cdbmanager.h"/>
     <File Name="src/udfChampionshipJudgesTeamMngrDlg.cpp"/>
     <File Name="src/udf.cpp"/>
@@ -58,6 +56,8 @@
     <File Name="src/udfTrainersMngrDlg.cpp"/>
     <File Name="src/udfAddTeamCategory.cpp"/>
     <File Name="src/udfAddTeamCategory.h"/>
+    <File Name="src/udfuiutils.h"/>
+    <File Name="src/udfuiutils.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -78,6 +78,7 @@
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(WorkspacePath)/build/bin" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/build/bin" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       
@@ -129,6 +130,7 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       
