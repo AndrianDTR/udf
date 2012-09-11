@@ -130,7 +130,7 @@ wxString	GetTrainerNameById(int nId)
 	return res;
 }
 
-wxString	GetGategoryNameById(int nId)
+wxString	GetCategoryNameById(int nId)
 {
 	wxString res;
 	

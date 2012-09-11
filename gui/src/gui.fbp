@@ -5123,7 +5123,7 @@
             <property name="name">MainFrameBase</property>
             <property name="pos"></property>
             <property name="size">965,667</property>
-            <property name="style">wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE</property>
+            <property name="style">wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxMAXIMIZE</property>
             <property name="subclass"></property>
             <property name="title">Championship calculator</property>
             <property name="tooltip"></property>

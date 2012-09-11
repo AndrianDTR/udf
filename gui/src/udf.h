@@ -490,7 +490,7 @@ class MainFrameBase : public wxFrame
 	
 	public:
 		
-		MainFrameBase( wxWindow* parent, wxWindowID id = ID_MAINFRAME_FORM, const wxString& title = _("Championship calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 965,667 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		MainFrameBase( wxWindow* parent, wxWindowID id = ID_MAINFRAME_FORM, const wxString& title = _("Championship calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 965,667 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxMAXIMIZE|wxTAB_TRAVERSAL );
 		~MainFrameBase();
 	
 };

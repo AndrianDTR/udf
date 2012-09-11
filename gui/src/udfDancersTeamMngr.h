@@ -35,8 +35,8 @@ protected:
 	void OnRemoveTancerTeam( wxCommandEvent& event );
 	void OnAddDancerTeamCategory( wxCommandEvent& event );
 	void OnRemoveDancerTeamCategory( wxCommandEvent& event );
-	void OnAddDancerTeamDancer( wxCommandEvent& event );
-	void OnRemoveDancerTeamDancer( wxCommandEvent& event );
+	void OnAddDancer2Team( wxCommandEvent& event );
+	void OnRemoveDancerFromTeam( wxCommandEvent& event );
 	void OnSelectTeam( wxCommandEvent& event );
 	void OnSearch( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
@@ -61,6 +61,10 @@ private:
 	bool	ValidateData();
 	bool	GetSelectedItemData(CDancersTable::tDATA*& pData);
 	void 	EnableEditTeam(bool bEdit = true);
+	
+	void	AddTeamData(int nTeamId, int nInsertedTeamId);
+	void	UpdateTeamData(int nTeamId);
+	void	RemoveTeamData(int nTeamId);
 };
 
 #endif // __udfDancersTeamMngr__

@@ -8,7 +8,7 @@ wxString	GetCityNameById(int nId);
 wxString	GetDancerNameById(int nId);
 wxString	GetJudgeNameById(int nId);
 wxString	GetTrainerNameById(int nId);
-wxString	GetGategoryNameById(int nId);
+wxString	GetCategoryNameById(int nId);
 wxString	GetTeamNameById(int nId);
 
 #endif // __uiutils_h__

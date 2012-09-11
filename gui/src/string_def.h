@@ -61,6 +61,8 @@ STR_DEFINITION(STR_ERR_UPD_TEAM_FAILED, "Team could not be updated.");
 STR_DEFINITION(STR_ERR_DEL_TEAM_FAILED, "Team could not be removed.");
 
 ////////////////////////////////////////////////////////////////////////////////////
+STR_DEFINITION(STR_WARN_ALREADY_PRESENT, "This item is already inserted.");
+
 STR_DEFINITION(STR_WARN_DATE_INTHEPAST, "Could not be modified during championship or after it.");
 
 STR_DEFINITION(STR_WARN_NOW_GREATTHEN_ChDATE, "Championship date must be great then today.");
