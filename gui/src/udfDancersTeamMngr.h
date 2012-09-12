@@ -31,18 +31,17 @@ private:
 	
 protected:
 	// Handlers for DancersTeamMngr events.
-	void OnAddDancerTeam( wxCommandEvent& event );
-	void OnRemoveTancerTeam( wxCommandEvent& event );
+	void OnAddTeam( wxCommandEvent& event );
+	void OnRemoveTeam( wxCommandEvent& event );
 	void OnAddDancerTeamCategory( wxCommandEvent& event );
 	void OnRemoveDancerTeamCategory( wxCommandEvent& event );
 	void OnAddDancer2Team( wxCommandEvent& event );
 	void OnRemoveDancerFromTeam( wxCommandEvent& event );
 	void OnSelectTeam( wxCommandEvent& event );
 	void OnSearch( wxCommandEvent& event );
+	void OnUpdate( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
-	void OnClubChanged( wxCommandEvent& event );
-	void OnSelectClub( wxCommandEvent& event );
 	
 public:
 	/** Constructor */
@@ -58,12 +57,8 @@ private:
 	int		GetSelectedClub();
 	int		GetSelectedCategory();
 	int		GetSelectedDancer();
-	bool	ValidateData();
-	bool	GetSelectedItemData(CDancersTable::tDATA*& pData);
 	void 	EnableEditTeam(bool bEdit = true);
 	
-	void	AddTeamData(int nTeamId, int nInsertedTeamId);
-	void	UpdateTeamData(int nTeamId);
 	void	RemoveTeamData(int nTeamId);
 };
 

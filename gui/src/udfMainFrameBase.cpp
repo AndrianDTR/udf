@@ -646,8 +646,17 @@ void udfMainFrameBase::OnDancersTeams(wxCommandEvent& event)
 
 void udfMainFrameBase::OnStartNumberAssign( wxCommandEvent& event )
 {
-	udfStartNumberAssignDlg dlg(this);
-	dlg.ShowModal();
+	do
+	{
+		int nItem = m_listChampionship->GetSelection();
+		if(-1 != nItem )
+		{
+			int nId = *(int*)m_listChampionship->GetClientData(nItem);
+			
+			udfStartNumberAssignDlg dlg(this, nId);
+			dlg.ShowModal();
+		}
+	}while(0);
 }
 
 void udfMainFrameBase::OnJudgeMngr( wxCommandEvent& event )

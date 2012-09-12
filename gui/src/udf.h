@@ -47,13 +47,11 @@ class DancersTeamMngr : public wxDialog
 		// Private event handlers
 		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
 		void _wxFB_OnSelectTeam( wxCommandEvent& event ){ OnSelectTeam( event ); }
-		void _wxFB_OnAddDancerTeam( wxCommandEvent& event ){ OnAddDancerTeam( event ); }
-		void _wxFB_OnRemoveTancerTeam( wxCommandEvent& event ){ OnRemoveTancerTeam( event ); }
+		void _wxFB_OnAddTeam( wxCommandEvent& event ){ OnAddTeam( event ); }
+		void _wxFB_OnRemoveTeam( wxCommandEvent& event ){ OnRemoveTeam( event ); }
 		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		void _wxFB_OnClubChanged( wxCommandEvent& event ){ OnClubChanged( event ); }
-		void _wxFB_OnSelectClub( wxCommandEvent& event ){ OnSelectClub( event ); }
 		void _wxFB_OnAddDancerTeamCategory( wxCommandEvent& event ){ OnAddDancerTeamCategory( event ); }
 		void _wxFB_OnRemoveDancerTeamCategory( wxCommandEvent& event ){ OnRemoveDancerTeamCategory( event ); }
 		void _wxFB_OnAddDancer2Team( wxCommandEvent& event ){ OnAddDancer2Team( event ); }
@@ -102,13 +100,11 @@ class DancersTeamMngr : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSelectTeam( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddDancerTeam( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemoveTancerTeam( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddTeam( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemoveTeam( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnClubChanged( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSelectClub( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancerTeamCategory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveDancerTeamCategory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancer2Team( wxCommandEvent& event ) { event.Skip(); }
@@ -981,6 +977,8 @@ class StartNumberAssignDlg : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnSelectTeam( wxCommandEvent& event ){ OnSelectTeam( event ); }
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
 		void _wxFB_OnRandomFind( wxCommandEvent& event ){ OnRandomFind( event ); }
 		void _wxFB_OnNextFind( wxCommandEvent& event ){ OnNextFind( event ); }
 		void _wxFB_OnAssign( wxCommandEvent& event ){ OnAssign( event ); }
@@ -991,17 +989,18 @@ class StartNumberAssignDlg : public wxDialog
 	protected:
 		enum
 		{
-			wxID_RANDOM = 1000,
+			ID_TEAMS_LIST = 1000,
+			ID_SEARCH,
+			ID_NUMBER,
+			wxID_RANDOM,
 			wxID_NEXT,
 			wxID_ASSIGN,
 		};
 		
-		wxStaticText* m_staticText15;
-		wxTextCtrl* m_textCtrl5;
-		wxListBox* m_listBox4;
+		wxListBox* m_listTeams;
 		wxStaticText* m_staticText85;
-		wxStaticText* m_staticTeamName;
-		wxTextCtrl* m_textCtrl40;
+		wxTextCtrl* m_textSearch;
+		wxTextCtrl* m_textNumber;
 		wxBitmapButton* m_bpRandomNumber;
 		wxBitmapButton* m_bpNextNumber;
 		wxBitmapButton* m_bpAssign;
@@ -1010,6 +1009,8 @@ class StartNumberAssignDlg : public wxDialog
 		wxBitmapButton* m_bpDiscard;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnSelectTeam( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRandomFind( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnNextFind( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAssign( wxCommandEvent& event ) { event.Skip(); }
@@ -1019,7 +1020,7 @@ class StartNumberAssignDlg : public wxDialog
 	
 	public:
 		
-		StartNumberAssignDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 764,375 ), long style = wxDEFAULT_DIALOG_STYLE );
+		StartNumberAssignDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 816,356 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~StartNumberAssignDlg();
 	
 };

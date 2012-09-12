@@ -93,18 +93,16 @@ void udfDancersTeamMngr::RefreshDancers(int clubId)
 	filter.clubId = clubId;
 	table.Find(m_Dancers, filter);
 	
-	DEBUG_PRINTF("========= CLUB %d", clubId);
 	m_comboDancers->Clear();
 	CDancersTable::tTableIt it = m_Dancers.begin();
 	while(it != m_Dancers.end())
 	{
 		int nPos = m_comboDancers->GetCount();
 		CDancersTable::tDATA& data = it->second;
-		DEBUG_PRINTF("========= Dancer %d", it->first);
+	
 		wxString dancerName = GetDancerNameById(data.id);
 		if(!dancerName.IsEmpty())
 		{
-			DEBUG_PRINTF("========= INSERT COMBO %d", data.id);
 			m_comboDancers->Insert(dancerName, nPos, (void*)&it->first);
 		}
 		
@@ -131,7 +129,7 @@ void udfDancersTeamMngr::RefreshTeamCategories(int teamId)
 		{
 			int nPos = m_listTeamCategories->GetCount();
 			m_listTeamCategories->Insert(
-				wxString::Format(STF_FORMAT_TEAM_CATEGORY_NAME, catName, data.compositionName),
+				wxString::Format(STR_FORMAT_TEAM_CATEGORY_NAME, catName, data.compositionName),
 				nPos, (void*)&item->first);
 		}
 	}
@@ -209,16 +207,13 @@ void udfDancersTeamMngr::OnSelectTeam(wxCommandEvent& event)
 	}while(0);
 }
 
-void udfDancersTeamMngr::OnAddDancerTeam( wxCommandEvent& event )
+void udfDancersTeamMngr::OnAddTeam( wxCommandEvent& event )
 {
 	do
 	{
 		CChampionshipTeamsTable table(m_pCon);
 		CChampionshipTeamsTable::tDATA data = {0};
 		data.championshipId = m_nCSId;
-		
-		if(!ValidateData())
-			break;
 		
 		int nClub = GetSelectedClub();
 		if(-1 == nClub)
@@ -229,6 +224,11 @@ void udfDancersTeamMngr::OnAddDancerTeam( wxCommandEvent& event )
 		data.id = -m_listTeams->GetCount();
 		
 		int nPos = m_listTeams->GetCount();
+		if(UDF_OK != table.AddRow(data))
+		{
+			ShowWarning(STR_ERR_ADD_TEAM_FAILED);
+			break;
+		}
 		CChampionshipTeamsTable::tTableIt item = 
 			m_CsTeams.insert(std::make_pair(data.id, data)).first;
 		nPos = m_listTeams->Insert(data.name, nPos, (void*)&item->first);
@@ -239,9 +239,125 @@ void udfDancersTeamMngr::OnAddDancerTeam( wxCommandEvent& event )
 	}while(0);
 }
 
-void udfDancersTeamMngr::OnRemoveTancerTeam( wxCommandEvent& event )
+void udfDancersTeamMngr::OnRemoveTeam( wxCommandEvent& event )
 {
-	// TODO: Implement OnRemoveTancerTeam
+	do
+	{
+		int nItem = m_listTeams->GetSelection();
+		if(-1 == nItem)
+			break;
+		
+		int nId = *(int*)m_listTeams->GetClientData(nItem);
+		
+		RemoveTeamData(nId);
+		
+		if(UDF_OK != CChampionshipTeamsTable(m_pCon).DelRow(nId))
+		{
+			ShowWarning(STR_ERR_DEL_TEAM_FAILED);
+			break;
+		}
+		m_CsTeams.erase(nId);
+		m_listTeams->Delete(nItem);
+		
+		EnableEditTeam(false);
+		
+	}while(0);
+}
+
+void udfDancersTeamMngr::OnUpdate( wxCommandEvent& event )
+{
+	do
+	{
+		int nItem = m_listTeams->GetSelection();
+		if(-1 == nItem)
+			break;
+		
+		int nId = *(int*)m_listTeams->GetClientData(nItem);
+		
+		CChampionshipTeamCategoriesTable cTable(m_pCon);
+		CChampionshipTeamCategoriesTable::tTableMap cStored;
+		CChampionshipTeamCategoriesTable::tDATA cFilter = {0};
+		cFilter.teamId = nId;
+		cTable.Find(cStored, cFilter);
+			
+		CChampionshipTeamCategoriesTable::tTableIt cListIt = cStored.begin();
+		while(cListIt != cStored.end())
+		{
+			CChampionshipTeamCategoriesTable::tTableIt cRLstIt = m_CsTmCats.find(cListIt->first);
+			if(cRLstIt == m_CsTmCats.end())
+			{
+				cTable.DelRow(cListIt->first);
+			}
+			else if(cRLstIt != m_CsTmCats.end() && cRLstIt->first == cListIt->first)
+			{
+				CChampionshipTeamCategoriesTable::tDATA& cSData = cListIt->second;
+				CChampionshipTeamCategoriesTable::tDATA& cData = cRLstIt->second;
+				if( cSData.catId != cData.catId
+				 || cSData.compositionName != cData.compositionName
+				)
+				{
+					cSData.catId = cData.catId;
+					cSData.compositionName = cData.compositionName;
+					cTable.UpdateRow(cListIt->first, cSData);
+				}
+				m_CsTmCats.erase(cRLstIt);
+			}
+			cListIt++;
+		}
+		
+		if(m_CsTmCats.size() > 0)
+		{
+			//insert data here
+			CChampionshipTeamCategoriesTable::tTableIt cRLstIt = m_CsTmCats.begin();
+			while(cRLstIt != m_CsTmCats.end())
+			{
+				CChampionshipTeamCategoriesTable::tDATA& cData = cRLstIt->second;
+				cTable.AddRow(cData);
+				cRLstIt++;
+			}
+		}
+		
+		CChampionshipTeamDancersTable dTable(m_pCon);
+		CChampionshipTeamDancersTable::tTableMap dStored;
+		CChampionshipTeamDancersTable::tDATA dFilter = {0};
+		dFilter.teamId = nId;
+		dTable.Find(dStored, dFilter);
+			
+		CChampionshipTeamDancersTable::tTableIt dListIt = dStored.begin();
+		while(dListIt != dStored.end())
+		{
+			CChampionshipTeamDancersTable::tTableIt dRLstIt = m_CsTmDancers.find(dListIt->first);
+			if(dRLstIt == m_CsTmDancers.end())
+			{
+				dTable.DelRow(dListIt->first);
+			}
+			else if(dRLstIt != m_CsTmDancers.end() && dRLstIt->first == dListIt->first)
+			{
+				CChampionshipTeamDancersTable::tDATA& dSData = dListIt->second;
+				CChampionshipTeamDancersTable::tDATA& dData = dRLstIt->second;
+				if( dSData.dancerId != dData.dancerId)
+				{
+					dSData.dancerId = dData.dancerId;
+					dTable.UpdateRow(dListIt->first, dSData);
+				}
+				m_CsTmDancers.erase(dRLstIt);
+			}
+			dListIt++;
+		}
+		
+		if(m_CsTmDancers.size() > 0)
+		{
+			//insert data here
+			CChampionshipTeamDancersTable::tTableIt dRLstIt = m_CsTmDancers.begin();
+			while(dRLstIt != m_CsTmDancers.end())
+			{
+				CChampionshipTeamDancersTable::tDATA& dData = dRLstIt->second;
+				dTable.AddRow(dData);
+				dRLstIt++;
+			}
+		}
+			
+	}while(0);
 }
 
 void udfDancersTeamMngr::OnAddDancerTeamCategory( wxCommandEvent& event )
@@ -269,7 +385,18 @@ void udfDancersTeamMngr::OnAddDancerTeamCategory( wxCommandEvent& event )
 		
 		wxString cat = GetCategoryNameById(data.catId);
 		
-		if(-1 != m_listTeamCategories->FindString(cat))
+		wxArrayString names = m_listTeamCategories->GetStrings();
+		int i = 0;
+		bool found = false;
+		for(i = 0; i < names.GetCount(); ++i)
+		{
+			if(names[i].StartsWith(cat))
+			{
+				found = true;
+				break;
+			}
+		}
+		if(found)
 		{
 			ShowWarning(STR_WARN_ALREADY_PRESENT);
 			break;
@@ -283,7 +410,8 @@ void udfDancersTeamMngr::OnAddDancerTeamCategory( wxCommandEvent& event )
 		
 		CChampionshipTeamCategoriesTable::tTableIt item = 
 			m_CsTmCats.insert(std::make_pair(data.id, data)).first;
-		m_listTeamCategories->Insert(wxString::Format(STF_FORMAT_TEAM_CATEGORY_NAME, cat, data.compositionName), nPos, (void*)&item->first);
+		m_listTeamCategories->Insert(wxString::Format(STR_FORMAT_TEAM_CATEGORY_NAME, cat, data.compositionName)
+			, nPos, (void*)&item->first);
 	}while(0);
 }
 
@@ -297,7 +425,7 @@ void udfDancersTeamMngr::OnRemoveDancerTeamCategory( wxCommandEvent& event )
 			break;
 		}
 		
-		int nId = *(int*)m_listDancers->GetClientData(nCat);
+		int nId = *(int*)m_listTeamCategories->GetClientData(nCat);
 		m_CsTmCats.erase(nId);
 		m_listTeamCategories->Delete(nCat);
 		
@@ -360,49 +488,6 @@ void udfDancersTeamMngr::OnRemoveDancerFromTeam( wxCommandEvent& event )
 
 void udfDancersTeamMngr::OnSave( wxCommandEvent& event )
 {
-	CChampionshipTeamsTable table(m_pCon);
-	CChampionshipTeamsTable::tTableMap stored;
-	CChampionshipTeamsTable::tDATA filter = {0};
-	filter.championshipId = m_nCSId;
-	table.Find(stored, filter);
-		
-	CChampionshipTeamsTable::tTableIt listIt = stored.begin();
-	while(listIt != stored.end())
-	{
-		CChampionshipTeamsTable::tTableIt rLstIt = m_CsTeams.find(listIt->first);
-		if(rLstIt == m_CsTeams.end())
-		{
-			RemoveTeamData(listIt->first);
-			table.DelRow(listIt->first);
-		}
-		else if(rLstIt != m_CsTeams.end() && rLstIt->first == listIt->first)
-		{
-			CChampionshipTeamsTable::tDATA& data = listIt->second;
-			CChampionshipTeamsTable::tDATA& cData = rLstIt->second;
-			
-			if( data.name != cData.name)
-			{
-				data.name = cData.name;
-				table.UpdateRow(listIt->first, data);
-			}
-			UpdateTeamData(listIt->first);
-			m_CsTeams.erase(rLstIt);
-		}
-		listIt++;
-	}
-	
-	if(m_CsTeams.size() > 0)
-	{
-		CChampionshipTeamsTable::tTableIt rLstIt = m_CsTeams.begin();
-		while(rLstIt != m_CsTeams.end())
-		{
-			CChampionshipTeamsTable::tDATA& data = rLstIt->second;
-			table.AddRow(data);
-			AddTeamData(rLstIt->first, data.id);
-			rLstIt++;
-		}
-	}
-	
 	EndModal(wxID_OK);
 }
 
@@ -462,34 +547,6 @@ int udfDancersTeamMngr::GetSelectedDancer()
 	return res;
 }
 
-bool udfDancersTeamMngr::GetSelectedItemData(CDancersTable::tDATA*& pData)
-{
-}
-
-void udfDancersTeamMngr::OnClubChanged(wxCommandEvent& event)
-{
-	do
-	{
-		wxString value = m_comboClub->GetValue();
-		int nClub = m_comboClub->FindString(value);
-		if(-1 == nClub)
-			break;
-			
-		int nId = *(int*)m_comboClub->GetClientData(nClub);
-		RefreshDancers(nId);
-	
-	}while(0);
-}
-
-void udfDancersTeamMngr::OnSelectClub(wxCommandEvent& event)
-{
-}
-
-bool udfDancersTeamMngr::ValidateData()
-{
-	return true;
-}
-
 void udfDancersTeamMngr::EnableEditTeam(bool bEdit)
 {
 	m_comboCsCategories->Enable(bEdit);
@@ -503,10 +560,6 @@ void udfDancersTeamMngr::EnableEditTeam(bool bEdit)
 	m_bpRemoveDancerTeamDancer->Enable(bEdit);
 	
 	m_comboClub->Enable(!bEdit);
-}
-
-void udfDancersTeamMngr::AddTeamData(int nTeamId, int nInsertedTeamId)
-{
 }
 
 void udfDancersTeamMngr::RemoveTeamData(int nTeamId)
@@ -535,31 +588,3 @@ void udfDancersTeamMngr::RemoveTeamData(int nTeamId)
 		dTable.DelRow(dListIt->first);
 	}
 }
-
-void udfDancersTeamMngr::UpdateTeamData(int nTeamId)
-{
-	CChampionshipTeamCategoriesTable cTable(m_pCon);
-	CChampionshipTeamCategoriesTable::tTableMap cStored;
-	CChampionshipTeamCategoriesTable::tDATA cFilter = {0};
-	cFilter.teamId = nTeamId;
-	cTable.Find(cStored, cFilter);
-	
-	CChampionshipTeamCategoriesTable::tTableIt cListIt = cStored.begin();
-	while(cListIt != cStored.end())
-	{
-		//Update category info for team
-	}
-	
-	CChampionshipTeamDancersTable dTable(m_pCon);
-	CChampionshipTeamDancersTable::tTableMap dStored;
-	CChampionshipTeamDancersTable::tDATA dFilter = {0};
-	dFilter.teamId = nTeamId;
-	dTable.Find(dStored, dFilter);
-	
-	CChampionshipTeamDancersTable::tTableIt dListIt = dStored.begin();
-	while(dListIt != dStored.end())
-	{
-		//Update dancer info for team
-	}
-}
-

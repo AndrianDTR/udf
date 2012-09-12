@@ -38,13 +38,11 @@
 BEGIN_EVENT_TABLE( DancersTeamMngr, wxDialog )
 	EVT_TEXT( ID_SEARCH, DancersTeamMngr::_wxFB_OnSearch )
 	EVT_LISTBOX( ID_TEAM_LIST, DancersTeamMngr::_wxFB_OnSelectTeam )
-	EVT_BUTTON( wxID_ADD, DancersTeamMngr::_wxFB_OnAddDancerTeam )
-	EVT_BUTTON( wxID_REMOVE, DancersTeamMngr::_wxFB_OnRemoveTancerTeam )
+	EVT_BUTTON( wxID_ADD, DancersTeamMngr::_wxFB_OnAddTeam )
+	EVT_BUTTON( wxID_REMOVE, DancersTeamMngr::_wxFB_OnRemoveTeam )
 	EVT_BUTTON( ID_APPLY, DancersTeamMngr::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_OK, DancersTeamMngr::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, DancersTeamMngr::_wxFB_OnDiscard )
-	EVT_COMBOBOX( ID_CLUB, DancersTeamMngr::_wxFB_OnClubChanged )
-	EVT_TEXT_ENTER( ID_CLUB, DancersTeamMngr::_wxFB_OnSelectClub )
 	EVT_BUTTON( wxID_ADDDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnAddDancerTeamCategory )
 	EVT_BUTTON( wxID_REMOVEDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnRemoveDancerTeamCategory )
 	EVT_BUTTON( wxID_ADDDANCER, DancersTeamMngr::_wxFB_OnAddDancer2Team )
@@ -1763,6 +1761,8 @@ ChampionshipJudgesTeamMngrDlg::~ChampionshipJudgesTeamMngrDlg()
 }
 
 BEGIN_EVENT_TABLE( StartNumberAssignDlg, wxDialog )
+	EVT_LISTBOX( ID_TEAMS_LIST, StartNumberAssignDlg::_wxFB_OnSelectTeam )
+	EVT_TEXT( ID_SEARCH, StartNumberAssignDlg::_wxFB_OnSearch )
 	EVT_BUTTON( wxID_RANDOM, StartNumberAssignDlg::_wxFB_OnRandomFind )
 	EVT_BUTTON( wxID_NEXT, StartNumberAssignDlg::_wxFB_OnNextFind )
 	EVT_BUTTON( wxID_ASSIGN, StartNumberAssignDlg::_wxFB_OnAssign )
@@ -1780,20 +1780,8 @@ StartNumberAssignDlg::StartNumberAssignDlg( wxWindow* parent, wxWindowID id, con
 	wxStaticBoxSizer* sbSizer2;
 	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Teams") ), wxVERTICAL );
 	
-	wxBoxSizer* bSizer18;
-	bSizer18 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_staticText15 = new wxStaticText( this, wxID_ANY, _("Search"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText15->Wrap( -1 );
-	bSizer18->Add( m_staticText15, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_textCtrl5 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer18->Add( m_textCtrl5, 1, wxALL|wxEXPAND, 5 );
-	
-	sbSizer2->Add( bSizer18, 0, wxEXPAND, 5 );
-	
-	m_listBox4 = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
-	sbSizer2->Add( m_listBox4, 1, wxALL|wxEXPAND, 5 );
+	m_listTeams = new wxListBox( this, ID_TEAMS_LIST, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
+	sbSizer2->Add( m_listTeams, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer95->Add( sbSizer2, 0, wxEXPAND|wxALL, 5 );
 	
@@ -1804,16 +1792,15 @@ StartNumberAssignDlg::StartNumberAssignDlg( wxWindow* parent, wxWindowID id, con
 	m_staticText85->Wrap( -1 );
 	bSizer98->Add( m_staticText85, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
-	m_staticTeamName = new wxStaticText( this, wxID_ANY, _("MyLabel"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-	m_staticTeamName->Wrap( -1 );
-	m_staticTeamName->SetFont( wxFont( 18, 70, 90, 90, false, wxEmptyString ) );
+	m_textSearch = new wxTextCtrl( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE );
+	m_textSearch->SetFont( wxFont( 18, 70, 90, 90, false, wxEmptyString ) );
 	
-	bSizer98->Add( m_staticTeamName, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizer98->Add( m_textSearch, 0, wxALL|wxEXPAND, 5 );
 	
-	m_textCtrl40 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE );
-	m_textCtrl40->SetFont( wxFont( 42, 70, 90, 90, false, wxEmptyString ) );
+	m_textNumber = new wxTextCtrl( this, ID_NUMBER, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE );
+	m_textNumber->SetFont( wxFont( 42, 70, 90, 90, false, wxEmptyString ) );
 	
-	bSizer98->Add( m_textCtrl40, 0, wxALL|wxEXPAND, 5 );
+	bSizer98->Add( m_textNumber, 0, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer99;
 	bSizer99 = new wxBoxSizer( wxHORIZONTAL );
@@ -1826,6 +1813,7 @@ StartNumberAssignDlg::StartNumberAssignDlg( wxWindow* parent, wxWindowID id, con
 	bSizer99->Add( m_bpNextNumber, 0, wxALL, 5 );
 	
 	m_bpAssign = new wxBitmapButton( this, wxID_ASSIGN, wxBitmap( button_assign_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpAssign->SetDefault(); 
 	bSizer99->Add( m_bpAssign, 0, wxALL, 5 );
 	
 	bSizer98->Add( bSizer99, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -1837,7 +1825,6 @@ StartNumberAssignDlg::StartNumberAssignDlg( wxWindow* parent, wxWindowID id, con
 	bSizer83 = new wxBoxSizer( wxHORIZONTAL );
 	
 	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpSave->SetDefault(); 
 	bSizer83->Add( m_bpSave, 0, wxALL, 5 );
 	
 	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
