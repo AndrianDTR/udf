@@ -362,11 +362,11 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		void _wxFB_OnCategoryMngr( wxCommandEvent& event ){ OnCategoryMngr( event ); }
-		void _wxFB_OnDancersTeams( wxCommandEvent& event ){ OnDancersTeams( event ); }
-		void _wxFB_OnStartNumberAssign( wxCommandEvent& event ){ OnStartNumberAssign( event ); }
 		void _wxFB_OnJudgeMngr( wxCommandEvent& event ){ OnJudgeMngr( event ); }
 		void _wxFB_OnSendInvitation( wxCommandEvent& event ){ OnSendInvitation( event ); }
-		void _wxFB_OnResults( wxCommandEvent& event ){ OnResults( event ); }
+		void _wxFB_OnDancersTeams( wxCommandEvent& event ){ OnDancersTeams( event ); }
+		void _wxFB_OnStartNumberAssign( wxCommandEvent& event ){ OnStartNumberAssign( event ); }
+		void _wxFB_OnToursManager( wxCommandEvent& event ){ OnToursManager( event ); }
 		
 	
 	protected:
@@ -401,11 +401,11 @@ class MainFrameBase : public wxFrame
 			wxID_CHAMPIONSHIP_SAVE,
 			wxID_CHAMPIONSHIP_DISCARD,
 			wxID_CHAMPIONSHIP_CATEGORIES,
-			ID_TEAMS,
-			wxID_CHAMPIONSHIP_STARTNUMBERMNGR,
 			wxID_CHAMPIONSHIP_JUDGESTEAMMNGR,
 			wxID_CHAMPIONSHIP_SENDINVITATION,
-			wxID_RESULTS,
+			ID_TEAMS,
+			wxID_CHAMPIONSHIP_STARTNUMBERMNGR,
+			ID_TOURS,
 			ID_RAITING,
 			ID_NAME,
 			ID_TYPE,
@@ -432,11 +432,11 @@ class MainFrameBase : public wxFrame
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
 		wxBitmapButton* m_bpCategoryMngr;
-		wxBitmapButton* m_bpDancersTeams;
-		wxBitmapButton* m_bpStartNumberMngr;
 		wxBitmapButton* m_bpJudgesMngr;
 		wxBitmapButton* m_bpSendinvitation;
-		wxBitmapButton* m_bpResults;
+		wxBitmapButton* m_bpDancersTeams;
+		wxBitmapButton* m_bpStartNumberMngr;
+		wxBitmapButton* m_bpTours;
 		wxBitmapButton* m_bpRaitings;
 		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textChName;
@@ -477,11 +477,11 @@ class MainFrameBase : public wxFrame
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCategoryMngr( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDancersTeams( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnStartNumberAssign( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnJudgeMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSendInvitation( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnResults( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDancersTeams( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnStartNumberAssign( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnToursManager( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -609,6 +609,60 @@ class TrainersMngrDlg : public wxDialog
 		
 		TrainersMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Trainers"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 777,466 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~TrainersMngrDlg();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class CsTours
+///////////////////////////////////////////////////////////////////////////////
+class CsTours : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnSelectTour( wxCommandEvent& event ){ OnSelectTour( event ); }
+		void _wxFB_OnAddTour( wxCommandEvent& event ){ OnAddTour( event ); }
+		void _wxFB_OnRemoveTour( wxCommandEvent& event ){ OnRemoveTour( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_TOURS_LIST = 1000,
+			ID_NAME,
+			ID_LIMIT,
+			ID_FINAL,
+		};
+		
+		wxListBox* m_listTours;
+		wxBitmapButton* m_bpAddTrainer;
+		wxBitmapButton* m_bpRemoveTrainer;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
+		wxStaticText* m_staticText21;
+		wxTextCtrl* m_textName;
+		wxStaticText* m_staticText22;
+		wxTextCtrl* m_textLimit;
+		
+		wxCheckBox* m_checkFinal;
+		
+		wxBitmapButton* m_bpButton104;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnSelectTour( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddTour( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemoveTour( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		CsTours( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship tours"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 763,353 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~CsTours();
 	
 };
 
@@ -1022,6 +1076,65 @@ class StartNumberAssignDlg : public wxDialog
 		
 		StartNumberAssignDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 816,356 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~StartNumberAssignDlg();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class JudgeMark
+///////////////////////////////////////////////////////////////////////////////
+class JudgeMark : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnSelectJudge( wxCommandEvent& event ){ OnSelectJudge( event ); }
+		void _wxFB_OnSelectTeam( wxCommandEvent& event ){ OnSelectTeam( event ); }
+		void _wxFB_OnShowAll( wxCommandEvent& event ){ OnShowAll( event ); }
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnPlus( wxCommandEvent& event ){ OnPlus( event ); }
+		void _wxFB_OnMinus( wxCommandEvent& event ){ OnMinus( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_TEAMS_LIST = 1000,
+			ID_SHOW_ALL,
+			ID_SEARCH,
+			ID_GOOD,
+			ID_BED,
+		};
+		
+		wxStaticText* m_staticText92;
+		wxComboBox* m_comboJudge;
+		wxListBox* m_listNumbers;
+		wxCheckBox* m_checkBox4;
+		wxStaticText* m_staticText85;
+		wxTextCtrl* m_textSearch;
+		wxBitmapButton* m_bpGood;
+		wxBitmapButton* m_bpBed;
+		
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnSelectJudge( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectTeam( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnShowAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPlus( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMinus( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		JudgeMark( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judge marks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 816,356 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~JudgeMark();
 	
 };
 

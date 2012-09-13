@@ -15,6 +15,7 @@
 #include "udfCodeDialog.h"
 #include "udfCitiesMngr.h"
 #include "udfCountriesMngr.h"
+#include "udfCsTours.h"
 
 #include "version.h"
 #include "wx/aboutdlg.h"
@@ -679,9 +680,19 @@ void udfMainFrameBase::OnSendInvitation( wxCommandEvent& event )
 	// TODO: Implement OnSendInvitation
 }
 
-void udfMainFrameBase::OnResults( wxCommandEvent& event )
+void udfMainFrameBase::OnToursManager( wxCommandEvent& event )
 {
-	// TODO: Implement OnResults
+	do
+	{
+		int nItem = m_listChampionship->GetSelection();
+		if(-1 != nItem )
+		{
+			int nId = *(int*)m_listChampionship->GetClientData(nItem);
+			
+			udfCsTours dlg(this, nId);
+			dlg.ShowModal();
+		}
+	}while(0);
 }
 
 void udfMainFrameBase::OnCitiesMngr(wxCommandEvent& event)

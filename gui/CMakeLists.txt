@@ -20,6 +20,8 @@ set( HEADER_FILES
 	src/udf.h
 	src/udfAccountInfo.h
 	src/udfAddTeamCategory.h
+	src/udfCsTours.h
+	src/udfJudgesMark.h
 	src/udfCategoriesMngrDlg.h
 	src/udfChampionshipCategoriesMngrDlg.h
 	src/udfChampionshipTypeMngr.h
@@ -47,6 +49,8 @@ set( SOURCE_FILES
 	src/udfAccountInfo.cpp
 	src/udfAddTeamCategory.cpp
 	src/udfCategoriesMngrDlg.cpp
+	src/udfCsTours.cpp
+	src/udfJudgesMark.cpp
 	src/udfChampionshipCategoriesMngrDlg.cpp
 	src/udfChampionshipTypeMngr.cpp
 	src/udfChampionshipJudgesTeamMngrDlg.cpp

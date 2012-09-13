@@ -31,7 +31,7 @@ protected:
 	void OnStartNumberAssign( wxCommandEvent& event );
 	void OnJudgeMngr( wxCommandEvent& event );
 	void OnSendInvitation( wxCommandEvent& event );
-	void OnResults( wxCommandEvent& event );
+	void OnToursManager( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 	void OnAboutDlg( wxCommandEvent& event );
