@@ -1,29 +1,30 @@
 
 #include "stdio.h"
 
+#include "common.h"
 #include "dberrors.h"
-#include "tchampionshipcategories.h"
+#include "tchampionshiptour.h"
 
-#define	TABLE	TABLE_CHAMPIONSHIPCATEGORIES
+#define	TABLE	TABLE_CHAMPIONSHIPTOUR
 
-CChampionshipCategoriesTable::CChampionshipCategoriesTable(CDbConnection* pCon)
+CChampionshipToursTable::CChampionshipToursTable(CDbConnection* pCon)
 : CDbTable(pCon)
 , m_pConnection(pCon)
 {
 }
 
-CChampionshipCategoriesTable::~CChampionshipCategoriesTable(void)
+CChampionshipToursTable::~CChampionshipToursTable(void)
 {
 }
 
-long CChampionshipCategoriesTable::GetTable(tTableMap& data)
+long CChampionshipToursTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CChampionshipCategoriesTable::Find(tTableMap& data, const tDATA& filter)
+long CChampionshipToursTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -40,16 +41,30 @@ long CChampionshipCategoriesTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 		
-		if (0 != filter.catId)
+		if (0 != filter.championshipId)
 		{
-			sprintf(tmp, "%sand `category_id` like %d ", query, filter.catId);
+			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+	
+		if (0 != filter.limit)
+		{
+			sprintf(tmp, "%sand `limit` like %d ", query, filter.limit);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (0 != filter.championshipId)
+		if (0 != filter.final)
 		{
-			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
+			sprintf(tmp, "%sand `final` like '%c' ", query, filter.final);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (! filter.name.empty())
+		{
+			sprintf(tmp, "%sand `name` like '%s' ", query, filter.name.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -79,7 +94,9 @@ long CChampionshipCategoriesTable::Find(tTableMap& data, const tDATA& filter)
 			
 			el.id = qRes->getUInt(1);
             el.championshipId = qRes->getUInt(2);
-            el.catId = qRes->getUInt(3);
+			el.name = qRes->getString(3);
+			el.limit = qRes->getInt(4);
+            el.final = qRes->getString(5)[0];
 		
 			data.insert(make_pair(el.id, el));
 		}
@@ -90,7 +107,7 @@ long CChampionshipCategoriesTable::Find(tTableMap& data, const tDATA& filter)
 	return res;
 }
 
-long CChampionshipCategoriesTable::AddRow(tDATA& rec)
+long CChampionshipToursTable::AddRow(tDATA& rec)
 {
 	long res = UDF_E_FAIL;
 	
@@ -105,10 +122,14 @@ long CChampionshipCategoriesTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`championship_id`,`category_id`) values(%d,%d)"
+		sprintf(query, "insert into %s(`championship_id`,`name`,`limit`,`final`)"
+		" values(%d, '%s', %d, '%s')"
             , TABLE
             , rec.championshipId
-            , rec.catId);
+            , rec.name.c_str()
+			, rec.limit
+			, rec.final
+			);
 		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -117,7 +138,7 @@ long CChampionshipCategoriesTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CChampionshipCategoriesTable::DelRow(unsigned int nId)
+long CChampionshipToursTable::DelRow(unsigned int nId)
 {
 	long res = UDF_E_FAIL;
 	
@@ -137,7 +158,7 @@ long CChampionshipCategoriesTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CChampionshipCategoriesTable::GetRow(unsigned int nId, tDATA& data)
+long CChampionshipToursTable::GetRow(unsigned int nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -162,9 +183,11 @@ long CChampionshipCategoriesTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getUInt(1);
-        data.championshipId = qRes->getUInt(2);
-        data.catId = qRes->getUInt(3);
+        data.id = qRes->getInt(1);
+		data.championshipId = qRes->getUInt(2);
+		data.name = qRes->getString(3);
+		data.limit = qRes->getInt(4);
+        data.final = qRes->getString(5)[0];
 		
 		res = UDF_OK;
 	}while(0);
@@ -172,7 +195,7 @@ long CChampionshipCategoriesTable::GetRow(unsigned int nId, tDATA& data)
 	return res;
 }
 
-long CChampionshipCategoriesTable::UpdateRow(unsigned int nId, const tDATA& data)
+long CChampionshipToursTable::UpdateRow(unsigned int nId, const tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -188,16 +211,30 @@ long CChampionshipCategoriesTable::UpdateRow(unsigned int nId, const tDATA& data
 			break;
 		}
 		
-		if (0 != data.catId)
+		if (! data.name.empty())
 		{
-			sprintf(tmp, "%s `category_id` = %d,", query, data.catId);
+			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (data.championshipId != -1)
+		if (0 != data.championshipId)
 		{
 			sprintf(tmp, "%s `championship_id` = %d,", query, data.championshipId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (0 != data.limit)
+		{
+			sprintf(tmp, "%s `limit` = %d,", query, data.limit);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (0 != data.final)
+		{
+			sprintf(tmp, "%s `final` = '%c',", query, data.final);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

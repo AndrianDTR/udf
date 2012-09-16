@@ -624,6 +624,7 @@ class CsTours : public wxDialog
 		void _wxFB_OnSelectTour( wxCommandEvent& event ){ OnSelectTour( event ); }
 		void _wxFB_OnAddTour( wxCommandEvent& event ){ OnAddTour( event ); }
 		void _wxFB_OnRemoveTour( wxCommandEvent& event ){ OnRemoveTour( event ); }
+		void _wxFB_OnJudgesmark( wxCommandEvent& event ){ OnJudgesmark( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
@@ -640,8 +641,10 @@ class CsTours : public wxDialog
 		wxListBox* m_listTours;
 		wxBitmapButton* m_bpAddTrainer;
 		wxBitmapButton* m_bpRemoveTrainer;
+		wxBitmapButton* m_bpButton104;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
+		
 		wxStaticText* m_staticText21;
 		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText22;
@@ -649,19 +652,19 @@ class CsTours : public wxDialog
 		
 		wxCheckBox* m_checkFinal;
 		
-		wxBitmapButton* m_bpButton104;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSelectTour( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddTour( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveTour( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnJudgesmark( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		CsTours( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship tours"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 763,353 ), long style = wxDEFAULT_DIALOG_STYLE );
+		CsTours( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship tours"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 763,244 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~CsTours();
 	
 };

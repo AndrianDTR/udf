@@ -19,6 +19,7 @@ set( HEADER_FILES
 	src/tagecategory.h
 	src/tcategories.h
 	src/tchampionship.h
+	src/tchampionshiptour.h
 	src/tchampionshipcategories.h
 	src/tchampionship.h
 	src/tchampionshipjudgesmark.h
@@ -47,6 +48,7 @@ set( SOURCE_FILES
 	src/tagecategory.cpp
 	src/tcategories.cpp
 	src/tchampionship.cpp
+	src/tchampionshiptour.cpp
 	src/tchampionshipcategories.cpp
 	src/tchampionship.cpp
 	src/tchampionshipjudgesmark.cpp

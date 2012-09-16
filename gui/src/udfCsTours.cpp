@@ -6,6 +6,25 @@ udfCsTours::udfCsTours( wxWindow* parent, unsigned int nCsId )
 , m_nCsId(nCsId)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
+	
+	RefreshList();
+}
+
+void udfCsTours::RefreshList()
+{
+	m_Tours.clear();
+	m_listTours->Clear();
+	CChampionshipToursTable(m_pCon).GetTable(m_Tours);
+	/*
+	CChampionshipToursTable::tTableIt it = m_Tours.begin();
+	while(it != m_Tours.end())
+	{
+		CChampionshipToursTable::tDATA& data = it->second;
+		int nPos = m_listTours->GetCount();
+		m_listTours->Insert(data.name, nPos, (void*)&it->first);
+		it++;
+	}
+	//*/
 }
 
 void udfCsTours::OnSelectTour( wxCommandEvent& event )
@@ -32,3 +51,4 @@ void udfCsTours::OnDiscard( wxCommandEvent& event )
 {
 	EndModal(wxID_CANCEL);
 }
+

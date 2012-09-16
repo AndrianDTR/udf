@@ -1151,6 +1151,7 @@ BEGIN_EVENT_TABLE( CsTours, wxDialog )
 	EVT_LISTBOX( ID_TOURS_LIST, CsTours::_wxFB_OnSelectTour )
 	EVT_BUTTON( wxID_ADD, CsTours::_wxFB_OnAddTour )
 	EVT_BUTTON( wxID_REMOVE, CsTours::_wxFB_OnRemoveTour )
+	EVT_BUTTON( wxID_ANY, CsTours::_wxFB_OnJudgesmark )
 	EVT_BUTTON( wxID_OK, CsTours::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, CsTours::_wxFB_OnDiscard )
 END_EVENT_TABLE()
@@ -1188,6 +1189,9 @@ CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	m_bpRemoveTrainer = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer76->Add( m_bpRemoveTrainer, 0, wxALL, 5 );
 	
+	m_bpButton104 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpButton104, 0, wxALL, 5 );
+	
 	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	m_bpSave->SetDefault(); 
 	bSizer76->Add( m_bpSave, 0, wxALL, 5 );
@@ -1196,6 +1200,9 @@ CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	bSizer76->Add( m_bpDiscard, 0, wxALL, 5 );
 	
 	bSizer22->Add( bSizer76, 0, wxALIGN_RIGHT, 5 );
+	
+	
+	bSizer22->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer3;
 	fgSizer3 = new wxFlexGridSizer( 3, 2, 0, 0 );
@@ -1228,14 +1235,6 @@ CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	
 	
 	bSizer22->Add( 0, 0, 1, wxEXPAND, 5 );
-	
-	wxBoxSizer* bSizer96;
-	bSizer96 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpButton104 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer96->Add( m_bpButton104, 0, wxALL, 5 );
-	
-	bSizer22->Add( bSizer96, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	bSizer20->Add( bSizer22, 1, wxEXPAND, 5 );
 	
