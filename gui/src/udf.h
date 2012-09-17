@@ -624,7 +624,7 @@ class CsTours : public wxDialog
 		void _wxFB_OnSelectTour( wxCommandEvent& event ){ OnSelectTour( event ); }
 		void _wxFB_OnAddTour( wxCommandEvent& event ){ OnAddTour( event ); }
 		void _wxFB_OnRemoveTour( wxCommandEvent& event ){ OnRemoveTour( event ); }
-		void _wxFB_OnJudgesmark( wxCommandEvent& event ){ OnJudgesmark( event ); }
+		void _wxFB_OnJudgesMark( wxCommandEvent& event ){ OnJudgesMark( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
@@ -633,15 +633,16 @@ class CsTours : public wxDialog
 		enum
 		{
 			ID_TOURS_LIST = 1000,
+			ID_MARKS,
 			ID_NAME,
 			ID_LIMIT,
 			ID_FINAL,
 		};
 		
 		wxListBox* m_listTours;
-		wxBitmapButton* m_bpAddTrainer;
-		wxBitmapButton* m_bpRemoveTrainer;
-		wxBitmapButton* m_bpButton104;
+		wxBitmapButton* m_bpAdd;
+		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpMarks;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
 		
@@ -657,7 +658,7 @@ class CsTours : public wxDialog
 		virtual void OnSelectTour( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddTour( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveTour( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnJudgesmark( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnJudgesMark( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		

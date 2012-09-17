@@ -9848,7 +9848,7 @@
                                                         <property name="label">Add</property>
                                                         <property name="maximum_size"></property>
                                                         <property name="minimum_size"></property>
-                                                        <property name="name">m_bpAddTrainer</property>
+                                                        <property name="name">m_bpAdd</property>
                                                         <property name="permission">protected</property>
                                                         <property name="pos"></property>
                                                         <property name="selected"></property>
@@ -9909,7 +9909,7 @@
                                                         <property name="label">Remove</property>
                                                         <property name="maximum_size"></property>
                                                         <property name="minimum_size"></property>
-                                                        <property name="name">m_bpRemoveTrainer</property>
+                                                        <property name="name">m_bpRemove</property>
                                                         <property name="permission">protected</property>
                                                         <property name="pos"></property>
                                                         <property name="selected"></property>
@@ -9966,11 +9966,11 @@
                                                         <property name="font"></property>
                                                         <property name="hidden">0</property>
                                                         <property name="hover"></property>
-                                                        <property name="id">wxID_ANY</property>
-                                                        <property name="label">MyButton</property>
+                                                        <property name="id">ID_MARKS</property>
+                                                        <property name="label">Judge marks</property>
                                                         <property name="maximum_size"></property>
                                                         <property name="minimum_size"></property>
-                                                        <property name="name">m_bpButton104</property>
+                                                        <property name="name">m_bpMarks</property>
                                                         <property name="permission">protected</property>
                                                         <property name="pos"></property>
                                                         <property name="selected"></property>
@@ -9985,7 +9985,7 @@
                                                         <property name="window_extra_style"></property>
                                                         <property name="window_name"></property>
                                                         <property name="window_style"></property>
-                                                        <event name="OnButtonClick">OnJudgesmark</event>
+                                                        <event name="OnButtonClick">OnJudgesMark</event>
                                                         <event name="OnChar"></event>
                                                         <event name="OnEnterWindow"></event>
                                                         <event name="OnEraseBackground"></event>

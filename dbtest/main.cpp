@@ -419,7 +419,7 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 		CChampionshipJudgesMarkTable::tTableIt it;
 		
 		CChampionshipJudgesMarkTable::tDATA data = {0};
-		data.catId = 10;
+		data.tourId = 10;
 		data.championshipId = 3;
 		data.judgeId = 2;
 		data.teamId = 2;
@@ -450,14 +450,14 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 				, it->first
 				, it->second.championshipId
 				, it->second.teamId
-				, it->second.catId
+				, it->second.tourId
 				, it->second.judgeId
 				, it->second.nMark);
 			it++;
 		}
 		
 		// Update row
-		data.catId = 8;
+		data.tourId = 8;
 		data.championshipId = 3;
 		data.judgeId = 5;
 		data.teamId = 3;
@@ -481,7 +481,7 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 				, it->first
 				, it->second.championshipId
 				, it->second.teamId
-				, it->second.catId
+				, it->second.tourId
 				, it->second.judgeId
 				, it->second.nMark);
 			it++;

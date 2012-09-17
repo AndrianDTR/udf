@@ -26,13 +26,16 @@ protected:
 	void OnRemoveTour( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
-	
+	void OnJudgesMark( wxCommandEvent& event );
+		
 public:
 	/** Constructor */
 	udfCsTours( wxWindow* parent, unsigned int nCsId );
 	
 protected:
 	void	RefreshList();
+	bool 	IsFinalAdded();
+	void	DisableEdit(bool bEdit = true);
 };
 
 #endif // __udfCsTours__

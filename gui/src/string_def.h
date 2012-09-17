@@ -60,6 +60,10 @@ STR_DEFINITION(STR_ERR_ADD_TEAM_FAILED, "Team could not be added.");
 STR_DEFINITION(STR_ERR_UPD_TEAM_FAILED, "Team could not be updated.");
 STR_DEFINITION(STR_ERR_DEL_TEAM_FAILED, "Team could not be removed.");
 
+STR_DEFINITION(STR_ERR_ADD_CHAMPIONSHIP_TOUR_FAILED, "Championship tour could not be added.");
+STR_DEFINITION(STR_ERR_UPD_CHAMPIONSHIP_TOUR_FAILED, "Championship tour could not be updated.");
+STR_DEFINITION(STR_ERR_DEL_CHAMPIONSHIP_TOUR_FAILED, "Championship tour could not be removed.");
+
 ////////////////////////////////////////////////////////////////////////////////////
 STR_DEFINITION(STR_WARN_ALREADY_PRESENT, "This item is already inserted.");
 

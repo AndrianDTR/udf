@@ -12,7 +12,7 @@
 #define TABLE_CHAMPIONSHIPJUDGESMARK			"championship_judges_mark"
 #define TABLE_CHAMPIONSHIPJUDGESTEAM			"championship_judges_team"
 #define TABLE_CHAMPIONSHIPTEAM					"championship_team"
-#define TABLE_CHAMPIONSHIPTOUR					"championship_tour"
+#define TABLE_CHAMPIONSHIPTOUR					"championship_tours"
 #define TABLE_CHAMPIONSHIPTYPE					"championship_type"
 #define TABLE_CHAMPIONSHIPTEAMCATEGORIES		"championship_team_categories"
 #define TABLE_CHAMPIONSHIPTEAMDANCERS			"championship_team_dancers"
@@ -29,6 +29,9 @@
 #define TABLE_TRAINERS							"treners"
 
 #define MAX_QUERY_LEN							1500
+
+#define udfYES									'Y'
+#define	udfNO									'N'
 
 #include "stdio.h"
 #include "string.h"

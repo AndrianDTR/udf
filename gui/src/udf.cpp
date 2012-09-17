@@ -1151,7 +1151,7 @@ BEGIN_EVENT_TABLE( CsTours, wxDialog )
 	EVT_LISTBOX( ID_TOURS_LIST, CsTours::_wxFB_OnSelectTour )
 	EVT_BUTTON( wxID_ADD, CsTours::_wxFB_OnAddTour )
 	EVT_BUTTON( wxID_REMOVE, CsTours::_wxFB_OnRemoveTour )
-	EVT_BUTTON( wxID_ANY, CsTours::_wxFB_OnJudgesmark )
+	EVT_BUTTON( ID_MARKS, CsTours::_wxFB_OnJudgesMark )
 	EVT_BUTTON( wxID_OK, CsTours::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, CsTours::_wxFB_OnDiscard )
 END_EVENT_TABLE()
@@ -1183,14 +1183,14 @@ CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	wxBoxSizer* bSizer76;
 	bSizer76 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpAddTrainer = new wxBitmapButton( this, wxID_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer76->Add( m_bpAddTrainer, 0, wxALL, 5 );
+	m_bpAdd = new wxBitmapButton( this, wxID_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpAdd, 0, wxALL, 5 );
 	
-	m_bpRemoveTrainer = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer76->Add( m_bpRemoveTrainer, 0, wxALL, 5 );
+	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpRemove, 0, wxALL, 5 );
 	
-	m_bpButton104 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer76->Add( m_bpButton104, 0, wxALL, 5 );
+	m_bpMarks = new wxBitmapButton( this, ID_MARKS, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpMarks, 0, wxALL, 5 );
 	
 	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	m_bpSave->SetDefault(); 

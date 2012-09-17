@@ -113,8 +113,7 @@ void udfJudgesMngr::OnSelectJudge( wxCommandEvent& event )
 		wxString city = wxString::Format(STR_FORMAT_CITY_NAME, cityData.Name, countryData.name);
 		m_comboCity->SetValue(city);
 		
-		DEBUG_PRINTF("PRACTICER %c - %d", pData->practicer, pData->practicer == 'Y');
-		m_checkPracticer->SetValue(pData->practicer == 'Y');
+		m_checkPracticer->SetValue(pData->practicer == udfYES);
 		
 		m_datePay->SetValue(wxDateTime(pData->pay_date));
 		m_dateExp->SetValue(wxDateTime(pData->exp_date));
@@ -141,7 +140,7 @@ void udfJudgesMngr::OnAddJudge( wxCommandEvent& event )
 		data.phone = m_textPhone->GetValue();
 		data.pay_date = m_datePay->GetValue().GetTicks();
 		data.exp_date = m_dateExp->GetValue().GetTicks();
-		data.practicer = m_checkPracticer->GetValue() ? 'Y' : 'N';
+		data.practicer = m_checkPracticer->GetValue() ? udfYES : udfNO;
 		
 		CJudgesTable::tTableIt it = m_Judges.insert(std::make_pair(data.id, data)).first;
 		m_listJudges->Insert(data.name, nItem, (void*)&it->first);
@@ -182,7 +181,7 @@ void udfJudgesMngr::OnUpdate(wxCommandEvent& event)
 		pData->attestationInfo = m_textAttestation->GetValue();
 		pData->email = m_textEmail->GetValue();
 		pData->phone = m_textPhone->GetValue();
-		pData->practicer = m_checkPracticer->GetValue() ? 'Y' : 'N';
+		pData->practicer = m_checkPracticer->GetValue() ? udfYES : udfNO;
 		
 		pData->pay_date = m_datePay->GetValue().GetTicks();
 		pData->exp_date = m_dateExp->GetValue().GetTicks();

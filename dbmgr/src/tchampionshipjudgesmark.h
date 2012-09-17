@@ -16,7 +16,7 @@ public:
 		unsigned int	championshipId;
 		unsigned int	judgeId;
 		unsigned int	teamId;
-		unsigned int	catId;
+		unsigned int	tourId;
 		int				nMark;
 	};
 

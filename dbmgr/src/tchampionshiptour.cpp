@@ -113,8 +113,7 @@ long CChampionshipToursTable::AddRow(tDATA& rec)
 	
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		sql::ResultSet*		qRes = NULL;
+		char query[MAX_QUERY_LEN] = {0};
 		
 		if(! m_pConnection)
 		{
@@ -123,13 +122,14 @@ long CChampionshipToursTable::AddRow(tDATA& rec)
 		}
 		
 		sprintf(query, "insert into %s(`championship_id`,`name`,`limit`,`final`)"
-		" values(%d, '%s', %d, '%s')"
+		" values(%d, '%s', %d, '%c')"
             , TABLE
             , rec.championshipId
             , rec.name.c_str()
 			, rec.limit
 			, rec.final
 			);
+		
 		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();

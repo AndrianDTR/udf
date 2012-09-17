@@ -40,9 +40,9 @@ long CChampionshipJudgesMarkTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 		
-		if (0 != filter.catId)
+		if (0 != filter.tourId)
 		{
-			sprintf(tmp, "%sand `category_id` like %d ", query, filter.catId);
+			sprintf(tmp, "%sand `tour_id` like %d ", query, filter.tourId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -100,9 +100,9 @@ long CChampionshipJudgesMarkTable::Find(tTableMap& data, const tDATA& filter)
 			
 			el.id = qRes->getUInt64(1);
             el.championshipId = qRes->getUInt64(2);
-            el.judgeId = qRes->getUInt(3);
-            el.teamId = qRes->getUInt(4);
-            el.catId = qRes->getInt(5);
+            el.tourId = qRes->getUInt64(3);
+            el.judgeId = qRes->getUInt64(4);
+            el.teamId = qRes->getUInt64(5);
             el.nMark = qRes->getInt(6);
 		
 			data.insert(make_pair(el.id, el));
@@ -129,12 +129,13 @@ long CChampionshipJudgesMarkTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-        sprintf(query, "insert into %s(`championship_id`,`judge_id`,`team_id`,`category_id`,`mark`) values(%d,%d,%d,%d,%d)"
+        sprintf(query, "insert into %s(`championship_id`, `tour_id`, `judge_id`, `team_id`, `mark`)"
+			" values(%d, %d, %d, %d, %d)"
             , TABLE
             , rec.championshipId
+            , rec.tourId
             , rec.judgeId
             , rec.teamId
-            , rec.catId
             , rec.nMark);
         res = m_pConnection->Execute(query);
 		
@@ -187,11 +188,12 @@ long CChampionshipJudgesMarkTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-        data.championshipId = qRes->getUInt64(1);
-        data.judgeId = qRes->getUInt(2);
-        data.teamId = qRes->getUInt(3);
-        data.catId = qRes->getInt(4);
-        data.nMark = qRes->getInt(5);
+		data.id = qRes->getUInt64(1);
+        data.championshipId = qRes->getUInt64(2);
+        data.tourId = qRes->getUInt64(3);
+        data.judgeId = qRes->getUInt64(4);
+        data.teamId = qRes->getUInt64(5);
+        data.nMark = qRes->getInt(6);
 		
 		res = UDF_OK;
 	}while(0);
@@ -215,9 +217,9 @@ long CChampionshipJudgesMarkTable::UpdateRow(unsigned int nId, const tDATA& data
 			break;
 		}
 		
-		if (data.catId != -1)
+		if (data.tourId != -1)
 		{
-			sprintf(tmp, "%s `category_id` = %d,", query, data.catId);
+			sprintf(tmp, "%s `tour_id` = %d,", query, data.tourId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
