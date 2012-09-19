@@ -236,7 +236,10 @@ void udfDancersMngrDlg::OnUpdate( wxCommandEvent& event )
 		if(! ValidateData())
 			break;
 		
-		int nItem = m_listDancers->FindString(pData->name, true);
+		int nItem = m_listDancers->GetSelection();
+		if(-1 == nItem)
+			break;
+			
 		pData->clubId = *(int*)m_comboClub->GetClientData(GetSelectedClub());
 		pData->trainerId = *(int*)m_comboTrainer->GetClientData(GetSelectedTrainer());
 		pData->liga = *(int*)m_comboLiga->GetClientData(GetSelectedLigue());
@@ -412,7 +415,7 @@ bool udfDancersMngrDlg::GetSelectedItemData(CDancersTable::tDATA*& pData)
 
 bool udfDancersMngrDlg::ValidateData()
 {
-		bool res = false;
+	bool res = false;
 	do
 	{
 		if(-1 == GetSelectedClub())

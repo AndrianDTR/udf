@@ -20,13 +20,13 @@ private:
 	CChampionshipTeamsTable* 					m_pTable;
 	CChampionshipTeamsTable::tDATA 				m_Filter;
 	CChampionshipTeamsTable::tTableMap			m_CsTeams;
-	unsigned int								m_nLastAssign;
+	unsigned long								m_nLastAssign;
+	
 	
 protected:
 	// Handlers for StartNumberAssignDlg events.
 	void OnSearch( wxCommandEvent& event );
 	void OnRandomFind( wxCommandEvent& event );
-	void OnNextFind( wxCommandEvent& event );
 	void OnAssign( wxCommandEvent& event );
 	void OnSelectTeam( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
@@ -37,7 +37,8 @@ public:
 	udfStartNumberAssignDlg( wxWindow* parent, unsigned int nCsId );
 	
 protected:
-	void	RefreshList();
+	void			RefreshList();
+	unsigned long 	FindNextNum(unsigned long num);
 };
 
 #endif // __udfStartNumberAssignDlg__

@@ -33,7 +33,7 @@
             <property name="minimum_size"></property>
             <property name="name">DancersTeamMngr</property>
             <property name="pos"></property>
-            <property name="size">775,453</property>
+            <property name="size">775,485</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE</property>
             <property name="subclass"></property>
             <property name="title">Dancers team</property>
@@ -836,7 +836,7 @@
                                                 <property name="window_name"></property>
                                                 <property name="window_style"></property>
                                                 <event name="OnChar"></event>
-                                                <event name="OnCombobox"></event>
+                                                <event name="OnCombobox">OnClubChanged</event>
                                                 <event name="OnEnterWindow"></event>
                                                 <event name="OnEraseBackground"></event>
                                                 <event name="OnKeyDown"></event>
@@ -897,7 +897,7 @@
                                                     <property name="border">5</property>
                                                     <property name="flag">wxEXPAND</property>
                                                     <property name="proportion">1</property>
-                                                    <object class="wxBoxSizer" expanded="0">
+                                                    <object class="wxBoxSizer" expanded="1">
                                                         <property name="minimum_size"></property>
                                                         <property name="name">bSizer91</property>
                                                         <property name="orient">wxVERTICAL</property>
@@ -910,7 +910,7 @@
                                                                 <property name="bg"></property>
                                                                 <property name="choices"></property>
                                                                 <property name="context_help"></property>
-                                                                <property name="enabled">0</property>
+                                                                <property name="enabled">1</property>
                                                                 <property name="fg"></property>
                                                                 <property name="font"></property>
                                                                 <property name="hidden">0</property>
@@ -968,7 +968,7 @@
                                                                 <property name="bg"></property>
                                                                 <property name="choices"></property>
                                                                 <property name="context_help"></property>
-                                                                <property name="enabled">0</property>
+                                                                <property name="enabled">1</property>
                                                                 <property name="fg"></property>
                                                                 <property name="font"></property>
                                                                 <property name="hidden">0</property>
@@ -1037,7 +1037,7 @@
                                                                 <property name="context_help"></property>
                                                                 <property name="default">0</property>
                                                                 <property name="disabled"></property>
-                                                                <property name="enabled">0</property>
+                                                                <property name="enabled">1</property>
                                                                 <property name="fg"></property>
                                                                 <property name="focus"></property>
                                                                 <property name="font"></property>
@@ -1098,7 +1098,7 @@
                                                                 <property name="context_help"></property>
                                                                 <property name="default">0</property>
                                                                 <property name="disabled"></property>
-                                                                <property name="enabled">0</property>
+                                                                <property name="enabled">1</property>
                                                                 <property name="fg"></property>
                                                                 <property name="focus"></property>
                                                                 <property name="font"></property>
@@ -1200,7 +1200,7 @@
                                                                 <property name="bg"></property>
                                                                 <property name="choices"></property>
                                                                 <property name="context_help"></property>
-                                                                <property name="enabled">0</property>
+                                                                <property name="enabled">1</property>
                                                                 <property name="fg"></property>
                                                                 <property name="font"></property>
                                                                 <property name="hidden">0</property>
@@ -1258,7 +1258,7 @@
                                                                 <property name="bg"></property>
                                                                 <property name="choices"></property>
                                                                 <property name="context_help"></property>
-                                                                <property name="enabled">0</property>
+                                                                <property name="enabled">1</property>
                                                                 <property name="fg"></property>
                                                                 <property name="font"></property>
                                                                 <property name="hidden">0</property>
@@ -1327,7 +1327,7 @@
                                                                 <property name="context_help"></property>
                                                                 <property name="default">0</property>
                                                                 <property name="disabled"></property>
-                                                                <property name="enabled">0</property>
+                                                                <property name="enabled">1</property>
                                                                 <property name="fg"></property>
                                                                 <property name="focus"></property>
                                                                 <property name="font"></property>
@@ -1388,7 +1388,7 @@
                                                                 <property name="context_help"></property>
                                                                 <property name="default">0</property>
                                                                 <property name="disabled"></property>
-                                                                <property name="enabled">0</property>
+                                                                <property name="enabled">1</property>
                                                                 <property name="fg"></property>
                                                                 <property name="focus"></property>
                                                                 <property name="font"></property>
@@ -17316,7 +17316,7 @@
                                         <property name="label">Show all</property>
                                         <property name="maximum_size"></property>
                                         <property name="minimum_size"></property>
-                                        <property name="name">m_checkBox4</property>
+                                        <property name="name">m_checkShowAll</property>
                                         <property name="permission">protected</property>
                                         <property name="pos"></property>
                                         <property name="size"></property>

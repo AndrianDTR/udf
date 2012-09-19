@@ -9,10 +9,11 @@
 #include "tjudges.h"
 #include "ttreiners.h"
 #include "tchampionshipteam.h"
+#include "tchampionshipjudgesmark.h"
 
 #include "string_def.h"
 
-wxString	GetClubNameById(int nId)
+wxString	GetClubNameById(unsigned int nId)
 {
 	wxString res;
 	
@@ -44,7 +45,7 @@ wxString	GetClubNameById(int nId)
 	return res;
 }
 
-wxString	GetCityNameById(int nId)
+wxString	GetCityNameById(unsigned int nId)
 {
 	wxString res;
 	
@@ -70,7 +71,7 @@ wxString	GetCityNameById(int nId)
 	return res;
 }
 
-wxString	GetDancerNameById(int nId)
+wxString	GetDancerNameById(unsigned int nId)
 {
 	wxString res;
 	
@@ -90,7 +91,7 @@ wxString	GetDancerNameById(int nId)
 	return res;
 }
 
-wxString	GetJudgeNameById(int nId)
+wxString	GetJudgeNameById(unsigned int nId)
 {
 	wxString res;
 	
@@ -110,7 +111,7 @@ wxString	GetJudgeNameById(int nId)
 	return res;
 }
 
-wxString	GetTrainerNameById(int nId)
+wxString	GetTrainerNameById(unsigned int nId)
 {
 	wxString res;
 	
@@ -130,7 +131,7 @@ wxString	GetTrainerNameById(int nId)
 	return res;
 }
 
-wxString	GetCategoryNameById(int nId)
+wxString	GetCategoryNameById(unsigned int nId)
 {
 	wxString res;
 	
@@ -150,7 +151,7 @@ wxString	GetCategoryNameById(int nId)
 	return res;
 }
 
-wxString	GetTeamNameById(int nId)
+wxString	GetTeamNameById(unsigned int nId)
 {
 	wxString res;
 	
@@ -165,6 +166,34 @@ wxString	GetTeamNameById(int nId)
 		}
 		
 		res = data.name;
+	}while(0);
+	
+	return res;
+}
+
+int GetJudgeMark(unsigned int nChId, unsigned int nChTourId, unsigned int nJudgeId, unsigned int nTeamId)
+{
+	int res = -1;
+	
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CChampionshipJudgesMarkTable::tDATA	filter = {0};
+		
+		CChampionshipJudgesMarkTable::tTableMap	data;
+		
+		if(UDF_OK != CChampionshipJudgesMarkTable(pCon).Find(data, filter))
+		{
+			break;
+		}
+		
+		if(1 != data.size())
+		{
+			break;
+		}
+		
+		CChampionshipJudgesMarkTable::tDATA& mark = data.begin()->second;
+		res = mark.nMark;
 	}while(0);
 	
 	return res;

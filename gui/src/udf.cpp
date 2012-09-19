@@ -46,6 +46,7 @@ BEGIN_EVENT_TABLE( DancersTeamMngr, wxDialog )
 	EVT_BUTTON( ID_APPLY, DancersTeamMngr::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_OK, DancersTeamMngr::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, DancersTeamMngr::_wxFB_OnDiscard )
+	EVT_COMBOBOX( ID_CLUB, DancersTeamMngr::_wxFB_OnClubChanged )
 	EVT_BUTTON( wxID_ADDDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnAddDancerTeamCategory )
 	EVT_BUTTON( wxID_REMOVEDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnRemoveDancerTeamCategory )
 	EVT_BUTTON( wxID_ADDDANCER, DancersTeamMngr::_wxFB_OnAddDancer2Team )
@@ -147,13 +148,9 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	bSizer91 = new wxBoxSizer( wxVERTICAL );
 	
 	m_comboCsCategories = new wxComboBox( this, ID_CATEGORIES_COMBO, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	m_comboCsCategories->Enable( false );
-	
 	bSizer91->Add( m_comboCsCategories, 0, wxALL|wxEXPAND, 5 );
 	
 	m_listTeamCategories = new wxListBox( this, ID_TEAM_CATS_LIST, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	m_listTeamCategories->Enable( false );
-	
 	bSizer91->Add( m_listTeamCategories, 0, wxALL|wxEXPAND, 5 );
 	
 	fgSizer11->Add( bSizer91, 1, wxEXPAND, 5 );
@@ -162,17 +159,9 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	bSizer92 = new wxBoxSizer( wxVERTICAL );
 	
 	m_bpAddDancerTeamCategory = new wxBitmapButton( this, wxID_ADDDANCERTEAMCATEGORY, wxBitmap( button_categoryadd_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpAddDancerTeamCategory->Enable( false );
-	
-	m_bpAddDancerTeamCategory->Enable( false );
-	
 	bSizer92->Add( m_bpAddDancerTeamCategory, 0, wxALL, 5 );
 	
 	m_bpRemoveDancerTeamCategory = new wxBitmapButton( this, wxID_REMOVEDANCERTEAMCATEGORY, wxBitmap( button_categoryremove_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpRemoveDancerTeamCategory->Enable( false );
-	
-	m_bpRemoveDancerTeamCategory->Enable( false );
-	
 	bSizer92->Add( m_bpRemoveDancerTeamCategory, 0, wxALL, 5 );
 	
 	fgSizer11->Add( bSizer92, 1, wxEXPAND, 5 );
@@ -195,13 +184,9 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	bSizer90 = new wxBoxSizer( wxVERTICAL );
 	
 	m_comboDancers = new wxComboBox( this, ID_DANCERS_COMBO, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	m_comboDancers->Enable( false );
-	
 	bSizer90->Add( m_comboDancers, 0, wxALL|wxEXPAND, 5 );
 	
 	m_listDancers = new wxListBox( this, ID_DANCERS_LIST, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	m_listDancers->Enable( false );
-	
 	bSizer90->Add( m_listDancers, 1, wxALL|wxEXPAND, 5 );
 	
 	fgSizer12->Add( bSizer90, 1, wxEXPAND, 5 );
@@ -210,17 +195,9 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	bSizer57 = new wxBoxSizer( wxVERTICAL );
 	
 	m_bpAddDancerTeamDancer = new wxBitmapButton( this, wxID_ADDDANCER, wxBitmap( button_danceradd_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpAddDancerTeamDancer->Enable( false );
-	
-	m_bpAddDancerTeamDancer->Enable( false );
-	
 	bSizer57->Add( m_bpAddDancerTeamDancer, 0, wxALL, 5 );
 	
 	m_bpRemoveDancerTeamDancer = new wxBitmapButton( this, wxID_REMOVEDANCER, wxBitmap( button_dancerremove_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpRemoveDancerTeamDancer->Enable( false );
-	
-	m_bpRemoveDancerTeamDancer->Enable( false );
-	
 	bSizer57->Add( m_bpRemoveDancerTeamDancer, 0, wxALL, 5 );
 	
 	fgSizer12->Add( bSizer57, 1, wxEXPAND, 5 );
@@ -1991,8 +1968,8 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_listNumbers = new wxListBox( this, ID_TEAMS_LIST, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
 	sbSizer2->Add( m_listNumbers, 1, wxALL|wxEXPAND, 5 );
 	
-	m_checkBox4 = new wxCheckBox( this, ID_SHOW_ALL, _("Show all"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbSizer2->Add( m_checkBox4, 0, wxALL, 5 );
+	m_checkShowAll = new wxCheckBox( this, ID_SHOW_ALL, _("Show all"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer2->Add( m_checkShowAll, 0, wxALL, 5 );
 	
 	bSizer112->Add( sbSizer2, 0, wxEXPAND|wxALL, 5 );
 	

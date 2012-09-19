@@ -3,12 +3,13 @@
 
 #include "wx/string.h"
 
-wxString	GetClubNameById(int nId);
-wxString	GetCityNameById(int nId);
-wxString	GetDancerNameById(int nId);
-wxString	GetJudgeNameById(int nId);
-wxString	GetTrainerNameById(int nId);
-wxString	GetCategoryNameById(int nId);
-wxString	GetTeamNameById(int nId);
+wxString	GetClubNameById(unsigned int nId);
+wxString	GetCityNameById(unsigned int nId);
+wxString	GetDancerNameById(unsigned int nId);
+wxString	GetJudgeNameById(unsigned int nId);
+wxString	GetTrainerNameById(unsigned int nId);
+wxString	GetCategoryNameById(unsigned int nId);
+wxString	GetTeamNameById(unsigned int nId);
+int			GetJudgeMark(unsigned int nChId, unsigned int nChTourId, unsigned int nJudgeId, unsigned int nTeamId);
 
 #endif // __uiutils_h__

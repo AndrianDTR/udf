@@ -73,10 +73,11 @@ STR_DEFINITION(STR_WARN_NOW_GREATTHEN_ChDATE, "Championship date must be great t
 STR_DEFINITION(STR_WARN_REGCLOSE_GREATTHEN_ChDATE, "Championship date must be lower then reg close date.");
 STR_DEFINITION(STR_WARN_REGOPEN_GREATTHEN_REGCLOSE, "Championship reg open date must be lower then reg close date.");
 STR_DEFINITION(STR_WARN_PAY_GREATTHEN_EXP, "Pay date is greater then expire date.");
+STR_DEFINITION(STR_WARN_REMOVE_ALL_TEAM_DANCERS, "If you change the club. All team dencers will be removed. \n\nRemove them all?");
 
 STR_DEFINITION(STR_FORMAT_DATE, "%04d-%02d-%02d");
 STR_DEFINITION(STR_FORMAT_TEAM_CATEGORY_NAME, "%s (%s)");
-STR_DEFINITION(STR_FORMAT_START_NUMBER, "%05d");
+STR_DEFINITION(STR_FORMAT_START_NUMBER, "%05ld");
 
 STR_DEFINITION(STR_INCORRECT_VALUE, "Incorrect value");
 STR_DEFINITION(STR_NOT_IN_DB_INSERT, "Selected '%s' not present in database. Insert it?");

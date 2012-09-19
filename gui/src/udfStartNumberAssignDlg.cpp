@@ -7,7 +7,7 @@ udfStartNumberAssignDlg::udfStartNumberAssignDlg( wxWindow* parent, unsigned int
 : StartNumberAssignDlg( parent )
 , m_pCon(NULL)
 , m_nCsId(nCsId)
-, m_nLastAssign(1)
+, m_nLastAssign(0)
 , m_pTable(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
@@ -78,7 +78,7 @@ void udfStartNumberAssignDlg::OnSelectTeam( wxCommandEvent& event )
 
 void udfStartNumberAssignDlg::OnRandomFind( wxCommandEvent& event )
 {
-	unsigned int startNum = m_nLastAssign;
+	unsigned long startNum = m_nLastAssign;
 	CChampionshipTeamsTable::tTableMap data;
 	
 	do
@@ -96,9 +96,9 @@ void udfStartNumberAssignDlg::OnRandomFind( wxCommandEvent& event )
 	m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, startNum));
 }
 
-void udfStartNumberAssignDlg::OnNextFind( wxCommandEvent& event )
+unsigned long udfStartNumberAssignDlg::FindNextNum(unsigned long num)
 {
-	unsigned int startNum = m_nLastAssign;
+	unsigned long startNum = num;
 	CChampionshipTeamsTable::tTableMap data;
 	
 	do
@@ -111,7 +111,7 @@ void udfStartNumberAssignDlg::OnNextFind( wxCommandEvent& event )
 			break;
 	}while(1);
 	
-	m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, startNum));
+	return startNum;
 }
 
 void udfStartNumberAssignDlg::OnAssign( wxCommandEvent& event )
@@ -120,7 +120,12 @@ void udfStartNumberAssignDlg::OnAssign( wxCommandEvent& event )
 		unsigned long startNum = m_nLastAssign;
 		if(!m_textNumber->GetValue().ToULong(&startNum))
 			break;
-
+			
+		if(startNum == m_nLastAssign)
+		{
+			startNum = FindNextNum(startNum);
+		}
+		
 		int nPos = m_listTeams->GetSelection();
 			
 		if(-1 == nPos)
@@ -133,13 +138,17 @@ void udfStartNumberAssignDlg::OnAssign( wxCommandEvent& event )
 		if (0 == data.startNumber)
 		{
 			data.startNumber = startNum;
-		
-			m_pTable->UpdateRow(nId, data);
 			m_nLastAssign = startNum;
+			m_pTable->UpdateRow(nId, data);
+			m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, startNum));
 		}
-
+		else
+		{
+			m_nLastAssign = data.startNumber;
+			m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, (unsigned long)data.startNumber));
+		}
+		
 		m_textSearch->SetValue("");
-		OnNextFind(event);
 		m_textSearch->SetFocus();
 	}while(0);
 }

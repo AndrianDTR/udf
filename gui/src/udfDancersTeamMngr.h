@@ -42,6 +42,7 @@ protected:
 	void OnUpdate( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
+	void OnClubChanged( wxCommandEvent& event );
 	
 public:
 	/** Constructor */

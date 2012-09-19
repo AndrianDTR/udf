@@ -52,6 +52,7 @@ class DancersTeamMngr : public wxDialog
 		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		void _wxFB_OnClubChanged( wxCommandEvent& event ){ OnClubChanged( event ); }
 		void _wxFB_OnAddDancerTeamCategory( wxCommandEvent& event ){ OnAddDancerTeamCategory( event ); }
 		void _wxFB_OnRemoveDancerTeamCategory( wxCommandEvent& event ){ OnRemoveDancerTeamCategory( event ); }
 		void _wxFB_OnAddDancer2Team( wxCommandEvent& event ){ OnAddDancer2Team( event ); }
@@ -105,6 +106,7 @@ class DancersTeamMngr : public wxDialog
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnClubChanged( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancerTeamCategory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveDancerTeamCategory( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddDancer2Team( wxCommandEvent& event ) { event.Skip(); }
@@ -113,7 +115,7 @@ class DancersTeamMngr : public wxDialog
 	
 	public:
 		
-		DancersTeamMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Dancers team"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 775,453 ), long style = wxDEFAULT_DIALOG_STYLE );
+		DancersTeamMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Dancers team"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 775,485 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~DancersTeamMngr();
 	
 };
@@ -1115,7 +1117,7 @@ class JudgeMark : public wxDialog
 		wxStaticText* m_staticText92;
 		wxComboBox* m_comboJudge;
 		wxListBox* m_listNumbers;
-		wxCheckBox* m_checkBox4;
+		wxCheckBox* m_checkShowAll;
 		wxStaticText* m_staticText85;
 		wxTextCtrl* m_textSearch;
 		wxBitmapButton* m_bpGood;

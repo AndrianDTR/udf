@@ -203,7 +203,10 @@ void udfDancersTeamMngr::OnSelectTeam(wxCommandEvent& event)
 		RefreshDancers(data.clubId);
 		RefreshTeamDancers(data.id, data.clubId);
 		
-		EnableEditTeam();
+		if(m_listDancers->GetCount())
+			m_comboClub->Disable();
+		else
+			m_comboClub->Enable();
 	}while(0);
 }
 
@@ -234,8 +237,15 @@ void udfDancersTeamMngr::OnAddTeam( wxCommandEvent& event )
 		nPos = m_listTeams->Insert(data.name, nPos, (void*)&item->first);
 		m_listTeams->SetSelection(nPos);
 		
-		EnableEditTeam();
+		RefreshDancers(data.clubId);
+		m_comboClub->Enable();
 		
+		m_listDancers->Clear();
+		m_CsTmDancers.clear();
+		
+		m_listTeamCategories->Clear();
+		m_CsTmCats.clear();
+
 	}while(0);
 }
 
@@ -258,9 +268,6 @@ void udfDancersTeamMngr::OnRemoveTeam( wxCommandEvent& event )
 		}
 		m_CsTeams.erase(nId);
 		m_listTeams->Delete(nItem);
-		
-		EnableEditTeam(false);
-		
 	}while(0);
 }
 
@@ -273,6 +280,20 @@ void udfDancersTeamMngr::OnUpdate( wxCommandEvent& event )
 			break;
 		
 		int nId = *(int*)m_listTeams->GetClientData(nItem);
+		
+		int nClub = GetSelectedClub();
+		if(-1 == nClub)
+			break;
+			
+		CChampionshipTeamsTable::tTableIt tItem = m_CsTeams.find(nId);
+		if(tItem == m_CsTeams.end())
+			break;
+			
+		CChampionshipTeamsTable::tDATA& tData = tItem->second;
+		tData.clubId = *(int*)m_comboClub->GetClientData(nClub);
+		tData.name = m_textName->GetValue();
+		m_listTeams->SetString(nItem, tData.name);
+		CChampionshipTeamsTable(m_pCon).UpdateRow(nId, tData);
 		
 		CChampionshipTeamCategoriesTable cTable(m_pCon);
 		CChampionshipTeamCategoriesTable::tTableMap cStored;
@@ -466,6 +487,9 @@ void udfDancersTeamMngr::OnAddDancer2Team( wxCommandEvent& event )
 		CChampionshipTeamDancersTable::tTableIt item = 
 			m_CsTmDancers.insert(std::make_pair(data.id, data)).first;
 		m_listDancers->Insert(dancer, nPos, (void*)&item->first);
+		
+		if(m_listDancers->GetCount())
+			m_comboClub->Disable();
 	}while(0);
 }
 
@@ -482,6 +506,11 @@ void udfDancersTeamMngr::OnRemoveDancerFromTeam( wxCommandEvent& event )
 		int nId = *(int*)m_listDancers->GetClientData(nDancer);
 		m_CsTmDancers.erase(nId);
 		m_listDancers->Delete(nDancer);
+		
+		if(m_listDancers->GetCount())
+			m_comboClub->Disable();
+		else
+			m_comboClub->Enable();
 		
 	}while(0);
 }
@@ -558,8 +587,6 @@ void udfDancersTeamMngr::EnableEditTeam(bool bEdit)
 	m_listDancers->Enable(bEdit);
 	m_bpAddDancerTeamDancer->Enable(bEdit);
 	m_bpRemoveDancerTeamDancer->Enable(bEdit);
-	
-	m_comboClub->Enable(!bEdit);
 }
 
 void udfDancersTeamMngr::RemoveTeamData(int nTeamId)
@@ -574,6 +601,7 @@ void udfDancersTeamMngr::RemoveTeamData(int nTeamId)
 	while(cListIt != cStored.end())
 	{
 		cTable.DelRow(cListIt->first);
+		cListIt++;
 	}
 	
 	CChampionshipTeamDancersTable dTable(m_pCon);
@@ -586,5 +614,20 @@ void udfDancersTeamMngr::RemoveTeamData(int nTeamId)
 	while(dListIt != dStored.end())
 	{
 		dTable.DelRow(dListIt->first);
+		dListIt++;
 	}
+}
+
+void udfDancersTeamMngr::OnClubChanged(wxCommandEvent& event)
+{
+	do
+	{
+		int nClub = GetSelectedClub();
+		if(-1 == nClub)
+			break;
+		int nClubId = *(int*)m_comboClub->GetClientData(nClub);
+				
+		RefreshDancers(nClubId);
+		
+	}while(0);
 }

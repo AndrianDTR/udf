@@ -3,13 +3,13 @@
 #include "string_def.h"
 #include "wx/msgdlg.h"
 
-void ShowError(wxString msg)
+int ShowError(wxString msg, int style)
 {
-	wxMessageBox(msg, STR_ERROR, wxOK|wxICON_ERROR);
+	wxMessageBox(msg, STR_ERROR, style);
 }
 
-void ShowWarning(wxString msg)
+int ShowWarning(wxString msg, int style)
 {
-	wxMessageBox(msg, STR_WARNING, wxOK|wxICON_WARNING);
+	return wxMessageBox(msg, STR_WARNING, style);
 }
 
