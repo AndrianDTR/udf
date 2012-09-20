@@ -27,6 +27,7 @@
 #include "../res/button_plus.xpm"
 #include "../res/button_raiting.xpm"
 #include "../res/button_random.xpm"
+#include "../res/button_report.xpm"
 #include "../res/button_results.xpm"
 #include "../res/button_right.xpm"
 #include "../res/button_rightall.xpm"
@@ -1129,6 +1130,7 @@ BEGIN_EVENT_TABLE( CsTours, wxDialog )
 	EVT_BUTTON( wxID_ADD, CsTours::_wxFB_OnAddTour )
 	EVT_BUTTON( wxID_REMOVE, CsTours::_wxFB_OnRemoveTour )
 	EVT_BUTTON( ID_MARKS, CsTours::_wxFB_OnJudgesMark )
+	EVT_BUTTON( ID_REPORT, CsTours::_wxFB_OnReport )
 	EVT_BUTTON( wxID_OK, CsTours::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, CsTours::_wxFB_OnDiscard )
 END_EVENT_TABLE()
@@ -1168,6 +1170,9 @@ CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	
 	m_bpMarks = new wxBitmapButton( this, ID_MARKS, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer76->Add( m_bpMarks, 0, wxALL, 5 );
+	
+	m_bpReport = new wxBitmapButton( this, ID_REPORT, wxBitmap( button_report_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpReport, 0, wxALL, 5 );
 	
 	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	m_bpSave->SetDefault(); 
@@ -1226,6 +1231,71 @@ CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const 
 }
 
 CsTours::~CsTours()
+{
+}
+
+BEGIN_EVENT_TABLE( CsTourReport, wxDialog )
+	EVT_BUTTON( ID_PRINT, CsTourReport::_wxFB_OnReport )
+	EVT_BUTTON( wxID_CANCEL, CsTourReport::_wxFB_OnDiscard )
+	EVT_LIST_ITEM_SELECTED( ID_LIST_TEAMS, CsTourReport::_wxFB_OnTeamSelect )
+END_EVENT_TABLE()
+
+CsTourReport::CsTourReport( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer33;
+	bSizer33 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer19;
+	bSizer19 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer20;
+	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxBoxSizer* bSizer22;
+	bSizer22 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer76;
+	bSizer76 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticText94 = new wxStaticText( this, wxID_ANY, _("Teams"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText94->Wrap( -1 );
+	m_staticText94->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	bSizer76->Add( m_staticText94, 0, wxALL|wxALIGN_BOTTOM, 5 );
+	
+	
+	bSizer76->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_bpPrint = new wxBitmapButton( this, ID_PRINT, wxBitmap( button_report_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpPrint, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpDiscard, 0, wxALL, 5 );
+	
+	bSizer22->Add( bSizer76, 0, wxALIGN_RIGHT|wxEXPAND, 5 );
+	
+	m_listTeams = new wxListCtrl( this, ID_LIST_TEAMS, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_ICON|wxLC_REPORT|wxLC_VRULES );
+	bSizer22->Add( m_listTeams, 1, wxALL|wxEXPAND, 5 );
+	
+	m_staticJudgeDescr = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticJudgeDescr->Wrap( -1 );
+	bSizer22->Add( m_staticJudgeDescr, 0, wxALL|wxEXPAND, 5 );
+	
+	bSizer20->Add( bSizer22, 1, wxEXPAND, 5 );
+	
+	bSizer19->Add( bSizer20, 1, wxEXPAND, 5 );
+	
+	bSizer33->Add( bSizer19, 1, wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer33 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+}
+
+CsTourReport::~CsTourReport()
 {
 }
 
@@ -1931,13 +2001,13 @@ StartNumberAssignDlg::~StartNumberAssignDlg()
 
 BEGIN_EVENT_TABLE( JudgeMark, wxDialog )
 	EVT_COMBOBOX( wxID_ANY, JudgeMark::_wxFB_OnSelectJudge )
-	EVT_LISTBOX( ID_TEAMS_LIST, JudgeMark::_wxFB_OnSelectTeam )
+	EVT_BUTTON( wxID_OK, JudgeMark::_wxFB_OnSave )
+	EVT_BUTTON( wxID_CANCEL, JudgeMark::_wxFB_OnDiscard )
+	EVT_LISTBOX( ID_TEAMS_LIST, JudgeMark::_wxFB_OnSelectNumber )
 	EVT_CHECKBOX( ID_SHOW_ALL, JudgeMark::_wxFB_OnShowAll )
 	EVT_TEXT( ID_SEARCH, JudgeMark::_wxFB_OnSearch )
 	EVT_BUTTON( ID_GOOD, JudgeMark::_wxFB_OnPlus )
 	EVT_BUTTON( ID_BED, JudgeMark::_wxFB_OnMinus )
-	EVT_BUTTON( wxID_OK, JudgeMark::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, JudgeMark::_wxFB_OnDiscard )
 END_EVENT_TABLE()
 
 JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -1955,7 +2025,20 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	bSizer113->Add( m_staticText92, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_comboJudge = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	m_comboJudge->SetFont( wxFont( 18, 70, 90, 92, false, wxEmptyString ) );
+	
 	bSizer113->Add( m_comboJudge, 1, wxALL|wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer83;
+	bSizer83 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer83->Add( m_bpSave, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer83->Add( m_bpDiscard, 0, wxALL, 5 );
+	
+	bSizer113->Add( bSizer83, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	bSizer95->Add( bSizer113, 0, wxEXPAND, 5 );
 	
@@ -1980,7 +2063,7 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_staticText85->Wrap( -1 );
 	bSizer98->Add( m_staticText85, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
-	m_textSearch = new wxTextCtrl( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE );
+	m_textSearch = new wxTextCtrl( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_PROCESS_ENTER );
 	m_textSearch->SetFont( wxFont( 18, 70, 90, 90, false, wxEmptyString ) );
 	
 	bSizer98->Add( m_textSearch, 0, wxALL|wxEXPAND, 5 );
@@ -1988,29 +2071,34 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	wxBoxSizer* bSizer99;
 	bSizer99 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpGood = new wxBitmapButton( this, ID_GOOD, wxBitmap( button_plus_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpGood->SetDefault(); 
-	bSizer99->Add( m_bpGood, 0, wxALL, 5 );
+	m_panelPlus = new wxPanel( this, ID_PANEL_PLUS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer101;
+	bSizer101 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpBed = new wxBitmapButton( this, ID_BED, wxBitmap( button_minus_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpBed->SetDefault(); 
-	bSizer99->Add( m_bpBed, 0, wxALL, 5 );
+	m_bpGood = new wxBitmapButton( m_panelPlus, ID_GOOD, wxBitmap( button_plus_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer101->Add( m_bpGood, 0, wxALL, 15 );
+	
+	m_panelPlus->SetSizer( bSizer101 );
+	m_panelPlus->Layout();
+	bSizer101->Fit( m_panelPlus );
+	bSizer99->Add( m_panelPlus, 1, wxEXPAND | wxALL, 5 );
+	
+	m_panelMinus = new wxPanel( this, ID_PANEL_MINUS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer102;
+	bSizer102 = new wxBoxSizer( wxVERTICAL );
+	
+	m_bpBed = new wxBitmapButton( m_panelMinus, ID_BED, wxBitmap( button_minus_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer102->Add( m_bpBed, 0, wxALL, 15 );
+	
+	m_panelMinus->SetSizer( bSizer102 );
+	m_panelMinus->Layout();
+	bSizer102->Fit( m_panelMinus );
+	bSizer99->Add( m_panelMinus, 1, wxEXPAND | wxALL, 5 );
 	
 	bSizer98->Add( bSizer99, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
 	bSizer98->Add( 0, 0, 1, wxEXPAND, 5 );
-	
-	wxBoxSizer* bSizer83;
-	bSizer83 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer83->Add( m_bpSave, 0, wxALL, 5 );
-	
-	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer83->Add( m_bpDiscard, 0, wxALL, 5 );
-	
-	bSizer98->Add( bSizer83, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	bSizer112->Add( bSizer98, 1, wxEXPAND, 5 );
 	

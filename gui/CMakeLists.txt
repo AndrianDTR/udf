@@ -21,6 +21,7 @@ set( HEADER_FILES
 	src/udfAccountInfo.h
 	src/udfAddTeamCategory.h
 	src/udfCsTours.h
+	src/udfCsTourReport.h
 	src/udfJudgeMark.h
 	src/udfCategoriesMngrDlg.h
 	src/udfChampionshipCategoriesMngrDlg.h
@@ -50,6 +51,7 @@ set( SOURCE_FILES
 	src/udfAddTeamCategory.cpp
 	src/udfCategoriesMngrDlg.cpp
 	src/udfCsTours.cpp
+	src/udfCsTourReport.cpp
 	src/udfJudgeMark.cpp
 	src/udfChampionshipCategoriesMngrDlg.cpp
 	src/udfChampionshipTypeMngr.cpp

@@ -2,10 +2,14 @@
 
 #include "udfJudgeMark.h"
 
+#include "udfuiutils.h"
 #include "udfexceptions.h"
 #include "string_def.h"
 
 #include "common.h"
+
+#include "tchampionshipjudgesmark.h"
+#include "udfCsTourReport.h"
 
 udfCsTours::udfCsTours( wxWindow* parent, unsigned int nCsId )
 : CsTours( parent )
@@ -151,4 +155,66 @@ bool udfCsTours::IsFinalAdded()
 	CChampionshipToursTable(m_pCon).Find(recs, filter);
 	
 	return (recs.size() > 0);
+}
+
+void udfCsTours::OnReport(wxCommandEvent& event)
+{
+	do
+	{
+		unsigned long 	limit = 0;
+		tJudges			judgeMap;
+		tDancerMarks	dancerMarks;
+		
+		CChampionshipJudgesTeamTable::tTableMap judges;
+		CChampionshipJudgesTeamTable::tTableIt	jIt;
+		CChampionshipJudgesTeamTable::tDATA		jFilter = {0};
+				
+		CChampionshipJudgesMarkTable::tTableMap marks;
+		CChampionshipJudgesMarkTable::tTableIt	mIt;
+		CChampionshipJudgesMarkTable::tDATA		mFilter = {0};
+		
+		int nItem = m_listTours->GetSelection();
+		if(nItem == -1)
+			break;
+		
+		if(!m_textLimit->GetValue().ToULong(&limit))
+			break;
+		
+		jFilter.championshipId = m_nCsId;
+		CChampionshipJudgesTeamTable(m_pCon).Find(judges, jFilter);
+		
+		jIt = judges.begin();
+		while(jIt != judges.end())
+		{
+			CChampionshipJudgesTeamTable::tDATA& data = jIt->second;
+			judgeMap[jIt->first] = GetJudgeNameById(data.judgeId);
+			
+			jIt++;
+		}
+		
+		mFilter.championshipId = m_nCsId;
+		mFilter.tourId = *(int*)m_listTours->GetClientData(nItem);
+		CChampionshipJudgesMarkTable(m_pCon).Find(marks, mFilter);
+		
+		mIt = marks.begin();
+		while(mIt != marks.end())
+		{
+			CChampionshipJudgesMarkTable::tDATA& data = mIt->second;
+			tMarks	marksMap;
+			
+			tDancerMarksIt di = dancerMarks.find(data.teamId);
+			if(di != dancerMarks.end())
+			{
+				marksMap = di->second;
+			}
+			marksMap[data.judgeId] = data.nMark;
+			dancerMarks[data.teamId] = marksMap;
+			
+			mIt++;
+		}
+		
+		udfCsTourReport dlg(this, mFilter.tourId, limit, judgeMap, dancerMarks);
+		dlg.ShowModal();
+		
+	}while(0);
 }

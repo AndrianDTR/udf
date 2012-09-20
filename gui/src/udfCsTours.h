@@ -27,6 +27,7 @@ protected:
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 	void OnJudgesMark( wxCommandEvent& event );
+	void OnReport( wxCommandEvent& event );
 		
 public:
 	/** Constructor */

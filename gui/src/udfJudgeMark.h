@@ -20,6 +20,7 @@ typedef std::map<unsigned int, int> tTeamMarkList;
 typedef std::map<unsigned int, int>::iterator tTeamMarkIt;
 
 private:
+	bool									m_bEditable;
 	unsigned int							m_nCsId;
 	unsigned int							m_nCsTourId;
 	CDbConnection*							m_pCon;
@@ -32,7 +33,7 @@ private:
 protected:
 	// Handlers for JudgeMark events.
 	void OnSelectJudge( wxCommandEvent& event );
-	void OnSelectTeam( wxCommandEvent& event );
+	void OnSelectNumber( wxCommandEvent& event );
 	void OnShowAll( wxCommandEvent& event );
 	void OnSearch( wxCommandEvent& event );
 	void OnPlus( wxCommandEvent& event );
