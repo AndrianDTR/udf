@@ -1,5 +1,8 @@
 #include "udfCsTourReport.h"
 
+#include "udfuiutils.h"
+#include "string_def.h"
+
 udfCsTourReport::udfCsTourReport(wxWindow* parent
 	, unsigned long nTourId
 	, int limit
@@ -41,6 +44,29 @@ void udfCsTourReport::CreateHeaders()
 
 void udfCsTourReport::FillList()
 {
+	m_listTeams->Hide();
+	
+	tDancerMarksItC	marksIt = m_dancerMarks.begin();
+	while(marksIt != m_dancerMarks.end())
+	{
+		
+		const tMarks& marks = marksIt->second;
+		int nId = m_listTeams->GetItemCount();
+		
+		long item = m_listTeams->InsertItem(nId, wxString::Format(STR_FORMAT_START_NUMBER, marksIt->first));
+		//m_listTeams->SetItem(item, 1, GetTeamNameById(marksIt->first));
+		
+		marksIt++;
+	}
+	
+	m_listTeams->Show();
+	
+	int nColumn = 0;
+	int nColumnsCount = m_listTeams->GetColumnCount();
+	for(nColumn = 0; nColumn < nColumnsCount; ++nColumn)
+	{
+		m_listTeams->SetColumnWidth( nColumn, wxLIST_AUTOSIZE );
+	}
 }
 
 void udfCsTourReport::OnReport( wxCommandEvent& event )
