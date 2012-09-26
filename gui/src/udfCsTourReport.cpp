@@ -113,3 +113,7 @@ void udfCsTourReport::OnTeamSelect( wxListEvent& event )
 	// TODO: Implement OnTeamSelect
 }
 
+void udfCsTourReport::OnBeginDrag(wxListEvent& event)
+{
+}
+

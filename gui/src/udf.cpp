@@ -1237,6 +1237,7 @@ CsTours::~CsTours()
 BEGIN_EVENT_TABLE( CsTourReport, wxDialog )
 	EVT_BUTTON( ID_PRINT, CsTourReport::_wxFB_OnReport )
 	EVT_BUTTON( wxID_CANCEL, CsTourReport::_wxFB_OnDiscard )
+	EVT_LIST_BEGIN_DRAG( ID_LIST_TEAMS, CsTourReport::_wxFB_OnBeginDrag )
 	EVT_LIST_ITEM_SELECTED( ID_LIST_TEAMS, CsTourReport::_wxFB_OnTeamSelect )
 END_EVENT_TABLE()
 

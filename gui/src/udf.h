@@ -688,6 +688,7 @@ class CsTourReport : public wxDialog
 		// Private event handlers
 		void _wxFB_OnReport( wxCommandEvent& event ){ OnReport( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		void _wxFB_OnBeginDrag( wxListEvent& event ){ OnBeginDrag( event ); }
 		void _wxFB_OnTeamSelect( wxListEvent& event ){ OnTeamSelect( event ); }
 		
 	
@@ -709,6 +710,7 @@ class CsTourReport : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnReport( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnBeginDrag( wxListEvent& event ) { event.Skip(); }
 		virtual void OnTeamSelect( wxListEvent& event ) { event.Skip(); }
 		
 	

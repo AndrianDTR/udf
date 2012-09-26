@@ -36,6 +36,7 @@ protected:
 	void OnReport( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 	void OnTeamSelect( wxListEvent& event );
+	void OnBeginDrag( wxListEvent& event );
 	
 public:
 	/** Constructor */
