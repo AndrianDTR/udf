@@ -1,5 +1,7 @@
 #include "udfCsTourReport.h"
 
+#include "common.h"
+
 #include "udfuiutils.h"
 #include "string_def.h"
 
@@ -20,6 +22,7 @@ udfCsTourReport::udfCsTourReport(wxWindow* parent
 
 void udfCsTourReport::CreateHeaders()
 {
+	wxArrayInt order;
 	int index = 0;
 	int width = 850 - m_judgesMap.size()*20;
 	m_listTeams->InsertColumn(index++, _("#"), wxLIST_FORMAT_LEFT, 50);
@@ -32,13 +35,13 @@ void udfCsTourReport::CreateHeaders()
 	while(it != m_judgesMap.end())
 	{
 		judgeDescr += wxString::Format(_("%c - %s; "), n, it->second);
-		m_listTeams->InsertColumn(index++, wxString::Format(_("%c"), n), wxLIST_FORMAT_LEFT, 20);
+		m_listTeams->InsertColumn(index++, wxString::Format(_("%c"), n), wxLIST_FORMAT_CENTER, 20);
 		n++;
 		it++;
 	}
 	
 	m_listTeams->InsertColumn(index++, _("Sum"), wxLIST_FORMAT_LEFT, 50);
-	
+		
 	m_staticJudgeDescr->SetLabel(judgeDescr);
 }
 
@@ -46,17 +49,42 @@ void udfCsTourReport::FillList()
 {
 	m_listTeams->Hide();
 	
-	tDancerMarksItC	marksIt = m_dancerMarks.begin();
-	while(marksIt != m_dancerMarks.end())
+	tDancerMarksItC it = m_dancerMarks.begin();
+	long	ndx = 0;
+	while(it != m_dancerMarks.end())
 	{
+		int nCol = 1;
+		wxListItem info;
+		info.SetId(ndx);
+		info.SetText(wxString::Format(STR_FORMAT_START_NUMBER, it->first));
+		m_listTeams->InsertItem(info);
 		
-		const tMarks& marks = marksIt->second;
-		int nId = m_listTeams->GetItemCount();
+		info.SetColumn(nCol++);
+		info.SetText(GetTeamNameById(it->first));
+		m_listTeams->SetItem(info);
 		
-		long item = m_listTeams->InsertItem(nId, wxString::Format(STR_FORMAT_START_NUMBER, marksIt->first));
-		//m_listTeams->SetItem(item, 1, GetTeamNameById(marksIt->first));
+		// Marks
+		const tMarks&	marks = it->second;
+		tMarksItC mIt = marks.begin();
+		int sum = 0;
+		while(mIt != marks.end())
+		{
+			info.SetColumn(nCol++);
+			sum += mIt->second;
+			info.SetText(wxString::Format(_("%c"), mIt->second == 0 ? '-':'+'));
+			m_listTeams->SetItem(info);
+			
+			mIt++;
+		}
 		
-		marksIt++;
+		info.SetColumn(nCol++);
+		info.SetText(wxString::Format(_("%d"), sum));
+		m_listTeams->SetItem(info);
+	
+		// Marks end
+		
+		ndx++;
+		it++;
 	}
 	
 	m_listTeams->Show();
@@ -65,8 +93,9 @@ void udfCsTourReport::FillList()
 	int nColumnsCount = m_listTeams->GetColumnCount();
 	for(nColumn = 0; nColumn < nColumnsCount; ++nColumn)
 	{
-		m_listTeams->SetColumnWidth( nColumn, wxLIST_AUTOSIZE );
+		m_listTeams->SetColumnWidth( nColumn, wxLIST_AUTOSIZE);
 	}
+		
 }
 
 void udfCsTourReport::OnReport( wxCommandEvent& event )

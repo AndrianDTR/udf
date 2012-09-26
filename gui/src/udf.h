@@ -698,6 +698,7 @@ class CsTourReport : public wxDialog
 			ID_LIST_TEAMS,
 		};
 		
+		wxBoxSizer* bSizer76;
 		wxStaticText* m_staticText94;
 		
 		wxBitmapButton* m_bpPrint;

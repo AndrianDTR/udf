@@ -1256,7 +1256,6 @@ CsTourReport::CsTourReport( wxWindow* parent, wxWindowID id, const wxString& tit
 	wxBoxSizer* bSizer22;
 	bSizer22 = new wxBoxSizer( wxVERTICAL );
 	
-	wxBoxSizer* bSizer76;
 	bSizer76 = new wxBoxSizer( wxHORIZONTAL );
 	
 	m_staticText94 = new wxStaticText( this, wxID_ANY, _("Teams"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1276,7 +1275,7 @@ CsTourReport::CsTourReport( wxWindow* parent, wxWindowID id, const wxString& tit
 	
 	bSizer22->Add( bSizer76, 0, wxALIGN_RIGHT|wxEXPAND, 5 );
 	
-	m_listTeams = new wxListCtrl( this, ID_LIST_TEAMS, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_ICON|wxLC_REPORT|wxLC_VRULES );
+	m_listTeams = new wxListCtrl( this, ID_LIST_TEAMS, wxDefaultPosition, wxDefaultSize, wxLC_AUTOARRANGE|wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_SORT_DESCENDING|wxLC_VRULES );
 	bSizer22->Add( m_listTeams, 1, wxALL|wxEXPAND, 5 );
 	
 	m_staticJudgeDescr = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
