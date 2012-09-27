@@ -25,10 +25,14 @@
 #include "common.h"
 #include "string_def.h"
 
+#include "button_raiting.xpm"
+
 udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 : MainFrameBase( parent )
 , m_pCon(NULL)
 {
+	SetIcon(wxICON(button_raiting));
+	
 	m_pCon = CDbManager::Instance()->GetConnection();
 	
 	RefreshList();

@@ -47,6 +47,7 @@ protected:
 	void		CreateHeaders();
 	void		FillList();
 	
+	void		FormatReportTitle();
 	void		FormatReportTableHeader();
 	void		FormatReportTableBody();
 };

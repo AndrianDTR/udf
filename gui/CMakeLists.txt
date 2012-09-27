@@ -22,6 +22,7 @@ set( HEADER_FILES
 	src/udfAddTeamCategory.h
 	src/udfCsTours.h
 	src/udfCsTourReport.h
+	src/udfReportPreview.h
 	src/udfJudgeMark.h
 	src/udfCategoriesMngrDlg.h
 	src/udfChampionshipCategoriesMngrDlg.h
@@ -52,6 +53,7 @@ set( SOURCE_FILES
 	src/udfCategoriesMngrDlg.cpp
 	src/udfCsTours.cpp
 	src/udfCsTourReport.cpp
+	src/udfReportPreview.cpp
 	src/udfJudgeMark.cpp
 	src/udfChampionshipCategoriesMngrDlg.cpp
 	src/udfChampionshipTypeMngr.cpp
@@ -125,8 +127,8 @@ if ( WIN32 )
 	include_directories( ../gui/src/windows )
 	
 	target_link_libraries( ${MODULE_NAME} 
-		wx_msw2u_adv-2.9 wx_msw2u_core-2.9
-		wx_baseu-2.9 wxpng-2.9 wxzlib-2.9 wxexpat-2.9 
+		wx_msw2u-2.9
+		wxpng-2.9 wxzlib-2.9 wxexpat-2.9
 		comctl32)
 	
 else ( WIN32 )
@@ -143,8 +145,8 @@ else ( WIN32 )
 	include_directories( ../gui/src/linux )
 	
 	target_link_libraries( ${MODULE_NAME} 
-		wx_gtk2u_adv-2.9 wx_gtk2u_core-2.9
-		wx_baseu-2.9 wxpng-2.9 wxzlib-2.9 wxexpat-2.9 
+		wx_gtk2u-2.9
+		wxpng-2.9 wxzlib-2.9 wxexpat-2.9
 		gtk-x11-2.0 SM dl )
 endif ( WIN32 )
 

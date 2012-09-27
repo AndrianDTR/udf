@@ -34,6 +34,7 @@
 #include <wx/frame.h>
 #include <wx/checkbox.h>
 #include <wx/listctrl.h>
+#include <wx/html/htmlwin.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -409,7 +410,6 @@ class MainFrameBase : public wxFrame
 			ID_TEAMS,
 			wxID_CHAMPIONSHIP_STARTNUMBERMNGR,
 			ID_TOURS,
-			ID_RAITING,
 			ID_NAME,
 			ID_TYPE,
 			ID_DATE,
@@ -440,7 +440,6 @@ class MainFrameBase : public wxFrame
 		wxBitmapButton* m_bpDancersTeams;
 		wxBitmapButton* m_bpStartNumberMngr;
 		wxBitmapButton* m_bpTours;
-		wxBitmapButton* m_bpRaitings;
 		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textChName;
 		wxStaticText* m_staticText2;
@@ -489,7 +488,7 @@ class MainFrameBase : public wxFrame
 	
 	public:
 		
-		MainFrameBase( wxWindow* parent, wxWindowID id = ID_MAINFRAME_FORM, const wxString& title = _("Championship calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 965,667 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxMAXIMIZE|wxTAB_TRAVERSAL );
+		MainFrameBase( wxWindow* parent, wxWindowID id = ID_MAINFRAME_FORM, const wxString& title = _("Championship calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 983,667 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxMAXIMIZE|wxTAB_TRAVERSAL );
 		~MainFrameBase();
 	
 };
@@ -1429,6 +1428,42 @@ class CitiesMngr : public wxDialog
 		
 		CitiesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Cities manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 599,322 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~CitiesMngr();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class ReportPreview
+///////////////////////////////////////////////////////////////////////////////
+class ReportPreview : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnPrint( wxCommandEvent& event ){ OnPrint( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_PRINT = 1000,
+			ID_REPORT_PREVIEW,
+		};
+		
+		wxBitmapButton* m_bpPrint;
+		wxBitmapButton* m_bpDiscard;
+		wxHtmlWindow* m_htmlReport;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnPrint( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		ReportPreview( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Report preview"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 956,636 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~ReportPreview();
 	
 };
 

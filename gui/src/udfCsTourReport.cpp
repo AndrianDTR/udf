@@ -1,7 +1,10 @@
 #include "udfCsTourReport.h"
 
+#include "udfReportPreview.h"
+
 #include "common.h"
 
+#include "udfexceptions.h"
 #include "udfuiutils.h"
 #include "string_def.h"
 
@@ -98,59 +101,94 @@ void udfCsTourReport::FillList()
 		
 }
 
-void udfCsTourReport::FormatReportTableHeader()
+void udfCsTourReport::FormatReportTitle()
 {
-	m_report.Add(STR_HTML_REPORT_TABLE_HEADER);
+	m_report.Add(STR_HTML_TABLE_BEGIN);
 	//Add report title
 	//m_report.Add(STR_REPPORT_HTML_TITLE);
-	m_report.Add(STR_HTML_REPORT_TABLE_FOOTER);
-	
-	m_report.Add(STR_HTML_REPORT_TABLE_HEADER);
+	m_report.Add(STR_HTML_TABLE_END);
+}
+
+void udfCsTourReport::FormatReportTableHeader()
+{
+	wxString szRow;
 	wxArrayString row;
+	
 	// Start number
-	row.Add(wxString::Format(STR_FORMAT_HTML_REPORT_COL, STR_REPORT_START_NUMBER));
+	row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_HDR, STR_REPORT_START_NUMBER));
 	// Team name
-	row.Add(wxString::Format(STR_FORMAT_HTML_REPORT_COL, STR_REPORT_TEAM));
+	row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_HDR, STR_REPORT_TEAM));
 	
 	tJudgesItC it = m_judgesMap.begin();
 	while(it != m_judgesMap.end())
 	{
-		row.Add(wxString::Format(STR_FORMAT_HTML_REPORT_COL, it->second));
+		wxString judge = it->second;
+		judge.Replace(" ", "<br/>");
+		row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_HDR, judge));
 		it++;
 	}
 	
 	// Sum
-	row.Add(wxString::Format(STR_FORMAT_HTML_REPORT_COL, STR_REPORT_SUM));
-	wxString szRow;
+	row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_HDR, STR_REPORT_SUM));
+	
 	int col = 0;
 	for(; col < row.GetCount(); ++col)
 	{
 		szRow += row[col]; 
 	}
-	m_report.Add(wxString::Format(STR_FORMAT_HTML_REPORT_ROW, szRow));
+	m_report.Add(wxString::Format(STR_FORMAT_HTML_TABLE_ROW, szRow));
 }
 
 void udfCsTourReport::FormatReportTableBody()
 {
-	m_report.Add(STR_HTML_REPORT_TABLE_FOOTER);
+	tDancerMarksItC it = m_dancerMarks.begin();
+	while(it != m_dancerMarks.end())
+	{
+		wxString szRow;
+		wxArrayString row;
+		
+		row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_COL, wxString::Format(STR_FORMAT_START_NUMBER, it->first)));
+		row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_COL, GetTeamNameById(it->first)));
+		
+		// Marks
+		const tMarks&	marks = it->second;
+		tMarksItC mIt = marks.begin();
+		int sum = 0;
+		while(mIt != marks.end())
+		{
+			row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_COL, wxString::Format(_("%c"), mIt->second == 0 ? '-':'+')));
+			sum += mIt->second;
+			mIt++;
+		}
+		
+		row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_COL, wxString::Format(_("%d"), sum)));
+	
+		int col = 0;
+		for(; col < row.GetCount(); ++col)
+		{
+			szRow += row[col]; 
+		}
+		m_report.Add(wxString::Format(STR_FORMAT_HTML_TABLE_ROW, szRow));
+	
+		it++;
+	}
 }
 
 void udfCsTourReport::OnReport( wxCommandEvent& event )
 {
 	m_report.Clear();
-	m_report.Add(STR_HTML_REPORT_HEADER);
+	m_report.Add(STR_HTML_BEGIN);
 	
+	FormatReportTitle();
+	
+	m_report.Add(STR_HTML_TABLE_BEGIN);
 	FormatReportTableHeader();
 	FormatReportTableBody();
+	m_report.Add(STR_HTML_TABLE_END);
 	
-	m_report.Add(STR_HTML_REPORT_FOOTER);
+	m_report.Add(STR_HTML_END);
 	
-	wxString text;
-	int col = 0;
-	for(; col < m_report.GetCount(); ++col)
-	{
-		text += m_report[col]; 
-	}
+	udfReportPreview(this, m_report).ShowModal();
 }
 
 void udfCsTourReport::OnDiscard( wxCommandEvent& event )

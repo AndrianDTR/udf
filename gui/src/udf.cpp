@@ -25,7 +25,6 @@
 #include "../res/button_ok.xpm"
 #include "../res/button_other.xpm"
 #include "../res/button_plus.xpm"
-#include "../res/button_raiting.xpm"
 #include "../res/button_random.xpm"
 #include "../res/button_report.xpm"
 #include "../res/button_results.xpm"
@@ -768,7 +767,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	sbSizer9->Add( bSizer5, 0, wxALIGN_RIGHT|wxEXPAND, 5 );
 	
-	m_listChampionship = new wxListBox( m_panel1, ID_LIST_CHAMPIONSHIP, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
+	m_listChampionship = new wxListBox( m_panel1, ID_LIST_CHAMPIONSHIP, wxDefaultPosition, wxSize( 310,-1 ), 0, NULL, 0 ); 
 	sbSizer9->Add( m_listChampionship, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer2->Add( sbSizer9, 0, wxEXPAND|wxALL, 5 );
@@ -789,7 +788,6 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer7->Add( m_bpRemove, 0, wxALL, 5 );
 	
 	m_bpSave = new wxBitmapButton( m_panel1, wxID_CHAMPIONSHIP_SAVE, wxBitmap( button_update2_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpSave->SetDefault(); 
 	bSizer7->Add( m_bpSave, 0, wxALL, 5 );
 	
 	m_bpDiscard = new wxBitmapButton( m_panel1, wxID_CHAMPIONSHIP_DISCARD, wxBitmap( button_undo_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
@@ -812,9 +810,6 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	m_bpTours = new wxBitmapButton( m_panel1, ID_TOURS, wxBitmap( button_results_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpTours, 0, wxALL, 5 );
-	
-	m_bpRaitings = new wxBitmapButton( m_panel1, ID_RAITING, wxBitmap( button_raiting_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer7->Add( m_bpRaitings, 0, wxALL, 5 );
 	
 	bSizer13->Add( bSizer7, 0, wxALIGN_RIGHT, 5 );
 	
@@ -2508,5 +2503,39 @@ CitiesMngr::CitiesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 }
 
 CitiesMngr::~CitiesMngr()
+{
+}
+
+BEGIN_EVENT_TABLE( ReportPreview, wxDialog )
+	EVT_BUTTON( ID_PRINT, ReportPreview::_wxFB_OnPrint )
+	EVT_BUTTON( wxID_CANCEL, ReportPreview::_wxFB_OnDiscard )
+END_EVENT_TABLE()
+
+ReportPreview::ReportPreview( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer108;
+	bSizer108 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer109;
+	bSizer109 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpPrint = new wxBitmapButton( this, ID_PRINT, wxBitmap( button_other_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer109->Add( m_bpPrint, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer109->Add( m_bpDiscard, 0, wxALL, 5 );
+	
+	bSizer108->Add( bSizer109, 0, wxALIGN_RIGHT, 5 );
+	
+	m_htmlReport = new wxHtmlWindow( this, ID_REPORT_PREVIEW, wxDefaultPosition, wxDefaultSize, wxHW_NO_SELECTION|wxHW_SCROLLBAR_AUTO );
+	bSizer108->Add( m_htmlReport, 1, wxALL|wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer108 );
+	this->Layout();
+}
+
+ReportPreview::~ReportPreview()
 {
 }

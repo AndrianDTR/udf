@@ -52,8 +52,8 @@ private:
 	CChampionshipTable::tTableMap		m_Championships;
 	CCountriesTable::tTableMap			m_Countries;
 	CCitiesTable::tTableMap				m_Cities;
-	CChampionshipTypeTable::tTableMap 	m_ChampionshipTypes;
-
+	CChampionshipTypeTable::tTableMap 	m_ChampionshipTypes; 
+	
 protected:
 	void		RefreshList();
 	void		RefreshCities();

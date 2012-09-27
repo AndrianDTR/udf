@@ -80,15 +80,16 @@ STR_DEFINITION(STR_FORMAT_TEAM_CATEGORY_NAME, "%s (%s)");
 STR_DEFINITION(STR_FORMAT_START_NUMBER, "%05ld");
 
 /***********************************************************************************/
-STR_DEFINITION(STR_FORMAT_HTML_REPORT_COL, "<td>%s</td>");
-STR_DEFINITION(STR_FORMAT_HTML_REPORT_ROW, "<tr>%s</tr>");
-STR_DEFINITION(STR_FORMAT_HTML_REPORT_TITLE, "<tr><td colspan=\"2\">%s</td></tr> <tr><td width=\"1px\">%s</td><td>%s</td></tr> <tr><td width=\"1px\">%s</td><td>%s</td></tr>");
-
-STR_DEFINITION(STR_HTML_REPORT_HEADER, "<html><head><title></title></head><body>");
-STR_DEFINITION(STR_HTML_REPORT_FOOTER, "</boby></html>");
+STR_DEFINITION(STR_HTML_BEGIN, "<html><head><title></title></head><body>");
+STR_DEFINITION(STR_HTML_END, "</boby></html>");
 STR_DEFINITION(STR_HTML_REPORT_BR, "<br />");
-STR_DEFINITION(STR_HTML_REPORT_TABLE_HEADER, "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">");
-STR_DEFINITION(STR_HTML_REPORT_TABLE_FOOTER, "</table>");
+STR_DEFINITION(STR_HTML_TABLE_BEGIN, "<table width=\"100%\" cellspacing=\"10\" cellpadding=\"0\" border=\"0\">");
+STR_DEFINITION(STR_HTML_TABLE_END, "</table>");
+
+STR_DEFINITION(STR_FORMAT_HTML_TABLE_COL, "<td>%s</td>");
+STR_DEFINITION(STR_FORMAT_HTML_TABLE_HDR, "<th width=\"1px\" style=\"text-align:left; background:#C2C2C2;\">%s</th>");
+STR_DEFINITION(STR_FORMAT_HTML_TABLE_ROW, "<tr>%s</tr>");
+STR_DEFINITION(STR_FORMAT_HTML_REPORT_TITLE, "<tr><td colspan=\"2\">%s</td></tr> <tr><td width=\"1px\">%s</td><td>%s</td></tr> <tr><td width=\"1px\">%s</td><td>%s</td></tr>");
 
 STR_DEFINITION(STR_REPORT_START_NUMBER, "Start number");
 STR_DEFINITION(STR_REPORT_TEAM, "Team");
