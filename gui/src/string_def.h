@@ -79,6 +79,25 @@ STR_DEFINITION(STR_FORMAT_DATE, "%04d-%02d-%02d");
 STR_DEFINITION(STR_FORMAT_TEAM_CATEGORY_NAME, "%s (%s)");
 STR_DEFINITION(STR_FORMAT_START_NUMBER, "%05ld");
 
+/***********************************************************************************/
+STR_DEFINITION(STR_FORMAT_HTML_REPORT_COL, "<td>%s</td>");
+STR_DEFINITION(STR_FORMAT_HTML_REPORT_ROW, "<tr>%s</tr>");
+STR_DEFINITION(STR_FORMAT_HTML_REPORT_TITLE, "<tr><td colspan=\"2\">%s</td></tr> <tr><td width=\"1px\">%s</td><td>%s</td></tr> <tr><td width=\"1px\">%s</td><td>%s</td></tr>");
+
+STR_DEFINITION(STR_HTML_REPORT_HEADER, "<html><head><title></title></head><body>");
+STR_DEFINITION(STR_HTML_REPORT_FOOTER, "</boby></html>");
+STR_DEFINITION(STR_HTML_REPORT_BR, "<br />");
+STR_DEFINITION(STR_HTML_REPORT_TABLE_HEADER, "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">");
+STR_DEFINITION(STR_HTML_REPORT_TABLE_FOOTER, "</table>");
+
+STR_DEFINITION(STR_REPORT_START_NUMBER, "Start number");
+STR_DEFINITION(STR_REPORT_TEAM, "Team");
+STR_DEFINITION(STR_REPORT_SUM, "Sum");
+STR_DEFINITION(STR_REPORT_REPORT, "Report");
+STR_DEFINITION(STR_REPORT_TOUR, "Tour");
+STR_DEFINITION(STR_REPORT_CHAMPIONSHIP, "Championship");
+/**********************************************************************************/
+
 STR_DEFINITION(STR_INCORRECT_VALUE, "Incorrect value");
 STR_DEFINITION(STR_NOT_IN_DB_INSERT, "Selected '%s' not present in database. Insert it?");
 STR_DEFINITION(STR_NOT_IN_DB, "Selected '%s' not present in database.");
@@ -101,6 +120,8 @@ STR_DEFINITION(STR_DANCE_TYPES_CODE_MNGR, "Age category code manager");
 STR_DEFINITION(STR_DANCE_TYPES_CODE_LIST, "Age categories list");
 STR_DEFINITION(STR_LIGUES_CODE_MNGR, "Age category code manager");
 STR_DEFINITION(STR_LIGUES_CODE_LIST, "Age categories list");
+
+
 
 
 

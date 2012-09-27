@@ -98,9 +98,59 @@ void udfCsTourReport::FillList()
 		
 }
 
+void udfCsTourReport::FormatReportTableHeader()
+{
+	m_report.Add(STR_HTML_REPORT_TABLE_HEADER);
+	//Add report title
+	//m_report.Add(STR_REPPORT_HTML_TITLE);
+	m_report.Add(STR_HTML_REPORT_TABLE_FOOTER);
+	
+	m_report.Add(STR_HTML_REPORT_TABLE_HEADER);
+	wxArrayString row;
+	// Start number
+	row.Add(wxString::Format(STR_FORMAT_HTML_REPORT_COL, STR_REPORT_START_NUMBER));
+	// Team name
+	row.Add(wxString::Format(STR_FORMAT_HTML_REPORT_COL, STR_REPORT_TEAM));
+	
+	tJudgesItC it = m_judgesMap.begin();
+	while(it != m_judgesMap.end())
+	{
+		row.Add(wxString::Format(STR_FORMAT_HTML_REPORT_COL, it->second));
+		it++;
+	}
+	
+	// Sum
+	row.Add(wxString::Format(STR_FORMAT_HTML_REPORT_COL, STR_REPORT_SUM));
+	wxString szRow;
+	int col = 0;
+	for(; col < row.GetCount(); ++col)
+	{
+		szRow += row[col]; 
+	}
+	m_report.Add(wxString::Format(STR_FORMAT_HTML_REPORT_ROW, szRow));
+}
+
+void udfCsTourReport::FormatReportTableBody()
+{
+	m_report.Add(STR_HTML_REPORT_TABLE_FOOTER);
+}
+
 void udfCsTourReport::OnReport( wxCommandEvent& event )
 {
-	// TODO: Implement OnReport
+	m_report.Clear();
+	m_report.Add(STR_HTML_REPORT_HEADER);
+	
+	FormatReportTableHeader();
+	FormatReportTableBody();
+	
+	m_report.Add(STR_HTML_REPORT_FOOTER);
+	
+	wxString text;
+	int col = 0;
+	for(; col < m_report.GetCount(); ++col)
+	{
+		text += m_report[col]; 
+	}
 }
 
 void udfCsTourReport::OnDiscard( wxCommandEvent& event )

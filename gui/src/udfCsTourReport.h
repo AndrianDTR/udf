@@ -30,6 +30,7 @@ private:
 	const tJudges&				m_judgesMap;
 	int							m_nLimit;
 	unsigned long				m_nTourId;
+	wxArrayString				m_report;
 	
 protected:
 	// Handlers for CsTourReport events.
@@ -45,6 +46,9 @@ public:
 protected:
 	void		CreateHeaders();
 	void		FillList();
+	
+	void		FormatReportTableHeader();
+	void		FormatReportTableBody();
 };
 
 #endif // __udfCsTourReport__
