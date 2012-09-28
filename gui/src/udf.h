@@ -30,6 +30,7 @@
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <wx/menu.h>
+#include <wx/treectrl.h>
 #include <wx/panel.h>
 #include <wx/frame.h>
 #include <wx/checkbox.h>
@@ -361,6 +362,7 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
 		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
 		void _wxFB_OnSelectChampionship( wxCommandEvent& event ){ OnSelectChampionship( event ); }
+		void _wxFB_OnCsSelect( wxTreeEvent& event ){ OnCsSelect( event ); }
 		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
 		void _wxFB_OnRemoveChampionship( wxCommandEvent& event ){ OnRemoveChampionship( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
@@ -400,6 +402,7 @@ class MainFrameBase : public wxFrame
 			ID_ABOUT,
 			ID_SEARCH,
 			ID_LIST_CHAMPIONSHIP,
+			ID_CS_TREE,
 			wxID_CHAMPIONSIP_ADD,
 			wxID_CHAMPIONSIP_REMOVE,
 			wxID_CHAMPIONSHIP_SAVE,
@@ -430,6 +433,7 @@ class MainFrameBase : public wxFrame
 		wxStaticText* m_championshipSearchText;
 		wxTextCtrl* m_textSearch;
 		wxListBox* m_listChampionship;
+		wxTreeCtrl* m_treeCs;
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
 		wxBitmapButton* m_bpSave;
@@ -474,6 +478,7 @@ class MainFrameBase : public wxFrame
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSelectChampionship( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCsSelect( wxTreeEvent& event ) { event.Skip(); }
 		virtual void OnAddChampionsip( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveChampionship( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }

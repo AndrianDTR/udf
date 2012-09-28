@@ -611,6 +611,7 @@ BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_MENU( ID_ABOUT, MainFrameBase::_wxFB_OnAboutDlg )
 	EVT_TEXT( ID_SEARCH, MainFrameBase::_wxFB_OnSearch )
 	EVT_LISTBOX( ID_LIST_CHAMPIONSHIP, MainFrameBase::_wxFB_OnSelectChampionship )
+	EVT_TREE_SEL_CHANGED( ID_CS_TREE, MainFrameBase::_wxFB_OnCsSelect )
 	EVT_BUTTON( wxID_CHAMPIONSIP_ADD, MainFrameBase::_wxFB_OnAddChampionsip )
 	EVT_BUTTON( wxID_CHAMPIONSIP_REMOVE, MainFrameBase::_wxFB_OnRemoveChampionship )
 	EVT_BUTTON( wxID_CHAMPIONSHIP_SAVE, MainFrameBase::_wxFB_OnSave )
@@ -769,6 +770,9 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	m_listChampionship = new wxListBox( m_panel1, ID_LIST_CHAMPIONSHIP, wxDefaultPosition, wxSize( 310,-1 ), 0, NULL, 0 ); 
 	sbSizer9->Add( m_listChampionship, 1, wxALL|wxEXPAND, 5 );
+	
+	m_treeCs = new wxTreeCtrl( m_panel1, ID_CS_TREE, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE|wxTR_FULL_ROW_HIGHLIGHT|wxTR_HIDE_ROOT|wxTR_SINGLE );
+	sbSizer9->Add( m_treeCs, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer2->Add( sbSizer9, 0, wxEXPAND|wxALL, 5 );
 	
