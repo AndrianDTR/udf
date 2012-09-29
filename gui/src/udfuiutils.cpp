@@ -10,6 +10,7 @@
 #include "ttreiners.h"
 #include "tchampionshipteam.h"
 #include "tchampionshipjudgesmark.h"
+#include "tchampionshiptour.h"
 
 #include "string_def.h"
 
@@ -194,6 +195,26 @@ int GetJudgeMark(unsigned int nChId, unsigned int nChTourId, unsigned int nJudge
 		
 		CChampionshipJudgesMarkTable::tDATA& mark = data.begin()->second;
 		res = mark.nMark;
+	}while(0);
+	
+	return res;
+}
+
+int GetTourLimit(unsigned int nTourId)
+{
+	int res = -1;
+	
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CChampionshipToursTable::tDATA data = {0};
+		
+		if(UDF_OK != CChampionshipToursTable(pCon).GetRow(nTourId, data))
+		{
+			break;
+		}
+		
+		res = data.limit;
 	}while(0);
 	
 	return res;

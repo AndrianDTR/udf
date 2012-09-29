@@ -362,6 +362,7 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnMenuOptions( wxCommandEvent& event ){ OnMenuOptions( event ); }
 		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
 		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnEditTour( wxTreeEvent& event ){ OnEditTour( event ); }
 		void _wxFB_OnCsSelect( wxTreeEvent& event ){ OnCsSelect( event ); }
 		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
 		void _wxFB_OnRemoveChampionship( wxCommandEvent& event ){ OnRemoveChampionship( event ); }
@@ -372,7 +373,11 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnSendInvitation( wxCommandEvent& event ){ OnSendInvitation( event ); }
 		void _wxFB_OnDancersTeams( wxCommandEvent& event ){ OnDancersTeams( event ); }
 		void _wxFB_OnStartNumberAssign( wxCommandEvent& event ){ OnStartNumberAssign( event ); }
-		void _wxFB_OnToursManager( wxCommandEvent& event ){ OnToursManager( event ); }
+		void _wxFB_OnAddTour( wxCommandEvent& event ){ OnAddTour( event ); }
+		void _wxFB_OnTourEdit( wxCommandEvent& event ){ OnTourEdit( event ); }
+		void _wxFB_OnRemoveTour( wxCommandEvent& event ){ OnRemoveTour( event ); }
+		void _wxFB_OnJudgesMark( wxCommandEvent& event ){ OnJudgesMark( event ); }
+		void _wxFB_OnCsTourReport( wxCommandEvent& event ){ OnCsTourReport( event ); }
 		
 	
 	protected:
@@ -411,7 +416,11 @@ class MainFrameBase : public wxFrame
 			wxID_CHAMPIONSHIP_SENDINVITATION,
 			ID_TEAMS,
 			wxID_CHAMPIONSHIP_STARTNUMBERMNGR,
-			ID_TOURS,
+			ID_TOUR_ADD,
+			ID_TOUR_EDIT,
+			ID_TOUR_REMOVE,
+			ID_TOUR_JUIDGES_MARKS,
+			ID_TOUR_REPORT,
 			ID_NAME,
 			ID_TYPE,
 			ID_DATE,
@@ -441,7 +450,11 @@ class MainFrameBase : public wxFrame
 		wxBitmapButton* m_bpSendinvitation;
 		wxBitmapButton* m_bpDancersTeams;
 		wxBitmapButton* m_bpStartNumberMngr;
-		wxBitmapButton* m_bpTours;
+		wxBitmapButton* m_bpTourAdd;
+		wxBitmapButton* m_bpTourEdit;
+		wxBitmapButton* m_bpTourRemove;
+		wxBitmapButton* m_bpJudgesMark;
+		wxBitmapButton* m_bpTourReport;
 		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textChName;
 		wxStaticText* m_staticText2;
@@ -475,6 +488,7 @@ class MainFrameBase : public wxFrame
 		virtual void OnMenuOptions( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditTour( wxTreeEvent& event ) { event.Skip(); }
 		virtual void OnCsSelect( wxTreeEvent& event ) { event.Skip(); }
 		virtual void OnAddChampionsip( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveChampionship( wxCommandEvent& event ) { event.Skip(); }
@@ -485,7 +499,11 @@ class MainFrameBase : public wxFrame
 		virtual void OnSendInvitation( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDancersTeams( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnStartNumberAssign( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnToursManager( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddTour( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTourEdit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemoveTour( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnJudgesMark( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCsTourReport( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -626,11 +644,6 @@ class CsTours : public wxDialog
 	private:
 		
 		// Private event handlers
-		void _wxFB_OnSelectTour( wxCommandEvent& event ){ OnSelectTour( event ); }
-		void _wxFB_OnAddTour( wxCommandEvent& event ){ OnAddTour( event ); }
-		void _wxFB_OnRemoveTour( wxCommandEvent& event ){ OnRemoveTour( event ); }
-		void _wxFB_OnJudgesMark( wxCommandEvent& event ){ OnJudgesMark( event ); }
-		void _wxFB_OnReport( wxCommandEvent& event ){ OnReport( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
 		
@@ -638,40 +651,27 @@ class CsTours : public wxDialog
 	protected:
 		enum
 		{
-			ID_TOURS_LIST = 1000,
-			ID_MARKS,
-			ID_REPORT,
-			ID_NAME,
+			ID_NAME = 1000,
 			ID_LIMIT,
 			ID_FINAL
 		};
 		
-		wxListBox* m_listTours;
-		wxBitmapButton* m_bpAdd;
-		wxBitmapButton* m_bpRemove;
-		wxBitmapButton* m_bpMarks;
-		wxBitmapButton* m_bpReport;
-		wxBitmapButton* m_bpSave;
-		wxBitmapButton* m_bpDiscard;
 		wxStaticText* m_staticText21;
 		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText22;
 		wxTextCtrl* m_textLimit;
 		wxCheckBox* m_checkFinal;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnSelectTour( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddTour( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemoveTour( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnJudgesMark( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnReport( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		CsTours( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship tours"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 763,244 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		CsTours( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship tour"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 488,194 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~CsTours();
 	
 };

@@ -44,7 +44,6 @@ protected:
 	void OnStartNumberAssign( wxCommandEvent& event );
 	void OnJudgeMngr( wxCommandEvent& event );
 	void OnSendInvitation( wxCommandEvent& event );
-	void OnToursManager( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 	void OnAboutDlg( wxCommandEvent& event );
@@ -59,6 +58,14 @@ protected:
 	
 	void OnSearch( wxCommandEvent& event );
 	void OnCsSelect(wxTreeEvent& event);
+	
+	void OnAddTour( wxCommandEvent& event );
+	void OnRemoveTour( wxCommandEvent& event );
+	void OnCsTourReport( wxCommandEvent& event );
+	void OnJudgesMark( wxCommandEvent& event );
+	void OnEditTour(wxTreeEvent& event) {EditTourInfo();};
+	void OnTourEdit(wxCommandEvent& event) {EditTourInfo();};
+	void EditTourInfo();
 
 private:
 	CDbConnection*						m_pCon;
@@ -82,6 +89,8 @@ protected:
 	wxDateTime		GetChDateById(unsigned int nId);
 	
 	wxTreeItemId	GetSelectedCs();
+	wxTreeItemId	GetSelectedCsTour();
+	bool			IsFinalTourAdded();
 
 public:
 	/** Constructor */

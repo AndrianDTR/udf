@@ -15,6 +15,7 @@
 //Constant definitions
 STR_DEFINITION(STR_ERROR, "Error");
 STR_DEFINITION(STR_WARNING, "Warning");
+STR_DEFINITION(STR_EMPTY, "");
 
 STR_DEFINITION(STR_ERR_ADD_COUNTRY_FAILED, "Country could not be added.");
 STR_DEFINITION(STR_ERR_UPD_COUNTRY_FAILED, "Country could not be updated.");
@@ -75,15 +76,18 @@ STR_DEFINITION(STR_WARN_REGOPEN_GREATTHEN_REGCLOSE, "Championship reg open date 
 STR_DEFINITION(STR_WARN_PAY_GREATTHEN_EXP, "Pay date is greater then expire date.");
 STR_DEFINITION(STR_WARN_REMOVE_ALL_TEAM_DANCERS, "If you change the club. All team dencers will be removed. \n\nRemove them all?");
 
+STR_DEFINITION(STR_WARNING_CS_ALREADY_HAS_FINAL, "Selected championship already has final tour.");
+
 STR_DEFINITION(STR_FORMAT_DATE, "%04d-%02d-%02d");
 STR_DEFINITION(STR_FORMAT_TEAM_CATEGORY_NAME, "%s (%s)");
 STR_DEFINITION(STR_FORMAT_START_NUMBER, "%05ld");
+STR_DEFINITION(STR_FORMAT_TOUR_NAME, "%s (%d)");
 
 /***********************************************************************************/
 STR_DEFINITION(STR_HTML_BEGIN, "<html><head><title></title></head><body>");
 STR_DEFINITION(STR_HTML_END, "</boby></html>");
 STR_DEFINITION(STR_HTML_REPORT_BR, "<br />");
-STR_DEFINITION(STR_HTML_TABLE_BEGIN, "<table width=\"100%\" cellspacing=\"10\" cellpadding=\"0\" border=\"0\">");
+STR_DEFINITION(STR_HTML_TABLE_BEGIN, "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"10\" border=\"0\">");
 STR_DEFINITION(STR_HTML_TABLE_END, "</table>");
 
 STR_DEFINITION(STR_FORMAT_HTML_TABLE_COL, "<td>%s</td>");

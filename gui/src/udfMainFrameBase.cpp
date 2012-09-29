@@ -7,21 +7,25 @@
 #include "udfStartNumberAssignDlg.h"
 #include "udfChampionshipTypeMngr.h"
 #include "udfDancersTeamMngr.h"
-
-#include "tliga.h"
-#include "tdancetypes.h"
-#include "tagecategory.h"
-
 #include "udfCodeDialog.h"
 #include "udfCitiesMngr.h"
 #include "udfCountriesMngr.h"
 #include "udfCsTours.h"
+#include "udfJudgeMark.h"
+#include "udfCsTourReport.h"
+
+#include "tliga.h"
+#include "tdancetypes.h"
+#include "tagecategory.h"
+#include "tchampionshipjudgesmark.h"
+#include "tchampionshiptour.h"
 
 #include "version.h"
 #include "wx/aboutdlg.h"
 #include "wx/msgdlg.h"
 
 #include "udfexceptions.h"
+#include "udfuiutils.h"
 #include "common.h"
 #include "string_def.h"
 
@@ -72,6 +76,28 @@ wxTreeItemId udfMainFrameBase::GetSelectedCs()
 	return res;
 }
 
+wxTreeItemId udfMainFrameBase::GetSelectedCsTour()
+{
+	wxTreeItemId res;
+	do
+	{
+		wxTreeItemId item = m_treeCs->GetSelection();
+		if(!item.IsOk())
+		{
+			break;
+		}
+		
+		if(m_root == m_treeCs->GetItemParent(item) )
+		{
+			break;
+		}
+		
+		res = item;
+	}while(0);
+	
+	return res;
+}
+
 void udfMainFrameBase::RefreshList()
 {
 	CChampionshipTable table(m_pCon);
@@ -96,7 +122,7 @@ void udfMainFrameBase::RefreshList()
 		while(itTour != tours.end())
 		{
 			CChampionshipToursTable::tDATA& data = itTour->second;
-			wxString tourName = wxString::Format(_("%s(%d)"), data.name, data.limit);
+			wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, data.name, data.limit);
 			m_treeCs->AppendItem(csItem, tourName, -1, -1, new udfTreeItemData(itTour->first));
 			
 			itTour++;
@@ -416,7 +442,7 @@ void udfMainFrameBase::OnSearch(wxCommandEvent& event)
 			while(itTour != tours.end())
 			{
 				CChampionshipToursTable::tDATA& data = itTour->second;
-				wxString tourName = wxString::Format(_("%s(%d)"), data.name, data.limit);
+				wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, data.name, data.limit);
 				m_treeCs->AppendItem(csItem, tourName, -1, -1, new udfTreeItemData(itTour->first));
 				
 				itTour++;
@@ -742,22 +768,6 @@ void udfMainFrameBase::OnSendInvitation( wxCommandEvent& event )
 	// TODO: Implement OnSendInvitation
 }
 
-void udfMainFrameBase::OnToursManager( wxCommandEvent& event )
-{
-	/*do
-	{
-		int nItem = m_listChampionship->GetSelection();
-		if(-1 != nItem )
-		{
-			int nId = *(int*)m_listChampionship->GetClientData(nItem);
-			
-			udfCsTours dlg(this, nId);
-			dlg.ShowModal();
-		}
-	}while(0);
-	 * */
-}
-
 void udfMainFrameBase::OnCitiesMngr(wxCommandEvent& event)
 {
 	wxString val = m_comboCity->GetValue();
@@ -807,4 +817,205 @@ void udfMainFrameBase::OnMenuChampionshipTypes(wxCommandEvent& event)
 	RefreshTypes();
 	
 	m_comboType->SetValue(val);
+}
+
+bool udfMainFrameBase::IsFinalTourAdded()
+{
+	bool res = false;
+	do
+	{
+		wxTreeItemId itemCsId = GetSelectedCs();
+		if(!itemCsId.IsOk())
+			break;
+			
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemCsId);
+		
+		CChampionshipToursTable::tTableMap recs;
+		CChampionshipToursTable::tDATA filter = {0};
+		filter.championshipId = csItem->GetId();
+		filter.final = udfYES;
+		
+		CChampionshipToursTable(m_pCon).Find(recs, filter);
+	
+		res = (recs.size() > 0);
+	}while(0);
+	
+	return res;
+}
+
+void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
+{
+	do{
+		wxTreeItemId itemCsId = GetSelectedCs();
+		if(!itemCsId.IsOk())
+			break;
+			
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemCsId);
+		
+		if(IsFinalTourAdded())
+		{
+			ShowWarning(STR_WARNING_CS_ALREADY_HAS_FINAL);
+			break;
+		}
+		
+		udfCsTours dlg(this, STR_EMPTY, STR_EMPTY, false);
+		
+		if(wxID_OK != dlg.ShowModal())
+			break;
+			
+		
+		CChampionshipToursTable::tDATA data = {0};
+		
+		data.id = -(csItem->GetId() * m_treeCs->GetChildrenCount(itemCsId));
+		data.championshipId = csItem->GetId();
+		data.name = dlg.GetTourName();
+		dlg.GetTourLimit().ToLong((long*)&data.limit);
+		data.final = dlg.GetIsFinal() ? udfYES : udfNO;
+		
+		if(UDF_OK != CChampionshipToursTable(m_pCon).AddRow(data))
+		{
+			ShowWarning(STR_ERR_ADD_CHAMPIONSHIP_TOUR_FAILED);
+			break;
+		}
+		
+		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, data.name, data.limit);
+		m_treeCs->AppendItem(itemCsId, tourName, -1, -1, new udfTreeItemData(data.id));
+	}while(0);
+}
+
+void udfMainFrameBase::OnRemoveTour(wxCommandEvent& event)
+{
+	do
+	{
+		wxTreeItemId itemTourId = GetSelectedCsTour();
+		if(!itemTourId.IsOk())
+			break;
+			
+		udfTreeItemData *tourItem = (udfTreeItemData *)m_treeCs->GetItemData(itemTourId);
+		
+		if(UDF_OK != CChampionshipToursTable(m_pCon).DelRow(tourItem->GetId()))
+		{
+			ShowWarning(STR_ERR_DEL_CHAMPIONSHIP_TOUR_FAILED);
+			break;
+		}
+			
+		m_treeCs->Delete(itemTourId);
+	}while(0);
+}
+
+void udfMainFrameBase::EditTourInfo()
+{
+	do
+	{
+		wxTreeItemId itemTourId = GetSelectedCsTour();
+		if(!itemTourId.IsOk())
+			break;
+			
+		udfTreeItemData *tourItem = (udfTreeItemData *)m_treeCs->GetItemData(itemTourId);
+		CChampionshipToursTable::tDATA data = {0};
+		CChampionshipToursTable(m_pCon).GetRow(tourItem->GetId(), data);
+		
+		udfCsTours dlg(this, data.name, wxString::Format(_("%d"), data.limit), data.final == udfYES);
+		
+		if(wxID_OK != dlg.ShowModal())
+			break;
+		
+		data.name = dlg.GetTourName();
+		dlg.GetTourLimit().ToLong((long*)&data.limit);
+		data.final = dlg.GetIsFinal() ? udfYES : udfNO;
+		
+		if(UDF_OK != CChampionshipToursTable(m_pCon).UpdateRow(tourItem->GetId(), data))
+		{
+			ShowWarning(STR_ERR_UPD_CHAMPIONSHIP_TOUR_FAILED);
+			break;
+		}
+		
+		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, data.name, data.limit);
+		m_treeCs->SetItemText(itemTourId, tourName);
+	}while(0);
+}
+
+void udfMainFrameBase::OnCsTourReport(wxCommandEvent& event)
+{
+	do{
+		wxTreeItemId itemCsId = GetSelectedCs();
+		if(!itemCsId.IsOk())
+			break;
+			
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemCsId);
+		
+		wxTreeItemId itemTourId = GetSelectedCsTour();
+		if(!itemTourId.IsOk())
+			break;
+			
+		udfTreeItemData *tourItem = (udfTreeItemData *)m_treeCs->GetItemData(itemTourId);
+	
+		unsigned long 	limit = 0;
+		tJudges			judgeMap;
+		tDancerMarks	dancerMarks;
+		
+		CChampionshipJudgesTeamTable::tTableMap judges;
+		CChampionshipJudgesTeamTable::tTableIt	jIt;
+		CChampionshipJudgesTeamTable::tDATA		jFilter = {0};
+				
+		CChampionshipJudgesMarkTable::tTableMap marks;
+		CChampionshipJudgesMarkTable::tTableIt	mIt;
+		CChampionshipJudgesMarkTable::tDATA		mFilter = {0};
+		
+		limit = GetTourLimit(tourItem->GetId());
+		
+		jFilter.championshipId = csItem->GetId();
+		CChampionshipJudgesTeamTable(m_pCon).Find(judges, jFilter);
+		
+		jIt = judges.begin();
+		while(jIt != judges.end())
+		{
+			CChampionshipJudgesTeamTable::tDATA& data = jIt->second;
+			judgeMap[jIt->first] = GetJudgeNameById(data.judgeId);
+			
+			jIt++;
+		}
+		
+		mFilter.championshipId = csItem->GetId();
+		mFilter.tourId = tourItem->GetId();
+		CChampionshipJudgesMarkTable(m_pCon).Find(marks, mFilter);
+		
+		mIt = marks.begin();
+		while(mIt != marks.end())
+		{
+			CChampionshipJudgesMarkTable::tDATA& data = mIt->second;
+			tMarks	marksMap;
+			
+			tDancerMarksIt di = dancerMarks.find(data.teamId);
+			if(di != dancerMarks.end())
+			{
+				marksMap = di->second;
+			}
+			marksMap[data.judgeId] = data.nMark;
+			dancerMarks[data.teamId] = marksMap;
+			
+			mIt++;
+		}
+		
+		udfCsTourReport(this, csItem->GetId(), limit, judgeMap, dancerMarks).ShowModal();
+	}while(0);
+}
+
+void udfMainFrameBase::OnJudgesMark(wxCommandEvent& event)
+{
+	do{
+		wxTreeItemId itemCsId = GetSelectedCs();
+		if(!itemCsId.IsOk())
+			break;
+			
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemCsId);
+		
+		wxTreeItemId itemTourId = GetSelectedCsTour();
+		if(!itemTourId.IsOk())
+			break;
+			
+		udfTreeItemData *tourItem = (udfTreeItemData *)m_treeCs->GetItemData(itemTourId);
+	
+		udfJudgeMark(this, csItem->GetId(), tourItem->GetId(), true).ShowModal();
+	}while(0);
 }

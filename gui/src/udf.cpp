@@ -31,6 +31,9 @@
 #include "../res/button_right.xpm"
 #include "../res/button_rightall.xpm"
 #include "../res/button_startnumber.xpm"
+#include "../res/button_tour_add.xpm"
+#include "../res/button_tour_edit.xpm"
+#include "../res/button_tour_remove.xpm"
 #include "../res/button_undo.xpm"
 #include "../res/button_update2.xpm"
 #include "../res/button_user.xpm"
@@ -647,6 +650,7 @@ BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_MENU( ID_MENU_TOOLS_OPTIONS, MainFrameBase::_wxFB_OnMenuOptions )
 	EVT_MENU( ID_ABOUT, MainFrameBase::_wxFB_OnAboutDlg )
 	EVT_TEXT( ID_SEARCH, MainFrameBase::_wxFB_OnSearch )
+	EVT_TREE_ITEM_ACTIVATED( ID_CS_TREE, MainFrameBase::_wxFB_OnEditTour )
 	EVT_TREE_SEL_CHANGED( ID_CS_TREE, MainFrameBase::_wxFB_OnCsSelect )
 	EVT_BUTTON( wxID_CHAMPIONSIP_ADD, MainFrameBase::_wxFB_OnAddChampionsip )
 	EVT_BUTTON( wxID_CHAMPIONSIP_REMOVE, MainFrameBase::_wxFB_OnRemoveChampionship )
@@ -657,7 +661,11 @@ BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_BUTTON( wxID_CHAMPIONSHIP_SENDINVITATION, MainFrameBase::_wxFB_OnSendInvitation )
 	EVT_BUTTON( ID_TEAMS, MainFrameBase::_wxFB_OnDancersTeams )
 	EVT_BUTTON( wxID_CHAMPIONSHIP_STARTNUMBERMNGR, MainFrameBase::_wxFB_OnStartNumberAssign )
-	EVT_BUTTON( ID_TOURS, MainFrameBase::_wxFB_OnToursManager )
+	EVT_BUTTON( ID_TOUR_ADD, MainFrameBase::_wxFB_OnAddTour )
+	EVT_BUTTON( ID_TOUR_EDIT, MainFrameBase::_wxFB_OnTourEdit )
+	EVT_BUTTON( ID_TOUR_REMOVE, MainFrameBase::_wxFB_OnRemoveTour )
+	EVT_BUTTON( ID_TOUR_JUIDGES_MARKS, MainFrameBase::_wxFB_OnJudgesMark )
+	EVT_BUTTON( ID_TOUR_REPORT, MainFrameBase::_wxFB_OnCsTourReport )
 END_EVENT_TABLE()
 
 MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
@@ -843,11 +851,29 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_bpStartNumberMngr = new wxBitmapButton( m_panel1, wxID_CHAMPIONSHIP_STARTNUMBERMNGR, wxBitmap( button_startnumber_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpStartNumberMngr, 0, wxALL, 5 );
 	
-	m_bpTours = new wxBitmapButton( m_panel1, ID_TOURS, wxBitmap( button_results_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer7->Add( m_bpTours, 0, wxALL, 5 );
-	
 	
 	bSizer13->Add( bSizer7, 0, wxALIGN_RIGHT, 5 );
+	
+	wxBoxSizer* bSizer71;
+	bSizer71 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpTourAdd = new wxBitmapButton( m_panel1, ID_TOUR_ADD, wxBitmap( button_tour_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer71->Add( m_bpTourAdd, 0, wxALL, 5 );
+	
+	m_bpTourEdit = new wxBitmapButton( m_panel1, ID_TOUR_EDIT, wxBitmap( button_tour_edit_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer71->Add( m_bpTourEdit, 0, wxALL, 5 );
+	
+	m_bpTourRemove = new wxBitmapButton( m_panel1, ID_TOUR_REMOVE, wxBitmap( button_tour_remove_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer71->Add( m_bpTourRemove, 0, wxALL, 5 );
+	
+	m_bpJudgesMark = new wxBitmapButton( m_panel1, ID_TOUR_JUIDGES_MARKS, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer71->Add( m_bpJudgesMark, 0, wxALL, 5 );
+	
+	m_bpTourReport = new wxBitmapButton( m_panel1, ID_TOUR_REPORT, wxBitmap( button_results_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer71->Add( m_bpTourReport, 0, wxALL, 5 );
+	
+	
+	bSizer13->Add( bSizer71, 0, wxALIGN_RIGHT, 5 );
 	
 	wxFlexGridSizer* fgSizer1;
 	fgSizer1 = new wxFlexGridSizer( 6, 2, 0, 0 );
@@ -1174,11 +1200,6 @@ TrainersMngrDlg::~TrainersMngrDlg()
 }
 
 BEGIN_EVENT_TABLE( CsTours, wxDialog )
-	EVT_LISTBOX( ID_TOURS_LIST, CsTours::_wxFB_OnSelectTour )
-	EVT_BUTTON( wxID_ADD, CsTours::_wxFB_OnAddTour )
-	EVT_BUTTON( wxID_REMOVE, CsTours::_wxFB_OnRemoveTour )
-	EVT_BUTTON( ID_MARKS, CsTours::_wxFB_OnJudgesMark )
-	EVT_BUTTON( ID_REPORT, CsTours::_wxFB_OnReport )
 	EVT_BUTTON( wxID_OK, CsTours::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, CsTours::_wxFB_OnDiscard )
 END_EVENT_TABLE()
@@ -1187,51 +1208,8 @@ CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const 
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
-	wxBoxSizer* bSizer33;
-	bSizer33 = new wxBoxSizer( wxVERTICAL );
-	
-	wxBoxSizer* bSizer19;
-	bSizer19 = new wxBoxSizer( wxVERTICAL );
-	
-	wxBoxSizer* bSizer20;
-	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
-	
-	wxStaticBoxSizer* sbSizer5;
-	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Tours") ), wxVERTICAL );
-	
-	m_listTours = new wxListBox( this, ID_TOURS_LIST, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
-	sbSizer5->Add( m_listTours, 1, wxALL|wxEXPAND, 5 );
-	
-	
-	bSizer20->Add( sbSizer5, 0, wxEXPAND|wxALL, 5 );
-	
 	wxBoxSizer* bSizer22;
 	bSizer22 = new wxBoxSizer( wxVERTICAL );
-	
-	wxBoxSizer* bSizer76;
-	bSizer76 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpAdd = new wxBitmapButton( this, wxID_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer76->Add( m_bpAdd, 0, wxALL, 5 );
-	
-	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer76->Add( m_bpRemove, 0, wxALL, 5 );
-	
-	m_bpMarks = new wxBitmapButton( this, ID_MARKS, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer76->Add( m_bpMarks, 0, wxALL, 5 );
-	
-	m_bpReport = new wxBitmapButton( this, ID_REPORT, wxBitmap( button_report_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer76->Add( m_bpReport, 0, wxALL, 5 );
-	
-	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpSave->SetDefault(); 
-	bSizer76->Add( m_bpSave, 0, wxALL, 5 );
-	
-	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer76->Add( m_bpDiscard, 0, wxALL, 5 );
-	
-	
-	bSizer22->Add( bSizer76, 0, wxALIGN_RIGHT, 5 );
 	
 	
 	bSizer22->Add( 0, 0, 1, wxEXPAND, 5 );
@@ -1266,20 +1244,21 @@ CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	
 	bSizer22->Add( fgSizer3, 0, wxEXPAND, 5 );
 	
+	wxBoxSizer* bSizer76;
+	bSizer76 = new wxBoxSizer( wxHORIZONTAL );
 	
-	bSizer22->Add( 0, 0, 1, wxEXPAND, 5 );
+	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpSave->SetDefault(); 
+	bSizer76->Add( m_bpSave, 0, wxALL, 5 );
 	
-	
-	bSizer20->Add( bSizer22, 1, wxEXPAND, 5 );
-	
-	
-	bSizer19->Add( bSizer20, 1, wxEXPAND, 5 );
-	
-	
-	bSizer33->Add( bSizer19, 1, wxEXPAND, 5 );
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpDiscard, 0, wxALL, 5 );
 	
 	
-	this->SetSizer( bSizer33 );
+	bSizer22->Add( bSizer76, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	
+	this->SetSizer( bSizer22 );
 	this->Layout();
 	
 	this->Centre( wxBOTH );
