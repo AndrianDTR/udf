@@ -77,8 +77,6 @@ void udfMainFrameBase::RefreshList()
 	CChampionshipTable table(m_pCon);
 	table.GetTable(m_Championships);
 	
-	m_listChampionship->Clear();
-	
 	m_treeCs->DeleteChildren(m_root);
 		
 	CChampionshipTable::tTableIt it = m_Championships.begin();
@@ -338,12 +336,11 @@ void udfMainFrameBase::OnSave( wxCommandEvent& event )
 void udfMainFrameBase::OnDiscard( wxCommandEvent& event )
 {
 	do{
-		int nItem = m_listChampionship->GetSelection();
-		if(-1 == nItem)
+		wxTreeItemId itemId = GetSelectedCs();
+		if(!itemId.IsOk())
 			break;
-					
-		m_listChampionship->SetSelection(nItem);
-		OnSelectChampionship(event);
+			
+		m_treeCs->SelectItem(itemId);
 	}while(0);
 }
 
@@ -398,7 +395,6 @@ void udfMainFrameBase::OnSearch(wxCommandEvent& event)
 	wxString search = m_textSearch->GetValue().Upper();
 	CChampionshipTable::tTableIt it;
 	
-	m_listChampionship->Clear();
 	m_treeCs->DeleteChildren(m_root);
 	
 	for(it = m_Championships.begin(); it != m_Championships.end(); it++)
