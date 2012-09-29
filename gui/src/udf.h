@@ -1,15 +1,16 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Dec 21 2009)
+// C++ code generated with wxFormBuilder (version Apr 10 2012)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __udf__
-#define __udf__
+#ifndef __UDF_H__
+#define __UDF_H__
 
+#include <wx/artprov.h>
+#include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-
 #include <wx/string.h>
 #include <wx/stattext.h>
 #include <wx/gdicmn.h>
@@ -77,7 +78,7 @@ class DancersTeamMngr : public wxDialog
 			ID_DANCERS_COMBO,
 			ID_DANCERS_LIST,
 			wxID_ADDDANCER,
-			wxID_REMOVEDANCER,
+			wxID_REMOVEDANCER
 		};
 		
 		wxStaticText* m_staticText15;
@@ -118,7 +119,7 @@ class DancersTeamMngr : public wxDialog
 	
 	public:
 		
-		DancersTeamMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Dancers team"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 775,485 ), long style = wxDEFAULT_DIALOG_STYLE );
+		DancersTeamMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Dancers team"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 775,485 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~DancersTeamMngr();
 	
 };
@@ -148,7 +149,7 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 			wxID_ADDONE,
 			wxID_REMOVEONE,
 			wxID_REMOVEALL,
-			ID_SELECTED_LIST,
+			ID_SELECTED_LIST
 		};
 		
 		wxStaticText* m_staticText8;
@@ -173,7 +174,7 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 	
 	public:
 		
-		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 664,446 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
+		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 664,446 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU ); 
 		~ChampionshipCategoriesMngrDlg();
 	
 };
@@ -205,7 +206,7 @@ class CategoriesMngrDlg : public wxDialog
 			ID_SHORTNAME,
 			ID_DANCE_LIST,
 			ID_LIGA_LIST,
-			ID_AGE_LIST,
+			ID_AGE_LIST
 		};
 		
 		wxStaticText* m_staticText15;
@@ -239,7 +240,7 @@ class CategoriesMngrDlg : public wxDialog
 	
 	public:
 		
-		CategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 715,284 ), long style = wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
+		CategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 715,284 ), long style = wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU ); 
 		~CategoriesMngrDlg();
 	
 };
@@ -284,7 +285,7 @@ class ClubsMngrDlg : public wxDialog
 			ID_WEB,
 			ID_INFO,
 			ID_PAYDATE,
-			ID_EXPDATE,
+			ID_EXPDATE
 		};
 		
 		wxStaticText* m_staticText20;
@@ -332,7 +333,7 @@ class ClubsMngrDlg : public wxDialog
 	
 	public:
 		
-		ClubsMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Clubs manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 895,484 ), long style = wxDEFAULT_DIALOG_STYLE );
+		ClubsMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Clubs manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 895,484 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~ClubsMngrDlg();
 	
 };
@@ -361,7 +362,6 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnMenuOptions( wxCommandEvent& event ){ OnMenuOptions( event ); }
 		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
 		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnSelectChampionship( wxCommandEvent& event ){ OnSelectChampionship( event ); }
 		void _wxFB_OnCsSelect( wxTreeEvent& event ){ OnCsSelect( event ); }
 		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
 		void _wxFB_OnRemoveChampionship( wxCommandEvent& event ){ OnRemoveChampionship( event ); }
@@ -401,7 +401,6 @@ class MainFrameBase : public wxFrame
 			ID_MENU_TOOLS_OPTIONS,
 			ID_ABOUT,
 			ID_SEARCH,
-			ID_LIST_CHAMPIONSHIP,
 			ID_CS_TREE,
 			wxID_CHAMPIONSIP_ADD,
 			wxID_CHAMPIONSIP_REMOVE,
@@ -420,7 +419,7 @@ class MainFrameBase : public wxFrame
 			ID_ADDRESS,
 			ID_REG_OPEN,
 			ID_REG_CLOSE,
-			ID_INFO,
+			ID_INFO
 		};
 		
 		wxMenuBar* m_menuBar;
@@ -432,7 +431,6 @@ class MainFrameBase : public wxFrame
 		wxPanel* m_panel1;
 		wxStaticText* m_championshipSearchText;
 		wxTextCtrl* m_textSearch;
-		wxListBox* m_listChampionship;
 		wxTreeCtrl* m_treeCs;
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
@@ -477,7 +475,6 @@ class MainFrameBase : public wxFrame
 		virtual void OnMenuOptions( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSelectChampionship( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCsSelect( wxTreeEvent& event ) { event.Skip(); }
 		virtual void OnAddChampionsip( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveChampionship( wxCommandEvent& event ) { event.Skip(); }
@@ -494,6 +491,7 @@ class MainFrameBase : public wxFrame
 	public:
 		
 		MainFrameBase( wxWindow* parent, wxWindowID id = ID_MAINFRAME_FORM, const wxString& title = _("Championship calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 983,667 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxMAXIMIZE|wxTAB_TRAVERSAL );
+		
 		~MainFrameBase();
 	
 };
@@ -517,7 +515,7 @@ class DirectorInfo : public wxDialog
 			ID_NAME = 1000,
 			ID_BD,
 			ID_PHONE,
-			ID_EMAIL,
+			ID_EMAIL
 		};
 		
 		wxStaticText* m_staticText29;
@@ -538,7 +536,7 @@ class DirectorInfo : public wxDialog
 	
 	public:
 		
-		DirectorInfo( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Director info"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 459,230 ), long style = wxDEFAULT_DIALOG_STYLE );
+		DirectorInfo( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Director info"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 459,230 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~DirectorInfo();
 	
 };
@@ -574,7 +572,7 @@ class TrainersMngrDlg : public wxDialog
 			ID_BD,
 			ID_INFO,
 			ID_PAY,
-			ID_EXPIRE,
+			ID_EXPIRE
 		};
 		
 		wxStaticText* m_staticText20;
@@ -614,7 +612,7 @@ class TrainersMngrDlg : public wxDialog
 	
 	public:
 		
-		TrainersMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Trainers"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 777,466 ), long style = wxDEFAULT_DIALOG_STYLE );
+		TrainersMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Trainers"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 777,466 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TrainersMngrDlg();
 	
 };
@@ -645,7 +643,7 @@ class CsTours : public wxDialog
 			ID_REPORT,
 			ID_NAME,
 			ID_LIMIT,
-			ID_FINAL,
+			ID_FINAL
 		};
 		
 		wxListBox* m_listTours;
@@ -655,14 +653,11 @@ class CsTours : public wxDialog
 		wxBitmapButton* m_bpReport;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
-		
 		wxStaticText* m_staticText21;
 		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText22;
 		wxTextCtrl* m_textLimit;
-		
 		wxCheckBox* m_checkFinal;
-		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSelectTour( wxCommandEvent& event ) { event.Skip(); }
@@ -676,7 +671,7 @@ class CsTours : public wxDialog
 	
 	public:
 		
-		CsTours( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship tours"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 763,244 ), long style = wxDEFAULT_DIALOG_STYLE );
+		CsTours( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship tours"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 763,244 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~CsTours();
 	
 };
@@ -700,12 +695,11 @@ class CsTourReport : public wxDialog
 		enum
 		{
 			ID_PRINT = 1000,
-			ID_LIST_TEAMS,
+			ID_LIST_TEAMS
 		};
 		
 		wxBoxSizer* bSizer76;
 		wxStaticText* m_staticText94;
-		
 		wxBitmapButton* m_bpPrint;
 		wxBitmapButton* m_bpDiscard;
 		wxListCtrl* m_listTeams;
@@ -720,7 +714,7 @@ class CsTourReport : public wxDialog
 	
 	public:
 		
-		CsTourReport( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship tour report"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1000,700 ), long style = wxDEFAULT_DIALOG_STYLE );
+		CsTourReport( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship tour report"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1000,700 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~CsTourReport();
 	
 };
@@ -759,7 +753,7 @@ class DancersMngrDlg : public wxDialog
 			ID_INFO,
 			ID_PAY,
 			ID_EXPIRE,
-			ID_REG,
+			ID_REG
 		};
 		
 		wxStaticText* m_staticText78;
@@ -807,7 +801,7 @@ class DancersMngrDlg : public wxDialog
 	
 	public:
 		
-		DancersMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Dancers"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 964,634 ), long style = wxDEFAULT_DIALOG_STYLE );
+		DancersMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Dancers"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 964,634 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~DancersMngrDlg();
 	
 };
@@ -830,14 +824,13 @@ class AccountInfo : public wxDialog
 		enum
 		{
 			ID_LOGIN = 1000,
-			ID_PASS,
+			ID_PASS
 		};
 		
 		wxStaticText* m_staticText56;
 		wxTextCtrl* m_textLogin;
 		wxStaticText* m_staticText57;
 		wxTextCtrl* m_textPass;
-		
 		wxCheckBox* m_checkShowPass;
 		wxBitmapButton* m_bpButton39;
 		wxBitmapButton* m_bpButton40;
@@ -850,7 +843,7 @@ class AccountInfo : public wxDialog
 	
 	public:
 		
-		AccountInfo( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Account info"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 384,185 ), long style = wxCAPTION|wxCLOSE_BOX|wxSTAY_ON_TOP );
+		AccountInfo( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Account info"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 384,185 ), long style = wxCAPTION|wxCLOSE_BOX|wxSTAY_ON_TOP ); 
 		~AccountInfo();
 	
 };
@@ -872,7 +865,7 @@ class AddTeamCategory : public wxDialog
 		enum
 		{
 			ID_CATEGORY = 1000,
-			ID_PASS,
+			ID_PASS
 		};
 		
 		wxStaticText* m_staticText56;
@@ -889,7 +882,7 @@ class AddTeamCategory : public wxDialog
 	
 	public:
 		
-		AddTeamCategory( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Add team categort"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 384,163 ), long style = wxCAPTION|wxCLOSE_BOX|wxSTAY_ON_TOP );
+		AddTeamCategory( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Add team categort"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 384,163 ), long style = wxCAPTION|wxCLOSE_BOX|wxSTAY_ON_TOP ); 
 		~AddTeamCategory();
 	
 };
@@ -926,7 +919,7 @@ class JudgesMngr : public wxDialog
 			ID_INFO,
 			ID_PRACTICER,
 			ID_PAY,
-			ID_EXP,
+			ID_EXP
 		};
 		
 		wxStaticText* m_staticText20;
@@ -949,7 +942,6 @@ class JudgesMngr : public wxDialog
 		wxTextCtrl* m_textPhone;
 		wxStaticText* m_staticText26;
 		wxTextCtrl* m_textInfo;
-		
 		wxCheckBox* m_checkPracticer;
 		wxStaticText* m_staticText27;
 		wxDatePickerCtrl* m_datePay;
@@ -968,7 +960,7 @@ class JudgesMngr : public wxDialog
 	
 	public:
 		
-		JudgesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judges manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 862,483 ), long style = wxDEFAULT_DIALOG_STYLE );
+		JudgesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judges manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 862,483 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~JudgesMngr();
 	
 };
@@ -996,7 +988,7 @@ class TeamCategoryMngrDlg : public wxDialog
 			wxID_ADDALL = 1000,
 			wxID_ADDONE,
 			wxID_REMOVEONE,
-			wxID_REMOVEALL,
+			wxID_REMOVEALL
 		};
 		
 		wxStaticText* m_staticText8;
@@ -1021,7 +1013,7 @@ class TeamCategoryMngrDlg : public wxDialog
 	
 	public:
 		
-		TeamCategoryMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Team categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 546,317 ), long style = wxDEFAULT_DIALOG_STYLE );
+		TeamCategoryMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Team categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 546,317 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~TeamCategoryMngrDlg();
 	
 };
@@ -1051,7 +1043,7 @@ class ChampionshipJudgesTeamMngrDlg : public wxDialog
 			wxID_ADDONE,
 			wxID_REMOVEONE,
 			wxID_REMOVEALL,
-			ID_SELECTED,
+			ID_SELECTED
 		};
 		
 		wxStaticText* m_staticText8;
@@ -1076,7 +1068,7 @@ class ChampionshipJudgesTeamMngrDlg : public wxDialog
 	
 	public:
 		
-		ChampionshipJudgesTeamMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship judges team manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 546,316 ), long style = wxDEFAULT_DIALOG_STYLE );
+		ChampionshipJudgesTeamMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship judges team manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 546,316 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~ChampionshipJudgesTeamMngrDlg();
 	
 };
@@ -1107,7 +1099,7 @@ class StartNumberAssignDlg : public wxDialog
 			ID_NUMBER,
 			wxID_RANDOM,
 			wxID_NEXT,
-			wxID_ASSIGN,
+			wxID_ASSIGN
 		};
 		
 		wxListBox* m_listTeams;
@@ -1117,7 +1109,6 @@ class StartNumberAssignDlg : public wxDialog
 		wxBitmapButton* m_bpRandomNumber;
 		wxBitmapButton* m_bpNextNumber;
 		wxBitmapButton* m_bpAssign;
-		
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
 		
@@ -1133,7 +1124,7 @@ class StartNumberAssignDlg : public wxDialog
 	
 	public:
 		
-		StartNumberAssignDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 816,356 ), long style = wxDEFAULT_DIALOG_STYLE );
+		StartNumberAssignDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 816,356 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~StartNumberAssignDlg();
 	
 };
@@ -1166,7 +1157,7 @@ class JudgeMark : public wxDialog
 			ID_PANEL_PLUS,
 			ID_GOOD,
 			ID_PANEL_MINUS,
-			ID_BED,
+			ID_BED
 		};
 		
 		wxStaticText* m_staticText92;
@@ -1182,7 +1173,6 @@ class JudgeMark : public wxDialog
 		wxPanel* m_panelMinus;
 		wxBitmapButton* m_bpBed;
 		
-		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSelectJudge( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
@@ -1196,7 +1186,7 @@ class JudgeMark : public wxDialog
 	
 	public:
 		
-		JudgeMark( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judge marks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 816,356 ), long style = wxDEFAULT_DIALOG_STYLE );
+		JudgeMark( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judge marks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 816,356 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~JudgeMark();
 	
 };
@@ -1226,7 +1216,7 @@ class CodeDialog : public wxDialog
 			ID_ITEM_LIST,
 			wxID_UPDATE,
 			ID_CODE,
-			ID_NAME,
+			ID_NAME
 		};
 		
 		wxStaticBoxSizer* m_sbListSizer;
@@ -1238,12 +1228,10 @@ class CodeDialog : public wxDialog
 		wxBitmapButton* m_bpAplly;
 		wxBitmapButton* m_bpButton81;
 		wxBitmapButton* m_bpButton82;
-		
 		wxStaticText* m_staticText82;
 		wxTextCtrl* m_textCode;
 		wxStaticText* m_staticText83;
 		wxTextCtrl* m_textName;
-		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
@@ -1257,7 +1245,7 @@ class CodeDialog : public wxDialog
 	
 	public:
 		
-		CodeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Code"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,322 ), long style = wxDEFAULT_DIALOG_STYLE );
+		CodeDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Code"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,322 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~CodeDialog();
 	
 };
@@ -1286,7 +1274,7 @@ class CountriesMngr : public wxDialog
 			ID_SEARCH = 1000,
 			ID_ITEM_LIST,
 			wxID_UPDATE,
-			ID_NAME,
+			ID_NAME
 		};
 		
 		wxStaticText* m_staticText84;
@@ -1297,10 +1285,8 @@ class CountriesMngr : public wxDialog
 		wxBitmapButton* m_bpAplly;
 		wxBitmapButton* m_bpButton81;
 		wxBitmapButton* m_bpButton82;
-		
 		wxStaticText* m_staticText83;
 		wxTextCtrl* m_textName;
-		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
@@ -1314,7 +1300,7 @@ class CountriesMngr : public wxDialog
 	
 	public:
 		
-		CountriesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Countries manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,239 ), long style = wxDEFAULT_DIALOG_STYLE );
+		CountriesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Countries manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,239 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~CountriesMngr();
 	
 };
@@ -1343,7 +1329,7 @@ class ChampionshipTypeMngr : public wxDialog
 			ID_SEARCH = 1000,
 			ID_ITEM_LIST,
 			wxID_UPDATE,
-			ID_NAME,
+			ID_NAME
 		};
 		
 		wxStaticText* m_staticText84;
@@ -1354,10 +1340,8 @@ class ChampionshipTypeMngr : public wxDialog
 		wxBitmapButton* m_bpAplly;
 		wxBitmapButton* m_bpButton81;
 		wxBitmapButton* m_bpButton82;
-		
 		wxStaticText* m_staticText83;
 		wxTextCtrl* m_textName;
-		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
@@ -1371,7 +1355,7 @@ class ChampionshipTypeMngr : public wxDialog
 	
 	public:
 		
-		ChampionshipTypeMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship types manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,239 ), long style = wxDEFAULT_DIALOG_STYLE );
+		ChampionshipTypeMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship types manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 550,239 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~ChampionshipTypeMngr();
 	
 };
@@ -1400,7 +1384,7 @@ class CitiesMngr : public wxDialog
 			ID_SEARCH = 1000,
 			ID_ITEM_LIST,
 			wxID_UPDATE,
-			ID_NAME,
+			ID_NAME
 		};
 		
 		wxStaticBoxSizer* m_sbListSizer;
@@ -1412,12 +1396,10 @@ class CitiesMngr : public wxDialog
 		wxBitmapButton* m_bpAplly;
 		wxBitmapButton* m_bpButton81;
 		wxBitmapButton* m_bpButton82;
-		
 		wxStaticText* m_staticText82;
 		wxComboBox* m_comboCounty;
 		wxStaticText* m_staticText83;
 		wxTextCtrl* m_textName;
-		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
@@ -1431,7 +1413,7 @@ class CitiesMngr : public wxDialog
 	
 	public:
 		
-		CitiesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Cities manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 599,322 ), long style = wxDEFAULT_DIALOG_STYLE );
+		CitiesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Cities manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 599,322 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~CitiesMngr();
 	
 };
@@ -1453,7 +1435,7 @@ class ReportPreview : public wxDialog
 		enum
 		{
 			ID_PRINT = 1000,
-			ID_REPORT_PREVIEW,
+			ID_REPORT_PREVIEW
 		};
 		
 		wxBitmapButton* m_bpPrint;
@@ -1467,9 +1449,9 @@ class ReportPreview : public wxDialog
 	
 	public:
 		
-		ReportPreview( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Report preview"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 956,636 ), long style = wxDEFAULT_DIALOG_STYLE );
+		ReportPreview( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Report preview"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 956,636 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~ReportPreview();
 	
 };
 
-#endif //__udf__
+#endif //__UDF_H__

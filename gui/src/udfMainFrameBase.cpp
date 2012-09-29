@@ -35,6 +35,8 @@ udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 	
 	m_pCon = CDbManager::Instance()->GetConnection();
 	
+	m_root = m_treeCs->AddRoot(_("Root"));
+	
 	RefreshList();
 	RefreshCities();
 	RefreshTypes();
@@ -50,6 +52,26 @@ void udfMainFrameBase::OnExitClick( wxCommandEvent& event )
 	// TODO: Implement OnExitClick
 }
 
+
+wxTreeItemId udfMainFrameBase::GetSelectedCs()
+{
+	wxTreeItemId res;
+	do
+	{
+		wxTreeItemId item = m_treeCs->GetSelection();
+		if(!item.IsOk())
+			break;
+		
+		if(m_root != m_treeCs->GetItemParent(item) )
+		{
+			item = m_treeCs->GetItemParent(item);
+		}
+		res = item;
+	}while(0);
+	
+	return res;
+}
+
 void udfMainFrameBase::RefreshList()
 {
 	CChampionshipTable table(m_pCon);
@@ -57,13 +79,31 @@ void udfMainFrameBase::RefreshList()
 	
 	m_listChampionship->Clear();
 	
+	m_treeCs->DeleteChildren(m_root);
+		
 	CChampionshipTable::tTableIt it = m_Championships.begin();
 	while(it != m_Championships.end())
 	{
 		CChampionshipTable::tDATA& data = it->second;
-		int nPos = m_listChampionship->GetCount();
-		m_listChampionship->Insert(data.name, nPos, (void*)&it->first);
 		
+		wxTreeItemId csItem = m_treeCs->AppendItem(m_root, data.name, -1, -1, new udfTreeItemData(it->first));
+		/** Append tours **/
+		CChampionshipToursTable::tTableMap tours;
+		CChampionshipToursTable::tDATA filter = {0};
+		filter.championshipId = it->first;
+		
+		CChampionshipToursTable(m_pCon).Find(tours, filter);
+		
+		CChampionshipToursTable::tTableIt itTour = tours.begin();
+		while(itTour != tours.end())
+		{
+			CChampionshipToursTable::tDATA& data = itTour->second;
+			wxString tourName = wxString::Format(_("%s(%d)"), data.name, data.limit);
+			m_treeCs->AppendItem(csItem, tourName, -1, -1, new udfTreeItemData(itTour->first));
+			
+			itTour++;
+		}
+			
 		it++;
 	}
 }
@@ -230,12 +270,16 @@ void udfMainFrameBase::OnAddChampionsip( wxCommandEvent& event )
 		data.regOpenDate = m_dateRegOpen->GetValue().GetTicks();
 		data.regCloseDate = m_dateRegClose->GetValue().GetTicks();
 		
-		CChampionshipTable table(m_pCon);
-		TEST_BREAK(UDF_OK, table.AddRow(data), STR_ERR_ADD_CHAMPIONSHIP_FAILED);
+		if(UDF_OK != CChampionshipTable(m_pCon).AddRow(data))
+		{
+			ShowError(STR_ERR_ADD_CHAMPIONSHIP_FAILED);
+			break;
+		}
 			
 		CChampionshipTable::tTableIt it = m_Championships.insert(std::make_pair(data.id, data)).first;
-		int nPos = m_listChampionship->GetCount();
-		m_listChampionship->Insert(data.name, nPos, (void*)&it->first);
+				
+		m_treeCs->AppendItem(m_root, data.name, -1, -1, new udfTreeItemData(it->first));
+		
 	}while(0);
 }
 
@@ -243,23 +287,17 @@ void udfMainFrameBase::OnRemoveChampionship( wxCommandEvent& event )
 {
 	do
 	{
-		int nItem = m_listChampionship->GetSelection();
-		if(nItem == -1)
-			break;
-		int nId = *(int*)m_listChampionship->GetClientData(nItem);
+		wxTreeItemId item = GetSelectedCs();
+		udfTreeItemData* csItem = (udfTreeItemData*)m_treeCs->GetItemData(item);
 		
-		if(wxDateTime::Now() > GetChDateById(nId) )
+		if(UDF_OK != CChampionshipTable(m_pCon).DelRow(csItem->GetId()))
 		{
-			ShowWarning(STR_WARN_DATE_INTHEPAST);
+			ShowError(STR_ERR_DEL_CHAMPIONSHIP_FAILED);
 			break;
 		}
 		
-		CChampionshipTable table(m_pCon);
-		
-		TEST_BREAK(UDF_OK, table.DelRow(nId), STR_ERR_DEL_CHAMPIONSHIP_FAILED);
-		
-		m_Championships.erase(nId);
-		m_listChampionship->Delete(nItem);
+		m_Championships.erase(csItem->GetId());
+		m_treeCs->Delete(item);
 	}while(0);
 }
 
@@ -267,16 +305,13 @@ void udfMainFrameBase::OnSave( wxCommandEvent& event )
 {
 	do
 	{
-		int nItem = m_listChampionship->GetSelection();
-		if(nItem == -1)
+		wxTreeItemId item = GetSelectedCs();
+		udfTreeItemData* csItem = (udfTreeItemData*)m_treeCs->GetItemData(item);
+		
+		if(!ValidateValues())
 			break;
 		
-		if(! ValidateValues())
-			break;
-				
-		int nId = *(int*)m_listChampionship->GetClientData(nItem);
-		
-		CChampionshipTable::tTableIt it = m_Championships.find(nId);
+		CChampionshipTable::tTableIt it = m_Championships.find(csItem->GetId());
 		if(it == m_Championships.end())
 			break;
 		
@@ -291,9 +326,12 @@ void udfMainFrameBase::OnSave( wxCommandEvent& event )
 		data.regOpenDate = m_dateRegOpen->GetValue().GetTicks();
 		data.regCloseDate = m_dateRegClose->GetValue().GetTicks();
 		
-		CChampionshipTable table(m_pCon);
-		TEST_BREAK(UDF_OK, table.UpdateRow(nId, data), STR_ERR_UPD_CHAMPIONSHIP_FAILED);
-		m_listChampionship->SetString(nItem, data.name);
+		if(UDF_OK != CChampionshipTable(m_pCon).UpdateRow(csItem->GetId(), data))
+		{
+			ShowError(STR_ERR_UPD_CHAMPIONSHIP_FAILED);
+			break;
+		}
+		m_treeCs->SetItemText(item, data.name);
 	}while(0);
 }
 
@@ -309,19 +347,20 @@ void udfMainFrameBase::OnDiscard( wxCommandEvent& event )
 	}while(0);
 }
 
-void udfMainFrameBase::OnSelectChampionship(wxCommandEvent& event)
+void udfMainFrameBase::OnCsSelect(wxTreeEvent& event)
 {
 	do
 	{
-		int nItem = m_listChampionship->GetSelection();
-		if(nItem == -1)
+		wxTreeItemId itemId = GetSelectedCs();
+		if(!itemId.IsOk())
 			break;
+			
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
 		
-		int nId = *(int*)m_listChampionship->GetClientData(nItem);
-		
-		CChampionshipTable::tTableIt it = m_Championships.find(nId);
+		CChampionshipTable::tTableIt it = m_Championships.find(csItem->GetId());
 		if(it == m_Championships.end())
 			break;
+		
 		CChampionshipTable::tDATA& data = it->second;
 		m_textChName->SetValue(data.name);
 		m_textAddress->SetValue(data.address);
@@ -330,16 +369,19 @@ void udfMainFrameBase::OnSelectChampionship(wxCommandEvent& event)
 		CChampionshipTypeTable::tTableIt typeIt = m_ChampionshipTypes.find(data.type);
 		if(typeIt == m_ChampionshipTypes.end())
 			break;
+		
 		CChampionshipTypeTable::tDATA& typeData = typeIt->second;
 		m_comboType->SetValue(typeData.name);
 		
 		CCitiesTable::tTableIt cityIt = m_Cities.find(data.city);
 		if(cityIt == m_Cities.end())
 			break;
+		
 		CCitiesTable::tDATA& cityData = cityIt->second;
 		CCountriesTable::tTableIt countryIt = m_Countries.find(cityData.countryId);
 		if(countryIt == m_Countries.end())
 			break;
+		
 		CCountriesTable::tDATA& countryData = countryIt->second;
 		wxString city = wxString::Format(STR_FORMAT_CITY_NAME, cityData.Name, countryData.name);
 		m_comboCity->SetValue(city);
@@ -354,18 +396,35 @@ void udfMainFrameBase::OnSelectChampionship(wxCommandEvent& event)
 void udfMainFrameBase::OnSearch(wxCommandEvent& event)
 {
 	wxString search = m_textSearch->GetValue().Upper();
-	CChampionshipTable::tTableIt item;
+	CChampionshipTable::tTableIt it;
 	
 	m_listChampionship->Clear();
-	for(item = m_Championships.begin(); item != m_Championships.end(); item++)
+	m_treeCs->DeleteChildren(m_root);
+	
+	for(it = m_Championships.begin(); it != m_Championships.end(); it++)
 	{
-		CChampionshipTable::tDATA& data = item->second;
+		CChampionshipTable::tDATA& data = it->second;
 		wxString name(data.name);
 		
 		if(name.Upper().Contains(search))
 		{
-			int pos = m_listChampionship->GetCount();
-			m_listChampionship->Insert(data.name, pos, (void*)&item->first);
+			wxTreeItemId csItem = m_treeCs->AppendItem(m_root, data.name, -1, -1, new udfTreeItemData(it->first));
+			
+			CChampionshipToursTable::tTableMap tours;
+			CChampionshipToursTable::tDATA filter = {0};
+			filter.championshipId = it->first;
+			
+			CChampionshipToursTable(m_pCon).Find(tours, filter);
+			
+			CChampionshipToursTable::tTableIt itTour = tours.begin();
+			while(itTour != tours.end())
+			{
+				CChampionshipToursTable::tDATA& data = itTour->second;
+				wxString tourName = wxString::Format(_("%s(%d)"), data.name, data.limit);
+				m_treeCs->AppendItem(csItem, tourName, -1, -1, new udfTreeItemData(itTour->first));
+				
+				itTour++;
+			}
 		}
 	}
 }
@@ -530,7 +589,17 @@ int udfMainFrameBase::ShowDanceTypesMngrDlg()
 					table.UpdateRow(listIt->first, data);
 				}
 				rList.erase(rLstIt);
-			}
+			}class MyTreeItemData : public wxTreeItemData
+{
+public:
+    MyTreeItemData(const wxString& desc) : m_desc(desc) { }
+
+    void ShowInfo(wxTreeCtrl *tree);
+    const wxChar *GetDesc() const { return m_desc.c_str(); }
+
+private:
+    wxString m_desc;
+};
 			listIt++;
 		}
 		
@@ -622,60 +691,53 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 
 void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
 {
-	do
-	{
-		int nItem = m_listChampionship->GetSelection();
-		if(-1 == nItem )
+	do{
+		wxTreeItemId itemId = GetSelectedCs();
+		if(!itemId.IsOk())
 			break;
-		int nId = *(int*)m_listChampionship->GetClientData(nItem);
-		
-		udfChampionshipCategoriesMngrDlg dlg(this, nId);
-		dlg.ShowModal();
+			
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
+	
+		udfChampionshipCategoriesMngrDlg(this, csItem->GetId()).ShowModal();
 	}while(0);
 }
 
 void udfMainFrameBase::OnDancersTeams(wxCommandEvent& event)
 {
-	do
-	{
-		int nItem = m_listChampionship->GetSelection();
-		if(-1 != nItem )
-		{
-			int nId = *(int*)m_listChampionship->GetClientData(nItem);
+	do{
+		wxTreeItemId itemId = GetSelectedCs();
+		if(!itemId.IsOk())
+			break;
 			
-			udfDancersTeamMngr dlg(this, nId);
-			dlg.ShowModal();
-		}
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
+	
+		udfDancersTeamMngr(this, csItem->GetId()).ShowModal();
 	}while(0);
 }
 
 void udfMainFrameBase::OnStartNumberAssign( wxCommandEvent& event )
 {
-	do
-	{
-		int nItem = m_listChampionship->GetSelection();
-		if(-1 != nItem )
-		{
-			int nId = *(int*)m_listChampionship->GetClientData(nItem);
+	do{
+		wxTreeItemId itemId = GetSelectedCs();
+		if(!itemId.IsOk())
+			break;
 			
-			udfStartNumberAssignDlg dlg(this, nId);
-			dlg.ShowModal();
-		}
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
+	
+		udfStartNumberAssignDlg(this, csItem->GetId()).ShowModal();
 	}while(0);
 }
 
 void udfMainFrameBase::OnJudgeMngr( wxCommandEvent& event )
 {
-	do
-	{
-		int nItem = m_listChampionship->GetSelection();
-		if(-1 != nItem )
-		{
-			int nId = *(int*)m_listChampionship->GetClientData(nItem);
+	do{
+		wxTreeItemId itemId = GetSelectedCs();
+		if(!itemId.IsOk())
+			break;
 			
-			udfChampionshipJudgesTeamMngrDlg dlg(this, nId);
-			dlg.ShowModal();
-		}
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
+	
+		udfChampionshipJudgesTeamMngrDlg(this, csItem->GetId()).ShowModal();
 	}while(0);
 }
 
@@ -686,7 +748,7 @@ void udfMainFrameBase::OnSendInvitation( wxCommandEvent& event )
 
 void udfMainFrameBase::OnToursManager( wxCommandEvent& event )
 {
-	do
+	/*do
 	{
 		int nItem = m_listChampionship->GetSelection();
 		if(-1 != nItem )
@@ -697,6 +759,7 @@ void udfMainFrameBase::OnToursManager( wxCommandEvent& event )
 			dlg.ShowModal();
 		}
 	}while(0);
+	 * */
 }
 
 void udfMainFrameBase::OnCitiesMngr(wxCommandEvent& event)
