@@ -54,6 +54,13 @@ long CChampionshipJudgesMarkTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
+		if (0 != filter.nOrderNum)
+		{
+			sprintf(tmp, "%sand `order-num` like %d ", query, filter.nOrderNum);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
 		if (0 != filter.judgeId)
 		{
 			sprintf(tmp, "%sand `judge_id` like %d ", query, filter.judgeId);
@@ -104,6 +111,7 @@ long CChampionshipJudgesMarkTable::Find(tTableMap& data, const tDATA& filter)
             el.judgeId = qRes->getUInt64(4);
             el.teamId = qRes->getUInt64(5);
             el.nMark = qRes->getInt(6);
+			el.nOrderNum = qRes->getUInt64(7);
 		
 			data.insert(make_pair(el.id, el));
 		}
@@ -194,6 +202,7 @@ long CChampionshipJudgesMarkTable::GetRow(unsigned int nId, tDATA& data)
         data.judgeId = qRes->getUInt64(4);
         data.teamId = qRes->getUInt64(5);
         data.nMark = qRes->getInt(6);
+		data.nOrderNum = qRes->getUInt64(7);
 		
 		res = UDF_OK;
 	}while(0);
@@ -227,6 +236,13 @@ long CChampionshipJudgesMarkTable::UpdateRow(unsigned int nId, const tDATA& data
 		if (data.championshipId != -1)
 		{
 			sprintf(tmp, "%s `championship_id` = %d,", query, data.championshipId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (data.nOrderNum != -1)
+		{
+			sprintf(tmp, "%s `order_num` = %d,", query, data.nOrderNum);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

@@ -687,29 +687,46 @@ class CsTourReport : public wxDialog
 		// Private event handlers
 		void _wxFB_OnReport( wxCommandEvent& event ){ OnReport( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		void _wxFB_OnBeginDrag( wxListEvent& event ){ OnBeginDrag( event ); }
+		void _wxFB_OnStartDrag( wxListEvent& event ){ OnStartDrag( event ); }
 		void _wxFB_OnTeamSelect( wxListEvent& event ){ OnTeamSelect( event ); }
+		void _wxFB_OnUp10( wxCommandEvent& event ){ OnUp10( event ); }
+		void _wxFB_OnUp( wxCommandEvent& event ){ OnUp( event ); }
+		void _wxFB_OnDown( wxCommandEvent& event ){ OnDown( event ); }
+		void _wxFB_OnDown10( wxCommandEvent& event ){ OnDown10( event ); }
 		
 	
 	protected:
 		enum
 		{
 			ID_PRINT = 1000,
-			ID_LIST_TEAMS
+			ID_LIST_TEAMS,
+			ID_MOVEUP10,
+			ID_MOVE_UP,
+			ID_MOVE_DOWN,
+			ID_MOVE_DOWN10
 		};
 		
 		wxBoxSizer* bSizer76;
 		wxStaticText* m_staticText94;
 		wxBitmapButton* m_bpPrint;
 		wxBitmapButton* m_bpDiscard;
+		wxBoxSizer* m_bListSizer;
 		wxListCtrl* m_listTeams;
+		wxBitmapButton* m_bpMoveUp10;
+		wxBitmapButton* m_bpMoveUp;
+		wxBitmapButton* m_bpMoveDown;
+		wxBitmapButton* m_bpMoveDown10;
 		wxStaticText* m_staticJudgeDescr;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnReport( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnBeginDrag( wxListEvent& event ) { event.Skip(); }
+		virtual void OnStartDrag( wxListEvent& event ) { event.Skip(); }
 		virtual void OnTeamSelect( wxListEvent& event ) { event.Skip(); }
+		virtual void OnUp10( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUp( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDown( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDown10( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

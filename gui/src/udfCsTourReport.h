@@ -37,7 +37,11 @@ protected:
 	void OnReport( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 	void OnTeamSelect( wxListEvent& event );
-	void OnBeginDrag( wxListEvent& event );
+	void OnUp10( wxListEvent& event );
+	void OnUp( wxListEvent& event );
+	void OnDown( wxListEvent& event );
+	void OnDown10( wxListEvent& event );
+	void OnStartDrag( wxListEvent& event );
 	
 public:
 	/** Constructor */

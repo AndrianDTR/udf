@@ -8,6 +8,8 @@
 #include "udfuiutils.h"
 #include "string_def.h"
 
+#include "wx/dnd.h"
+
 udfCsTourReport::udfCsTourReport(wxWindow* parent
 	, unsigned long nTourId
 	, int limit
@@ -60,6 +62,15 @@ void udfCsTourReport::FillList()
 		wxListItem info;
 		info.SetId(ndx);
 		info.SetText(wxString::Format(STR_FORMAT_START_NUMBER, it->first));
+		if(ndx < m_nLimit - 10)
+			info.SetBackgroundColour(wxColour( 190, 255, 190 ));
+		else if(ndx >= m_nLimit - 10 && ndx < m_nLimit)
+			info.SetBackgroundColour(wxColour( 190, 190, 255 ));
+		else if(ndx >= m_nLimit && ndx < m_nLimit + 10)
+			info.SetBackgroundColour(wxColour( 255, 255, 190 ));
+		else
+			info.SetBackgroundColour(wxColour( 255, 190, 190 ));
+		
 		m_listTeams->InsertItem(info);
 		
 		info.SetColumn(nCol++);
@@ -92,6 +103,7 @@ void udfCsTourReport::FillList()
 	
 	m_listTeams->Show();
 	
+	// Resize columns to fit content
 	int nColumn = 0;
 	int nColumnsCount = m_listTeams->GetColumnCount();
 	for(nColumn = 0; nColumn < nColumnsCount; ++nColumn)
@@ -198,14 +210,6 @@ void udfCsTourReport::OnReport( wxCommandEvent& event )
 	}
 	fclose(file);
 	
-	/*char rptFile[PATH_MAX]; 
-    realpath(fileName, rptFile); 
-	/*
-	m_htmlReport->ReadCustomization(wxConfig::Get());
-	m_htmlReport->AppendToPage(text);
-	
-	udfReportPreview(this, m_report).ShowModal();*/
-	
 	system(wxString::Format(STR_FORMAT_REPORT_PREVIEW_CMD, fileName).c_str());
 }
 
@@ -219,7 +223,33 @@ void udfCsTourReport::OnTeamSelect( wxListEvent& event )
 	// TODO: Implement OnTeamSelect
 }
 
-void udfCsTourReport::OnBeginDrag(wxListEvent& event)
+void udfCsTourReport::OnStartDrag(wxListEvent& event)
+{
+	do
+	{
+		wxListItem info;
+		info.SetId(event.GetIndex());
+		m_listTeams->GetItem(info);
+
+		wxTextDataObject tdo(info.GetText());
+		wxDropSource tds(tdo, m_listTeams);
+		tds.DoDragDrop(wxDrag_CopyOnly);
+	}while(0);
+}
+
+void udfCsTourReport::OnDown(wxListEvent& event)
+{
+}
+
+void udfCsTourReport::OnDown10(wxListEvent& event)
+{
+}
+
+void udfCsTourReport::OnUp(wxListEvent& event)
+{
+}
+
+void udfCsTourReport::OnUp10(wxListEvent& event)
 {
 }
 

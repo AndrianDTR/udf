@@ -18,6 +18,7 @@ public:
 		unsigned int	teamId;
 		unsigned int	tourId;
 		int				nMark;
+		unsigned int	nOrderNum;
 	};
 
 	typedef map<unsigned int, tDATA> tTableMap;

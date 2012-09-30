@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-09-21 02:16:06
+-- Date/time:                    2012-10-01 01:27:22
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -96,13 +96,14 @@ CREATE TABLE IF NOT EXISTS `championship_judges_mark` (
   `judge_id` bigint(20) unsigned NOT NULL,
   `team_id` bigint(20) unsigned NOT NULL,
   `mark` int(10) NOT NULL DEFAULT '-1',
+  `order_num` bigint(20) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `FK_championship_judges_mark_championship` (`championship_id`),
   KEY `judge_id` (`judge_id`),
   KEY `team_id` (`team_id`),
   KEY `FK_championship_judges_mark_championship_tours` (`tour_id`),
-  CONSTRAINT `FK_championship_judges_mark_championship_judges_team` FOREIGN KEY (`judge_id`) REFERENCES `championship_judges_team` (`id`),
   CONSTRAINT `FK_championship_judges_mark_championship` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`),
+  CONSTRAINT `FK_championship_judges_mark_championship_judges_team` FOREIGN KEY (`judge_id`) REFERENCES `championship_judges_team` (`id`),
   CONSTRAINT `FK_championship_judges_mark_championship_team` FOREIGN KEY (`team_id`) REFERENCES `championship_team` (`id`),
   CONSTRAINT `FK_championship_judges_mark_championship_tours` FOREIGN KEY (`tour_id`) REFERENCES `championship_tours` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -93,8 +93,8 @@ STR_DEFINITION(STR_HTML_REPORT_BR, "<br />");
 STR_DEFINITION(STR_HTML_TABLE_BEGIN, "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"10\" border=\"0\">");
 STR_DEFINITION(STR_HTML_TABLE_END, "</table>");
 
-STR_DEFINITION(STR_FORMAT_HTML_TABLE_COL, "<td>%s</td>");
-STR_DEFINITION(STR_FORMAT_HTML_TABLE_HDR, "<th width=\"1px\" style=\"text-align:left; background:#C2C2C2;\">%s</th>");
+STR_DEFINITION(STR_FORMAT_HTML_TABLE_COL, "<td style=\"border:1px solid black;\">%s</td>");
+STR_DEFINITION(STR_FORMAT_HTML_TABLE_HDR, "<th width=\"1px\" style=\"text-align:left; border:1px solid black;\">%s</th>");
 STR_DEFINITION(STR_FORMAT_HTML_TABLE_ROW, "<tr>%s</tr>");
 STR_DEFINITION(STR_FORMAT_HTML_REPORT_TITLE, "<tr><td colspan=\"2\">%s</td></tr> <tr><td width=\"1px\">%s</td><td>%s</td></tr> <tr><td width=\"1px\">%s</td><td>%s</td></tr>");
 

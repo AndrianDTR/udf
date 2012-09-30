@@ -22,6 +22,10 @@
 #include "../res/button_leftall.xpm"
 #include "../res/button_mark.xpm"
 #include "../res/button_minus.xpm"
+#include "../res/button_move_down.xpm"
+#include "../res/button_move_down10.xpm"
+#include "../res/button_move_up.xpm"
+#include "../res/button_move_up10.xpm"
 #include "../res/button_ok.xpm"
 #include "../res/button_other.xpm"
 #include "../res/button_plus.xpm"
@@ -1271,8 +1275,12 @@ CsTours::~CsTours()
 BEGIN_EVENT_TABLE( CsTourReport, wxDialog )
 	EVT_BUTTON( ID_PRINT, CsTourReport::_wxFB_OnReport )
 	EVT_BUTTON( wxID_CANCEL, CsTourReport::_wxFB_OnDiscard )
-	EVT_LIST_BEGIN_DRAG( ID_LIST_TEAMS, CsTourReport::_wxFB_OnBeginDrag )
+	EVT_LIST_BEGIN_DRAG( ID_LIST_TEAMS, CsTourReport::_wxFB_OnStartDrag )
 	EVT_LIST_ITEM_SELECTED( ID_LIST_TEAMS, CsTourReport::_wxFB_OnTeamSelect )
+	EVT_BUTTON( ID_MOVEUP10, CsTourReport::_wxFB_OnUp10 )
+	EVT_BUTTON( ID_MOVE_UP, CsTourReport::_wxFB_OnUp )
+	EVT_BUTTON( ID_MOVE_DOWN, CsTourReport::_wxFB_OnDown )
+	EVT_BUTTON( ID_MOVE_DOWN10, CsTourReport::_wxFB_OnDown10 )
 END_EVENT_TABLE()
 
 CsTourReport::CsTourReport( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -1311,8 +1319,31 @@ CsTourReport::CsTourReport( wxWindow* parent, wxWindowID id, const wxString& tit
 	
 	bSizer22->Add( bSizer76, 0, wxALIGN_RIGHT|wxEXPAND, 5 );
 	
+	m_bListSizer = new wxBoxSizer( wxHORIZONTAL );
+	
 	m_listTeams = new wxListCtrl( this, ID_LIST_TEAMS, wxDefaultPosition, wxDefaultSize, wxLC_AUTOARRANGE|wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_SORT_DESCENDING|wxLC_VRULES );
-	bSizer22->Add( m_listTeams, 1, wxALL|wxEXPAND, 5 );
+	m_bListSizer->Add( m_listTeams, 1, wxALL|wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer109;
+	bSizer109 = new wxBoxSizer( wxVERTICAL );
+	
+	m_bpMoveUp10 = new wxBitmapButton( this, ID_MOVEUP10, wxBitmap( button_move_up10_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer109->Add( m_bpMoveUp10, 0, wxALL, 5 );
+	
+	m_bpMoveUp = new wxBitmapButton( this, ID_MOVE_UP, wxBitmap( button_move_up_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer109->Add( m_bpMoveUp, 0, wxALL, 5 );
+	
+	m_bpMoveDown = new wxBitmapButton( this, ID_MOVE_DOWN, wxBitmap( button_move_down_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer109->Add( m_bpMoveDown, 0, wxALL, 5 );
+	
+	m_bpMoveDown10 = new wxBitmapButton( this, ID_MOVE_DOWN10, wxBitmap( button_move_down10_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer109->Add( m_bpMoveDown10, 0, wxALL, 5 );
+	
+	
+	m_bListSizer->Add( bSizer109, 0, wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizer22->Add( m_bListSizer, 1, wxEXPAND, 5 );
 	
 	m_staticJudgeDescr = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticJudgeDescr->Wrap( -1 );
