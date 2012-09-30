@@ -28,8 +28,8 @@ void udfCsTourReport::CreateHeaders()
 	wxArrayInt order;
 	int index = 0;
 	int width = 850 - m_judgesMap.size()*20;
-	m_listTeams->InsertColumn(index++, _("#"), wxLIST_FORMAT_LEFT, 50);
-	m_listTeams->InsertColumn(index++, _("Team"), wxLIST_FORMAT_LEFT, width);
+	m_listTeams->InsertColumn(index++, STR_REPORT_START_NUMBER, wxLIST_FORMAT_LEFT, 50);
+	m_listTeams->InsertColumn(index++, STR_REPORT_TEAM, wxLIST_FORMAT_LEFT, width);
 	
 	wxString judgeDescr;
 	
@@ -37,13 +37,13 @@ void udfCsTourReport::CreateHeaders()
 	char	n = 'A';
 	while(it != m_judgesMap.end())
 	{
-		judgeDescr += wxString::Format(_("%c - %s; "), n, it->second);
+		judgeDescr += wxString::Format(STR_FORMAT_REPORT_JUDGE_SHORTCUT, n, it->second);
 		m_listTeams->InsertColumn(index++, wxString::Format(_("%c"), n), wxLIST_FORMAT_CENTER, 20);
 		n++;
 		it++;
 	}
 	
-	m_listTeams->InsertColumn(index++, _("Sum"), wxLIST_FORMAT_LEFT, 50);
+	m_listTeams->InsertColumn(index++, STR_REPORT_SUM, wxLIST_FORMAT_LEFT, 50);
 		
 	m_staticJudgeDescr->SetLabel(judgeDescr);
 }
@@ -98,7 +98,6 @@ void udfCsTourReport::FillList()
 	{
 		m_listTeams->SetColumnWidth( nColumn, wxLIST_AUTOSIZE);
 	}
-		
 }
 
 void udfCsTourReport::FormatReportTitle()
@@ -123,7 +122,7 @@ void udfCsTourReport::FormatReportTableHeader()
 	while(it != m_judgesMap.end())
 	{
 		wxString judge = it->second;
-		judge.Replace(" ", "<br/>");
+		judge.Replace(" ", STR_HTML_REPORT_BR);
 		row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_HDR, judge));
 		it++;
 	}
@@ -188,7 +187,26 @@ void udfCsTourReport::OnReport( wxCommandEvent& event )
 	
 	m_report.Add(STR_HTML_END);
 	
-	udfReportPreview(this, m_report).ShowModal();
+	char *fileName = "./report.html";
+	FILE *file;
+	file = fopen(fileName, "w+");
+	int col = 0;
+	for(; col < m_report.GetCount(); ++col)
+	{
+		const char* szData = m_report[col].mb_str(wxConvUTF8);
+		fprintf(file,"%s", szData);
+	}
+	fclose(file);
+	
+	/*char rptFile[PATH_MAX]; 
+    realpath(fileName, rptFile); 
+	/*
+	m_htmlReport->ReadCustomization(wxConfig::Get());
+	m_htmlReport->AppendToPage(text);
+	
+	udfReportPreview(this, m_report).ShowModal();*/
+	
+	system(wxString::Format(STR_FORMAT_REPORT_PREVIEW_CMD, fileName).c_str());
 }
 
 void udfCsTourReport::OnDiscard( wxCommandEvent& event )

@@ -84,7 +84,10 @@ STR_DEFINITION(STR_FORMAT_START_NUMBER, "%05ld");
 STR_DEFINITION(STR_FORMAT_TOUR_NAME, "%s (%d)");
 
 /***********************************************************************************/
-STR_DEFINITION(STR_HTML_BEGIN, "<html><head><title></title></head><body>");
+STR_DEFINITION(STR_HTML_BEGIN, "\
+<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"> \
+<html xmlns=\"http://www.w3.org/1999/xhtml\" ><head> \
+<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"><title></title></head><body>");
 STR_DEFINITION(STR_HTML_END, "</boby></html>");
 STR_DEFINITION(STR_HTML_REPORT_BR, "<br />");
 STR_DEFINITION(STR_HTML_TABLE_BEGIN, "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"10\" border=\"0\">");
@@ -95,12 +98,15 @@ STR_DEFINITION(STR_FORMAT_HTML_TABLE_HDR, "<th width=\"1px\" style=\"text-align:
 STR_DEFINITION(STR_FORMAT_HTML_TABLE_ROW, "<tr>%s</tr>");
 STR_DEFINITION(STR_FORMAT_HTML_REPORT_TITLE, "<tr><td colspan=\"2\">%s</td></tr> <tr><td width=\"1px\">%s</td><td>%s</td></tr> <tr><td width=\"1px\">%s</td><td>%s</td></tr>");
 
+STR_DEFINITION(STR_FORMAT_REPORT_JUDGE_SHORTCUT, "%c - %s; ");
 STR_DEFINITION(STR_REPORT_START_NUMBER, "Start number");
 STR_DEFINITION(STR_REPORT_TEAM, "Team");
 STR_DEFINITION(STR_REPORT_SUM, "Sum");
 STR_DEFINITION(STR_REPORT_REPORT, "Report");
 STR_DEFINITION(STR_REPORT_TOUR, "Tour");
 STR_DEFINITION(STR_REPORT_CHAMPIONSHIP, "Championship");
+
+STR_DEFINITION(STR_FORMAT_REPORT_PREVIEW_CMD, "xdg-open %s");
 /**********************************************************************************/
 
 STR_DEFINITION(STR_INCORRECT_VALUE, "Incorrect value");
