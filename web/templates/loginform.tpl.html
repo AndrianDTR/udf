@@ -1,0 +1,68 @@
+<center>
+<form name="login" action="#" method="post" id="loginform">
+<table border="0" cellpadding="0" cellspacing="5px" width="500px">
+	{if $user_logined==0}
+	<tr>
+		<td align="center" colspan="2">
+			Please login
+		</td>							
+	</tr>
+	<tr class="message">
+		<td align="center" colspan="2">
+			{$message}
+		</td>							
+	</tr>
+	<tr>
+		<td align="left">
+			Login
+		</td>
+		<td align="left">
+			<input type="text" id="user" name="user" value="" />
+		</td>							
+	</tr>
+	<tr>
+		<td align="left">
+			Password
+		</td>
+		<td align="left">
+			<input type="password" id="pass" name="pass" value="" />
+		</td>							
+	</tr>
+	<tr>
+		<td align="center" colspan="2">
+			<span class="button button-small" id="b-ok">Login</span>
+			<input type="hidden" name="a" value="login" />
+		</td>							
+	</tr>
+	<script type="text/javascript">
+	{literal}
+	$(document).ready(function () {
+		$("#b-ok").click(function(e){
+			e.preventDefault();
+			$('#loginform').submit();
+		});
+	});
+	{/literal}
+	</script>
+	{else}
+	<tr>
+		<td align="center" colspan="2">
+			<input type="hidden" name="a" value="logout" />
+			<span class="button button-small" id="b-ok">Logout</span>
+		</td>							
+	</tr>
+	<script type="text/javascript">
+	{literal}
+	$(document).ready(function () {
+		$("#b-ok").click(function(e){
+			e.preventDefault();
+			$('#loginform').submit();
+		});
+	});
+	{/literal}
+	</script>
+	{/if}
+</table>
+</form>
+</center>
+
