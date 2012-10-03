@@ -55,7 +55,17 @@ function UserLogout()
 	setcookie("l", NULL, time()-7200);
 
 }
-	
+
+function getCurrentUserId()
+{
+	$res = -1;	
+	if(isset($_COOKIE["uid"]))
+  	{
+  		$res = $_COOKIE["uid"];
+  	}
+  	return $res;
+}
+
 function GetUserInfo($uid)
 {
 	$ui = NULL;

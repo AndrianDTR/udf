@@ -1,8 +1,24 @@
-body p{
-    font-family: Arial,sans-serif;
+
+html, body{
+    font-family: Arial, sans-serif;
     font-size: 13px;
 	margin: 0; 
 	padding: 0;	
+}
+
+table .tBordered
+{
+	margin: 1px;
+	border-left:1px solid red;
+	border-top:1px solid red;
+}
+
+table .tBordered td, th
+{	
+	border-left:none;
+	border-top:none;
+	border-right:1px solid red;
+	border-bottom:1px solid red;
 }
 
 .bordered{border:none;}

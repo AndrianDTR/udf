@@ -1,4 +1,4 @@
-<table border="0" width="100%" class="championship-list" cellspacing="0" cellpadding="5px">
+<table border="0" width="100%" class="championship-list tBordered" cellspacing="0" cellpadding="5px">
 <tr>
 	<th colspan="3"><div class="table-title"><nobr>Avaliable championships:</nobr></div></th>
 </tr>
@@ -12,14 +12,14 @@
 <tr>
 	<td width="1px"><div class="col-title"><nobr>Registration period:</nobr></div><div class="col-data"><nobr>{$it.reg_open} - {$it.reg_close}</nobr></div></td>
 	<td width="1px"><div class="col-title"><nobr>Type:</nobr></div><div class="col-data"><nobr>{$it.type}</nobr></div></td>
-	<td><div class="col-title">Categories:</div><div class="col-data">{foreach from=$it.categories_list item=cat}{$cat}, {/foreach}</div></td>
+	<td><div class="col-title">Categories:</div><div class="col-data">{", "|implode:$it.categories_list}</div></td>
 </tr>
 <tr>
 	<td colspan="3"><div class="col-title"><nobr>Additional info:</nobr></div><div class="col-data">{$it.additional_info}</div></td>
 </tr>
 
 <tr>
-	<td colspan="3">&nbsp;</td>
+	<td colspan="3"></td>
 </tr>
 {/foreach}
 </table>

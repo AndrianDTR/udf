@@ -14,63 +14,47 @@ global $mod_name;
 $mod_name = "cs_teams";
 
 class cs_teams{
-	function getCsCategoriesList($csId)
+	function getTeamDancersList($teamId)
 	{
-		$catList = array();
-
-		$res = db_query("select category_id from ".T_CS_CATEGORIES
-		." where championship_id=$csId");
+		$dancerList = array();
+	
+		$res = db_query("select dancer_id from ".T_CS_TEAM_DANCERS
+		." where team_id=$teamId");
 		while($row = db_fetch_row($res))
 		{
-			$name = "";
-			$short_name = "";
-			list($name, $short_name) = $this->getCategoryNameById($row[0]);
-			$catList[] = $short_name;
+			$dancerList[] = $this->getDancerNameById($row[0]);
 		}
-		//*/	
-		return $catList;
+		
+		return $dancerList;
 	}
 	
-	function getCategoryNameById($catId)
+	function getDancerNameById($dancerId)
 	{
-		$res = db_query("select name,short_name from ".T_CATEGORIES
-		." where id=$catId");
-		$row = db_fetch_row($res);
-		return array($row[0], $row[1]);
-	}
-	
-	function getTypeNameById($typeId)
-	{
-		$res = db_query("select name from ".T_CS_TYPES
-		." where id=$typeId");
+		$res = db_query("select name from ".T_DANCERS
+		." where id=$dancerId");
 		$row = db_fetch_row($res);
 		return $row[0];
 	}
 	
 	function display($error, $data)
 	{
-		$data = "Get data from DB in ".get_class($this);
-		/*
-		$csList = array();
-		$res = db_query("select id,type,name,additional_info,date,reg_open,reg_close from ".T_CS
-		." where reg_close<NOW()");
+		$clId = getCurrentUserId();
+		$csId = GetSentNdx('id');
+		
+		$teamsList = array();
+		$res = db_query("select id,name from ".T_CS_TEAM
+		." where championship_id=$csId and club_id=$clId");
 		while($row = db_fetch_row($res))
 		{
-			$csRow = array();
-			$csRow['id'] = $row[0];
-			$csRow['type'] = $this->getTypeNameById($row[1]);
-			$csRow['name'] = $row[2];
-			$csRow['additional_info'] = $row[3];
-			$csRow['date'] = $row[4];
-			$csRow['reg_open'] = $row[5];
-			$csRow['reg_close'] = $row[6];
-			
-			$csRow['categories_list'] = $this->getCsCategorieslist($csRow['id']);
-			
-			$csList[] = $csRow;
+			$teamRow = array();
+			$teamRow['id'] = $row[0];
+			$teamRow['name'] = $row[1];
+			$teamRow['team_categories'] = $this->getTeamDancersList($row[0]);
+			$teamRow['team_dancers'] = $this->getTeamDancersList($row[0]);
+			$teamsList[] = $teamRow;
 		}
-		assign("csList", $csList);
-		$data = fetch("cs_list.tpl.html");
+		assign("teamList", $teamsList);
+		$data = fetch("cs_teams.tpl.html");
 		//*/
 		return array($error, $data);
 	}
