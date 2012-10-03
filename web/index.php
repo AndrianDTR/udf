@@ -24,6 +24,8 @@ require 'smarty/smarty.class.php';
 require 'include/connect.php';
 require 'include/db.php';
 require 'include/utils.php';
+require 'include/profile_manager.php';
+require 'include/content_manager.php';
 
 $smarty = new Smarty();
 $smarty->template_dir = TPL;
@@ -46,10 +48,7 @@ if(($act == 'login' && UserLogin())
 
 if($act == 'gc')
 {
-	$data = array();
-	$error = 0; // 0 - OK, else = error.
-	$data="<h1> HELLO </H1>";
-	echo (Reply($error, $data));
+	getContent();
 	exit();
 }
 

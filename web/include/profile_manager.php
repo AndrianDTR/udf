@@ -9,42 +9,6 @@
 
 defined('__INDEX') or die('Restricted access');
 
-function GetSentNdx($ndx)
-{
-	return isset($_POST[$ndx]) ? $_POST[$ndx] : (isset($_GET[$ndx]) ? $_GET[$ndx] : "");
-}
-
-function assign($key, $val)
-{
-	global $smarty;
-	$smarty->assign($key, $val);
-}
-
-function fetch($tpl)
-{
-	global $smarty;
-	return $smarty->fetch($tpl);
-}
-
-function A2Json($arr)
-{
-	$cb = GetSentNdx('callback');
-
-	$res = json_encode($arr);
-
-	if (!empty($cb))
-	{
-		$res = $cb.'(' . json_encode($arr) . ')';
-	}
-
-	return $res;
-}
-
-function Reply($err, $data)
-{
-	echo A2Json(array("err"=>$err, "data"=>$data));
-}
-
 function UserLogin()
 {
 	$reply = "Login failed";
@@ -83,7 +47,6 @@ function UserLogin()
 
 function UserLogout()
 {
-	echo("LOGOUT");
 	if(isset($_COOKIE["uid"]))
 		db_query("update ".T_CLUBS." set online=UTC_TIMESTAMP() where id=".$_COOKIE["uid"]);
 
@@ -135,30 +98,5 @@ function isUserLogined()
   		}
 	}while(0);
 	return $res;
-}
-
-function sd($a, $l = 0)
-{
-	$debug = $a;
-	if(defined('debug'))
-	{
-
-		$backtrace = debug_backtrace();
-		foreach($backtrace as $bt)
-		{
-			$debug .= ' <- [File:'.$bt['file'].', Line:'.$bt['line'].']';
-		}
-		$debug .= PHP_EOL.PHP_EOL;
-		//$debug .= ' [File:'.$backtrace[$l]['file'].', Line:'.$backtrace[$l]['line'].']'.PHP_EOL;
-	}
-	return $debug;
-}
-
-function esd($a)
-{
-	$f = fopen("./log.txt", "a+");
-	fwrite($f, sd($a, 1));
-	fclose($f);
-	//echo sd($a, 1);
 }
 ?>

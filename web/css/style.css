@@ -3,7 +3,6 @@ body p{
     font-size: 13px;
 	margin: 0; 
 	padding: 0;	
-	
 }
 
 .bordered{border:none;}
@@ -13,6 +12,11 @@ body p{
 
 div .form-title{font-size: 1.4em; text-align:left; border:1px solid red; margin: 2px;}
 div .form-data{border:1px solid red; margin: 2px;}
+
+table td
+{
+	vertical-align:top;
+}
 
 #content{background-color:#ffdddd;}
 
