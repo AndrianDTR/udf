@@ -26,11 +26,9 @@ function getContent()
 		include($m);
 		$modules[$mod_name] = new $mod_name();
 	}
-	//////////////////////////////////
-	if($mod) 
-		$modules[$mod].display();
-	
-	//////////////////////////////////
+
+	if($mod && $modules[$mod_name]) 
+		list($error, $data) = $modules[$mod]->display();
 	
 	//Return data to user
 	echo (Reply($error, $data));
