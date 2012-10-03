@@ -27,7 +27,7 @@ define('T_CS_CATEGORIES','championship_categories');
 define('T_CS_TEAM','championship_team');
 define('T_CS_TEAM_DANCERS','championship_team_dancers');
 define('T_CS_TEAM_CATEGORIES','championship_team_categories');
-define('T_CS_TYPES','championship_types');
+define('T_CS_TYPES','championship_type');
 define('T_CITIES','cities');
 define('T_CLUBS','clubs');
 define('T_COUNTRIES','countries');

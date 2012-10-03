@@ -20,7 +20,7 @@ function GetSentNdx($ndx)
 * @param  string
 * @return bool
 */
-public static function startsWith($haystack, $needle)
+function startsWith($haystack, $needle)
 {
 	return strncmp($haystack, $needle, strlen($needle)) === 0;
 }
@@ -32,7 +32,7 @@ public static function startsWith($haystack, $needle)
 * @param  string
 * @return bool
 */
-public static function endsWith($haystack, $needle)
+function endsWith($haystack, $needle)
 {
 	return strlen($needle) === 0 || substr($haystack, -strlen($needle)) === $needle;
 }

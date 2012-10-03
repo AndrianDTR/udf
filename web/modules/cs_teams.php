@@ -11,10 +11,9 @@ defined('__INDEX') or die('Restricted access');
 
 global $mod_name;
 	
-$mod_name = "cs_list";
+$mod_name = "cs_teams";
 
-class cs_list
-{
+class cs_teams{
 	function getCsCategoriesList($csId)
 	{
 		$catList = array();
@@ -51,6 +50,7 @@ class cs_list
 	function display($error, $data)
 	{
 		$data = "Get data from DB in ".get_class($this);
+		/*
 		$csList = array();
 		$res = db_query("select id,type,name,additional_info,date,reg_open,reg_close from ".T_CS
 		." where reg_close<NOW()");
@@ -71,6 +71,7 @@ class cs_list
 		}
 		assign("csList", $csList);
 		$data = fetch("cs_list.tpl.html");
+		//*/
 		return array($error, $data);
 	}
 }

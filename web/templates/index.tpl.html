@@ -36,7 +36,7 @@
 <script type="text/javascript">
 {literal}
 $(document).ready(function () {
-	$.getJSON("?a=gc", function(data){
+	$.getJSON("?a=gc&m=cs_list", function(data){
 		if(0 == data.err)
 		{
 			$("#content").html(data.data);

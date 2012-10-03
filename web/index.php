@@ -38,6 +38,7 @@ $smarty->assign("PORTAL_TITLE", "Club profile");
 $smarty->assign("PORTAL_COPYRIGHT", "Copyright (c) 2012. Andrian Yablonskyy, all rights reserved.");
 
 //print_r($_POST);
+//print_r($_GET);
 
 $act = GetSentNdx('a');
 if(($act == 'login' && UserLogin())
@@ -51,6 +52,7 @@ if($act == 'gc')
 	getContent();
 	exit();
 }
+
 
 if($act == 'logout' )
 {
