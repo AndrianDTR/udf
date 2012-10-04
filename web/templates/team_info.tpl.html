@@ -1,0 +1,94 @@
+<table border="0" width="100%" class="team-info tBordered" cellspacing="0" cellpadding="5px" id="{$team.csId}">
+<tr>
+	<th colspan="2"><div class="table-title"><nobr>Team info:</nobr></div></th>
+</tr>
+
+<tr>
+	<td colspan="2"><span class="col-title">Name:</span> <input type="text" class="input-text" name="name" id="team-name" value="{$team.name}" /></td>
+</tr>
+<tr>
+	<td width="50%"><div class="col-title">Categories: <a href="#" class="link underline-hover category" id="-1">[+]</a></div><div class="col-data">
+		<div class="add-category">AAAAAAA <span class="button button-small b-add-category">Add</span></div>
+		{foreach from=$team.categories item=it}
+			<a href="#" class="link underline-hover category" id="{$it.id}">[-] {$it.name}</a><br/>
+		{/foreach}
+	</div></td>
+	<td width="50%"><div class="col-title">Dancers: <a href="#" class="link underline-hover dancer" id="-1">[+]</a></div><div class="col-data">
+		<div class="add-dancer">AAAAAAA <span class="button button-small b-add-dancer">Add</span></div>
+		{foreach from=$team.dancers item=it}
+			<a href="#" class="dancer link underline-hover" id="{$it.id}">[-] {$it.name}</a><br/>
+		{/foreach}
+	</div></td>	
+</tr>
+<tr>
+	<td colspan="2"><div class="buttons-bar" >
+	<span class="button button-small b-save">Save</span>
+	<span class="button button-small b-back">Back</span>
+	</div></td>
+</tr>
+</table>
+<script type="text/javascript">
+{literal}
+$(document).ready(function () {
+	$(".category").each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			id = $(this).attr('id');
+			if(-1 == id)
+			{
+				//Show categories combo
+				//alert("add new category");
+				$(".add-category").fadeIn("slow");
+			}
+			else
+			{
+				//alert("rm category id="+id); 
+				/*
+				$.getJSON("?a=gc&m=team_categories&rm="+id, function(data){
+					if(0 == data.err)
+					{
+						$("#content").html(data.data);
+					}
+				});
+				//*/
+			}
+		});
+	});
+	$(".dancer").each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			id = $(this).attr('id');
+			if(-1 == id)
+			{
+				//Show categories combo
+				//alert("add new dancer");
+				$(".add-dancer").fadeIn(200);
+			}
+			else
+			{
+				//alert("rm dancer id="+id); 
+				/*$.getJSON("?a=gc&m=team_categories&rm="+id, function(data){
+					if(0 == data.err)
+					{
+						$("#content").html(data.data);
+					}
+				});
+				//*/
+			}
+		});
+	});
+	$(".b-back").each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			csId = $(".team-info").attr('id');
+			$.getJSON("?a=gc&m=cs_teams&id="+csId, function(data){
+				if(0 == data.err)
+				{
+					$("#content").html(data.data);
+				}
+			});
+		});
+	});
+});
+{/literal}
+</script>

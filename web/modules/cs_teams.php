@@ -54,6 +54,7 @@ class cs_teams{
 			$teamsList[] = $teamRow;
 		}
 		assign("teamList", $teamsList);
+		assign("csId", $csId);
 		$data = fetch("cs_teams.tpl.html");
 		//*/
 		return array($error, $data);
