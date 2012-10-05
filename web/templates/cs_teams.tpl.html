@@ -1,4 +1,6 @@
-<table border="0" width="100%" class="championship-teams-list tBordered" cellspacing="0" cellpadding="5px" id="{$csId}">
+<input type="hidden" id="cl-id" value="{$clId}" />
+<input type="hidden" id="cs-id" value="{$csId}" />
+<table border="0" width="100%" class="championship-teams-list tBordered" cellspacing="0" cellpadding="5px">
 <tr>
 	<th colspan="3"><div class="table-title"><nobr>Registered teams:</nobr></div></th>
 </tr>
@@ -18,8 +20,8 @@
 	<td colspan="2"><div class="col-title">Name:</div><div class="col-data"><a href="#" class="cs_team link" id="{$it.id}">{$it.name}</a></div></td>
 </tr>
 <tr>
-	<td><div class="col-title">Categories:</div><div class="col-data">{", "|implode:$it.team_categories}</div></td>
-	<td><div class="col-title">Dancers:</div><div class="col-data">{", "|implode:$it.team_dancers}</div></td>	
+	<td width="50%"><div class="col-title">Categories:</div><div class="col-data">{", "|implode:$it.team_categories}</div></td>
+	<td width="50%"><div class="col-title">Dancers:</div><div class="col-data">{", "|implode:$it.team_dancers}</div></td>	
 </tr>
 <tr>
 	<td colspan="3"></td>
@@ -53,7 +55,8 @@ $(document).ready(function () {
 		$(this).click(function(e){
 			e.preventDefault();
 			id = -1;
-			$.getJSON("?a=gc&m=team_info&id="+id, function(data){
+			csId = $("#cs-id").val();
+			$.getJSON("?a=gc&m=team_info&add=1&cs="+csId+"&id="+id, function(data){
 				if(0 == data.err)
 				{
 					$("#content").html(data.data);
@@ -83,8 +86,8 @@ $(document).ready(function () {
 			id = $(".select-team:checked").attr('id');
 			if(id)
 			{
-				csId = $(".championship-teams-list").attr('id');
-				$.getJSON("?a=gc&m=team_info&rm="+id, function(data){});
+				csId = $("#cs-id").val();
+				$.getJSON("?a=gc&m=team_info&rm=1&id="+id, function(data){});
 				$.getJSON("?a=gc&m=cs_teams&id="+csId, function(data){
 					if(0 == data.err)
 					{
@@ -97,7 +100,7 @@ $(document).ready(function () {
 	$(".b-back").each(function(i){
 		$(this).click(function(e){
 			e.preventDefault();
-			csId = $(".championship-teams-list").attr('id');
+			csId = $("#cs-id").val();
 			$.getJSON("?a=gc&m=cs_list", function(data){
 				if(0 == data.err)
 				{

@@ -28,10 +28,32 @@ class cs_teams{
 		return $dancerList;
 	}
 	
+	function getTeamCategoriesList($teamId)
+	{
+		$categoriesList = array();
+	
+		$res = db_query("select category_id from ".T_CS_TEAM_CATEGORIES
+		." where team_id=$teamId");
+		while($row = db_fetch_row($res))
+		{
+			$categoriesList[] = $this->getCategoryNameById($row[0]);
+		}
+		
+		return $categoriesList;
+	}
+	
 	function getDancerNameById($dancerId)
 	{
 		$res = db_query("select name from ".T_DANCERS
 		." where id=$dancerId");
+		$row = db_fetch_row($res);
+		return $row[0];
+	}
+	
+	function getCategoryNameById($catId)
+	{
+		$res = db_query("select name from ".T_CATEGORIES
+		." where id=$catId");
 		$row = db_fetch_row($res);
 		return $row[0];
 	}
@@ -49,12 +71,13 @@ class cs_teams{
 			$teamRow = array();
 			$teamRow['id'] = $row[0];
 			$teamRow['name'] = $row[1];
-			$teamRow['team_categories'] = $this->getTeamDancersList($row[0]);
+			$teamRow['team_categories'] = $this->getTeamCategoriesList($row[0]);
 			$teamRow['team_dancers'] = $this->getTeamDancersList($row[0]);
 			$teamsList[] = $teamRow;
 		}
 		assign("teamList", $teamsList);
 		assign("csId", $csId);
+		assign("clId", $clId);
 		$data = fetch("cs_teams.tpl.html");
 		//*/
 		return array($error, $data);

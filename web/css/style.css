@@ -56,6 +56,11 @@ table td.check-box-cell
 	vertical-align:middle;
 }
 
+.input-combo
+{
+	width:200px;
+}
+
 #content{background-color:#ffdddd;}
 
 #copyright{background-color:#ffffaa; text-align:center; }
