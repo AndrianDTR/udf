@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-01 01:27:22
+-- Date/time:                    2012-10-08 20:35:17
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -225,8 +225,8 @@ CREATE TABLE IF NOT EXISTS `clubs` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `city` int(10) unsigned NOT NULL,
-  `login` varchar(20) DEFAULT NULL,
-  `pass` varchar(50) DEFAULT NULL,
+  `login` varchar(50) DEFAULT NULL,
+  `pass` varchar(150) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `contacts` text,
   `web` varchar(50) DEFAULT NULL,
@@ -237,6 +237,7 @@ CREATE TABLE IF NOT EXISTS `clubs` (
   `director_bd` date DEFAULT NULL,
   `director_phone` varchar(30) DEFAULT NULL,
   `director_email` varchar(50) DEFAULT NULL,
+  `online` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_clubs_cities` (`city`),
   CONSTRAINT `FK_clubs_cities` FOREIGN KEY (`city`) REFERENCES `cities` (`id`)
