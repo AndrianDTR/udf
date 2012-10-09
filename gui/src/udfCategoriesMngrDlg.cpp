@@ -6,6 +6,8 @@
 #include "wx/msgdlg.h"
 #include "udfMainFrameBase.h"
 
+#include "udfuiutils.h"
+
 udfCategoriesMngrDlg::udfCategoriesMngrDlg( wxWindow* parent )
 : CategoriesMngrDlg( parent )
 , m_pCon(NULL)
@@ -333,4 +335,47 @@ int udfCategoriesMngrDlg::GetSelectedLigue()
 	}
 	
 	return res;
+}
+
+void udfCategoriesMngrDlg::OnAgeChanged( wxCommandEvent& event )
+{
+	ResetCategoryName();
+}
+
+void udfCategoriesMngrDlg::OnLigaChanged( wxCommandEvent& event )
+{
+	ResetCategoryName();
+}
+
+void udfCategoriesMngrDlg::OnDanceChanged( wxCommandEvent& event )
+{
+	ResetCategoryName();
+}
+
+void udfCategoriesMngrDlg::ResetCategoryName()
+{
+	do
+	{
+		int nAgeId = GetSelectedAgeCat();
+		int nLigueId = GetSelectedLigue();
+		int nDanceId = GetSelectedDanceType();
+	
+		if(-1 == nAgeId || -1 == nLigueId || -1 == nDanceId)
+			break;
+		
+		wxString age = m_comboAge->GetString(nAgeId);
+		wxString ligue = m_comboLiga->GetString(nLigueId);
+		wxString dance = m_comboDance->GetString(nDanceId);
+		
+		int nAge = GetAgeCodeById(*(int*)m_comboAge->GetClientData(nAgeId));
+		int nLigue = GetLigueCodeById(*(int*)m_comboLiga->GetClientData(nLigueId));
+		int nDance = GetDanceCodeById(*(int*)m_comboDance->GetClientData(nDanceId));
+
+		wxString sname = wxString::Format(STR_FORMAT_CAT_SNAME, nAge, nLigue, nDance);
+		m_textShortName->SetValue(sname);
+		
+		wxString name = wxString::Format(STR_FORMAT_CAT_NAME, age, ligue, dance);
+		m_textName->SetValue(name);
+		
+	}while(0);	
 }

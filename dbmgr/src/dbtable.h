@@ -27,11 +27,17 @@
 #define TABLE_JUDGESCATEGORIESNAME				"judges_categories_name"
 #define TABLE_LIGA								"liga"
 #define TABLE_TRAINERS							"treners"
+#define TABLE_PAYMENTHISTORY					"payment_history"
 
 #define MAX_QUERY_LEN							1500
 
 #define udfYES									'Y'
 #define	udfNO									'N'
+
+#define udfPT_DANCER							'D'
+#define udfPT_JUDGE								'J'
+#define udfPT_TRAINER							'T'
+#define udfPT_CLUB								'C'
 
 #include "stdio.h"
 #include "string.h"

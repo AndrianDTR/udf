@@ -28,6 +28,7 @@
 #include <wx/button.h>
 #include <wx/combobox.h>
 #include <wx/dialog.h>
+#include <wx/listctrl.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <wx/menu.h>
@@ -35,7 +36,6 @@
 #include <wx/panel.h>
 #include <wx/frame.h>
 #include <wx/checkbox.h>
-#include <wx/listctrl.h>
 #include <wx/html/htmlwin.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -145,6 +145,7 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 		enum
 		{
 			ID_LIST_ALL = 1000,
+			wxID_CATEGORY_LIST_ALL,
 			wxID_ADDALL,
 			wxID_ADDONE,
 			wxID_REMOVEONE,
@@ -154,12 +155,14 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 		
 		wxStaticText* m_staticText8;
 		wxListBox* m_listAll;
+		wxListCtrl* m_listAllCategories;
 		wxBitmapButton* m_bpAddAll;
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
 		wxBitmapButton* m_bpRemoveAll;
 		wxStaticText* m_staticText9;
 		wxListBox* m_listSelected;
+		wxListCtrl* m_listSelectedCategories;
 		wxBitmapButton* m_bpButton31;
 		wxBitmapButton* m_bpButton32;
 		
@@ -174,7 +177,7 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 	
 	public:
 		
-		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 664,446 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU ); 
+		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 815,396 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU ); 
 		~ChampionshipCategoriesMngrDlg();
 	
 };
@@ -195,6 +198,9 @@ class CategoriesMngrDlg : public wxDialog
 		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		void _wxFB_OnAgeChanged( wxCommandEvent& event ){ OnAgeChanged( event ); }
+		void _wxFB_OnLigaChanged( wxCommandEvent& event ){ OnLigaChanged( event ); }
+		void _wxFB_OnDanceChanged( wxCommandEvent& event ){ OnDanceChanged( event ); }
 		
 	
 	protected:
@@ -202,11 +208,11 @@ class CategoriesMngrDlg : public wxDialog
 		{
 			ID_CATEGORY_LIST_SEARCH = 1000,
 			ID_CATEGORY_LIST,
-			ID_NAME,
-			ID_SHORTNAME,
-			ID_DANCE_LIST,
+			ID_AGE_LIST,
 			ID_LIGA_LIST,
-			ID_AGE_LIST
+			ID_DANCE_LIST,
+			ID_SHORTNAME,
+			ID_NAME
 		};
 		
 		wxStaticText* m_staticText15;
@@ -217,16 +223,16 @@ class CategoriesMngrDlg : public wxDialog
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpButton29;
 		wxBitmapButton* m_bpDiscard;
-		wxStaticText* m_staticText16;
-		wxTextCtrl* m_textName;
-		wxStaticText* m_staticText17;
-		wxTextCtrl* m_textShortName;
-		wxStaticText* m_staticText18;
-		wxComboBox* m_comboDance;
-		wxStaticText* m_staticText19;
-		wxComboBox* m_comboLiga;
 		wxStaticText* m_staticText191;
 		wxComboBox* m_comboAge;
+		wxStaticText* m_staticText19;
+		wxComboBox* m_comboLiga;
+		wxStaticText* m_staticText18;
+		wxComboBox* m_comboDance;
+		wxStaticText* m_staticText17;
+		wxTextCtrl* m_textShortName;
+		wxStaticText* m_staticText16;
+		wxTextCtrl* m_textName;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnCategorySearch( wxCommandEvent& event ) { event.Skip(); }
@@ -236,6 +242,9 @@ class CategoriesMngrDlg : public wxDialog
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAgeChanged( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLigaChanged( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDanceChanged( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

@@ -34,6 +34,9 @@ protected:
 	void OnUpdate( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 	void OnCategorySearch( wxCommandEvent& event );
+	void OnAgeChanged( wxCommandEvent& event );
+	void OnLigaChanged( wxCommandEvent& event );
+	void OnDanceChanged( wxCommandEvent& event );
 	
 public:
 	/** Constructor */
@@ -48,6 +51,8 @@ protected:
 	int 	GetSelectedDanceType();
 	int 	GetSelectedLigue();
 	int 	GetSelectedAgeCat();
+	
+	void	ResetCategoryName();
 };
 
 #endif // __udfCategoriesMngrDlg__

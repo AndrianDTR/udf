@@ -82,6 +82,8 @@ STR_DEFINITION(STR_FORMAT_DATE, "%04d-%02d-%02d");
 STR_DEFINITION(STR_FORMAT_TEAM_CATEGORY_NAME, "%s (%s)");
 STR_DEFINITION(STR_FORMAT_START_NUMBER, "%05ld");
 STR_DEFINITION(STR_FORMAT_TOUR_NAME, "%s (%d)");
+STR_DEFINITION(STR_FORMAT_CAT_NAME, "%s, %s, %s");
+STR_DEFINITION(STR_FORMAT_CAT_SNAME, "%1d%1d%02d");
 
 /***********************************************************************************/
 STR_DEFINITION(STR_HTML_BEGIN, "\

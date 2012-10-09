@@ -7,6 +7,15 @@
 
 #include "udf.h"
 
+#include "../../../../../../andrian/Projects/udf/gui/res/button_mark.xpm"
+#include "../../../../../../andrian/Projects/udf/gui/res/button_move_down.xpm"
+#include "../../../../../../andrian/Projects/udf/gui/res/button_move_down10.xpm"
+#include "../../../../../../andrian/Projects/udf/gui/res/button_move_up.xpm"
+#include "../../../../../../andrian/Projects/udf/gui/res/button_move_up10.xpm"
+#include "../../../../../../andrian/Projects/udf/gui/res/button_results.xpm"
+#include "../../../../../../andrian/Projects/udf/gui/res/button_tour_add.xpm"
+#include "../../../../../../andrian/Projects/udf/gui/res/button_tour_edit.xpm"
+#include "../../../../../../andrian/Projects/udf/gui/res/button_tour_remove.xpm"
 #include "../res/button_account.xpm"
 #include "../res/button_add.xpm"
 #include "../res/button_assign.xpm"
@@ -20,24 +29,15 @@
 #include "../res/button_judges.xpm"
 #include "../res/button_left.xpm"
 #include "../res/button_leftall.xpm"
-#include "../res/button_mark.xpm"
 #include "../res/button_minus.xpm"
-#include "../res/button_move_down.xpm"
-#include "../res/button_move_down10.xpm"
-#include "../res/button_move_up.xpm"
-#include "../res/button_move_up10.xpm"
 #include "../res/button_ok.xpm"
 #include "../res/button_other.xpm"
 #include "../res/button_plus.xpm"
 #include "../res/button_random.xpm"
 #include "../res/button_report.xpm"
-#include "../res/button_results.xpm"
 #include "../res/button_right.xpm"
 #include "../res/button_rightall.xpm"
 #include "../res/button_startnumber.xpm"
-#include "../res/button_tour_add.xpm"
-#include "../res/button_tour_edit.xpm"
-#include "../res/button_tour_remove.xpm"
 #include "../res/button_undo.xpm"
 #include "../res/button_update2.xpm"
 #include "../res/button_user.xpm"
@@ -272,6 +272,9 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 	m_listAll = new wxListBox( this, ID_LIST_ALL, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_MULTIPLE ); 
 	bSizer9->Add( m_listAll, 1, wxALL|wxEXPAND, 5 );
 	
+	m_listAllCategories = new wxListCtrl( this, wxID_CATEGORY_LIST_ALL, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
+	bSizer9->Add( m_listAllCategories, 1, wxALL|wxEXPAND, 5 );
+	
 	
 	bSizer8->Add( bSizer9, 1, wxEXPAND, 5 );
 	
@@ -302,6 +305,9 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 	
 	m_listSelected = new wxListBox( this, ID_SELECTED_LIST, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_MULTIPLE ); 
 	bSizer11->Add( m_listSelected, 1, wxALL|wxEXPAND, 5 );
+	
+	m_listSelectedCategories = new wxListCtrl( this, wxID_CATEGORY_LIST_ALL, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_VRULES );
+	bSizer11->Add( m_listSelectedCategories, 1, wxALL|wxEXPAND, 5 );
 	
 	
 	bSizer8->Add( bSizer11, 1, wxEXPAND, 5 );
@@ -341,6 +347,9 @@ BEGIN_EVENT_TABLE( CategoriesMngrDlg, wxDialog )
 	EVT_BUTTON( wxID_APPLY, CategoriesMngrDlg::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_OK, CategoriesMngrDlg::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, CategoriesMngrDlg::_wxFB_OnDiscard )
+	EVT_COMBOBOX( ID_AGE_LIST, CategoriesMngrDlg::_wxFB_OnAgeChanged )
+	EVT_COMBOBOX( ID_LIGA_LIST, CategoriesMngrDlg::_wxFB_OnLigaChanged )
+	EVT_COMBOBOX( ID_DANCE_LIST, CategoriesMngrDlg::_wxFB_OnDanceChanged )
 END_EVENT_TABLE()
 
 CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -406,28 +415,12 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	fgSizer2->SetFlexibleDirection( wxBOTH );
 	fgSizer2->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText16->Wrap( -1 );
-	fgSizer2->Add( m_staticText16, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_staticText191 = new wxStaticText( this, wxID_ANY, _("Age"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText191->Wrap( -1 );
+	fgSizer2->Add( m_staticText191, 0, wxALL, 5 );
 	
-	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textName->SetMaxLength( 30 ); 
-	fgSizer2->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
-	
-	m_staticText17 = new wxStaticText( this, wxID_ANY, _("Short name"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText17->Wrap( -1 );
-	fgSizer2->Add( m_staticText17, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_textShortName = new wxTextCtrl( this, ID_SHORTNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textShortName->SetMaxLength( 100 ); 
-	fgSizer2->Add( m_textShortName, 0, wxALL|wxEXPAND, 5 );
-	
-	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Dance"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText18->Wrap( -1 );
-	fgSizer2->Add( m_staticText18, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_comboDance = new wxComboBox( this, ID_DANCE_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	fgSizer2->Add( m_comboDance, 0, wxALL|wxEXPAND, 5 );
+	m_comboAge = new wxComboBox( this, ID_AGE_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer2->Add( m_comboAge, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText19 = new wxStaticText( this, wxID_ANY, _("Liga"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText19->Wrap( -1 );
@@ -436,12 +429,26 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	m_comboLiga = new wxComboBox( this, ID_LIGA_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
 	fgSizer2->Add( m_comboLiga, 0, wxALL|wxEXPAND, 5 );
 	
-	m_staticText191 = new wxStaticText( this, wxID_ANY, _("Age"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText191->Wrap( -1 );
-	fgSizer2->Add( m_staticText191, 0, wxALL, 5 );
+	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Dance"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText18->Wrap( -1 );
+	fgSizer2->Add( m_staticText18, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_comboAge = new wxComboBox( this, ID_AGE_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	fgSizer2->Add( m_comboAge, 0, wxALL|wxEXPAND, 5 );
+	m_comboDance = new wxComboBox( this, ID_DANCE_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer2->Add( m_comboDance, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText17 = new wxStaticText( this, wxID_ANY, _("Short name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText17->Wrap( -1 );
+	fgSizer2->Add( m_staticText17, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textShortName = new wxTextCtrl( this, ID_SHORTNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	fgSizer2->Add( m_textShortName, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText16->Wrap( -1 );
+	fgSizer2->Add( m_staticText16, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer2->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	
 	bSizer181->Add( fgSizer2, 1, wxEXPAND, 5 );

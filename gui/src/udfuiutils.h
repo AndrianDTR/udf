@@ -12,5 +12,8 @@ wxString	GetCategoryNameById(unsigned int nId);
 wxString	GetTeamNameById(unsigned int nId);
 int			GetJudgeMark(unsigned int nChId, unsigned int nChTourId, unsigned int nJudgeId, unsigned int nTeamId);
 int			GetTourLimit(unsigned int nTourId);
+int			GetAgeCodeById(unsigned int nAgeId);
+int			GetLigueCodeById(unsigned int nLigueId);
+int			GetDanceCodeById(unsigned int nDanceId);
 
 #endif // __uiutils_h__

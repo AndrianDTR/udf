@@ -11,6 +11,9 @@
 #include "tchampionshipteam.h"
 #include "tchampionshipjudgesmark.h"
 #include "tchampionshiptour.h"
+#include "tagecategory.h"
+#include "tliga.h"
+#include "tdancetypes.h"
 
 #include "string_def.h"
 
@@ -215,6 +218,66 @@ int GetTourLimit(unsigned int nTourId)
 		}
 		
 		res = data.limit;
+	}while(0);
+	
+	return res;
+}
+
+int	GetAgeCodeById(unsigned int nAgeId)
+{
+	int res = -1;
+	
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CAgeCategoryTable::tDATA data = {0};
+		
+		if(UDF_OK != CAgeCategoryTable(pCon).GetRow(nAgeId, data))
+		{
+			break;
+		}
+		
+		res = data.code;
+	}while(0);
+	
+	return res;
+}
+
+int	GetLigueCodeById(unsigned int nLigueId)
+{
+	int res = -1;
+	
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CLigaTable::tDATA data = {0};
+		
+		if(UDF_OK != CLigaTable(pCon).GetRow(nLigueId, data))
+		{
+			break;
+		}
+		
+		res = data.code;
+	}while(0);
+	
+	return res;
+}
+
+int	GetDanceCodeById(unsigned int nDanceId)
+{
+	int res = -1;
+	
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CDanceTypesTable::tDATA data = {0};
+		
+		if(UDF_OK != CDanceTypesTable(pCon).GetRow(nDanceId, data))
+		{
+			break;
+		}
+		
+		res = data.code;
 	}while(0);
 	
 	return res;
