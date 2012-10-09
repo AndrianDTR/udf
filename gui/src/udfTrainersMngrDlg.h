@@ -31,6 +31,7 @@ protected:
 	void OnSearch( wxCommandEvent& event );
 	void OnSelectTrainer( wxCommandEvent& event );
 	void OnUpdate( wxCommandEvent& event );
+	void OnPayment( wxCommandEvent& event );
 	
 public:
 	/** Constructor */

@@ -1002,7 +1002,7 @@ long testTClubs(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n"
+			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n"
 				, it->first
 				, it->second.city
 				, it->second.name.c_str()
@@ -1012,8 +1012,6 @@ long testTClubs(CDbConnection* pCon)
 				, it->second.contacts.c_str()
 				, it->second.web.c_str()
 				, it->second.additionalInfo.c_str()
-				, date2str(it->second.pay_date).c_str()
-				, date2str(it->second.exp_date).c_str()
 				, it->second.director.c_str()
 				, date2str(it->second.director_bd).c_str()
 				, it->second.director_email.c_str()
@@ -1049,7 +1047,7 @@ long testTClubs(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n"
+			printf("%u, %u, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n"
 				, it->first
 				, it->second.city
 				, it->second.name.c_str()
@@ -1059,8 +1057,6 @@ long testTClubs(CDbConnection* pCon)
 				, it->second.contacts.c_str()
 				, it->second.web.c_str()
 				, it->second.additionalInfo.c_str()
-				, date2str(it->second.pay_date).c_str()
-				, date2str(it->second.exp_date).c_str()
 				, it->second.director.c_str()
 				, date2str(it->second.director_bd).c_str()
 				, it->second.director_email.c_str()

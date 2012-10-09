@@ -35,6 +35,7 @@ protected:
 	void OnUpdate( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
+	void OnPayment( wxCommandEvent& event );
 	
 public:
 	/** Constructor */

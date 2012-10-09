@@ -66,9 +66,11 @@
     <File Name="src/udfCsTourReport.h"/>
     <File Name="src/udfReportPreview.cpp"/>
     <File Name="src/udfReportPreview.h"/>
+    <File Name="src/udfPayment.cpp"/>
+    <File Name="src/udfPayment.h"/>
+    <File Name="src/udfPaymentHistory.cpp"/>
+    <File Name="src/udfPaymentHistory.h"/>
   </VirtualDirectory>
-  <Dependencies Name="Debug"/>
-  <Dependencies Name="Release"/>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="" C_Options="">
@@ -87,7 +89,8 @@
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(WorkspacePath)/build/bin" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/build/bin" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
-        <![CDATA[]]>
+        <![CDATA[
+      ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -146,6 +149,7 @@ $(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppc
       
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -176,4 +180,6 @@ $(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppc
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
 </CodeLite_Project>

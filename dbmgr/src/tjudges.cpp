@@ -90,20 +90,6 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (0 != filter.pay_date)
-		{
-			sprintf(tmp, "%sand `pay_date` like '%%%s%%' ", query, date2str(filter.pay_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.exp_date)
-		{
-			sprintf(tmp, "%sand `expire_date` like '%%%s%%' ", query, date2str(filter.exp_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
 		if(useFilter)
 		{
 			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
@@ -135,9 +121,7 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 			el.phone = qRes->getString(6);
 			el.email = qRes->getString(7);
 			el.additionalInfo = qRes->getString(8);
-			el.pay_date = str2date(qRes->getString(9));
-			el.exp_date = str2date(qRes->getString(10));
-		
+			
 			data.insert(make_pair(el.id, el));
 		}
 		
@@ -162,7 +146,7 @@ long CJudgesTable::AddRow(tDATA& rec)
 		}
 		
 		sprintf(query, "insert into %s(`name`,`city`,`practicer`,`attestation_info`,"
-			"`phone`,`email`,`additional_info`,`pay_date`,`expire_date`)"
+			"`phone`,`email`,`additional_info`)"
 			"values('%s', %d, '%c', '%s', '%s', '%s', '%s', '%s', '%s')"
 			, TABLE
 			, rec.name.c_str()
@@ -171,9 +155,7 @@ long CJudgesTable::AddRow(tDATA& rec)
 			, rec.attestationInfo.c_str()
 			, rec.phone.c_str()
 			, rec.email.c_str()
-			, rec.additionalInfo.c_str()
-			, date2str(rec.pay_date).c_str()
-			, date2str(rec.exp_date).c_str());
+			, rec.additionalInfo.c_str());
 		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -233,8 +215,6 @@ long CJudgesTable::GetRow(unsigned int nId, tDATA& data)
 		data.phone = qRes->getString(6);
 		data.email = qRes->getString(7);
 		data.additionalInfo = qRes->getString(8);
-		data.pay_date = str2date(qRes->getString(9));
-		data.exp_date = str2date(qRes->getString(10));
 		
 		res = UDF_OK;
 	}while(0);
@@ -307,20 +287,6 @@ long CJudgesTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 			
-		if (0 != data.pay_date)
-		{
-			sprintf(tmp, "%s `pay_date` = '%s',", query, date2str(data.pay_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != data.exp_date)
-		{
-			sprintf(tmp, "%s `expire_date` = '%s',", query, date2str(data.exp_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
 		if(useFilter)
 		{
 			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);

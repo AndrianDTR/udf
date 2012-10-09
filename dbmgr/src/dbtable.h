@@ -34,18 +34,20 @@
 #define udfYES									'Y'
 #define	udfNO									'N'
 
+#define udfPT_CLUB								'C'
 #define udfPT_DANCER							'D'
 #define udfPT_JUDGE								'J'
-#define udfPT_TRAINER							'T'
-#define udfPT_CLUB								'C'
+#define udfPT_TRAINER 							'T'
 
 #include "stdio.h"
 #include "string.h"
 
 class CDbTable
 {
+protected:
+	int*		m_pOrder;
 public:
-    CDbTable(CDbConnection* pCon){};
+    CDbTable(CDbConnection* pCon):m_pOrder(NULL){};
     virtual ~CDbTable(void){};
 
 public:
@@ -53,6 +55,11 @@ public:
 	virtual long		DropTable(){ return UDF_OK;};
 	
 	virtual long		Reload(){ return UDF_OK;};
+	
+	virtual long		Execute(std::string query){};
+	virtual int*		GetOrder(){return m_pOrder;};
+	virtual void		SetOrder(int* pOrder){if (m_pOrder)delete [] m_pOrder; if(pOrder)m_pOrder = pOrder;};
+	virtual std::string	GetTableName(){};
 };
 
 #endif //__dbtable_h__

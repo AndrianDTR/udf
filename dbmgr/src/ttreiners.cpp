@@ -83,20 +83,6 @@ long CTrainersTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (0 != filter.pay_date)
-		{
-			sprintf(tmp, "%sand `pay_date` like '%%%s%%' ", query, date2str(filter.pay_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.exp_date)
-		{
-			sprintf(tmp, "%sand `expire_date` like '%%%s%%' ", query, date2str(filter.exp_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
 		if(useFilter)
 		{
 			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
@@ -127,8 +113,6 @@ long CTrainersTable::Find(tTableMap& data, const tDATA& filter)
 			el.phone = qRes->getString(5);
 			el.additionalInfo = qRes->getString(6);
 			el.email = qRes->getString(7);
-			el.pay_date = str2date(qRes->getString(8));
-			el.exp_date = str2date(qRes->getString(9));
 			
 			data.insert(make_pair(el.id, el));
 		}
@@ -154,8 +138,8 @@ long CTrainersTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`club_id`,`name`,`bd`,`phone`,`contact_info`,`email`,`pay_date`,`expire_date`) \
-		values(%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')"
+		sprintf(query, "insert into %s(`club_id`,`name`,`bd`,`phone`,`contact_info`,`email`) \
+		values(%d, '%s', '%s', '%s', '%s', '%s')"
 		, TABLE
 		, rec.clubId
 		, rec.name.c_str()
@@ -163,8 +147,6 @@ long CTrainersTable::AddRow(tDATA& rec)
 		, rec.phone.c_str()
 		, rec.additionalInfo.c_str()
 		, rec.email.c_str()
-		, date2str(rec.pay_date).c_str()
-		, date2str(rec.exp_date).c_str()
 		);
 		
 		res = m_pConnection->Execute(query);
@@ -225,9 +207,6 @@ long CTrainersTable::GetRow(unsigned int nId, tDATA& data)
 		data.phone = qRes->getString(5);
 		data.additionalInfo = qRes->getString(6);
 		data.email = qRes->getString(7);
-		data.pay_date = str2date(qRes->getString(8));
-		data.exp_date = str2date(qRes->getString(9));
-			
 		
 		res = UDF_OK;
 	}while(0);
@@ -289,20 +268,6 @@ long CTrainersTable::UpdateRow(unsigned int nId, const tDATA& data)
 		if (!data.email.empty())
 		{
 			sprintf(tmp, "%s `email` = '%s',", query, data.email.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != data.pay_date)
-		{
-			sprintf(tmp, "%s `pay_date` = '%s',", query, date2str(data.pay_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != data.exp_date)
-		{
-			sprintf(tmp, "%s `expire_date` = '%s',", query, date2str(data.exp_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

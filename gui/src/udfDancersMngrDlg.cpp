@@ -1,10 +1,11 @@
 #include "udfDancersMngrDlg.h"
+#include "udfPaymentHistory.h"
 
 #include "string_def.h"
 #include "udfexceptions.h"
 #include "udfuiutils.h"
 
-#include "wx/msgdlg.h"
+#include "tpaymenthistory.h"
 
 udfDancersMngrDlg::udfDancersMngrDlg( wxWindow* parent, unsigned int nClubId )
 : DancersMngrDlg( parent )
@@ -173,8 +174,6 @@ void udfDancersMngrDlg::OnDancerSelect( wxCommandEvent& event )
 		m_comboGender->SetValue(genderData.name);
 				
 		m_dateBd->SetValue(wxDateTime(data.bd));
-		m_datePay->SetValue(wxDateTime(data.pay_date));
-		m_dateExp->SetValue(wxDateTime(data.exp_date));
 		
 		m_textReg->SetValue(wxDateTime(data.reg_date).Format(_("%d %m %Y")));
 		
@@ -201,8 +200,6 @@ void udfDancersMngrDlg::OnAddDancer( wxCommandEvent& event )
 		data.name = m_textName->GetValue();
 		data.additionalInfo = m_textInfo->GetValue();
 		data.bd = m_dateBd->GetValue().GetTicks();
-		data.pay_date = m_datePay->GetValue().GetTicks();
-		data.exp_date = m_dateExp->GetValue().GetTicks();
 		
 		CDancersTable::tTableIt it = m_Dancers.insert(std::make_pair(data.id, data)).first;
 		m_listDancers->Insert(data.name, nItem, (void*)&it->first);
@@ -249,8 +246,6 @@ void udfDancersMngrDlg::OnUpdate( wxCommandEvent& event )
 		pData->name = m_textName->GetValue();
 		pData->additionalInfo = m_textInfo->GetValue();
 		pData->bd = m_dateBd->GetValue().GetTicks();
-		pData->pay_date = m_datePay->GetValue().GetTicks();
-		pData->exp_date = m_dateExp->GetValue().GetTicks();
 		
 		m_listDancers->SetString(nItem, pData->name);
 		
@@ -283,8 +278,6 @@ void udfDancersMngrDlg::OnSave( wxCommandEvent& event )
 			||  data.liga != cData.liga
 			||  data.gender != cData.gender
 			||  data.bd != cData.bd
-			||  data.pay_date != cData.pay_date
-			||  data.exp_date != cData.exp_date
 			)
 			{
 				data.name = cData.name;
@@ -295,9 +288,7 @@ void udfDancersMngrDlg::OnSave( wxCommandEvent& event )
 				data.liga = cData.liga;
 				data.gender = cData.gender;
 				data.bd = cData.bd;
-				data.pay_date = cData.pay_date;
-				data.exp_date = cData.exp_date;
-				
+			
 				table.UpdateRow(listIt->first, data);
 			}
 			m_Dancers.erase(rLstIt);
@@ -421,14 +412,21 @@ bool udfDancersMngrDlg::ValidateData()
 		if(-1 == GetSelectedClub())
 			break;
 		
-		if(m_datePay->GetValue() >= m_dateExp->GetValue())
-		{
-			ShowWarning(STR_WARN_PAY_GREATTHEN_EXP);
-			break;
-		}
-		
 		res = true;
 	}while(0);
 	
 	return res;
 }
+
+void udfDancersMngrDlg::OnPayment(wxCommandEvent& event)
+{
+	do
+	{
+		CDancersTable::tDATA* pData = NULL;
+		if(!GetSelectedItemData(pData))
+			break;
+		
+		udfPaymentHistory(this, pData->id, udfPT_DANCER).ShowModal();
+	}while(0);	
+}
+

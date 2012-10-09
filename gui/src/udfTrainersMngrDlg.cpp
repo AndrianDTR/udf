@@ -1,5 +1,7 @@
 #include "udfTrainersMngrDlg.h"
 
+#include "udfPaymentHistory.h"
+
 #include "common.h"
 #include "tcities.h"
 #include "string_def.h"
@@ -8,6 +10,8 @@
 
 #include "udfexceptions.h"
 #include "udfuiutils.h"
+
+#include "tpaymenthistory.h"
 
 udfTrainersMngrDlg::udfTrainersMngrDlg( wxWindow* parent, unsigned int nClubId )
 : TrainersMngrDlg( parent )
@@ -87,9 +91,6 @@ void udfTrainersMngrDlg::OnSelectTrainer(wxCommandEvent& event)
 		}
 		
 		m_dateBd->SetValue(wxDateTime(data.bd));
-		m_datePay->SetValue(wxDateTime(data.pay_date));
-		m_dateExp->SetValue(wxDateTime(data.exp_date));
-		
 	}while(0);
 }
 
@@ -111,8 +112,6 @@ void udfTrainersMngrDlg::OnAddTrainer( wxCommandEvent& event )
 		data.email = m_textEmail->GetValue();
 		data.bd = m_dateBd->GetValue().GetTicks();
 		data.phone = m_textPhone->GetValue();
-		data.pay_date = m_datePay->GetValue().GetTicks();
-		data.exp_date = m_dateExp->GetValue().GetTicks();
 		
 		CTrainersTable::tTableIt it = m_Trainers.insert(std::make_pair(data.id, data)).first;
 		m_listTrainers->Insert(data.name, nItem, (void*)&it->first);
@@ -154,9 +153,6 @@ void udfTrainersMngrDlg::OnUpdate(wxCommandEvent& event)
 		pData->email = m_textEmail->GetValue();
 		pData->bd = m_dateBd->GetValue().GetTicks();
 		
-		pData->pay_date = m_datePay->GetValue().GetTicks();
-		pData->exp_date = m_dateExp->GetValue().GetTicks();
-		
 		m_listTrainers->SetString(nItem, pData->name);
 		
 	}while(0);
@@ -186,8 +182,6 @@ void udfTrainersMngrDlg::OnSave( wxCommandEvent& event )
 			||  data.phone != cData.phone
 			||  data.bd != cData.bd
 			||  data.additionalInfo != cData.additionalInfo
-			||  data.pay_date != cData.pay_date
-			||  data.exp_date != cData.exp_date
 			)
 			{
 				data.name = cData.name;
@@ -196,8 +190,6 @@ void udfTrainersMngrDlg::OnSave( wxCommandEvent& event )
 				data.bd = cData.bd;
 				data.phone = cData.phone;
 				data.additionalInfo = cData.additionalInfo;
-				data.pay_date = cData.pay_date;
-				data.exp_date = cData.exp_date;
 				
 				table.UpdateRow(listIt->first, data);
 			}
@@ -255,12 +247,6 @@ bool udfTrainersMngrDlg::ValidateData()
 		if(-1 == GetSelectedClub())
 			break;
 		
-		if(m_datePay->GetValue() >= m_dateExp->GetValue())
-		{
-			ShowWarning(STR_WARN_PAY_GREATTHEN_EXP);
-			break;
-		}
-		
 		res = true;
 	}while(0);
 	
@@ -303,4 +289,16 @@ bool udfTrainersMngrDlg::GetSelectedItemData(CTrainersTable::tDATA*& pData)
 	}while(0);
 	
 	return res;
+}
+
+void udfTrainersMngrDlg::OnPayment(wxCommandEvent& event)
+{
+	do
+	{
+		CTrainersTable::tDATA* pData = NULL;
+		if(!GetSelectedItemData(pData))
+			break;
+		
+		udfPaymentHistory(this, pData->id, udfPT_TRAINER).ShowModal();
+	}while(0);	
 }

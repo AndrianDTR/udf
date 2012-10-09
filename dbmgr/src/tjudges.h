@@ -20,8 +20,6 @@ public:
 		std::string		additionalInfo;
 		std::string		attestationInfo;
 		char			practicer;
-		time_t			pay_date;
-		time_t			exp_date;
 	} tDATA;
 
 	typedef map<unsigned int, tDATA> tTableMap;

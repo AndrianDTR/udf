@@ -24,6 +24,11 @@ long CChampionshipTable::GetTable(tTableMap& data)
 	return Find(data, filter);
 }
 
+long CChampionshipTable::Find(tTableMap& data, const tDATA& filter, const int* pOrderMap)
+{
+	
+}
+
 long CChampionshipTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
@@ -114,26 +119,7 @@ long CChampionshipTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 		
-		data.clear();
-		
-		while( qRes && qRes->next())
-		{
-			tDATA el = {0};
-			
-			el.id = qRes->getUInt(1);
-			el.type = qRes->getInt(2);
-			el.name = qRes->getString(3);
-			el.additionalInfo  = qRes->getString(4);
-			el.city = qRes->getUInt(5);
-			el.address  = qRes->getString(6);
-			el.date = str2date(qRes->getString(7));
-			el.regOpenDate = str2date(qRes->getString(8));
-			el.regCloseDate = str2date(qRes->getString(9));
-			
-			data.insert(make_pair(el.id, el));
-		}
-		
-		res = UDF_OK;
+		res = ParseResult(qRes, data);
 	}while(0);
 	
 	return res;
@@ -316,4 +302,68 @@ long CChampionshipTable::UpdateRow(unsigned int nId, const tDATA& data)
 	}while(0);
 	
 	return res;
+}
+
+long CChampionshipTable::ExecuteQuery(string query, tTableMap& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		sql::ResultSet*		qRes = NULL;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		qRes = m_pConnection->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+		
+		res = ParseResult(qRes, data);
+		
+	}while(0);
+	
+	return res;
+}
+
+long CChampionshipTable::ParseResult(void* pRes, tTableMap& data)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		sql::ResultSet* qRes = (sql::ResultSet*)pRes;
+		data.clear();
+			
+		while( qRes && qRes->next())
+		{
+			tDATA el = {0};
+			
+			el.id = qRes->getUInt(1);
+			el.type = qRes->getInt(2);
+			el.name = qRes->getString(3);
+			el.additionalInfo  = qRes->getString(4);
+			el.city = qRes->getUInt(5);
+			el.address  = qRes->getString(6);
+			el.date = str2date(qRes->getString(7));
+			el.regOpenDate = str2date(qRes->getString(8));
+			el.regCloseDate = str2date(qRes->getString(9));
+			
+			data.insert(make_pair(el.id, el));
+		}
+		res = UDF_OK;
+	}while(0);
+	
+	return res;
+}
+
+std::string CChampionshipTable::GetTableName()
+{
+	return TABLE;
 }

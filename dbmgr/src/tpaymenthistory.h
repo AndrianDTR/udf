@@ -1,5 +1,5 @@
-#ifndef __tCahmpionship_h__
-#define __tCahmpionship_h__
+#ifndef __tDancers_h__
+#define __tDancers_h__
 
 #include "dbconnection.h"
 #include "dbtable.h"
@@ -8,15 +8,15 @@
 
 using namespace std;
 
-class CChampionshipTable : public CDbTable
+class CPaymentHistoryTable : public CDbTable
 {
 public:
 	typedef struct{
 		unsigned long	id;
 		unsigned long	personId;
 		char			type;
-		time_t			date;
-		time_t			exp;
+		time_t			pay_date;
+		time_t			exp_date;
 		float			sum;
 	} tDATA;
 
@@ -27,8 +27,8 @@ protected:
 	CDbConnection* m_pConnection;
 	
 public:
-    CChampionshipTable(CDbConnection* pCon);
-    virtual ~CChampionshipTable(void);
+    CPaymentHistoryTable(CDbConnection* pCon);
+    virtual ~CPaymentHistoryTable(void);
 
 public:
     virtual long		GetTable(tTableMap& data);
@@ -39,4 +39,4 @@ public:
 	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
 };
 
-#endif //__tCahmpionship_h__
+#endif //__tDancers_h__

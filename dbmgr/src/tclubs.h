@@ -21,8 +21,6 @@ public:
 		std::string		contacts;
 		std::string		web;
 		std::string		additionalInfo;
-		time_t			pay_date;
-		time_t			exp_date;
 		
 		std::string		director;
 		time_t			director_bd;

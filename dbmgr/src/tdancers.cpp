@@ -92,21 +92,7 @@ long CDancersTable::Find(tTableMap& data, const tDATA& filter)
 		
 		if (0 != filter.bd)
 		{
-			sprintf(tmp, "%sand `bd` like '%s' ", query, date2str(filter.pay_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.pay_date)
-		{
-			sprintf(tmp, "%sand `pay_date` like '%s' ", query, date2str(filter.pay_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.exp_date)
-		{
-			sprintf(tmp, "%sand `expire_date` like '%s' ", query, date2str(filter.exp_date).c_str());
+			sprintf(tmp, "%sand `bd` like '%s' ", query, date2str(filter.bd).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -151,9 +137,7 @@ long CDancersTable::Find(tTableMap& data, const tDATA& filter)
 			el.additionalInfo = qRes->getString(8);
 			el.raiting = qRes->getUInt(9);
 			el.bd = str2date(qRes->getString(10));
-			el.pay_date = str2date(qRes->getString(11));
-			el.exp_date = str2date(qRes->getString(12));
-			el.reg_date = str2date(qRes->getString(13));
+			el.reg_date = str2date(qRes->getString(11));
 		
 			data.insert(make_pair(el.id, el));
 		}
@@ -179,8 +163,8 @@ long CDancersTable::AddRow(tDATA& rec)
 			break;
 		}
 		sprintf(query, "insert into %s(`club_id`,`trener_id`,`liga`,`gender`,"
-		"`reg_book_num`,`name`,`additional_info`,`bd`,`pay_date`,`expire_date`)"
-		"values(%d, %d, %d, %d, '%s', '%s', '%s', %d, '%s', '%s', '%s')"
+		"`reg_book_num`,`name`,`additional_info`,`bd`)"
+		"values(%d, %d, %d, %d, '%s', '%s', '%s', %d, '%s')"
 			, TABLE
 			, rec.clubId
 			, rec.trainerId
@@ -189,9 +173,7 @@ long CDancersTable::AddRow(tDATA& rec)
 			, rec.regBook.c_str()
 			, rec.name.c_str()
 			, rec.additionalInfo.c_str()
-			, date2str(rec.bd).c_str()
-			, date2str(rec.pay_date).c_str()
-			, date2str(rec.exp_date).c_str());
+			, date2str(rec.bd).c_str());
 		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -253,9 +235,7 @@ long CDancersTable::GetRow(unsigned int nId, tDATA& data)
 		data.additionalInfo = qRes->getString(8);
 		data.raiting = qRes->getUInt(9);
 		data.bd = str2date(qRes->getString(10));
-		data.pay_date = str2date(qRes->getString(11));
-		data.exp_date = str2date(qRes->getString(12));
-		data.reg_date = str2date(qRes->getString(13));
+		data.reg_date = str2date(qRes->getString(11));
 		
 		res = UDF_OK;
 	}while(0);
@@ -338,20 +318,6 @@ long CDancersTable::UpdateRow(unsigned int nId, const tDATA& data)
 		if (0 != data.bd)
 		{
 			sprintf(tmp, "%s `bd` = '%s',", query, date2str(data.bd).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != data.pay_date)
-		{
-			sprintf(tmp, "%s `pay_date` = '%s',", query, date2str(data.pay_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != data.exp_date)
-		{
-			sprintf(tmp, "%s `expire_date` = '%s',", query, date2str(data.exp_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
