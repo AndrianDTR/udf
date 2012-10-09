@@ -4,12 +4,15 @@
 #include "udfTrainersMngrDlg.h"
 #include "udfDirectorInfo.h"
 #include "udfCitiesMngr.h"
+#include "udfPaymentHistory.h"
 
 #include "wx/msgdlg.h"
 
 #include "common.h"
 #include "string_def.h"
 #include "udfexceptions.h"
+
+#include "tpaymenthistory.h"
 
 udfClubsMngrDlg::udfClubsMngrDlg( wxWindow* parent )
 : ClubsMngrDlg( parent )
@@ -79,12 +82,6 @@ bool udfClubsMngrDlg::ValidateData()
 		if(-1 == GetSelectedCity())
 			break;
 		
-		if(m_datePay->GetValue() >= m_dateExp->GetValue())
-		{
-			ShowWarning(STR_WARN_PAY_GREATTHEN_EXP);
-			break;
-		}
-		
 		res = true;
 	}while(0);
 	return res;
@@ -131,8 +128,6 @@ void udfClubsMngrDlg::OnAddClub( wxCommandEvent& event )
 		data.contacts = m_textAddress->GetValue();
 		data.email = m_textEmail->GetValue();
 		data.web = m_textWeb->GetValue();
-		data.pay_date = m_datePay->GetValue().GetTicks();
-		data.exp_date = m_dateExp->GetValue().GetTicks();
 		
 		CClubsTable::tTableIt it = m_Clubs.insert(std::make_pair(data.id, data)).first;
 		m_listClubs->Insert(data.name, nItem, (void*)&it->first);
@@ -174,9 +169,6 @@ void udfClubsMngrDlg::OnUpdate(wxCommandEvent& event)
 		pData->email = m_textEmail->GetValue();
 		pData->web = m_textWeb->GetValue();
 		
-		pData->pay_date = m_datePay->GetValue().GetTicks();
-		pData->exp_date = m_dateExp->GetValue().GetTicks();
-		
 		m_listClubs->SetString(nItem, pData->name);
 		
 	}while(0);
@@ -206,8 +198,6 @@ void udfClubsMngrDlg::OnSave( wxCommandEvent& event )
 			||  data.web != cData.web
 			||  data.additionalInfo != cData.additionalInfo
 			||  data.contacts != cData.contacts
-			||  data.pay_date != cData.pay_date
-			||  data.exp_date != cData.exp_date
 			||  data.login != cData.login
 			||  data.pass != cData.pass
 			||  data.director != cData.director
@@ -222,8 +212,6 @@ void udfClubsMngrDlg::OnSave( wxCommandEvent& event )
 				data.web = cData.web;
 				data.additionalInfo = cData.additionalInfo;
 				data.contacts = cData.contacts;
-				data.pay_date = cData.pay_date;
-				data.exp_date = cData.exp_date;
 				
 				data.login = cData.login;
 				data.pass = cData.pass;
@@ -283,14 +271,6 @@ void udfClubsMngrDlg::OnSelectClub(wxCommandEvent& event)
 		CCountriesTable::tDATA& countryData = countryIt->second;
 		wxString city = wxString::Format(STR_FORMAT_CITY_NAME, cityData.Name, countryData.name);
 		m_comboCity->SetValue(city);
-		
-		wxDateTime pay = wxDateTime::Now();
-		pay.Set(pData->pay_date);
-		m_datePay->SetValue(pay);
-		
-		wxDateTime exp = wxDateTime::Now();
-		exp.Set(pData->exp_date);
-		m_dateExp->SetValue(exp);
 	}while(0);
 }
 
@@ -415,4 +395,15 @@ void udfClubsMngrDlg::OnDancersMngr( wxCommandEvent& event )
 	}while(0);
 }
 
+void udfClubsMngrDlg::OnPayment(wxCommandEvent& event)
+{
+	do
+	{
+		CClubsTable::tDATA* pData = NULL;
+		if(!GetSelectedItemData(pData))
+			break;
+		
+		udfPaymentHistory(this, pData->id, udfPT_CLUB).ShowModal();
+	}while(0);
+}
 

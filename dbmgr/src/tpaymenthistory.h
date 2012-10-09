@@ -1,5 +1,5 @@
-#ifndef __tJedges_h__
-#define __tJedges_h__
+#ifndef __tDancers_h__
+#define __tDancers_h__
 
 #include "dbconnection.h"
 #include "dbtable.h"
@@ -8,18 +8,16 @@
 
 using namespace std;
 
-class CJudgesTable : public CDbTable
+class CPaymentHistoryTable : public CDbTable
 {
 public:
 	typedef struct{
-		unsigned int	id;
-		std::string		name;
-		unsigned int	cityId;
-		std::string		email;
-		std::string		phone;
-		std::string		additionalInfo;
-		std::string		attestationInfo;
-		char			practicer;
+		unsigned long	id;
+		unsigned long	personId;
+		char			type;
+		time_t			pay_date;
+		time_t			exp_date;
+		float			sum;
 	} tDATA;
 
 	typedef map<unsigned int, tDATA> tTableMap;
@@ -29,8 +27,8 @@ protected:
 	CDbConnection* m_pConnection;
 	
 public:
-    CJudgesTable(CDbConnection* pCon);
-    virtual ~CJudgesTable(void);
+    CPaymentHistoryTable(CDbConnection* pCon);
+    virtual ~CPaymentHistoryTable(void);
 
 public:
     virtual long		GetTable(tTableMap& data);
@@ -41,4 +39,4 @@ public:
 	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
 };
 
-#endif //__tJedges_h__
+#endif //__tDancers_h__

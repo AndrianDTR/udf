@@ -1,4 +1,5 @@
 #include "udfJudgesMngr.h"
+#include "udfPaymentHistory.h"
 
 #include "wx/msgdlg.h"
 
@@ -6,6 +7,8 @@
 #include "string_def.h"
 #include "udfexceptions.h"
 #include "udfCitiesMngr.h"
+
+#include "tpaymenthistory.h"
 
 udfJudgesMngr::udfJudgesMngr( wxWindow* parent )
 : JudgesMngr( parent )
@@ -114,9 +117,6 @@ void udfJudgesMngr::OnSelectJudge( wxCommandEvent& event )
 		m_comboCity->SetValue(city);
 		
 		m_checkPracticer->SetValue(pData->practicer == udfYES);
-		
-		m_datePay->SetValue(wxDateTime(pData->pay_date));
-		m_dateExp->SetValue(wxDateTime(pData->exp_date));
 	}while(0);
 }
 
@@ -138,8 +138,6 @@ void udfJudgesMngr::OnAddJudge( wxCommandEvent& event )
 		data.attestationInfo = m_textAttestation->GetValue();
 		data.email = m_textEmail->GetValue();
 		data.phone = m_textPhone->GetValue();
-		data.pay_date = m_datePay->GetValue().GetTicks();
-		data.exp_date = m_dateExp->GetValue().GetTicks();
 		data.practicer = m_checkPracticer->GetValue() ? udfYES : udfNO;
 		
 		CJudgesTable::tTableIt it = m_Judges.insert(std::make_pair(data.id, data)).first;
@@ -183,9 +181,6 @@ void udfJudgesMngr::OnUpdate(wxCommandEvent& event)
 		pData->phone = m_textPhone->GetValue();
 		pData->practicer = m_checkPracticer->GetValue() ? udfYES : udfNO;
 		
-		pData->pay_date = m_datePay->GetValue().GetTicks();
-		pData->exp_date = m_dateExp->GetValue().GetTicks();
-		
 		m_listJudges->SetString(nItem, pData->name);
 		
 	}while(0);
@@ -219,8 +214,6 @@ void udfJudgesMngr::OnSave( wxCommandEvent& event )
 			||  data.phone != cData.phone
 			||  data.additionalInfo != cData.additionalInfo
 			||  data.attestationInfo != cData.attestationInfo
-			||  data.pay_date != cData.pay_date
-			||  data.exp_date != cData.exp_date
 			)
 			{
 				data.name = cData.name;
@@ -230,8 +223,6 @@ void udfJudgesMngr::OnSave( wxCommandEvent& event )
 				data.additionalInfo = cData.additionalInfo;
 				data.attestationInfo = cData.attestationInfo;
 				data.practicer = cData.practicer;
-				data.pay_date = cData.pay_date;
-				data.exp_date = cData.exp_date;
 				
 				if( UDF_OK != table.UpdateRow(listIt->first, data))
 				{
@@ -301,12 +292,6 @@ bool udfJudgesMngr::ValidateData()
 		if(-1 == GetSelectedCity())
 			break;
 		
-		if(m_datePay->GetValue() >= m_dateExp->GetValue())
-		{
-			ShowWarning(STR_WARN_PAY_GREATTHEN_EXP);
-			break;
-		}
-		
 		res = true;
 	}while(0);
 	return res;
@@ -332,3 +317,16 @@ bool udfJudgesMngr::GetSelectedItemData(CJudgesTable::tDATA*& pData)
 	
 	return res;
 }
+
+void udfJudgesMngr::OnPayment(wxCommandEvent& event)
+{
+	do
+	{
+		CJudgesTable::tDATA* pData = NULL;
+		if(!GetSelectedItemData(pData))
+			break;
+		
+		udfPaymentHistory(this, pData->id, udfPT_JUDGE).ShowModal();
+	}while(0);	
+}
+

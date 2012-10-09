@@ -39,6 +39,7 @@ set( HEADER_FILES
 	src/tjudges.h
 	src/tliga.h
 	src/ttreiners.h
+	src/tpaymenthistory.h
 )
 
 set( SOURCE_FILES 
@@ -68,6 +69,7 @@ set( SOURCE_FILES
 	src/tjudges.cpp
 	src/tliga.cpp
 	src/ttreiners.cpp
+	src/tpaymenthistory.cpp
 )
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined

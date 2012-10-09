@@ -1,30 +1,30 @@
 
 #include "stdio.h"
 
-#include "dberrors.h"
 #include "dbutils.h"
-#include "tjudges.h"
+#include "dberrors.h"
+#include "tpaymenthistory.h"
 
-#define	TABLE	TABLE_JUDGES
+#define	TABLE	TABLE_PAYMENTHISTORY
 
-CJudgesTable::CJudgesTable(CDbConnection* pCon)
+CPaymentHistoryTable::CPaymentHistoryTable(CDbConnection* pCon)
 : CDbTable(pCon)
 , m_pConnection(pCon)
 {
 }
 
-CJudgesTable::~CJudgesTable(void)
+CPaymentHistoryTable::~CPaymentHistoryTable(void)
 {
 }
 
-long CJudgesTable::GetTable(tTableMap& data)
+long CPaymentHistoryTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
 }
 
-long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
+long CPaymentHistoryTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
@@ -41,51 +41,37 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 		
-		if (!filter.name.empty())
+		if (0 != filter.personId)
 		{
-			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+			sprintf(tmp, "%sand `person_id` = %d ", query, filter.personId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (0 != filter.practicer)
+		if (0 != filter.type)
 		{
-			sprintf(tmp, "%sand `practicer` = '%c' ", query, filter.practicer);
+			sprintf(tmp, "%sand `type` = %c ", query, filter.type);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (0 != filter.cityId)
+		if (0.0001f < filter.sum || -0.0001f > filter.sum)
 		{
-			sprintf(tmp, "%sand `city` = %d ", query, filter.cityId);
+			sprintf(tmp, "%sand `sum` = %f ", query, filter.sum);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.phone.empty())
+		if (0 != filter.pay_date)
 		{
-			sprintf(tmp, "%sand `phone` like '%%%s%%' ", query, filter.phone.c_str());
+			sprintf(tmp, "%sand `pay_date` like '%s' ", query, date2str(filter.pay_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!filter.email.empty())
+		if (0 != filter.exp_date)
 		{
-			sprintf(tmp, "%sand `email` like '%%%s%%' ", query, filter.email.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (!filter.additionalInfo.empty())
-		{
-			sprintf(tmp, "%sand `aditional_info` like '%%%s%%' ", query, filter.attestationInfo.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (!filter.attestationInfo.empty())
-		{
-			sprintf(tmp, "%sand `attestation_info` like '%%%s%%' ", query, filter.attestationInfo.c_str());
+			sprintf(tmp, "%sand `exp_date` like '%s' ", query, date2str(filter.exp_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -99,7 +85,7 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 		{
 			sprintf(query, "select * from %s", TABLE);
 		}
-		
+				
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
 		{
@@ -114,13 +100,11 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 			tDATA el = {0};
 			
 			el.id = qRes->getUInt(1);
-			el.name = qRes->getString(2);
-			el.cityId = qRes->getUInt(3);
-			el.practicer = qRes->getString(4)[0];
-			el.attestationInfo = qRes->getString(5);
-			el.phone = qRes->getString(6);
-			el.email = qRes->getString(7);
-			el.additionalInfo = qRes->getString(8);
+			el.personId = qRes->getUInt(2);
+			el.type = qRes->getString(3)[0];
+			el.pay_date = str2date(qRes->getString(4));
+			el.exp_date = str2date(qRes->getString(5));
+			el.sum = qRes->getDouble(6);
 			
 			data.insert(make_pair(el.id, el));
 		}
@@ -131,31 +115,28 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 	return res;
 }
 
-long CJudgesTable::AddRow(tDATA& rec)
+long CPaymentHistoryTable::AddRow(tDATA& rec)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
 		
 		if(! m_pConnection)
 		{
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		
-		sprintf(query, "insert into %s(`name`,`city`,`practicer`,`attestation_info`,"
-			"`phone`,`email`,`additional_info`)"
-			"values('%s', %d, '%c', '%s', '%s', '%s', '%s', '%s', '%s')"
+		sprintf(query, "insert into %s(`person_id`,`type`,`pay_date`,`exp_date`,`sum`)"
+		"values(%ld, %c, '%s', '%s', '%f')"
 			, TABLE
-			, rec.name.c_str()
-			, rec.cityId
-			, rec.practicer
-			, rec.attestationInfo.c_str()
-			, rec.phone.c_str()
-			, rec.email.c_str()
-			, rec.additionalInfo.c_str());
+			, rec.personId
+			, rec.type
+			, date2str(rec.pay_date).c_str()
+			, date2str(rec.exp_date).c_str()
+			, rec.sum);
 		res = m_pConnection->Execute(query);
 		
 		rec.id = m_pConnection->GetLastInsertId();
@@ -164,7 +145,7 @@ long CJudgesTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CJudgesTable::DelRow(unsigned int nId)
+long CPaymentHistoryTable::DelRow(unsigned int nId)
 {
 	long res = UDF_E_FAIL;
 	
@@ -184,7 +165,7 @@ long CJudgesTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CJudgesTable::GetRow(unsigned int nId, tDATA& data)
+long CPaymentHistoryTable::GetRow(unsigned int nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -198,7 +179,6 @@ long CJudgesTable::GetRow(unsigned int nId, tDATA& data)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		
 		sprintf(query, "select * from %s where id = %d", TABLE, nId);
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)
@@ -207,14 +187,13 @@ long CJudgesTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
+				
 		data.id = qRes->getUInt(1);
-		data.name = qRes->getString(2);
-		data.cityId = qRes->getUInt(3);
-		data.practicer = qRes->getString(4)[0];
-		data.attestationInfo = qRes->getString(5);
-		data.phone = qRes->getString(6);
-		data.email = qRes->getString(7);
-		data.additionalInfo = qRes->getString(8);
+		data.personId = qRes->getUInt(2);
+		data.type = qRes->getString(3)[0];
+		data.pay_date = str2date(qRes->getString(4));
+		data.exp_date = str2date(qRes->getString(5));
+		data.sum = qRes->getDouble(6);
 		
 		res = UDF_OK;
 	}while(0);
@@ -222,7 +201,7 @@ long CJudgesTable::GetRow(unsigned int nId, tDATA& data)
 	return res;
 }
 
-long CJudgesTable::UpdateRow(unsigned int nId, const tDATA& data)
+long CPaymentHistoryTable::UpdateRow(unsigned int nId, const tDATA& data)
 {
 	long res = UDF_E_FAIL;
 	
@@ -238,62 +217,48 @@ long CJudgesTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 		
-		if (0 != data.cityId)
+		if (-1 != data.personId)
 		{
-			sprintf(tmp, "%s `city` = %d,", query, data.cityId);
+			sprintf(tmp, "%s `person_id` = %ld,", query, data.personId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (0 != data.practicer)
+		if (-1 != data.type)
 		{
-			sprintf(tmp, "%s `practicer` = '%c',", query, data.practicer);
+			sprintf(tmp, "%s `type` = %c,", query, data.type);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!data.name.empty())
+		if (0.0001f < data.sum || -0.0001f > data.sum)
 		{
-			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
+			sprintf(tmp, "%s `sum` = '%s',", query, data.sum);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!data.attestationInfo.empty())
+		if (0 != data.pay_date)
 		{
-			sprintf(tmp, "%s `attestation_info` = '%s',", query, data.attestationInfo.c_str());
+			sprintf(tmp, "%s `pay_date` = '%s',", query, date2str(data.pay_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!data.phone.empty())
+		if (0 != data.exp_date)
 		{
-			sprintf(tmp, "%s `phone` = '%s',", query, data.phone.c_str());
+			sprintf(tmp, "%s `exp_date` = '%s',", query, date2str(data.exp_date).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (!data.email.empty())
-		{
-			sprintf(tmp, "%s `email` = '%s',", query, data.email.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (!data.additionalInfo.empty())
-		{
-			sprintf(tmp, "%s `additional_info` = '%s',", query, data.additionalInfo.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-			
 		if(useFilter)
 		{
 			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			res = m_pConnection->Execute(query);
 		}
-
+		
 	}while(0);
 	
 	return res;

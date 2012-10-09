@@ -40,6 +40,8 @@ set( HEADER_FILES
 	src/udfStartNumberAssignDlg.h
 	src/udfTrainersMngrDlg.h
 	src/udfTeamCategoryMngrDlg.h
+	src/udfPaymentHistory.h
+	src/udfPayment.h
 )
 
 set( SOURCE_FILES 
@@ -70,6 +72,8 @@ set( SOURCE_FILES
 	src/udfStartNumberAssignDlg.cpp
 	src/udfTrainersMngrDlg.cpp
 	src/udfTeamCategoryMngrDlg.cpp
+	src/udfPaymentHistory.cpp
+	src/udfPayment.cpp
 )
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined

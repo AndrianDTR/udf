@@ -35,6 +35,7 @@ protected:
 	void OnSelectClub( wxCommandEvent& event );
 	void OnSearch( wxCommandEvent& event );
 	void OnUpdate( wxCommandEvent& event );
+	void OnPayment( wxCommandEvent& event );
 	
 public:
 	/** Constructor */

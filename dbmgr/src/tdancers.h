@@ -22,8 +22,6 @@ public:
 		std::string 	additionalInfo;
 		unsigned int	raiting;
 		time_t			bd;
-		time_t			pay_date;
-		time_t			exp_date;
 		time_t			reg_date;
 	} tDATA;
 
