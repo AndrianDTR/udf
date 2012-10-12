@@ -23,16 +23,35 @@ long CAgeCategoryTable::GetTable(tTableMap& data)
 	return Find(data, filter);
 }
 
+std::string CAgeCategoryTable::GetFilterString(const tDATA& filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+		
+	if (0 != filter.code)
+	{
+		sprintf(tmp, "%sand `code` like %d ", query, filter.code);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	if (!filter.name.empty())
+	{
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	return string(query);
+}
+
 long CAgeCategoryTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -40,31 +59,9 @@ long CAgeCategoryTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 		
-		if (0 != filter.code)
-		{
-			sprintf(tmp, "%sand `code` like %d ", query, filter.code);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (!filter.name.empty())
-		{
-			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-		
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;

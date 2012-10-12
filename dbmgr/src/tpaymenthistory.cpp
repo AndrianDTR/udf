@@ -61,16 +61,16 @@ long CPaymentHistoryTable::Find(tTableMap& data, const tDATA& filter)
 			useFilter = true;
 		}
 		
-		if (0 != filter.pay_date)
+		if (0 != filter.payDate)
 		{
-			sprintf(tmp, "%sand `pay_date` like '%s' ", query, date2str(filter.pay_date).c_str());
+			sprintf(tmp, "%sand `pay_date` like '%s' ", query, date2str(filter.payDate).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (0 != filter.exp_date)
+		if (0 != filter.expDate)
 		{
-			sprintf(tmp, "%sand `exp_date` like '%s' ", query, date2str(filter.exp_date).c_str());
+			sprintf(tmp, "%sand `exp_date` like '%s' ", query, date2str(filter.expDate).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -101,8 +101,8 @@ long CPaymentHistoryTable::Find(tTableMap& data, const tDATA& filter)
 			el.id = qRes->getUInt(1);
 			el.personId = qRes->getUInt(2);
 			el.type = qRes->getString(3)[0];
-			el.pay_date = str2date(qRes->getString(4));
-			el.exp_date = str2date(qRes->getString(5));
+			el.payDate = str2date(qRes->getString(4));
+			el.expDate = str2date(qRes->getString(5));
 			el.sum = qRes->getDouble(6);
 			
 			data.insert(make_pair(el.id, el));
@@ -133,8 +133,8 @@ long CPaymentHistoryTable::AddRow(tDATA& rec)
 			, TABLE
 			, rec.personId
 			, rec.type
-			, date2str(rec.pay_date).c_str()
-			, date2str(rec.exp_date).c_str()
+			, date2str(rec.payDate).c_str()
+			, date2str(rec.expDate).c_str()
 			, rec.sum);
 		res = m_pConnection->Execute(query);
 		
@@ -190,8 +190,8 @@ long CPaymentHistoryTable::GetRow(unsigned int nId, tDATA& data)
 		data.id = qRes->getUInt(1);
 		data.personId = qRes->getUInt(2);
 		data.type = qRes->getString(3)[0];
-		data.pay_date = str2date(qRes->getString(4));
-		data.exp_date = str2date(qRes->getString(5));
+		data.payDate = str2date(qRes->getString(4));
+		data.expDate = str2date(qRes->getString(5));
 		data.sum = qRes->getDouble(6);
 		
 		res = UDF_OK;
@@ -237,16 +237,16 @@ long CPaymentHistoryTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (0 != data.pay_date)
+		if (0 != data.payDate)
 		{
-			sprintf(tmp, "%s `pay_date` = '%s',", query, date2str(data.pay_date).c_str());
+			sprintf(tmp, "%s `pay_date` = '%s',", query, date2str(data.payDate).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
-		if (0 != data.exp_date)
+		if (0 != data.expDate)
 		{
-			sprintf(tmp, "%s `exp_date` = '%s',", query, date2str(data.exp_date).c_str());
+			sprintf(tmp, "%s `exp_date` = '%s',", query, date2str(data.expDate).c_str());
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

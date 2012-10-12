@@ -20,7 +20,7 @@ protected:
 	char								m_cType;
 	unsigned long						m_nPersonId;
 	CDbConnection*						m_pCon;
-	//CPaymentHistoryTable::tTableMap		m_payments;
+	CPaymentHistoryTable::tTableMap		m_payments;
 	
 protected:
 	// Handlers for PaymentHistory events.

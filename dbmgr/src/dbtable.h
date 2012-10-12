@@ -42,24 +42,57 @@
 #include "stdio.h"
 #include "string.h"
 
+#include <list>
+#include <map>
+
+using namespace std;
+
 class CDbTable
 {
-protected:
-	int*		m_pOrder;
 public:
-    CDbTable(CDbConnection* pCon):m_pOrder(NULL){};
+typedef enum{
+	ST_NONE = 0,
+	ST_ASCENDING,
+	ST_DESCENDING
+} tSORT_TYPE;
+
+typedef struct{
+	std::string		szName;
+	tSORT_TYPE		sort;
+} tORDER;
+	
+typedef std::list<tORDER> tOrder;
+typedef std::list<tORDER>::iterator tOrderIt;
+
+typedef struct{
+} tDATA;
+
+typedef map<unsigned int, tDATA> tTableMap;
+typedef map<unsigned int, tDATA>::iterator tTableIt;
+
+protected:
+	tOrder					m_OrderMap;
+public:
+    CDbTable(CDbConnection* pCon){};
     virtual ~CDbTable(void){};
 
+protected:
+	virtual std::string		GetOrderString();
+	virtual std::string		GetFieldList();
+	virtual std::string		GetFilterString(const tDATA& filter) { return "";};
+	virtual std::string		GetQuery(const char* table, const std::string& filter = "");
+	
 public:
-	virtual long		CreateTable(){ return UDF_OK;};
-	virtual long		DropTable(){ return UDF_OK;};
+	virtual long			CreateTable(){ return UDF_OK;};
+	virtual long			DropTable(){ return UDF_OK;};
+	virtual std::string		GetTableName(){ return "";};
 	
-	virtual long		Reload(){ return UDF_OK;};
+	virtual long			Reload(){ return UDF_OK;};
 	
-	virtual long		Execute(std::string query){};
-	virtual int*		GetOrder(){return m_pOrder;};
-	virtual void		SetOrder(int* pOrder){if (m_pOrder)delete [] m_pOrder; if(pOrder)m_pOrder = pOrder;};
-	virtual std::string	GetTableName(){};
+	virtual void			AddOrder(std::string szName, tSORT_TYPE sort = ST_NONE);
+	virtual void			SetOrderMap(const tOrder& orderMap){m_OrderMap = orderMap;};
+	virtual tOrder&			GetOrderMap(){return m_OrderMap;};
+	virtual void			ClearOrder();
 };
 
 #endif //__dbtable_h__

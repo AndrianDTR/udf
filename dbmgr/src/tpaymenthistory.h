@@ -1,5 +1,5 @@
-#ifndef __tDancers_h__
-#define __tDancers_h__
+#ifndef __tPaymentHistory_h__
+#define __tPaymentHistory_h__
 
 #include "dbconnection.h"
 #include "dbtable.h"
@@ -15,8 +15,8 @@ public:
 		unsigned long	id;
 		unsigned long	personId;
 		char			type;
-		time_t			pay_date;
-		time_t			exp_date;
+		time_t			payDate;
+		time_t			expDate;
 		float			sum;
 	} tDATA;
 
@@ -39,4 +39,4 @@ public:
 	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
 };
 
-#endif //__tDancers_h__
+#endif //__tPaymentHistory_h__

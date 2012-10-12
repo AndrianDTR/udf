@@ -24,9 +24,40 @@ void udfPaymentHistory::RefreshHeaders()
 
 void udfPaymentHistory::RefreshList()
 {
-	m_listPayments->ClearAll();
+	m_listPayments->DeleteAllItems();
 	
-	
+	CPaymentHistoryTable table(m_pCon);
+	CPaymentHistoryTable::tDATA filter = {0};
+	filter.personId = m_nPersonId;
+	filter.type = m_cType;
+	table.AddOrder("pay_date", CPaymentHistoryTable::ST_ASCENDING);
+	table.AddOrder("exp_date", CPaymentHistoryTable::ST_ASCENDING);
+	table.Find(m_payments, filter);
+
+	CPaymentHistoryTable::tTableIt it = m_payments.begin();
+	while(it != m_payments.end())
+	{
+		CPaymentHistoryTable::tDATA data = it->second;
+		int nPos = m_listPayments->GetItemCount();
+		
+		int nCol = 1;
+		wxListItem info;
+		info.SetId(nPos);
+		info.SetData((void*)&it->first);
+		info.SetText(wxString::Format(STR_FORMAT_DATE, data.payDate));
+		
+		m_listPayments->InsertItem(info);
+		
+		info.SetColumn(nCol++);
+		info.SetText(wxString::Format(STR_FORMAT_DATE, data.expDate));
+		m_listPayments->SetItem(info);
+		
+		info.SetColumn(nCol++);
+		info.SetText(wxString::Format(STR_FORMAT_SUM, data.sum));
+		m_listPayments->SetItem(info);
+		
+		it++;
+	}
 }
 
 void udfPaymentHistory::OnAdd( wxCommandEvent& event )
@@ -50,7 +81,7 @@ void udfPaymentHistory::OnUpdate( wxCommandEvent& event )
 
 void udfPaymentHistory::OnRemove( wxCommandEvent& event )
 {
-// TODO: Implement OnRemove
+	// TODO: Implement OnRemove
 }
 
 void udfPaymentHistory::OnSave( wxCommandEvent& event )

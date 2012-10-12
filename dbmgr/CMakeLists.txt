@@ -45,6 +45,7 @@ set( HEADER_FILES
 set( SOURCE_FILES 
 	src/dberrors.cpp
 	src/dbutils.cpp
+	src/dbtable.cpp
 	src/dbconnection.cpp
 	src/tagecategory.cpp
 	src/tcategories.cpp
