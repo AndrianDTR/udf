@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-08 20:35:11
+-- Date/time:                    2012-10-16 00:52:27
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -393,8 +393,6 @@ CREATE TABLE IF NOT EXISTS `clubs` (
   `contacts` text,
   `web` varchar(50) DEFAULT NULL,
   `additional_info` text,
-  `pay_date` date DEFAULT NULL,
-  `expire_date` date DEFAULT NULL,
   `director_name` varchar(50) DEFAULT NULL,
   `director_bd` date DEFAULT NULL,
   `director_phone` varchar(30) DEFAULT NULL,
@@ -408,11 +406,11 @@ CREATE TABLE IF NOT EXISTS `clubs` (
 -- Dumping data for table udf.clubs: ~4 rows (approximately)
 DELETE FROM `clubs`;
 /*!40000 ALTER TABLE `clubs` DISABLE KEYS */;
-INSERT INTO `clubs` (`id`, `name`, `city`, `login`, `pass`, `email`, `contacts`, `web`, `additional_info`, `pay_date`, `expire_date`, `director_name`, `director_bd`, `director_phone`, `director_email`, `online`) VALUES
-	(2, 'Клуб 1', 1, 'name1', 'pass1', 'Емейл 1', 'Адреса 1', 'ввв 1', 'Інфо 1', '2001-01-01', '2002-01-01', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1', '2012-10-05 23:10:53'),
-	(3, 'Клуб 2', 2, 'name2', 'pass2', 'Емейл 2', 'Адреса 2', 'ввв 2', 'Інфо 2', '2002-02-02', '2003-02-02', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1', '2012-10-05 23:12:21'),
-	(4, 'Клуб 3', 13, 'name3', 'pass3', 'Пошта 3', 'Адреса 3', 'немає 3', 'Додаткова інформація 3', '2003-03-03', '2004-03-03', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1', NULL),
-	(7, 'Клуб 4', 12, 'name4', 'pass4', 'Електронна пошта 4', 'Поштова Адреса 4', 'тирнет адреса.ком 4', 'Розширена інформація 4', '2004-04-04', '2005-04-04', 'Director 12', '2012-12-12', '+380674391881', 'A@A.com', NULL);
+INSERT INTO `clubs` (`id`, `name`, `city`, `login`, `pass`, `email`, `contacts`, `web`, `additional_info`, `director_name`, `director_bd`, `director_phone`, `director_email`, `online`) VALUES
+	(2, 'Клуб 1', 1, 'name1', 'pass1', 'Емейл 1', 'Адреса 1', 'ввв 1', 'Інфо 1', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1', '2012-10-05 23:10:53'),
+	(3, 'Клуб 2', 2, 'name2', 'pass2', 'Емейл 2', 'Адреса 2', 'ввв 2', 'Інфо 2', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1', '2012-10-05 23:12:21'),
+	(4, 'Клуб 3', 13, 'name3', 'pass3', 'Пошта 3', 'Адреса 3', 'немає 3', 'Додаткова інформація 3', 'Test director1', '0000-00-00', 'Test dir ph1', 'Test dir em1', NULL),
+	(7, 'Клуб 4', 12, 'name4', 'pass4', 'Електронна пошта 4', 'Поштова Адреса 4', 'тирнет адреса.ком 4', 'Розширена інформація 4', 'Director 12', '2012-12-12', '+380674391881', 'A@A.com', NULL);
 /*!40000 ALTER TABLE `clubs` ENABLE KEYS */;
 
 
@@ -456,8 +454,6 @@ CREATE TABLE IF NOT EXISTS `dancers` (
   `aditional_info` varchar(250) DEFAULT NULL,
   `raiting` bigint(20) unsigned DEFAULT NULL,
   `bd` date DEFAULT NULL,
-  `pay_date` date DEFAULT NULL,
-  `expire_date` date DEFAULT NULL,
   `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `FK_dancers_clubs` (`club_id`),
@@ -473,15 +469,15 @@ CREATE TABLE IF NOT EXISTS `dancers` (
 -- Dumping data for table udf.dancers: ~8 rows (approximately)
 DELETE FROM `dancers`;
 /*!40000 ALTER TABLE `dancers` DISABLE KEYS */;
-INSERT INTO `dancers` (`id`, `club_id`, `trener_id`, `liga`, `gender`, `reg_book_num`, `name`, `aditional_info`, `raiting`, `bd`, `pay_date`, `expire_date`, `reg_date`) VALUES
-	(3, 2, 3, 1, 9, 'Test RB1', 'Танцівник 1', NULL, 1, '2001-12-30', '2001-12-30', '2002-12-30', '2012-08-21 00:00:00'),
-	(5, 3, 3, 1, 9, 'Test RB1', 'Test name1', NULL, 1, '2001-12-30', '2001-12-30', '2002-12-30', '0000-00-00 00:00:00'),
-	(6, 3, 3, 2, 9, 'Test RB2', 'Test name2', NULL, 1, '2001-12-30', '2001-12-30', '2002-12-30', '0000-00-00 00:00:00'),
-	(7, 3, 3, 3, 9, 'Test RB3', 'Test name3', NULL, 1, '2001-12-30', '2001-12-30', '2002-12-30', '0000-00-00 00:00:00'),
-	(8, 3, 3, 4, 10, 'Test RB4', 'Test name4', NULL, 1, '2001-12-30', '2001-12-30', '2002-12-30', '0000-00-00 00:00:00'),
-	(9, 3, 3, 5, 10, 'Test RB5', 'Test name5', NULL, 1, '2002-12-30', '2002-12-30', '2003-12-30', '0000-00-00 00:00:00'),
-	(10, 3, 3, 6, 10, 'Test RB6', 'Test name6', NULL, 1, '2001-12-30', '2001-12-30', '2002-12-30', '0000-00-00 00:00:00'),
-	(11, 3, 3, 9, 9, 'Test RB7', 'Test name7', NULL, 1, '2001-12-30', '2001-12-30', '2003-12-30', '0000-00-00 00:00:00');
+INSERT INTO `dancers` (`id`, `club_id`, `trener_id`, `liga`, `gender`, `reg_book_num`, `name`, `aditional_info`, `raiting`, `bd`, `reg_date`) VALUES
+	(3, 2, 3, 1, 9, 'Test RB1', 'Танцівник 1', NULL, 1, '2001-12-30', '2012-08-21 00:00:00'),
+	(5, 3, 3, 1, 9, 'Test RB1', 'Test name1', NULL, 1, '2001-12-30', '0000-00-00 00:00:00'),
+	(6, 3, 3, 2, 9, 'Test RB2', 'Test name2', NULL, 1, '2001-12-30', '0000-00-00 00:00:00'),
+	(7, 3, 3, 3, 9, 'Test RB3', 'Test name3', NULL, 1, '2001-12-30', '0000-00-00 00:00:00'),
+	(8, 3, 3, 4, 10, 'Test RB4', 'Test name4', NULL, 1, '2001-12-30', '0000-00-00 00:00:00'),
+	(9, 3, 3, 5, 10, 'Test RB5', 'Test name5', NULL, 1, '2002-12-30', '0000-00-00 00:00:00'),
+	(10, 3, 3, 6, 10, 'Test RB6', 'Test name6', NULL, 1, '2001-12-30', '0000-00-00 00:00:00'),
+	(11, 3, 3, 9, 9, 'Test RB7', 'Test name7', NULL, 1, '2001-12-30', '0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `dancers` ENABLE KEYS */;
 
 
@@ -564,20 +560,18 @@ CREATE TABLE IF NOT EXISTS `judges` (
   `phone` varchar(20) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `additional_info` text,
-  `pay_date` date DEFAULT NULL,
-  `expire_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table udf.judges: ~5 rows (approximately)
 DELETE FROM `judges`;
 /*!40000 ALTER TABLE `judges` DISABLE KEYS */;
-INSERT INTO `judges` (`id`, `name`, `city`, `practicer`, `attestation_info`, `phone`, `email`, `additional_info`, `pay_date`, `expire_date`) VALUES
-	(1, 'Суддя 1', 1, 'Y', 'Test attestation inf1', '333', 'aa', '3333333', '2001-12-30', '2002-12-30'),
-	(2, 'Суддя 2', 1, 'N', 'Test attestation inf1', 'телефон 2', 'пошта 2', 'Інфо 2', '2001-12-30', '2002-12-30'),
-	(3, 'Суддя 3', 2, 'N', 'Test attestation inf1', 'тел 3', 'пошта 3', 'інформація 3', '2003-12-30', '2005-12-30'),
-	(4, 'Суддя 4', 2, 'N', 'Test attestation inf1', NULL, NULL, NULL, '2008-12-30', '2009-12-30'),
-	(5, 'Суддя 5', 3, 'N', 'Test attestation inf1', 'телефон 5', 'почта 5', 'информация 5', '2001-12-30', '2002-12-30');
+INSERT INTO `judges` (`id`, `name`, `city`, `practicer`, `attestation_info`, `phone`, `email`, `additional_info`) VALUES
+	(1, 'Суддя 1', 1, 'Y', 'Test attestation inf1', '333', 'aa', '3333333'),
+	(2, 'Суддя 2', 1, 'N', 'Test attestation inf1', 'телефон 2', 'пошта 2', 'Інфо 2'),
+	(3, 'Суддя 3', 2, 'N', 'Test attestation inf1', 'тел 3', 'пошта 3', 'інформація 3'),
+	(4, 'Суддя 4', 2, 'N', 'Test attestation inf1', NULL, NULL, NULL),
+	(5, 'Суддя 5', 3, 'N', 'Test attestation inf1', 'телефон 5', 'почта 5', 'информация 5');
 /*!40000 ALTER TABLE `judges` ENABLE KEYS */;
 
 
@@ -651,6 +645,24 @@ INSERT INTO `liga` (`id`, `code`, `name`) VALUES
 /*!40000 ALTER TABLE `liga` ENABLE KEYS */;
 
 
+-- Dumping structure for table udf.payment_history
+DROP TABLE IF EXISTS `payment_history`;
+CREATE TABLE IF NOT EXISTS `payment_history` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `person_id` bigint(20) unsigned NOT NULL,
+  `type` enum('D','C','T','J') NOT NULL,
+  `pay_date` date NOT NULL,
+  `exp_date` date NOT NULL,
+  `sum` float DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table udf.payment_history: ~0 rows (approximately)
+DELETE FROM `payment_history`;
+/*!40000 ALTER TABLE `payment_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `payment_history` ENABLE KEYS */;
+
+
 -- Dumping structure for table udf.treners
 DROP TABLE IF EXISTS `treners`;
 CREATE TABLE IF NOT EXISTS `treners` (
@@ -661,8 +673,6 @@ CREATE TABLE IF NOT EXISTS `treners` (
   `phone` varchar(30) DEFAULT NULL,
   `contact_info` varchar(150) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `pay_date` date DEFAULT NULL,
-  `expire_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_treners_clubs` (`club_id`),
   CONSTRAINT `FK_treners_clubs` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`)
@@ -671,11 +681,11 @@ CREATE TABLE IF NOT EXISTS `treners` (
 -- Dumping data for table udf.treners: ~4 rows (approximately)
 DELETE FROM `treners`;
 /*!40000 ALTER TABLE `treners` DISABLE KEYS */;
-INSERT INTO `treners` (`id`, `club_id`, `name`, `bd`, `phone`, `contact_info`, `email`, `pay_date`, `expire_date`) VALUES
-	(3, 3, 'Тренер 1', '2001-12-30', '+380674391881', 'інфо 1', 'пошта 1', '2001-12-30', '2002-12-30'),
-	(4, 2, 'Тренер 1', '1970-01-01', 'телефон 1', 'інфо 1', 'пошта 1', '1970-01-01', '1970-12-31'),
-	(5, 2, 'Тренер 2', '1970-12-30', 'телефон 2', 'інфо 2', 'пошта 2', '1970-12-30', '1971-12-30'),
-	(6, 2, 'Test name1', '0000-00-00', 'Test ph1', 'Test contactinfo1', 'Test em1', '0000-00-00', '0000-00-00');
+INSERT INTO `treners` (`id`, `club_id`, `name`, `bd`, `phone`, `contact_info`, `email`) VALUES
+	(3, 3, 'Тренер 1', '2001-12-30', '+380674391881', 'інфо 1', 'пошта 1'),
+	(4, 2, 'Тренер 1', '1970-01-01', 'телефон 1', 'інфо 1', 'пошта 1'),
+	(5, 2, 'Тренер 2', '1970-12-30', 'телефон 2', 'інфо 2', 'пошта 2'),
+	(6, 2, 'Test name1', '0000-00-00', 'Test ph1', 'Test contactinfo1', 'Test em1');
 /*!40000 ALTER TABLE `treners` ENABLE KEYS */;
 /*!40014 SET FOREIGN_KEY_CHECKS=1 */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-08 20:35:17
+-- Date/time:                    2012-10-16 00:52:19
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -70,18 +70,6 @@ CREATE TABLE IF NOT EXISTS `championship` (
 
 -- Data exporting was unselected.
 
--- Dumping structure for table udf.championship
-DROP TABLE IF EXISTS `payment_histoy`;
-CREATE TABLE IF NOT EXISTS `payment_histoy` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `person_id` bigint(20) unsigned NOT NULL,
-  `type` enum('D','C','T','J') NOT NULL,
-  `date` date DEFAULT NULL,
-  `expire` date DEFAULT NULL,
-  `sum` float DEFAULT 0.0,
-  PRIMARY KEY (`id`),
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- Data exporting was unselected.
 
 -- Dumping structure for table udf.championship_categories
 DROP TABLE IF EXISTS `championship_categories`;
@@ -243,8 +231,6 @@ CREATE TABLE IF NOT EXISTS `clubs` (
   `contacts` text,
   `web` varchar(50) DEFAULT NULL,
   `additional_info` text,
-  `pay_date` date DEFAULT NULL,
-  `expire_date` date DEFAULT NULL,
   `director_name` varchar(50) DEFAULT NULL,
   `director_bd` date DEFAULT NULL,
   `director_phone` varchar(30) DEFAULT NULL,
@@ -282,8 +268,6 @@ CREATE TABLE IF NOT EXISTS `dancers` (
   `aditional_info` varchar(250) DEFAULT NULL,
   `raiting` bigint(20) unsigned DEFAULT NULL,
   `bd` date DEFAULT NULL,
-  `pay_date` date DEFAULT NULL,
-  `expire_date` date DEFAULT NULL,
   `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `FK_dancers_clubs` (`club_id`),
@@ -333,8 +317,6 @@ CREATE TABLE IF NOT EXISTS `judges` (
   `phone` varchar(20) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `additional_info` text,
-  `pay_date` date DEFAULT NULL,
-  `expire_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -380,6 +362,21 @@ CREATE TABLE IF NOT EXISTS `liga` (
 -- Data exporting was unselected.
 
 
+-- Dumping structure for table udf.payment_history
+DROP TABLE IF EXISTS `payment_history`;
+CREATE TABLE IF NOT EXISTS `payment_history` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `person_id` bigint(20) unsigned NOT NULL,
+  `type` enum('D','C','T','J') NOT NULL,
+  `pay_date` date NOT NULL,
+  `exp_date` date NOT NULL,
+  `sum` float DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table udf.treners
 DROP TABLE IF EXISTS `treners`;
 CREATE TABLE IF NOT EXISTS `treners` (
@@ -390,8 +387,6 @@ CREATE TABLE IF NOT EXISTS `treners` (
   `phone` varchar(30) DEFAULT NULL,
   `contact_info` varchar(150) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `pay_date` date DEFAULT NULL,
-  `expire_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_treners_clubs` (`club_id`),
   CONSTRAINT `FK_treners_clubs` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`)
