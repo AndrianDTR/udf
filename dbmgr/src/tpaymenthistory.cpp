@@ -49,7 +49,7 @@ long CPaymentHistoryTable::Find(tTableMap& data, const tDATA& filter)
 		
 		if (0 != filter.type)
 		{
-			sprintf(tmp, "%sand `type` = %c ", query, filter.type);
+			sprintf(tmp, "%sand `type` = '%c' ", query, filter.type);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -129,7 +129,7 @@ long CPaymentHistoryTable::AddRow(tDATA& rec)
 			break;
 		}
 		sprintf(query, "insert into %s(`person_id`,`type`,`pay_date`,`exp_date`,`sum`)"
-		"values(%ld, %c, '%s', '%s', '%f')"
+		"values(%ld, '%c', '%s', '%s', %f)"
 			, TABLE
 			, rec.personId
 			, rec.type
@@ -225,14 +225,14 @@ long CPaymentHistoryTable::UpdateRow(unsigned int nId, const tDATA& data)
 		
 		if (-1 != data.type)
 		{
-			sprintf(tmp, "%s `type` = %c,", query, data.type);
+			sprintf(tmp, "%s `type` = '%c',", query, data.type);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (0.0001f < data.sum || -0.0001f > data.sum)
 		{
-			sprintf(tmp, "%s `sum` = '%s',", query, data.sum);
+			sprintf(tmp, "%s `sum` = %f,", query, data.sum);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

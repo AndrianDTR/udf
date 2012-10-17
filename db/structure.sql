@@ -71,15 +71,15 @@ CREATE TABLE IF NOT EXISTS `championship` (
 -- Data exporting was unselected.
 
 -- Dumping structure for table udf.championship
-DROP TABLE IF EXISTS `payment_histoy`;
-CREATE TABLE IF NOT EXISTS `payment_histoy` (
+DROP TABLE IF EXISTS `payment_history`;
+CREATE TABLE IF NOT EXISTS `payment_history` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `person_id` bigint(20) unsigned NOT NULL,
   `type` enum('D','C','T','J') NOT NULL,
-  `date` date DEFAULT NULL,
-  `expire` date DEFAULT NULL,
+  `pay_date` date DEFAULT NULL,
+  `exp_date` date DEFAULT NULL,
   `sum` float DEFAULT 0.0,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- Data exporting was unselected.
 
