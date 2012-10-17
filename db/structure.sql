@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-16 00:52:19
+-- Date/time:                    2012-10-18 02:32:21
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -182,13 +182,13 @@ CREATE TABLE IF NOT EXISTS `championship_team_dancers` (
 DROP TABLE IF EXISTS `championship_tours`;
 CREATE TABLE IF NOT EXISTS `championship_tours` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `championship_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `cs_cat_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `name` varchar(50) DEFAULT NULL,
   `limit` int(10) unsigned NOT NULL,
   `final` enum('Y','N') NOT NULL DEFAULT 'N',
   PRIMARY KEY (`id`),
-  KEY `FK_championship_tours_championship` (`championship_id`),
-  CONSTRAINT `FK_championship_tours_championship` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`)
+  KEY `FK_championship_tours_championship_categories` (`cs_cat_id`),
+  CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.

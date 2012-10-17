@@ -41,9 +41,9 @@ long CChampionshipToursTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 		
-		if (0 != filter.championshipId)
+		if (0 != filter.csCatId)
 		{
-			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
+			sprintf(tmp, "%sand `cs_cat_id` like %d ", query, filter.csCatId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -93,7 +93,7 @@ long CChampionshipToursTable::Find(tTableMap& data, const tDATA& filter)
 			tDATA el = {0};
 			
 			el.id = qRes->getUInt(1);
-            el.championshipId = qRes->getUInt(2);
+            el.csCatId = qRes->getUInt(2);
 			el.name = qRes->getString(3);
 			el.limit = qRes->getInt(4);
             el.final = qRes->getString(5)[0];
@@ -121,10 +121,10 @@ long CChampionshipToursTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`championship_id`,`name`,`limit`,`final`)"
+		sprintf(query, "insert into %s(`cs_cat_id`,`name`,`limit`,`final`)"
 		" values(%d, '%s', %d, '%c')"
             , TABLE
-            , rec.championshipId
+            , rec.csCatId
             , rec.name.c_str()
 			, rec.limit
 			, rec.final
@@ -184,7 +184,7 @@ long CChampionshipToursTable::GetRow(unsigned int nId, tDATA& data)
 		}
 		qRes->next();
         data.id = qRes->getInt(1);
-		data.championshipId = qRes->getUInt(2);
+		data.csCatId = qRes->getUInt(2);
 		data.name = qRes->getString(3);
 		data.limit = qRes->getInt(4);
         data.final = qRes->getString(5)[0];
@@ -218,9 +218,9 @@ long CChampionshipToursTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (0 != data.championshipId)
+		if (0 != data.csCatId)
 		{
-			sprintf(tmp, "%s `championship_id` = %d,", query, data.championshipId);
+			sprintf(tmp, "%s `cs_cat_id` = %d,", query, data.csCatId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

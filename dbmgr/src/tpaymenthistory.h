@@ -37,6 +37,9 @@ public:
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);
 	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
+
+protected:
+	std::string 		GetFilterString(const tDATA& filter);
 };
 
 #endif //__tPaymentHistory_h__

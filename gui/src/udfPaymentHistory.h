@@ -37,6 +37,7 @@ public:
 protected:
 	void RefreshList();
 	void RefreshHeaders();
+	void AddListItem(CPaymentHistoryTable::tTableIt &it);
 	
 };
 

@@ -32,20 +32,4 @@ class MainApp : public wxApp
 // declare global static function wxGetApp()
 DECLARE_APP(MainApp)
 
-////////////////////////////////////////////////////////////////////////////////
-// main application frame declaration 
-////////////////////////////////////////////////////////////////////////////////
-
-class MainFrame : public udfMainFrameBase
-{
-	public:
-		MainFrame( wxWindow *parent );
-		virtual ~MainFrame();
-		
-	protected:
-		// protected event handlers
-		virtual void OnCloseFrame( wxCloseEvent& event );
-		virtual void OnExitClick( wxCommandEvent& event );
-};
-
 #endif //__main__

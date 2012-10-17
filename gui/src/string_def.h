@@ -79,7 +79,7 @@ STR_DEFINITION(STR_WARN_REMOVE_ALL_TEAM_DANCERS, "If you change the club. All te
 STR_DEFINITION(STR_WARNING_CS_ALREADY_HAS_FINAL, "Selected championship already has final tour.");
 
 STR_DEFINITION(STR_FORMAT_SUM, "%.02f");
-STR_DEFINITION(STR_FORMAT_DATE, "%04d-%02d-%02d");
+STR_DEFINITION(STR_FORMAT_DATE, "%Y-%B-%d");
 STR_DEFINITION(STR_FORMAT_TEAM_CATEGORY_NAME, "%s (%s)");
 STR_DEFINITION(STR_FORMAT_START_NUMBER, "%05ld");
 STR_DEFINITION(STR_FORMAT_TOUR_NAME, "%s (%d)");
@@ -116,6 +116,10 @@ STR_DEFINITION(STR_FORMAT_REPORT_PREVIEW_CMD, "xdg-open %s");
 STR_DEFINITION(STR_PAY_DATE, "Pay date");
 STR_DEFINITION(STR_EXP_DATE, "Expire on");
 STR_DEFINITION(STR_SUM, "Sum");
+
+STR_DEFINITION(STR_FREE, "Free");
+
+STR_DEFINITION(STR_ERR_INVALID_SUM, "Invalid sum value. Please correct.");
 
 /**********************************************************************************/
 

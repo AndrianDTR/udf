@@ -30,10 +30,11 @@ std::string CDbTable::GetOrderString()
 			if(data.sort == ST_NONE)
 				continue;
 				
-			res += data.szName;
+			res += "`" + data.szName + "`";
 			res += data.sort == ST_ASCENDING ? " ASC, " : " DESC, ";
+			it++;
 		}
-		res += " id ASC ";
+		res += " `id` ASC ";
 		
 	}while(0);
 	return res;
@@ -53,11 +54,11 @@ std::string CDbTable::GetFieldList()
 		}
 			
 		tOrderIt it = m_OrderMap.begin();
-		res = "id";
+		res = "`id`";
 		while(it != m_OrderMap.end())
 		{
 			tORDER& data = *it;
-			res += ", " + data.szName;
+			res += ", `" + data.szName + "`";
 		}
 		
 	}while(0);

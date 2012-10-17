@@ -1,4 +1,6 @@
 #include "udfPayment.h"
+#include "udfexceptions.h"
+#include "wx/regex.h"
 
 udfPayment::udfPayment( wxWindow* parent )
 : Payment( parent )
@@ -10,7 +12,17 @@ udfPayment::udfPayment( wxWindow* parent )
 
 void udfPayment::OnSave( wxCommandEvent& event )
 {
-	EndModal(wxID_OK);
+	do
+	{
+		wxRegEx reSum(wxT("[0-9]+(\.([0-9])+)?"));
+		if (!m_checkFree->GetValue() && !reSum.Matches(m_textSum->GetValue()) )
+		{
+			ShowWarning(STR_ERR_INVALID_SUM);
+			break;
+		}
+		
+		EndModal(wxID_OK);
+	}while(0);
 }
 
 void udfPayment::OnDiscard( wxCommandEvent& event )

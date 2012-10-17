@@ -29,6 +29,9 @@ public:
 	void				SetExpDate(wxDateTime pay){m_dateExpire->SetValue(pay);};
 	const wxDateTime	GetExpDate(){return m_dateExpire->GetValue();};
 	
+	const bool			GetFreeCheck(){return m_checkFree->GetValue();};
+	const void			SetFreeCheck(bool val){m_checkFree->SetValue(val);};
+	
 	void				SetSum(double sum){m_textSum->SetValue(wxString::Format(STR_FORMAT_SUM, sum));};
 	const double		GetSum(){double val = 0; m_textSum->GetValue().ToDouble(&val); return val;};
 	

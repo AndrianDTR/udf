@@ -1,6 +1,7 @@
 #ifndef __dbtable_h__
 #define __dbtable_h__
 
+#include "dbutils.h"
 #include "dberrors.h"
 #include "dbconnection.h"
 

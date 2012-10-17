@@ -13,7 +13,7 @@ class CChampionshipToursTable : public CDbTable
 public:
 	struct tDATA{
 		unsigned int	id;
-		unsigned int	championshipId;
+		unsigned int	csCatId;
 		std::string		name;
 		int				limit;
 		char			final;

@@ -132,7 +132,7 @@ if ( WIN32 )
 	
 	target_link_libraries( ${MODULE_NAME} 
 		wx_msw2u-2.9
-		wxpng-2.9 wxzlib-2.9 wxexpat-2.9
+		wxpng-2.9 wxzlib-2.9 wxexpat-2.9 wxregexu-2.9
 		comctl32)
 	
 else ( WIN32 )
@@ -150,7 +150,7 @@ else ( WIN32 )
 	
 	target_link_libraries( ${MODULE_NAME} 
 		wx_gtk2u-2.9
-		wxpng-2.9 wxzlib-2.9 wxexpat-2.9
+		wxpng-2.9 wxzlib-2.9 wxexpat-2.9 wxregexu-2.9
 		gtk-x11-2.0 SM dl )
 endif ( WIN32 )
 

@@ -15,7 +15,7 @@
 
 #include "cdbmanager.h"
 
-//#include "locale.h"
+#include "locale.h"
 // initialize the application
 IMPLEMENT_APP(MainApp);
 
@@ -27,7 +27,7 @@ bool MainApp::OnInit()
 {
 	bool res = false;
 	do{
-		//setlocale(LC_ALL, "POSIX");
+		setlocale(LC_ALL, "C");
 		try
 		{
 			CDbManager::Instance(); 
@@ -38,32 +38,10 @@ bool MainApp::OnInit()
 			break;
 		}
 		
-		SetTopWindow( new MainFrame( NULL ) );
+		SetTopWindow( new udfMainFrameBase( NULL ) );
 		GetTopWindow()->Show();
 		res = true;
 	}while(0);
 	// true = enter the main loop
 	return res;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// main application frame implementation 
-////////////////////////////////////////////////////////////////////////////////
-
-MainFrame::MainFrame(wxWindow *parent) : udfMainFrameBase( parent )
-{
-}
-
-MainFrame::~MainFrame()
-{
-}
-
-void MainFrame::OnCloseFrame(wxCloseEvent& event)
-{
-	Destroy();
-}
-
-void MainFrame::OnExitClick(wxCommandEvent& event)
-{
-	Destroy();
 }

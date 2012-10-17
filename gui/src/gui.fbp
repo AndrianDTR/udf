@@ -22498,7 +22498,7 @@
                                 <property name="subclass"></property>
                                 <property name="tooltip"></property>
                                 <property name="validator_data_type"></property>
-                                <property name="validator_style">wxFILTER_NONE</property>
+                                <property name="validator_style"></property>
                                 <property name="validator_type">wxDefaultValidator</property>
                                 <property name="validator_variable"></property>
                                 <property name="value"></property>
