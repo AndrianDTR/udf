@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-18 02:32:21
+-- Date/time:                    2012-10-19 00:21:19
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -87,18 +87,6 @@ CREATE TABLE IF NOT EXISTS `championship_categories` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table udf.tour_types
-DROP TABLE IF EXISTS `tour_types`;
-CREATE TABLE IF NOT EXISTS `tour_types` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(40) DEFAULT NULL,
-  `min` int(10) unsigned NOT NULL,
-  `max` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- Data exporting was unselected.
-
-
 -- Dumping structure for table udf.championship_judges_mark
 DROP TABLE IF EXISTS `championship_judges_mark`;
 CREATE TABLE IF NOT EXISTS `championship_judges_mark` (
@@ -167,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `championship_team_categories` (
   PRIMARY KEY (`id`),
   KEY `team_id` (`team_id`),
   KEY `category_id` (`category_id`),
-  CONSTRAINT `FK_championship_team_categories_championship_categories` FOREIGN KEY (`category_id`) REFERENCES `championship_categories` (`category_id`),
+  CONSTRAINT `FK_championship_team_categories_championship_categories` FOREIGN KEY (`category_id`) REFERENCES `championship_categories` (`id`),
   CONSTRAINT `FK_championship_team_categories_championship_team` FOREIGN KEY (`team_id`) REFERENCES `championship_team` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -195,13 +183,14 @@ DROP TABLE IF EXISTS `championship_tours`;
 CREATE TABLE IF NOT EXISTS `championship_tours` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `cs_cat_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `type_id` bigint(20) unsigned DEFAULT '0',
+  `tour_id` bigint(20) unsigned NOT NULL,
   `limit` int(10) unsigned NOT NULL,
+  `final` enum('Y','N') NOT NULL DEFAULT 'N',
   PRIMARY KEY (`id`),
   KEY `FK_championship_tours_championship_categories` (`cs_cat_id`),
-  KEY `FK_championship_tours_tour_types` (`type_id`),
-  CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
-  CONSTRAINT `FK_championship_tours_tour_types` FOREIGN KEY (`type_id`) REFERENCES `tour_types` (`id`)
+  KEY `FK_championship_tours_tour_types` (`tour_id`),
+  CONSTRAINT `FK_championship_tours_tour_types` FOREIGN KEY (`tour_id`) REFERENCES `tour_types` (`id`),
+  CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
@@ -386,6 +375,19 @@ CREATE TABLE IF NOT EXISTS `payment_history` (
   `sum` float DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table udf.tour_types
+DROP TABLE IF EXISTS `tour_types`;
+CREATE TABLE IF NOT EXISTS `tour_types` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL,
+  `min` int(10) unsigned NOT NULL,
+  `max` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 

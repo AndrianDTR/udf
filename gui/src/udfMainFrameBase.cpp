@@ -106,7 +106,8 @@ void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 	while(itCat != categories.end())
 	{
 		CChampionshipCategoriesTable::tDATA& catData = itCat->second;
-		wxString catName = GetCategoryNameById(catData.catId);
+		
+		wxString catName = GetCategoryNameById(catData.catId) + " (" + "0" + ")";
 		wxTreeItemId csCat = m_treeCs->AppendItem(parent, catName, -1, -1, new udfTreeItemData(itCat->first, IT_CAT));
 	
 		RefreshCategory(itCat->first, csCat);
