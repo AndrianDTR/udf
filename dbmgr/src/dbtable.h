@@ -29,6 +29,7 @@
 #define TABLE_LIGA								"liga"
 #define TABLE_TRAINERS							"treners"
 #define TABLE_PAYMENTHISTORY					"payment_history"
+#define TABLE_TOURTYPES							"tour_types"
 
 #define MAX_QUERY_LEN							1500
 

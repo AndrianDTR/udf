@@ -87,6 +87,18 @@ CREATE TABLE IF NOT EXISTS `championship_categories` (
 -- Data exporting was unselected.
 
 
+-- Dumping structure for table udf.tour_types
+DROP TABLE IF EXISTS `tour_types`;
+CREATE TABLE IF NOT EXISTS `tour_types` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL,
+  `min` int(10) unsigned NOT NULL,
+  `max` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table udf.championship_judges_mark
 DROP TABLE IF EXISTS `championship_judges_mark`;
 CREATE TABLE IF NOT EXISTS `championship_judges_mark` (

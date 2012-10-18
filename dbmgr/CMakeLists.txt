@@ -39,6 +39,7 @@ set( HEADER_FILES
 	src/tjudges.h
 	src/tliga.h
 	src/ttreiners.h
+	src/ttourtypes.h
 	src/tpaymenthistory.h
 )
 
@@ -70,6 +71,7 @@ set( SOURCE_FILES
 	src/tjudges.cpp
 	src/tliga.cpp
 	src/ttreiners.cpp
+	src/ttourtypes.cpp
 	src/tpaymenthistory.cpp
 )
 
