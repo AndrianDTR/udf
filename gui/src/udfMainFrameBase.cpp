@@ -93,6 +93,47 @@ wxTreeItemId udfMainFrameBase::GetSelectedCsTour()
 	return GetItemByType(IT_TOUR);
 }
 
+void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
+{
+	/** Append categories **/
+	CChampionshipCategoriesTable::tTableMap categories;
+	CChampionshipCategoriesTable::tDATA catFilter = {0};
+	catFilter.championshipId = id;
+	
+	CChampionshipCategoriesTable(m_pCon).Find(categories, catFilter);
+	
+	CChampionshipCategoriesTable::tTableIt itCat = categories.begin();
+	while(itCat != categories.end())
+	{
+		CChampionshipCategoriesTable::tDATA& catData = itCat->second;
+		wxString catName = GetCategoryNameById(catData.catId);
+		wxTreeItemId csCat = m_treeCs->AppendItem(parent, catName, -1, -1, new udfTreeItemData(itCat->first, IT_CAT));
+	
+		RefreshCategory(itCat->first, csCat);
+		
+		itCat++;
+	}
+}
+
+void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
+{
+	CChampionshipToursTable::tTableMap tours;
+	CChampionshipToursTable::tDATA filter = {0};
+	filter.csCatId = id;
+	
+	CChampionshipToursTable(m_pCon).Find(tours, filter);
+	
+	CChampionshipToursTable::tTableIt itTour = tours.begin();
+	while(itTour != tours.end())
+	{
+		CChampionshipToursTable::tDATA& data = itTour->second;
+		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, data.name, data.limit);
+		m_treeCs->AppendItem(parent, tourName, -1, -1, new udfTreeItemData(itTour->first, IT_TOUR));
+		
+		itTour++;
+	}
+}
+	
 void udfMainFrameBase::RefreshList()
 {
 	CChampionshipTable table(m_pCon);
@@ -107,38 +148,8 @@ void udfMainFrameBase::RefreshList()
 		
 		wxTreeItemId csItem = m_treeCs->AppendItem(m_root, data.name, -1, -1, new udfTreeItemData(it->first, IT_CS));
 		
-		/** Append categories **/
-		CChampionshipCategoriesTable::tTableMap categories;
-		CChampionshipCategoriesTable::tDATA catFilter = {0};
-		catFilter.championshipId = it->first;
+		RefreshCs(it->first, csItem);
 		
-		CChampionshipCategoriesTable(m_pCon).Find(categories, catFilter);
-		
-		CChampionshipCategoriesTable::tTableIt itCat = categories.begin();
-		while(itCat != categories.end())
-		{
-			CChampionshipCategoriesTable::tDATA& catData = itCat->second;
-			wxString catName = GetCategoryNameById(catData.catId);
-			wxTreeItemId csCat = m_treeCs->AppendItem(csItem, catName, -1, -1, new udfTreeItemData(itCat->first, IT_CAT));
-		
-			CChampionshipToursTable::tTableMap tours;
-			CChampionshipToursTable::tDATA filter = {0};
-			filter.csCatId = itCat->first;
-			
-			CChampionshipToursTable(m_pCon).Find(tours, filter);
-			
-			CChampionshipToursTable::tTableIt itTour = tours.begin();
-			while(itTour != tours.end())
-			{
-				CChampionshipToursTable::tDATA& data = itTour->second;
-				wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, data.name, data.limit);
-				m_treeCs->AppendItem(csCat, tourName, -1, -1, new udfTreeItemData(itTour->first, IT_TOUR));
-				
-				itTour++;
-			}
-			
-			itCat++;
-		}
 		it++;
 	}
 }
@@ -443,38 +454,7 @@ void udfMainFrameBase::OnSearch(wxCommandEvent& event)
 		{
 			wxTreeItemId csItem = m_treeCs->AppendItem(m_root, data.name, -1, -1, new udfTreeItemData(it->first, IT_CS));
 			
-			/** Append categories **/
-			CChampionshipCategoriesTable::tTableMap categories;
-			CChampionshipCategoriesTable::tDATA catFilter = {0};
-			catFilter.championshipId = it->first;
-			
-			CChampionshipCategoriesTable(m_pCon).Find(categories, catFilter);
-			
-			CChampionshipCategoriesTable::tTableIt itCat = categories.begin();
-			while(itCat != categories.end())
-			{
-				CChampionshipCategoriesTable::tDATA& catData = itCat->second;
-				wxString catName = GetCategoryNameById(catData.catId);
-				wxTreeItemId csCat = m_treeCs->AppendItem(csItem, catName, -1, -1, new udfTreeItemData(itCat->first, IT_CAT));
-			
-				CChampionshipToursTable::tTableMap tours;
-				CChampionshipToursTable::tDATA filter = {0};
-				filter.csCatId = itCat->first;
-				
-				CChampionshipToursTable(m_pCon).Find(tours, filter);
-				
-				CChampionshipToursTable::tTableIt itTour = tours.begin();
-				while(itTour != tours.end())
-				{
-					CChampionshipToursTable::tDATA& data = itTour->second;
-					wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, data.name, data.limit);
-					m_treeCs->AppendItem(csCat, tourName, -1, -1, new udfTreeItemData(itTour->first, IT_TOUR));
-					
-					itTour++;
-				}
-				
-				itCat++;
-			}
+			RefreshCs(it->first, csItem);
 		}
 	}
 }
@@ -742,13 +722,18 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
 {
 	do{
-		wxTreeItemId itemId = GetSelectedCs();
-		if(!itemId.IsOk())
+		wxTreeItemId csId = GetSelectedCs();
+		if(!csId.IsOk())
 			break;
-			
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
-	
-		udfChampionshipCategoriesMngrDlg(this, csItem->GetId()).ShowModal();
+		
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(csId);
+		
+		if(wxID_OK == udfChampionshipCategoriesMngrDlg(this, csItem->GetId()).ShowModal())
+		{
+			m_treeCs->DeleteChildren(csId);
+			RefreshCs(csItem->GetId(), csId);
+		}
+		
 	}while(0);
 }
 

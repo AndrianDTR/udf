@@ -86,6 +86,9 @@ private:
 	
 protected:
 	void			RefreshList();
+	void			RefreshCs(unsigned int id, wxTreeItemId parent);
+	void			RefreshCategory(unsigned int id, wxTreeItemId parent);
+	
 	void			RefreshCities();
 	void			RefreshCountries();
 	void			RefreshTypes();
