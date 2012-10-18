@@ -24,16 +24,41 @@ long CChampionshipToursTable::GetTable(tTableMap& data)
 	return Find(data, filter);
 }
 
+std::string CChampionshipToursTable::GetFilterString(const tDATA& filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+		
+	if (0 != filter.csCatId)
+	{
+		sprintf(tmp, "%sand `cs_cat_id` like %d ", query, filter.csCatId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter.typeId)
+	{
+		sprintf(tmp, "%sand `type_id` like %d ", query, filter.typeId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter.limit)
+	{
+		sprintf(tmp, "%sand `limit` like %d ", query, filter.limit);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	return string(query);
+}
+
 long CChampionshipToursTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 	
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -41,45 +66,9 @@ long CChampionshipToursTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 		
-		if (0 != filter.csCatId)
-		{
-			sprintf(tmp, "%sand `cs_cat_id` like %d ", query, filter.csCatId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-	
-		if (0 != filter.limit)
-		{
-			sprintf(tmp, "%sand `limit` like %d ", query, filter.limit);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.final)
-		{
-			sprintf(tmp, "%sand `final` like '%c' ", query, filter.final);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (! filter.name.empty())
-		{
-			sprintf(tmp, "%sand `name` like '%s' ", query, filter.name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-		
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
@@ -94,9 +83,8 @@ long CChampionshipToursTable::Find(tTableMap& data, const tDATA& filter)
 			
 			el.id = qRes->getUInt(1);
             el.csCatId = qRes->getUInt(2);
-			el.name = qRes->getString(3);
+			el.typeId = qRes->getUInt(3);
 			el.limit = qRes->getInt(4);
-            el.final = qRes->getString(5)[0];
 		
 			data.insert(make_pair(el.id, el));
 		}
@@ -121,13 +109,12 @@ long CChampionshipToursTable::AddRow(tDATA& rec)
 			break;
 		}
 		
-		sprintf(query, "insert into %s(`cs_cat_id`,`name`,`limit`,`final`)"
+		sprintf(query, "insert into %s(`cs_cat_id`,`type_id`,`limit`)"
 		" values(%d, '%s', %d, '%c')"
             , TABLE
             , rec.csCatId
-            , rec.name.c_str()
+            , rec.typeId
 			, rec.limit
-			, rec.final
 			);
 		
 		res = m_pConnection->Execute(query);
@@ -185,9 +172,8 @@ long CChampionshipToursTable::GetRow(unsigned int nId, tDATA& data)
 		qRes->next();
         data.id = qRes->getInt(1);
 		data.csCatId = qRes->getUInt(2);
-		data.name = qRes->getString(3);
+		data.typeId = qRes->getUInt(3);
 		data.limit = qRes->getInt(4);
-        data.final = qRes->getString(5)[0];
 		
 		res = UDF_OK;
 	}while(0);
@@ -211,13 +197,6 @@ long CChampionshipToursTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 		
-		if (! data.name.empty())
-		{
-			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
 		if (0 != data.csCatId)
 		{
 			sprintf(tmp, "%s `cs_cat_id` = %d,", query, data.csCatId);
@@ -225,16 +204,17 @@ long CChampionshipToursTable::UpdateRow(unsigned int nId, const tDATA& data)
 			useFilter = true;
 		}
 		
-		if (0 != data.limit)
+		if (0 != data.typeId)
 		{
-			sprintf(tmp, "%s `limit` = %d,", query, data.limit);
+			sprintf(tmp, "%s `type_id` = %d,", query, data.typeId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
+
 		
-		if (0 != data.final)
+		if (0 != data.limit)
 		{
-			sprintf(tmp, "%s `final` = '%c',", query, data.final);
+			sprintf(tmp, "%s `limit` = %d,", query, data.limit);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

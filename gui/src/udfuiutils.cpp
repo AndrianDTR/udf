@@ -14,6 +14,7 @@
 #include "tagecategory.h"
 #include "tliga.h"
 #include "tdancetypes.h"
+#include "ttourtypes.h"
 
 #include "string_def.h"
 
@@ -173,6 +174,43 @@ wxString	GetTeamNameById(unsigned int nId)
 	}while(0);
 	
 	return res;
+}
+
+wxString	GetTourTypeNameById(unsigned int nId)
+{
+	wxString res;
+	
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CTourTypesTable::tDATA	data = {0};
+		
+		if(UDF_OK != CTourTypesTable(pCon).GetRow(nId, data))
+		{
+			break;
+		}
+		
+		res = data.name;
+	}while(0);
+	
+	return res;
+}
+
+void	GetTourTypeLimitsById(unsigned int nId, int& min, int& max)
+{
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CTourTypesTable::tDATA	data = {0};
+		
+		if(UDF_OK != CTourTypesTable(pCon).GetRow(nId, data))
+		{
+			break;
+		}
+		
+		min = data.min;
+		max = data.max;
+	}while(0);
 }
 
 int GetJudgeMark(unsigned int nChId, unsigned int nChTourId, unsigned int nJudgeId, unsigned int nTeamId)

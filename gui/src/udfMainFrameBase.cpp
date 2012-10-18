@@ -127,7 +127,7 @@ void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
 	while(itTour != tours.end())
 	{
 		CChampionshipToursTable::tDATA& data = itTour->second;
-		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, data.name, data.limit);
+		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, GetTourTypeNameById(data.typeId), data.limit);
 		m_treeCs->AppendItem(parent, tourName, -1, -1, new udfTreeItemData(itTour->first, IT_TOUR));
 		
 		itTour++;
@@ -832,30 +832,6 @@ void udfMainFrameBase::OnMenuChampionshipTypes(wxCommandEvent& event)
 	m_comboType->SetValue(val);
 }
 
-bool udfMainFrameBase::IsFinalTourAdded()
-{
-	bool res = false;
-	do
-	{
-		wxTreeItemId itemCsId = GetSelectedCsCategory();
-		if(!itemCsId.IsOk())
-			break;
-			
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemCsId);
-		
-		CChampionshipToursTable::tTableMap recs;
-		CChampionshipToursTable::tDATA filter = {0};
-		filter.csCatId = csItem->GetId();
-		filter.final = udfYES;
-		
-		CChampionshipToursTable(m_pCon).Find(recs, filter);
-	
-		res = (recs.size() > 0);
-	}while(0);
-	
-	return res;
-}
-
 void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
 {
 	do{
@@ -865,13 +841,7 @@ void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
 			
 		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemCsId);
 		
-		if(IsFinalTourAdded())
-		{
-			ShowWarning(STR_WARNING_CS_ALREADY_HAS_FINAL);
-			break;
-		}
-		
-		udfCsTours dlg(this, STR_EMPTY, STR_EMPTY, false);
+		udfCsTours dlg(this, -1, -1);
 		
 		if(wxID_OK != dlg.ShowModal())
 			break;
@@ -881,9 +851,8 @@ void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
 		
 		data.id = -(csItem->GetId() * m_treeCs->GetChildrenCount(itemCsId));
 		data.csCatId = csItem->GetId();
-		data.name = dlg.GetTourName();
-		dlg.GetTourLimit().ToLong((long*)&data.limit);
-		data.final = dlg.GetIsFinal() ? udfYES : udfNO;
+		data.typeId = dlg.GetTypeId();
+		data.limit = dlg.GetLimit();
 		
 		if(UDF_OK != CChampionshipToursTable(m_pCon).AddRow(data))
 		{
@@ -891,7 +860,7 @@ void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
 			break;
 		}
 		
-		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, data.name, data.limit);
+		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, GetTourTypeNameById(data.typeId), data.limit);
 		m_treeCs->AppendItem(itemCsId, tourName, -1, -1, new udfTreeItemData(data.id, IT_TOUR));
 	}while(0);
 }
@@ -931,14 +900,13 @@ void udfMainFrameBase::EditTourInfo()
 		CChampionshipToursTable::tDATA data = {0};
 		CChampionshipToursTable(m_pCon).GetRow(tourItem->GetId(), data);
 		
-		udfCsTours dlg(this, data.name, wxString::Format(_("%d"), data.limit), data.final == udfYES);
+		udfCsTours dlg(this, data.typeId, data.limit);
 		
 		if(wxID_OK != dlg.ShowModal())
 			break;
 		
-		data.name = dlg.GetTourName();
-		dlg.GetTourLimit().ToLong((long*)&data.limit);
-		data.final = dlg.GetIsFinal() ? udfYES : udfNO;
+		data.typeId = dlg.GetTypeId();
+		data.limit = dlg.GetLimit();
 		
 		if(UDF_OK != CChampionshipToursTable(m_pCon).UpdateRow(tourItem->GetId(), data))
 		{
@@ -946,7 +914,7 @@ void udfMainFrameBase::EditTourInfo()
 			break;
 		}
 		
-		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, data.name, data.limit);
+		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, GetTourTypeNameById(data.typeId), data.limit);
 		m_treeCs->SetItemText(itemTourId, tourName);
 		//*/
 	}while(0);

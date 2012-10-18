@@ -195,12 +195,13 @@ DROP TABLE IF EXISTS `championship_tours`;
 CREATE TABLE IF NOT EXISTS `championship_tours` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `cs_cat_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(50) DEFAULT NULL,
+  `type_id` bigint(20) unsigned DEFAULT '0',
   `limit` int(10) unsigned NOT NULL,
-  `final` enum('Y','N') NOT NULL DEFAULT 'N',
   PRIMARY KEY (`id`),
   KEY `FK_championship_tours_championship_categories` (`cs_cat_id`),
-  CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`)
+  KEY `FK_championship_tours_tour_types` (`type_id`),
+  CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
+  CONSTRAINT `FK_championship_tours_tour_types` FOREIGN KEY (`type_id`) REFERENCES `tour_types` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
