@@ -42,6 +42,7 @@
 #include "../res/button_undo.xpm"
 #include "../res/button_update2.xpm"
 #include "../res/button_user.xpm"
+#include "../res/icon-database.xpm"
 #include "../res/mail.xpm"
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1152,12 +1153,12 @@ CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	fgSizer3->SetFlexibleDirection( wxBOTH );
 	fgSizer3->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText21 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText21 = new wxStaticText( this, wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText21->Wrap( -1 );
 	fgSizer3->Add( m_staticText21, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer3->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
+	m_comboType = new wxComboBox( this, ID_M_COMBOTYPE, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer3->Add( m_comboType, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText22 = new wxStaticText( this, wxID_ANY, _("Selection limit"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText22->Wrap( -1 );
@@ -2634,5 +2635,206 @@ Payment::Payment( wxWindow* parent, wxWindowID id, const wxString& title, const 
 }
 
 Payment::~Payment()
+{
+}
+
+BEGIN_EVENT_TABLE( Settings, wxDialog )
+	EVT_BUTTON( wxID_OK, Settings::_wxFB_OnSave )
+	EVT_BUTTON( wxID_CANCEL, Settings::_wxFB_OnDiscard )
+END_EVENT_TABLE()
+
+Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer115;
+	bSizer115 = new wxBoxSizer( wxVERTICAL );
+	
+	m_notebook1 = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_panel4 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer117;
+	bSizer117 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxFlexGridSizer* fgSizer21;
+	fgSizer21 = new wxFlexGridSizer( 2, 2, 0, 0 );
+	fgSizer21->SetFlexibleDirection( wxBOTH );
+	fgSizer21->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText97 = new wxStaticText( m_panel4, wxID_ANY, _("Server"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText97->Wrap( -1 );
+	fgSizer21->Add( m_staticText97, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textServer = new wxTextCtrl( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textServer->SetMinSize( wxSize( 150,-1 ) );
+	
+	fgSizer21->Add( m_textServer, 0, wxALL, 5 );
+	
+	m_staticText98 = new wxStaticText( m_panel4, wxID_ANY, _("Database"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText98->Wrap( -1 );
+	fgSizer21->Add( m_staticText98, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textDatabase = new wxTextCtrl( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textDatabase->SetMinSize( wxSize( 150,-1 ) );
+	
+	fgSizer21->Add( m_textDatabase, 0, wxALL, 5 );
+	
+	m_staticText99 = new wxStaticText( m_panel4, wxID_ANY, _("User name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText99->Wrap( -1 );
+	fgSizer21->Add( m_staticText99, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textUser = new wxTextCtrl( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textUser->SetMinSize( wxSize( 150,-1 ) );
+	
+	fgSizer21->Add( m_textUser, 0, wxALL, 5 );
+	
+	m_staticText100 = new wxStaticText( m_panel4, wxID_ANY, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText100->Wrap( -1 );
+	fgSizer21->Add( m_staticText100, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textPass = new wxTextCtrl( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textPass->SetMinSize( wxSize( 150,-1 ) );
+	
+	fgSizer21->Add( m_textPass, 0, wxALL, 5 );
+	
+	bSizer117->Add( fgSizer21, 0, wxALIGN_CENTER_VERTICAL, 5 );
+	
+	wxBoxSizer* bSizer119;
+	bSizer119 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticTestResult = new wxStaticText( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTestResult->Wrap( -1 );
+	bSizer119->Add( m_staticTestResult, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	
+	bSizer119->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_buttonTest = new wxButton( m_panel4, wxID_ANY, _("Test connection"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer119->Add( m_buttonTest, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	bSizer117->Add( bSizer119, 1, wxEXPAND, 5 );
+	
+	m_panel4->SetSizer( bSizer117 );
+	m_panel4->Layout();
+	bSizer117->Fit( m_panel4 );
+	m_notebook1->AddPage( m_panel4, _("Connection"), true );
+	m_panel5 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer118;
+	bSizer118 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxFlexGridSizer* fgSizer19;
+	fgSizer19 = new wxFlexGridSizer( 3, 8, 0, 0 );
+	fgSizer19->SetFlexibleDirection( wxBOTH );
+	fgSizer19->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	
+	fgSizer19->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_staticText88 = new wxStaticText( m_panel5, wxID_ANY, _("Final"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText88->Wrap( -1 );
+	fgSizer19->Add( m_staticText88, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText89 = new wxStaticText( m_panel5, wxID_ANY, _("1/2"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText89->Wrap( -1 );
+	fgSizer19->Add( m_staticText89, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	m_staticText90 = new wxStaticText( m_panel5, wxID_ANY, _("1/4"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText90->Wrap( -1 );
+	fgSizer19->Add( m_staticText90, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText91 = new wxStaticText( m_panel5, wxID_ANY, _("1/8"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText91->Wrap( -1 );
+	fgSizer19->Add( m_staticText91, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText92 = new wxStaticText( m_panel5, wxID_ANY, _("1/16"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText92->Wrap( -1 );
+	fgSizer19->Add( m_staticText92, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText93 = new wxStaticText( m_panel5, wxID_ANY, _("1/32"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText93->Wrap( -1 );
+	fgSizer19->Add( m_staticText93, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText94 = new wxStaticText( m_panel5, wxID_ANY, _("1/64"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText94->Wrap( -1 );
+	fgSizer19->Add( m_staticText94, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText95 = new wxStaticText( m_panel5, wxID_ANY, _("min"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText95->Wrap( -1 );
+	fgSizer19->Add( m_staticText95, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textCtrl53 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl53, 0, wxALL, 5 );
+	
+	m_textCtrl54 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl54, 0, wxALL, 5 );
+	
+	m_textCtrl55 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl55, 0, wxALL, 5 );
+	
+	m_textCtrl56 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl56, 0, wxALL, 5 );
+	
+	m_textCtrl57 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl57, 0, wxALL, 5 );
+	
+	m_textCtrl58 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl58, 0, wxALL, 5 );
+	
+	m_textCtrl59 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl59, 0, wxALL, 5 );
+	
+	m_staticText96 = new wxStaticText( m_panel5, wxID_ANY, _("max"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText96->Wrap( -1 );
+	fgSizer19->Add( m_staticText96, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textCtrl60 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl60, 0, wxALL, 5 );
+	
+	m_textCtrl61 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl61, 0, wxALL, 5 );
+	
+	m_textCtrl62 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl62, 0, wxALL, 5 );
+	
+	m_textCtrl63 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl63, 0, wxALL, 5 );
+	
+	m_textCtrl64 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl64, 0, wxALL, 5 );
+	
+	m_textCtrl65 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl65, 0, wxALL, 5 );
+	
+	m_textCtrl66 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer19->Add( m_textCtrl66, 0, wxALL, 5 );
+	
+	bSizer118->Add( fgSizer19, 1, wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_panel5->SetSizer( bSizer118 );
+	m_panel5->Layout();
+	bSizer118->Fit( m_panel5 );
+	m_notebook1->AddPage( m_panel5, _("Tours data"), false );
+	m_panel6 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_notebook1->AddPage( m_panel6, _("Other"), false );
+	
+	bSizer115->Add( m_notebook1, 1, wxEXPAND | wxALL, 5 );
+	
+	wxBoxSizer* bSizer116;
+	bSizer116 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer116->Add( m_bpSave, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer116->Add( m_bpDiscard, 0, wxALL, 5 );
+	
+	bSizer115->Add( bSizer116, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	this->SetSizer( bSizer115 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+}
+
+Settings::~Settings()
 {
 }

@@ -36,6 +36,7 @@
 #include <wx/checkbox.h>
 #include <wx/listctrl.h>
 #include <wx/html/htmlwin.h>
+#include <wx/notebook.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -645,14 +646,14 @@ class CsTours : public wxDialog
 	protected:
 		enum
 		{
-			ID_NAME = 1000,
+			ID_M_COMBOTYPE = 1000,
 			ID_LIMIT,
 			ID_FINAL,
 		};
 		
 		
 		wxStaticText* m_staticText21;
-		wxTextCtrl* m_textName;
+		wxComboBox* m_comboType;
 		wxStaticText* m_staticText22;
 		wxTextCtrl* m_textLimit;
 		
@@ -1565,6 +1566,79 @@ class Payment : public wxDialog
 		
 		Payment( wxWindow* parent, wxWindowID id = ID_PAYMENT, const wxString& title = _("Payment info"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 469,164 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~Payment();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class Settings
+///////////////////////////////////////////////////////////////////////////////
+class Settings : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_SETTINGS = 1000,
+		};
+		
+		wxNotebook* m_notebook1;
+		wxPanel* m_panel4;
+		wxStaticText* m_staticText97;
+		wxTextCtrl* m_textServer;
+		wxStaticText* m_staticText98;
+		wxTextCtrl* m_textDatabase;
+		wxStaticText* m_staticText99;
+		wxTextCtrl* m_textUser;
+		wxStaticText* m_staticText100;
+		wxTextCtrl* m_textPass;
+		wxStaticText* m_staticTestResult;
+		
+		wxButton* m_buttonTest;
+		wxPanel* m_panel5;
+		
+		wxStaticText* m_staticText88;
+		wxStaticText* m_staticText89;
+		wxStaticText* m_staticText90;
+		wxStaticText* m_staticText91;
+		wxStaticText* m_staticText92;
+		wxStaticText* m_staticText93;
+		wxStaticText* m_staticText94;
+		wxStaticText* m_staticText95;
+		wxTextCtrl* m_textCtrl53;
+		wxTextCtrl* m_textCtrl54;
+		wxTextCtrl* m_textCtrl55;
+		wxTextCtrl* m_textCtrl56;
+		wxTextCtrl* m_textCtrl57;
+		wxTextCtrl* m_textCtrl58;
+		wxTextCtrl* m_textCtrl59;
+		wxStaticText* m_staticText96;
+		wxTextCtrl* m_textCtrl60;
+		wxTextCtrl* m_textCtrl61;
+		wxTextCtrl* m_textCtrl62;
+		wxTextCtrl* m_textCtrl63;
+		wxTextCtrl* m_textCtrl64;
+		wxTextCtrl* m_textCtrl65;
+		wxTextCtrl* m_textCtrl66;
+		wxPanel* m_panel6;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		Settings( wxWindow* parent, wxWindowID id = ID_SETTINGS, const wxString& title = _("Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 704,267 ), long style = wxCAPTION|wxCLOSE_BOX );
+		~Settings();
 	
 };
 

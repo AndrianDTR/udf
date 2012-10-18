@@ -9816,7 +9816,7 @@
                                 <property name="font"></property>
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
-                                <property name="label">Name</property>
+                                <property name="label">Type</property>
                                 <property name="maximum_size"></property>
                                 <property name="minimum_size"></property>
                                 <property name="name">m_staticText21</property>
@@ -9863,19 +9863,19 @@
                             <property name="border">5</property>
                             <property name="flag">wxALL|wxEXPAND</property>
                             <property name="proportion">0</property>
-                            <object class="wxTextCtrl" expanded="1">
+                            <object class="wxComboBox" expanded="1">
                                 <property name="bg"></property>
+                                <property name="choices"></property>
                                 <property name="context_help"></property>
                                 <property name="context_menu">1</property>
                                 <property name="enabled">1</property>
                                 <property name="fg"></property>
                                 <property name="font"></property>
                                 <property name="hidden">0</property>
-                                <property name="id">ID_NAME</property>
+                                <property name="id">ID_M_COMBOTYPE</property>
                                 <property name="maximum_size"></property>
-                                <property name="maxlength">0</property>
                                 <property name="minimum_size"></property>
-                                <property name="name">m_textName</property>
+                                <property name="name">m_comboType</property>
                                 <property name="permission">protected</property>
                                 <property name="pos"></property>
                                 <property name="size"></property>
@@ -9886,11 +9886,12 @@
                                 <property name="validator_style">wxFILTER_NONE</property>
                                 <property name="validator_type">wxDefaultValidator</property>
                                 <property name="validator_variable"></property>
-                                <property name="value"></property>
+                                <property name="value">Combo!</property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style"></property>
                                 <event name="OnChar"></event>
+                                <event name="OnCombobox"></event>
                                 <event name="OnEnterWindow"></event>
                                 <event name="OnEraseBackground"></event>
                                 <event name="OnKeyDown"></event>
@@ -9914,8 +9915,6 @@
                                 <event name="OnSize"></event>
                                 <event name="OnText"></event>
                                 <event name="OnTextEnter"></event>
-                                <event name="OnTextMaxLen"></event>
-                                <event name="OnTextURL"></event>
                                 <event name="OnUpdateUI"></event>
                             </object>
                         </object>
