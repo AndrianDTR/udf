@@ -16,6 +16,11 @@ CAgeCategoryTable::~CAgeCategoryTable(void)
 {
 }
 
+std::string CAgeCategoryTable::GetTableName()
+{
+	return TABLE;
+}
+
 long CAgeCategoryTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};

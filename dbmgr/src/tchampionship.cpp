@@ -17,6 +17,11 @@ CChampionshipTable::~CChampionshipTable(void)
 {
 }
 
+std::string CChampionshipTable::GetTableName()
+{
+	return TABLE;
+}
+
 long CChampionshipTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
@@ -24,9 +29,60 @@ long CChampionshipTable::GetTable(tTableMap& data)
 	return Find(data, filter);
 }
 
-long CChampionshipTable::Find(tTableMap& data, const tDATA& filter, const int* pOrderMap)
+std::string CChampionshipTable::GetFilterString(const tDATA& filter)
 {
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+		
+	if (!filter.name.empty())
+	{
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
 	
+	if (0 != filter.date)
+	{
+		sprintf(tmp, "%sand `date` like '%%%s%%' ", query, date2str(filter.date).c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	if (0 != filter.regOpenDate)
+	{
+		sprintf(tmp, "%sand `reg_open` like '%%%s%%' ", query, date2str(filter.regOpenDate).c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	if (0 != filter.regCloseDate)
+	{
+		sprintf(tmp, "%sand `reg_close` like '%%%s%%' ", query, date2str(filter.regCloseDate).c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	if (!filter.additionalInfo.empty())
+	{
+		sprintf(tmp, "%sand `additional_info` like '%%%s%%' ", query, filter.additionalInfo.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	if (!filter.address.empty())
+	{
+		sprintf(tmp, "%sand `address` like '%%%s%%' ", query, filter.address.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+			
+	if (0 != filter.city)
+	{
+		sprintf(tmp, "%sand `city` like %d ", query, filter.city);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	if (0 != filter.type)
+	{
+		sprintf(tmp, "%sand `type` like %d ", query, filter.type);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	return string(query);
 }
 
 long CChampionshipTable::Find(tTableMap& data, const tDATA& filter)
@@ -35,10 +91,9 @@ long CChampionshipTable::Find(tTableMap& data, const tDATA& filter)
 	
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -46,73 +101,9 @@ long CChampionshipTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 		
-		if (!filter.name.empty())
-		{
-			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.date)
-		{
-			sprintf(tmp, "%sand `date` like '%%%s%%' ", query, date2str(filter.date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.regOpenDate)
-		{
-			sprintf(tmp, "%sand `reg_open` like '%%%s%%' ", query, date2str(filter.regOpenDate).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.regCloseDate)
-		{
-			sprintf(tmp, "%sand `reg_close` like '%%%s%%' ", query, date2str(filter.regCloseDate).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (!filter.additionalInfo.empty())
-		{
-			sprintf(tmp, "%sand `additional_info` like '%%%s%%' ", query, filter.additionalInfo.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (!filter.address.empty())
-		{
-			sprintf(tmp, "%sand `address` like '%%%s%%' ", query, filter.address.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-				
-		if (0 != filter.city)
-		{
-			sprintf(tmp, "%sand `city` like %d ", query, filter.city);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.type)
-		{
-			sprintf(tmp, "%sand `type` like %d ", query, filter.type);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-		
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
@@ -361,9 +352,4 @@ long CChampionshipTable::ParseResult(void* pRes, tTableMap& data)
 	}while(0);
 	
 	return res;
-}
-
-std::string CChampionshipTable::GetTableName()
-{
-	return TABLE;
 }

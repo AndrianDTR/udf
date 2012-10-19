@@ -19,6 +19,7 @@
 #include "tagecategory.h"
 #include "tchampionshipjudgesmark.h"
 #include "tchampionshiptour.h"
+#include "tchampionshipteam.h"
 
 #include "version.h"
 #include "wx/aboutdlg.h"
@@ -149,7 +150,10 @@ void udfMainFrameBase::RefreshList()
 	{
 		CChampionshipTable::tDATA& data = it->second;
 		
-		wxTreeItemId csItem = m_treeCs->AppendItem(m_root, data.name, -1, -1, new udfTreeItemData(it->first, IT_CS));
+		int nTeamsCount = 0;
+		CChampionshipTeamsTable(m_pCon).GetTeamsCountForChampionship(it->first, nTeamsCount);
+		wxString csName = wxString::Format(_("%s (%ld)"), data.name, nTeamsCount);
+		wxTreeItemId csItem = m_treeCs->AppendItem(m_root, csName, -1, -1, new udfTreeItemData(it->first, IT_CS));
 		
 		RefreshCs(it->first, csItem);
 		

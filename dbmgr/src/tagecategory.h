@@ -27,17 +27,19 @@ public:
     CAgeCategoryTable(CDbConnection* pCon);
     virtual ~CAgeCategoryTable(void);
 
+protected:
+	virtual std::string		GetFilterString(const tDATA& filter);
+	
 public:
     virtual long			GetTable(tTableMap& data);
     virtual long			Find(tTableMap& data, const tDATA& filter);
     virtual long			AddRow(tDATA& rec);
     virtual long			DelRow(unsigned int nId);
     virtual long			GetRow(unsigned int nId, tDATA& data);
-	
 	virtual long			UpdateRow(unsigned int nId, const tDATA& data);
-	
-protected:
-	virtual std::string		GetFilterString(const tDATA& filter);
+
+	virtual std::string 	GetTableName();
+
 };
 
 #endif //__tAgeCategory_h__

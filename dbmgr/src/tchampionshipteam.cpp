@@ -16,11 +16,42 @@ CChampionshipTeamsTable::~CChampionshipTeamsTable(void)
 {
 }
 
+std::string CChampionshipTeamsTable::GetTableName()
+{
+	return TABLE;
+}
+
 long CChampionshipTeamsTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
+}
+
+std::string CChampionshipTeamsTable::GetFilterString(const tDATA& filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+		
+	if (0 != filter.championshipId)
+	{
+		sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	if (0 != filter.clubId)
+	{
+		sprintf(tmp, "%sand `club_id` like %d ", query, filter.clubId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	if (0 != filter.startNumber)
+	{
+		sprintf(tmp, "%sand `start_number` like %d ", query, filter.startNumber);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	return string(query);
 }
 
 long CChampionshipTeamsTable::Find(tTableMap& data, const tDATA& filter)
@@ -29,10 +60,9 @@ long CChampionshipTeamsTable::Find(tTableMap& data, const tDATA& filter)
 	
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -40,38 +70,9 @@ long CChampionshipTeamsTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 		
-		if (0 != filter.championshipId)
-		{
-			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.clubId)
-		{
-			sprintf(tmp, "%sand `club_id` like %d ", query, filter.clubId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.startNumber)
-		{
-			sprintf(tmp, "%sand `start_number` like %d ", query, filter.startNumber);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-				
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-				
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
@@ -234,6 +235,37 @@ long CChampionshipTeamsTable::UpdateRow(unsigned int nId, const tDATA& data)
 			res = m_pConnection->Execute(query);
 		}
 
+	}while(0);
+	
+	return res;
+}
+
+long CChampionshipTeamsTable::GetTeamsCountForChampionship(unsigned int nId, int& count)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		sprintf(query, "select count(id) as count from %s where championship_id=%ld", TABLE, nId);
+
+		qRes = m_pConnection->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+		
+		if(qRes->next())
+			count = atoi(string(qRes->getString("count")).c_str());
 	}while(0);
 	
 	return res;

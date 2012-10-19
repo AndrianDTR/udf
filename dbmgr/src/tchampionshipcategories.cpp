@@ -18,11 +18,36 @@ CChampionshipCategoriesTable::~CChampionshipCategoriesTable(void)
 {
 }
 
+std::string CChampionshipCategoriesTable::GetTableName()
+{
+	return TABLE;
+}
+
 long CChampionshipCategoriesTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 	
 	return Find(data, filter);
+}
+
+std::string CChampionshipCategoriesTable::GetFilterString(const tDATA& filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+		
+	if (0 != filter.catId)
+	{
+		sprintf(tmp, "%sand `category_id` like %d ", query, filter.catId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	if (0 != filter.championshipId)
+	{
+		sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
+	return string(query);
 }
 
 long CChampionshipCategoriesTable::Find(tTableMap& data, const tDATA& filter)
@@ -31,10 +56,9 @@ long CChampionshipCategoriesTable::Find(tTableMap& data, const tDATA& filter)
 	
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 		
 		if(! m_pConnection)
 		{
@@ -42,31 +66,9 @@ long CChampionshipCategoriesTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 		
-		if (0 != filter.catId)
-		{
-			sprintf(tmp, "%sand `category_id` like %d ", query, filter.catId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if (0 != filter.championshipId)
-		{
-			sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-		
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-		
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
@@ -231,7 +233,7 @@ long CChampionshipCategoriesTable::GetRegisteredTeamsForCategory(unsigned int nI
 			break;
 		}
 		
-		sprintf(query, "select count(t2.team_id) as reg_teams from %s t1"
+		sprintf(query, "select count(t2.team_id) as `count` from %s t1"
 		" inner join %s t2 on t1.id=t2.category_id and t2.category_id=%ld group by t1.id", TABLE, TABLE_CHAMPIONSHIPTEAMCATEGORIES, nId);
 
 		qRes = m_pConnection->ExecuteQuery(query);
@@ -242,7 +244,7 @@ long CChampionshipCategoriesTable::GetRegisteredTeamsForCategory(unsigned int nI
 		}
 		
 		if(qRes->next())
-			count = atoi(string(qRes->getString("reg_teams")).c_str());
+			count = atoi(string(qRes->getString("count")).c_str());
 		DEBUG_PRINTF("Count : %i", count);
 
 	}while(0);
