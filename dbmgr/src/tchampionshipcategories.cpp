@@ -4,6 +4,8 @@
 #include "dberrors.h"
 #include "tchampionshipcategories.h"
 
+#include "common.h"
+
 #define	TABLE	TABLE_CHAMPIONSHIPCATEGORIES
 
 CChampionshipCategoriesTable::CChampionshipCategoriesTable(CDbConnection* pCon)
@@ -208,6 +210,40 @@ long CChampionshipCategoriesTable::UpdateRow(unsigned int nId, const tDATA& data
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			res = m_pConnection->Execute(query);
 		}
+
+	}while(0);
+	
+	return res;
+}
+
+long CChampionshipCategoriesTable::GetRegisteredTeamsForCategory(unsigned int nId, int& count)
+{
+	long res = UDF_E_FAIL;
+	
+	do
+	{
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+		
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		sprintf(query, "select count(t2.team_id) as reg_teams from %s t1"
+		" inner join %s t2 on t1.id=t2.category_id and t2.category_id=%ld group by t1.id", TABLE, TABLE_CHAMPIONSHIPTEAMCATEGORIES, nId);
+
+		qRes = m_pConnection->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+		
+		if(qRes->next())
+			count = atoi(string(qRes->getString("reg_teams")).c_str());
+		DEBUG_PRINTF("Count : %i", count);
 
 	}while(0);
 	

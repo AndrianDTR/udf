@@ -100,14 +100,16 @@ void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 	CChampionshipCategoriesTable::tDATA catFilter = {0};
 	catFilter.championshipId = id;
 	
-	CChampionshipCategoriesTable(m_pCon).Find(categories, catFilter);
+	CChampionshipCategoriesTable table(m_pCon);
+	table.Find(categories, catFilter);
 	
 	CChampionshipCategoriesTable::tTableIt itCat = categories.begin();
 	while(itCat != categories.end())
 	{
 		CChampionshipCategoriesTable::tDATA& catData = itCat->second;
-		
-		wxString catName = GetCategoryNameById(catData.catId) + " (" + "0" + ")";
+		int regTeams = 0;
+		table.GetRegisteredTeamsForCategory(catData.id, regTeams);
+		wxString catName = GetCategoryNameById(catData.catId) + wxString::Format(_(" (%i)"), regTeams);
 		wxTreeItemId csCat = m_treeCs->AppendItem(parent, catName, -1, -1, new udfTreeItemData(itCat->first, IT_CAT));
 	
 		RefreshCategory(itCat->first, csCat);
