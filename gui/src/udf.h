@@ -195,6 +195,9 @@ class CategoriesMngrDlg : public wxDialog
 		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		void _wxFB_OnAgeCganged( wxCommandEvent& event ){ OnAgeCganged( event ); }
+		void _wxFB_OnLigaCganged( wxCommandEvent& event ){ OnLigaCganged( event ); }
+		void _wxFB_OnDanceChanged( wxCommandEvent& event ){ OnDanceChanged( event ); }
 		
 	
 	protected:
@@ -202,11 +205,11 @@ class CategoriesMngrDlg : public wxDialog
 		{
 			ID_CATEGORY_LIST_SEARCH = 1000,
 			ID_CATEGORY_LIST,
+			ID_AGE_LIST,
+			ID_LIGA_LIST,
+			ID_DANCE_LIST,
 			ID_NAME,
 			ID_SHORTNAME,
-			ID_DANCE_LIST,
-			ID_LIGA_LIST,
-			ID_AGE_LIST,
 		};
 		
 		wxStaticText* m_staticText15;
@@ -217,16 +220,16 @@ class CategoriesMngrDlg : public wxDialog
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpButton29;
 		wxBitmapButton* m_bpDiscard;
+		wxStaticText* m_staticText191;
+		wxComboBox* m_comboAge;
+		wxStaticText* m_staticText19;
+		wxComboBox* m_comboLiga;
+		wxStaticText* m_staticText18;
+		wxComboBox* m_comboDance;
 		wxStaticText* m_staticText16;
 		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText17;
 		wxTextCtrl* m_textShortName;
-		wxStaticText* m_staticText18;
-		wxComboBox* m_comboDance;
-		wxStaticText* m_staticText19;
-		wxComboBox* m_comboLiga;
-		wxStaticText* m_staticText191;
-		wxComboBox* m_comboAge;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnCategorySearch( wxCommandEvent& event ) { event.Skip(); }
@@ -236,6 +239,9 @@ class CategoriesMngrDlg : public wxDialog
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAgeCganged( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLigaCganged( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDanceChanged( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

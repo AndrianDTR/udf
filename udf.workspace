@@ -4,15 +4,6 @@
   <Project Name="db" Path="db/db.project" Active="No"/>
   <Project Name="common" Path="common/common.project" Active="No"/>
   <Project Name="dbtest" Path="dbtest/dbtest.project" Active="No"/>
-  <Environment>
-    <![CDATA[
-  
-  
-  
-  
-  
-  ]]>
-  </Environment>
   <Project Name="dbmgr" Path="dbmgr/dbmgr.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
@@ -36,4 +27,7 @@
       <Project Name="dbmgr" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
+  <Environment>
+    <![CDATA[]]>
+  </Environment>
 </CodeLite_Workspace>

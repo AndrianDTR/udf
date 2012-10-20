@@ -321,6 +321,9 @@ BEGIN_EVENT_TABLE( CategoriesMngrDlg, wxDialog )
 	EVT_BUTTON( wxID_APPLY, CategoriesMngrDlg::_wxFB_OnUpdate )
 	EVT_BUTTON( wxID_OK, CategoriesMngrDlg::_wxFB_OnSave )
 	EVT_BUTTON( wxID_CANCEL, CategoriesMngrDlg::_wxFB_OnDiscard )
+	EVT_COMBOBOX( ID_AGE_LIST, CategoriesMngrDlg::_wxFB_OnAgeCganged )
+	EVT_COMBOBOX( ID_LIGA_LIST, CategoriesMngrDlg::_wxFB_OnLigaCganged )
+	EVT_COMBOBOX( ID_DANCE_LIST, CategoriesMngrDlg::_wxFB_OnDanceChanged )
 END_EVENT_TABLE()
 
 CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -383,28 +386,12 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	fgSizer2->SetFlexibleDirection( wxBOTH );
 	fgSizer2->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText16->Wrap( -1 );
-	fgSizer2->Add( m_staticText16, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_staticText191 = new wxStaticText( this, wxID_ANY, _("Age"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText191->Wrap( -1 );
+	fgSizer2->Add( m_staticText191, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textName->SetMaxLength( 30 ); 
-	fgSizer2->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
-	
-	m_staticText17 = new wxStaticText( this, wxID_ANY, _("Short name"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText17->Wrap( -1 );
-	fgSizer2->Add( m_staticText17, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_textShortName = new wxTextCtrl( this, ID_SHORTNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textShortName->SetMaxLength( 100 ); 
-	fgSizer2->Add( m_textShortName, 0, wxALL|wxEXPAND, 5 );
-	
-	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Dance"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText18->Wrap( -1 );
-	fgSizer2->Add( m_staticText18, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_comboDance = new wxComboBox( this, ID_DANCE_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	fgSizer2->Add( m_comboDance, 0, wxALL|wxEXPAND, 5 );
+	m_comboAge = new wxComboBox( this, ID_AGE_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer2->Add( m_comboAge, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText19 = new wxStaticText( this, wxID_ANY, _("Liga"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText19->Wrap( -1 );
@@ -413,12 +400,28 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	m_comboLiga = new wxComboBox( this, ID_LIGA_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
 	fgSizer2->Add( m_comboLiga, 0, wxALL|wxEXPAND, 5 );
 	
-	m_staticText191 = new wxStaticText( this, wxID_ANY, _("Age"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText191->Wrap( -1 );
-	fgSizer2->Add( m_staticText191, 0, wxALL, 5 );
+	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Dance"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText18->Wrap( -1 );
+	fgSizer2->Add( m_staticText18, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_comboAge = new wxComboBox( this, ID_AGE_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	fgSizer2->Add( m_comboAge, 0, wxALL|wxEXPAND, 5 );
+	m_comboDance = new wxComboBox( this, ID_DANCE_LIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	fgSizer2->Add( m_comboDance, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText16->Wrap( -1 );
+	fgSizer2->Add( m_staticText16, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textName->SetMaxLength( 100 ); 
+	fgSizer2->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText17 = new wxStaticText( this, wxID_ANY, _("Short name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText17->Wrap( -1 );
+	fgSizer2->Add( m_staticText17, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textShortName = new wxTextCtrl( this, ID_SHORTNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	m_textShortName->SetMaxLength( 20 ); 
+	fgSizer2->Add( m_textShortName, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer181->Add( fgSizer2, 1, wxEXPAND, 5 );
 	

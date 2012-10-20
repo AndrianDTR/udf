@@ -14,7 +14,7 @@ public:
 	struct tDATA{
 		unsigned int	id;
 		unsigned int	teamId;
-		unsigned int	catId;
+		unsigned int	csCatId;
 		std::string		compositionName;
 	};
 

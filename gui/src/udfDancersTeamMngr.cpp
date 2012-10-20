@@ -78,7 +78,7 @@ void udfDancersTeamMngr::RefreshCategories()
 		wxString catName = GetCategoryNameById(data.catId);
 		if(!catName.IsEmpty())
 		{
-			m_comboCsCategories->Insert(catName, nPos, (void*)&data.catId);
+			m_comboCsCategories->Insert(catName, nPos, (void*)&it->first);
 		}
 		
 		it++;
@@ -124,7 +124,7 @@ void udfDancersTeamMngr::RefreshTeamCategories(int teamId)
 	{
 		CChampionshipTeamCategoriesTable::tDATA& data = item->second;
 		
-		wxString catName = GetCategoryNameById(data.catId);
+		wxString catName = GetCsCategoryNameById(data.csCatId);
 		if(!catName.IsEmpty())
 		{
 			int nPos = m_listTeamCategories->GetCount();
@@ -313,11 +313,11 @@ void udfDancersTeamMngr::OnUpdate( wxCommandEvent& event )
 			{
 				CChampionshipTeamCategoriesTable::tDATA& cSData = cListIt->second;
 				CChampionshipTeamCategoriesTable::tDATA& cData = cRLstIt->second;
-				if( cSData.catId != cData.catId
+				if( cSData.csCatId != cData.csCatId
 				 || cSData.compositionName != cData.compositionName
 				)
 				{
-					cSData.catId = cData.catId;
+					cSData.csCatId = cData.csCatId;
 					cSData.compositionName = cData.compositionName;
 					cTable.UpdateRow(cListIt->first, cSData);
 				}
@@ -401,10 +401,10 @@ void udfDancersTeamMngr::OnAddDancerTeamCategory( wxCommandEvent& event )
 		
 		int nPos = m_listTeamCategories->GetCount();
 		data.id = -(nPos * nTeam);
-		data.catId = *(int*)m_comboCsCategories->GetClientData(nCat);
+		data.csCatId = *(int*)m_comboCsCategories->GetClientData(nCat);
 		data.teamId = *(int*)m_listTeams->GetClientData(nTeam);
 		
-		wxString cat = GetCategoryNameById(data.catId);
+		wxString cat = GetCsCategoryNameById(data.csCatId);
 		
 		wxArrayString names = m_listTeamCategories->GetStrings();
 		int i = 0;
@@ -433,6 +433,7 @@ void udfDancersTeamMngr::OnAddDancerTeamCategory( wxCommandEvent& event )
 			m_CsTmCats.insert(std::make_pair(data.id, data)).first;
 		m_listTeamCategories->Insert(wxString::Format(STR_FORMAT_TEAM_CATEGORY_NAME, cat, data.compositionName)
 			, nPos, (void*)&item->first);
+		//*/
 	}while(0);
 }
 

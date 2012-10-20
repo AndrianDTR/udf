@@ -673,7 +673,7 @@ long testTChampionshipTeamCategories(CDbConnection* pCon)
 		
 		CChampionshipTeamCategoriesTable::tDATA data = {0};
 		data.teamId = 1;
-		data.catId = 8;
+		data.csCatId = 8;
 		data.compositionName = string("Composition 1");
 		
 		// Add row
@@ -700,13 +700,13 @@ long testTChampionshipTeamCategories(CDbConnection* pCon)
 			printf("%u, %u, %u\n"
 				, it->first
 				, it->second.teamId
-				, it->second.catId);
+				, it->second.csCatId);
 			it++;
 		}
 		
 		// Update row
 		data.teamId = 3;
-		data.catId = 10;
+		data.csCatId = 10;
 		data.compositionName = string("Composition 2");
 		
 		res = tbl.UpdateRow(data.id, data);
@@ -726,7 +726,7 @@ long testTChampionshipTeamCategories(CDbConnection* pCon)
 			printf("%u, %u, %u\n"
 				, it->first
 				, it->second.teamId
-				, it->second.catId);
+				, it->second.csCatId);
 			it++;
 		}
 		

@@ -43,16 +43,19 @@ public:
 	udfCategoriesMngrDlg( wxWindow* parent );
 
 protected:
-	void 	RefreshData();
-	void 	RefreshAgeCategories();
-	void 	RefreshDanceTypes();
-	void 	RefreshLigues();
+	void 			RefreshData();
+	void 			RefreshAgeCategories();
+	void 			RefreshDanceTypes();
+	void 			RefreshLigues();
 	
-	int 	GetSelectedDanceType();
-	int 	GetSelectedLigue();
-	int 	GetSelectedAgeCat();
+	int 			GetSelectedDanceType();
+	int 			GetSelectedLigue();
+	int 			GetSelectedAgeCat();
 	
-	void	ResetCategoryName();
+	void			ResetCategoryName();
+	
+	wxString 		GetShortName(int nAgeId, int nLigueId, int nDanceId);
+	wxString	 	GetName(int nAgeId, int nLigueId, int nDanceId);
 };
 
 #endif // __udfCategoriesMngrDlg__

@@ -109,10 +109,11 @@ void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 	{
 		CChampionshipCategoriesTable::tDATA& catData = itCat->second;
 		int regTeams = 0;
-		table.GetRegisteredTeamsForCategory(catData.id, regTeams);
-		wxString catName = GetCategoryNameById(catData.catId) + wxString::Format(_(" (%i)"), regTeams);
+		
+		table.GetRegisteredTeamsForCategory(itCat->first, regTeams);
+		wxString catName = wxString::Format(STR_FORMAT_CS_NAME, GetCategoryNameById(catData.catId), regTeams);
 		wxTreeItemId csCat = m_treeCs->AppendItem(parent, catName, -1, -1, new udfTreeItemData(itCat->first, IT_CAT));
-	
+		
 		RefreshCategory(itCat->first, csCat);
 		
 		itCat++;
@@ -152,7 +153,7 @@ void udfMainFrameBase::RefreshList()
 		
 		int nTeamsCount = 0;
 		CChampionshipTeamsTable(m_pCon).GetTeamsCountForChampionship(it->first, nTeamsCount);
-		wxString csName = wxString::Format(_("%s (%ld)"), data.name, nTeamsCount);
+		wxString csName = wxString::Format(_("%s (%d)"), data.name, nTeamsCount);
 		wxTreeItemId csItem = m_treeCs->AppendItem(m_root, csName, -1, -1, new udfTreeItemData(it->first, IT_CS));
 		
 		RefreshCs(it->first, csItem);
@@ -747,13 +748,16 @@ void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
 void udfMainFrameBase::OnDancersTeams(wxCommandEvent& event)
 {
 	do{
-		wxTreeItemId itemId = GetSelectedCs();
-		if(!itemId.IsOk())
+		wxTreeItemId csId = GetSelectedCs();
+		if(!csId.IsOk())
 			break;
 			
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(csId);
 	
-		udfDancersTeamMngr(this, csItem->GetId()).ShowModal();
+		if(wxID_OK == udfDancersTeamMngr(this, csItem->GetId()).ShowModal())
+		{
+			RefreshList();
+		}
 	}while(0);
 }
 

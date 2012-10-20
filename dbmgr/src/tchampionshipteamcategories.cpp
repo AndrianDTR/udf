@@ -47,9 +47,9 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap& data, const tDATA& filter
 			useFilter = true;
 		}
 		
-		if (0 != filter.catId)
+		if (0 != filter.csCatId)
 		{
-			sprintf(tmp, "%sand `category_id` like %d ", query, filter.catId);
+			sprintf(tmp, "%sand `category_id` like %d ", query, filter.csCatId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -86,7 +86,7 @@ long CChampionshipTeamCategoriesTable::Find(tTableMap& data, const tDATA& filter
 			
 			el.id = qRes->getUInt(1);
 			el.teamId = qRes->getUInt(2);
-			el.catId = qRes->getUInt(3);
+			el.csCatId = qRes->getUInt(3);
 			el.compositionName = qRes->getString(4);
 		
 			data.insert(make_pair(el.id, el));
@@ -116,7 +116,7 @@ long CChampionshipTeamCategoriesTable::AddRow(tDATA& rec)
 		sprintf(query, "insert into %s(`team_id`, `category_id`, `composition_name`) values(%d, %d, '%s')"
 			, TABLE
 			, rec.teamId
-			, rec.catId
+			, rec.csCatId
 			, rec.compositionName.c_str());
 		res = m_pConnection->Execute(query);
 		
@@ -171,7 +171,7 @@ long CChampionshipTeamCategoriesTable::GetRow(unsigned int nId, tDATA& data)
 		qRes->next();
 		data.id = qRes->getUInt(1);
 		data.teamId = qRes->getUInt(2);
-		data.catId = qRes->getUInt(3);
+		data.csCatId = qRes->getUInt(3);
 		data.compositionName = qRes->getString(4);
 		
 		res = UDF_OK;
@@ -196,9 +196,9 @@ long CChampionshipTeamCategoriesTable::UpdateRow(unsigned int nId, const tDATA& 
 			break;
 		}
 		
-		if (data.catId != -1)
+		if (data.csCatId != -1)
 		{
-			sprintf(tmp, "%s `category_id` = %d,", query, data.catId);
+			sprintf(tmp, "%s `category_id` = %d,", query, data.csCatId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

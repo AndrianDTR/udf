@@ -234,7 +234,7 @@ long CChampionshipCategoriesTable::GetRegisteredTeamsForCategory(unsigned int nI
 		}
 		
 		sprintf(query, "select count(t2.team_id) as `count` from %s t1"
-		" inner join %s t2 on t1.id=t2.category_id and t2.category_id=%ld group by t1.id", TABLE, TABLE_CHAMPIONSHIPTEAMCATEGORIES, nId);
+		" inner join %s t2 on t1.id=t2.category_id and t2.category_id=%d group by t1.id", TABLE, TABLE_CHAMPIONSHIPTEAMCATEGORIES, nId);
 
 		qRes = m_pConnection->ExecuteQuery(query);
 		if(!qRes)

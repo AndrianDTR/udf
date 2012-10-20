@@ -28,7 +28,11 @@ void udfCategoriesMngrDlg::RefreshData()
 		CCategoriesTable::tDATA& data = it->second;
 		
 		int nCount = m_listCategories->GetCount();
-		m_listCategories->Insert(data.shortName, nCount, (void*)&it->first);
+		
+		wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+			, data.shortName
+			, data.name);
+		m_listCategories->Insert(catName, nCount, (void*)&it->first);
 	}
 	
 	RefreshAgeCategories();
@@ -102,7 +106,12 @@ void udfCategoriesMngrDlg::OnAdd( wxCommandEvent& event )
 	data.age_category = *(int*)m_comboAge->GetClientData(nAgeCat);
 	
 	CCategoriesTable::tTableIt it = m_Categories.insert(std::make_pair(data.id, data)).first;
-	m_listCategories->Insert(data.shortName, nItem, (void*)&it->first);
+	m_listCategories->Insert(
+		wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+			, data.shortName
+			, data.name)
+		, nItem
+		, (void*)&it->first);
 	m_listCategories->SetSelection(nItem);
 }
 
@@ -183,8 +192,6 @@ void udfCategoriesMngrDlg::OnCategorySelected(wxCommandEvent& event)
 	if(it != m_Categories.end())
 	{
 		CCategoriesTable::tDATA& currCategory = it->second;
-		m_textName->SetValue(currCategory.name);
-		m_textShortName->SetValue(currCategory.shortName);
 		
 		CDanceTypesTable::tDATA& dance = m_DanceTypes.find(currCategory.dance)->second;
 		m_comboDance->SetValue(dance.name);
@@ -194,6 +201,10 @@ void udfCategoriesMngrDlg::OnCategorySelected(wxCommandEvent& event)
 		
 		CAgeCategoryTable::tDATA& age = m_AgeCats.find(currCategory.age_category)->second;
 		m_comboAge->SetValue(age.name);
+			
+		m_textShortName->SetValue(GetShortName(currCategory.age_category, currCategory.liga, currCategory.dance));
+		m_textName->SetValue(currCategory.name);
+		
 	}
 }
 
@@ -212,7 +223,10 @@ void udfCategoriesMngrDlg::OnCategorySearch(wxCommandEvent& event)
 		if(name.Upper().Contains(search) || sname.Upper().Contains(search))
 		{
 			int pos = m_listCategories->GetCount();
-			m_listCategories->Insert(data.shortName, pos, (void*)&item->first);
+			wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+				, data.shortName
+				, data.name);
+			m_listCategories->Insert(catName, pos, (void*)&item->first);
 		}
 	}
 }
@@ -236,7 +250,11 @@ void udfCategoriesMngrDlg::OnUpdate(wxCommandEvent& event)
 		
 		data.name = m_textName->GetValue();
 		data.shortName = m_textShortName->GetValue();
-		m_listCategories->SetString(nItem, data.shortName);
+		m_listCategories->SetString(nItem
+			, wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+				, data.shortName
+				, data.name)
+			);
 		
 		int nDance = GetSelectedDanceType();
 		data.dance = *(int*)m_comboDance->GetClientData(nDance);
@@ -363,19 +381,32 @@ void udfCategoriesMngrDlg::ResetCategoryName()
 		if(-1 == nAgeId || -1 == nLigueId || -1 == nDanceId)
 			break;
 		
-		wxString age = m_comboAge->GetString(nAgeId);
-		wxString ligue = m_comboLiga->GetString(nLigueId);
-		wxString dance = m_comboDance->GetString(nDanceId);
+		m_textShortName->SetValue(GetShortName(
+			*(int*)m_comboAge->GetClientData(nAgeId), 
+			*(int*)m_comboLiga->GetClientData(nLigueId),
+			*(int*)m_comboDance->GetClientData(nDanceId)));
+		m_textName->SetValue(GetName(
+			*(int*)m_comboAge->GetClientData(nAgeId), 
+			*(int*)m_comboLiga->GetClientData(nLigueId),
+			*(int*)m_comboDance->GetClientData(nDanceId)));
 		
-		int nAge = GetAgeCodeById(*(int*)m_comboAge->GetClientData(nAgeId));
-		int nLigue = GetLigueCodeById(*(int*)m_comboLiga->GetClientData(nLigueId));
-		int nDance = GetDanceCodeById(*(int*)m_comboDance->GetClientData(nDanceId));
+	}while(0);
+}
 
-		wxString sname = wxString::Format(STR_FORMAT_CAT_SNAME, nAge, nLigue, nDance);
-		m_textShortName->SetValue(sname);
-		
-		wxString name = wxString::Format(STR_FORMAT_CAT_NAME, age, ligue, dance);
-		m_textName->SetValue(name);
-		
-	}while(0);	
+wxString udfCategoriesMngrDlg::GetShortName(int nAgeId, int nLigueId, int nDanceId)
+{
+	int nAge = GetAgeCodeById(nAgeId);
+	int nLigue = GetLigueCodeById(nLigueId);
+	int nDance = GetDanceCodeById(nDanceId);
+
+	return wxString::Format(STR_FORMAT_CAT_SNAME, nAge, nLigue, nDance);
+}
+
+wxString udfCategoriesMngrDlg::GetName(int nAgeId, int nLigueId, int nDanceId)
+{
+	string age = GetAgeNameById(nAgeId);
+	string ligue = GetLigueNameById(nLigueId);
+	string dance = GetDanceNameById(nDanceId);
+
+	return wxString::Format(STR_FORMAT_CAT_NAME, age, ligue, dance);
 }

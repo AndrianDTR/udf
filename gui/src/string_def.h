@@ -83,6 +83,7 @@ STR_DEFINITION(STR_FORMAT_DATE, "%Y-%B-%d");
 STR_DEFINITION(STR_FORMAT_TEAM_CATEGORY_NAME, "%s (%s)");
 STR_DEFINITION(STR_FORMAT_START_NUMBER, "%05ld");
 STR_DEFINITION(STR_FORMAT_TOUR_NAME, "%s (%d)");
+STR_DEFINITION(STR_FORMAT_CS_NAME, "%s (%d)");
 STR_DEFINITION(STR_FORMAT_CAT_NAME, "%s, %s, %s");
 STR_DEFINITION(STR_FORMAT_CAT_SNAME, "%1d%1d%02d");
 
@@ -146,6 +147,9 @@ STR_DEFINITION(STR_DANCE_TYPES_CODE_LIST, "Age categories list");
 STR_DEFINITION(STR_LIGUES_CODE_MNGR, "Age category code manager");
 STR_DEFINITION(STR_LIGUES_CODE_LIST, "Age categories list");
 
+/**********************************************************************************/
+
+STR_DEFINITION(STR_FORMAT_CATEGORY_LIST_ITEM, "%s, (%s)");
 
 
 

@@ -9,6 +9,7 @@
 #include "tjudges.h"
 #include "ttreiners.h"
 #include "tchampionshipteam.h"
+#include "tchampionshipcategories.h"
 #include "tchampionshipjudgesmark.h"
 #include "tchampionshiptour.h"
 #include "tagecategory.h"
@@ -156,6 +157,26 @@ wxString	GetCategoryNameById(unsigned int nId)
 	return res;
 }
 
+wxString	GetCsCategoryNameById(unsigned int nId)
+{
+	wxString res;
+	
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CChampionshipCategoriesTable::tDATA	data = {0};
+		
+		if(UDF_OK != CChampionshipCategoriesTable(pCon).GetRow(nId, data))
+		{
+			break;
+		}
+		
+		res = GetCategoryNameById(data.catId);
+	}while(0);
+	
+	return res;
+}
+
 wxString	GetTeamNameById(unsigned int nId)
 {
 	wxString res;
@@ -281,6 +302,26 @@ int	GetAgeCodeById(unsigned int nAgeId)
 	return res;
 }
 
+std::string	GetAgeNameById(unsigned int nAgeId)
+{
+	std::string res;
+	
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CAgeCategoryTable::tDATA data = {0};
+		
+		if(UDF_OK != CAgeCategoryTable(pCon).GetRow(nAgeId, data))
+		{
+			break;
+		}
+		
+		res = data.name;
+	}while(0);
+	
+	return res;
+}
+
 int	GetLigueCodeById(unsigned int nLigueId)
 {
 	int res = -1;
@@ -301,6 +342,26 @@ int	GetLigueCodeById(unsigned int nLigueId)
 	return res;
 }
 
+std::string	GetLigueNameById(unsigned int nLigueId)
+{
+	std::string res;
+	
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CLigaTable::tDATA data = {0};
+		
+		if(UDF_OK != CLigaTable(pCon).GetRow(nLigueId, data))
+		{
+			break;
+		}
+		
+		res = data.name;
+	}while(0);
+	
+	return res;
+}
+
 int	GetDanceCodeById(unsigned int nDanceId)
 {
 	int res = -1;
@@ -316,6 +377,26 @@ int	GetDanceCodeById(unsigned int nDanceId)
 		}
 		
 		res = data.code;
+	}while(0);
+	
+	return res;
+}
+
+std::string	GetDanceNameById(unsigned int nDanceId)
+{
+	std::string res;
+	
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CDanceTypesTable::tDATA data = {0};
+		
+		if(UDF_OK != CDanceTypesTable(pCon).GetRow(nDanceId, data))
+		{
+			break;
+		}
+		
+		res = data.name;
 	}while(0);
 	
 	return res;
