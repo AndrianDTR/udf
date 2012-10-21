@@ -28,6 +28,7 @@
 #include "../res/button_move_up10.xpm"
 #include "../res/button_ok.xpm"
 #include "../res/button_other.xpm"
+#include "../res/button_championship_teams.xpm"
 #include "../res/button_payments.xpm"
 #include "../res/button_plus.xpm"
 #include "../res/button_random.xpm"
@@ -809,7 +810,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_bpSendinvitation = new wxBitmapButton( m_panel1, wxID_CHAMPIONSHIP_SENDINVITATION, wxBitmap( mail_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpSendinvitation, 0, wxALL, 5 );
 	
-	m_bpDancersTeams = new wxBitmapButton( m_panel1, ID_TEAMS, wxBitmap( button_other_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpDancersTeams = new wxBitmapButton( m_panel1, ID_TEAMS, wxBitmap( button_championship_teams_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpDancersTeams, 0, wxALL, 5 );
 	
 	m_bpStartNumberMngr = new wxBitmapButton( m_panel1, wxID_CHAMPIONSHIP_STARTNUMBERMNGR, wxBitmap( button_startnumber_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
