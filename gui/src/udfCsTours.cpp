@@ -1,5 +1,7 @@
 #include "udfCsTours.h"
 
+#include "udfuiutils.h"
+
 udfCsTours::udfCsTours( wxWindow* parent, unsigned int type, int limit)
 : CsTours( parent )
 , m_pCon(NULL)
@@ -11,7 +13,7 @@ udfCsTours::udfCsTours( wxWindow* parent, unsigned int type, int limit)
 	if(m_comboType->GetCount())
 	{
 		if(-1 != type)
-			m_comboType->SetSelection(type);
+			m_comboType->SetValue(GetTourTypeNameById(type));
 		else
 			m_comboType->SetSelection(0);
 	}

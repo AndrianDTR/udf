@@ -860,15 +860,15 @@ void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
 		data.csCatId = csItem->GetId();
 		data.typeId = dlg.GetTypeId();
 		data.limit = dlg.GetLimit();
-/*
+
 		if(UDF_OK != CChampionshipToursTable(m_pCon).AddRow(data))
 		{
 			ShowWarning(STR_ERR_ADD_CHAMPIONSHIP_TOUR_FAILED);
 			break;
 		}
-//*/
-		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, GetTourTypeNameById(data.typeId), data.limit);
-		m_treeCs->AppendItem(itemCsId, tourName, -1, -1, new udfTreeItemData(data.id, IT_TOUR));
+
+		m_treeCs->DeleteChildren(itemCsId);
+		RefreshCategory(csItem->GetId(), itemCsId);
 	}while(0);
 }
 
@@ -921,9 +921,9 @@ void udfMainFrameBase::EditTourInfo()
 			break;
 		}
 
-		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, GetTourTypeNameById(data.typeId), data.limit);
-		m_treeCs->SetItemText(itemTourId, tourName);
-		//*/
+		m_treeCs->DeleteChildren(itemTourId);
+		RefreshCategory(tourItem->GetId(), itemTourId);
+
 	}while(0);
 }
 
