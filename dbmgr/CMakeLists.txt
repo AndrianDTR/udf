@@ -12,6 +12,7 @@
 # Configuration for module: gucefMT
 
 set( HEADER_FILES 
+	src/db.h
 	src/dberrors.h
 	src/dbutils.h
 	src/dbconnection.h

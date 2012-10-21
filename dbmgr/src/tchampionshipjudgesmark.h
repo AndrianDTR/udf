@@ -1,12 +1,7 @@
 #ifndef __tChampionshipJudgesMark_h__
 #define __tChampionshipJudgesMark_h__
 
-#include "dbconnection.h"
-#include "dbtable.h"
-
-#include "map"
-
-using namespace std;
+#include "db.h"
 
 class CChampionshipJudgesMarkTable : public CDbTable
 {
@@ -21,12 +16,12 @@ public:
 		unsigned int	nOrderNum;
 	};
 
-	typedef map<unsigned int, tDATA> tTableMap;
-	typedef map<unsigned int, tDATA>::iterator tTableIt;
-	
+	typedef std::map<unsigned int, tDATA> tTableMap;
+	typedef std::map<unsigned int, tDATA>::iterator tTableIt;
+
 protected:
 	CDbConnection* m_pConnection;
-	
+
 public:
     CChampionshipJudgesMarkTable(CDbConnection* pCon);
     virtual ~CChampionshipJudgesMarkTable(void);

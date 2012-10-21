@@ -2,7 +2,7 @@
 
 #include "udfCategoriesMngrDlg.h"
 
-#include "common.h"
+#include "string_def.h"
 
 udfChampionshipCategoriesMngrDlg::udfChampionshipCategoriesMngrDlg( wxWindow* parent, unsigned int nId )
 : ChampionshipCategoriesMngrDlg( parent )
@@ -10,7 +10,7 @@ udfChampionshipCategoriesMngrDlg::udfChampionshipCategoriesMngrDlg( wxWindow* pa
 , m_nCSId(nId)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
+
 	RefreshAllList();
 	RefreshSelectedList();
 }
@@ -19,10 +19,10 @@ void udfChampionshipCategoriesMngrDlg::OnAddAll( wxCommandEvent& event )
 {
 	m_ChampionshipsCategories.clear();
 	m_listSelected->Clear();
-	
+
 	CChampionshipCategoriesTable::tDATA data = {0};
 	data.championshipId = m_nCSId;
-		
+
 	CCategoriesTable::tTableIt it = m_Categories.begin();
 	while(it != m_Categories.end())
 	{
@@ -30,11 +30,14 @@ void udfChampionshipCategoriesMngrDlg::OnAddAll( wxCommandEvent& event )
 		int nPos = m_listSelected->GetCount();
 		data.id = -nPos;
 		data.catId = it->first;
-		
-		CChampionshipCategoriesTable::tTableIt itemIt = 
+
+		CChampionshipCategoriesTable::tTableIt itemIt =
 			m_ChampionshipsCategories.insert(std::make_pair(data.id, data)).first;
-		m_listSelected->Insert(cData.shortName, nPos, (void*)&itemIt->first);
-		
+		wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+			, cData.shortName
+			, cData.name);
+		m_listSelected->Insert(catName, nPos, (void*)&itemIt->first);
+
 		it++;
 	}
 }
@@ -58,10 +61,13 @@ void udfChampionshipCategoriesMngrDlg::OnAdd( wxCommandEvent& event )
 				int nPos = m_listSelected->GetCount();
 				data.id = -nPos;
 				data.catId = it->first;
-				
-				CChampionshipCategoriesTable::tTableIt itemIt = 
+
+				CChampionshipCategoriesTable::tTableIt itemIt =
 					m_ChampionshipsCategories.insert(std::make_pair(data.id, data)).first;
-				m_listSelected->Insert(cData.shortName, nPos, (void*)&itemIt->first);
+				wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+					, cData.shortName
+					, cData.name);
+				m_listSelected->Insert(catName, nPos, (void*)&itemIt->first);
 			}
 		}
 	}
@@ -93,7 +99,7 @@ void udfChampionshipCategoriesMngrDlg::OnSave( wxCommandEvent& event )
 	CChampionshipCategoriesTable::tDATA filter = {0};
 	filter.championshipId = m_nCSId;
 	table.Find(stored, filter);
-		
+
 	CChampionshipCategoriesTable::tTableIt listIt = stored.begin();
 	while(listIt != stored.end())
 	{
@@ -115,7 +121,7 @@ void udfChampionshipCategoriesMngrDlg::OnSave( wxCommandEvent& event )
 		}
 		listIt++;
 	}
-	
+
 	if(m_ChampionshipsCategories.size() > 0)
 	{
 		CChampionshipCategoriesTable::tTableIt rLstIt = m_ChampionshipsCategories.begin();
@@ -126,7 +132,7 @@ void udfChampionshipCategoriesMngrDlg::OnSave( wxCommandEvent& event )
 			rLstIt++;
 		}
 	}
-	
+
 	EndModal(wxID_OK);
 }
 
@@ -140,14 +146,17 @@ void udfChampionshipCategoriesMngrDlg::RefreshAllList()
 	m_Categories.clear();
 	m_listAll->Clear();
 	CCategoriesTable(m_pCon).GetTable(m_Categories);
-	
+
 	CCategoriesTable::tTableIt it = m_Categories.begin();
 	while(it != m_Categories.end())
 	{
 		CCategoriesTable::tDATA& data = it->second;
 		int nPos = m_listAll->GetCount();
-		m_listAll->Insert(data.shortName, nPos, (void*)&it->first);
-		
+		wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+					, data.shortName
+					, data.name);
+		m_listAll->Insert(catName, nPos, (void*)&it->first);
+
 		it++;
 	}
 }
@@ -156,24 +165,27 @@ void udfChampionshipCategoriesMngrDlg::RefreshSelectedList()
 {
 	m_ChampionshipsCategories.clear();
 	m_listSelected->Clear();
-	
+
 	CChampionshipCategoriesTable::tDATA filter = {0};
 	filter.championshipId = m_nCSId;
 	CChampionshipCategoriesTable(m_pCon).Find(m_ChampionshipsCategories, filter);
-	
+
 	CChampionshipCategoriesTable::tTableIt it = m_ChampionshipsCategories.begin();
 	while(it != m_ChampionshipsCategories.end())
 	{
 		CChampionshipCategoriesTable::tDATA& data = it->second;
 		int nPos = m_listSelected->GetCount();
-		
+
 		CCategoriesTable::tTableIt cIt = m_Categories.find(data.catId);
 		if(cIt != m_Categories.end())
 		{
 			CCategoriesTable::tDATA& cData = cIt->second;
-			m_listSelected->Insert(cData.shortName, nPos, (void*)&it->first);
+			wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+				, cData.shortName
+				, cData.name);
+			m_listSelected->Insert(catName, nPos, (void*)&it->first);
 		}
-		
+
 		it++;
 	}
 }

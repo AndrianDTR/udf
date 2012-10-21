@@ -21,10 +21,10 @@ public:
 
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
-	
+
 protected:
 	CDbConnection* m_pConnection;
-	
+
 public:
     CChampionshipTeamsTable(CDbConnection* pCon);
     virtual ~CChampionshipTeamsTable(void);
@@ -39,7 +39,6 @@ public:
     virtual long			DelRow(unsigned int nId);
     virtual long			GetRow(unsigned int nId, tDATA& data);
 	virtual long			UpdateRow(unsigned int nId, const tDATA& data);
-	virtual long 			GetTeamsCountForChampionship(unsigned int nId, int& count);
 
 	virtual std::string 	GetTableName();
 };

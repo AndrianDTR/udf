@@ -1,12 +1,7 @@
 #ifndef __tDancetypes_h__
 #define __tDancetypes_h__
 
-#include "dbconnection.h"
-#include "dbtable.h"
-
-#include "map"
-
-using namespace std;
+#include "db.h"
 
 class CDanceTypesTable : public CDbTable
 {
@@ -17,12 +12,12 @@ public:
 		std::string		name;
 	} tDATA;
 
-	typedef map<unsigned int, tDATA> tTableMap;
-	typedef map<unsigned int, tDATA>::iterator tTableIt;
-	
+	typedef std::map<unsigned int, tDATA> tTableMap;
+	typedef std::map<unsigned int, tDATA>::iterator tTableIt;
+
 protected:
 	CDbConnection* m_pConnection;
-	
+
 public:
     CDanceTypesTable(CDbConnection* pCon);
     virtual ~CDanceTypesTable(void);

@@ -1,8 +1,5 @@
-#include "string"
-
-#include "common.h"
-#include "dberrors.h"
 #include "dbconnection.h"
+#include "db.h"
 
 #include "cppconn/driver.h"
 #include "cppconn/statement.h"
@@ -27,20 +24,20 @@ CDbConnection::~CDbConnection(void)
 long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPass, std::string szSchema)
 {
 	long res = UDF_E_FAIL;
-	
+
 	do
 	{
 		sql::Driver* 		pDriver = NULL;
 		sql::Connection* 	pCon = NULL;
-		sql::Statement*		pStmt = NULL;	
-		
+		sql::Statement*		pStmt = NULL;
+
 		pDriver = get_driver_instance();
 		if(!pDriver)
 		{
 			res = UDF_E_INIT_DRIVER;
 			break;
 		}
-		
+
 		pCon = pDriver->connect(szUrl, szUser, szPass);
 		if(!pCon)
 		{
@@ -49,19 +46,19 @@ long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPa
 		}
 
 		pCon->setSchema(szSchema);
-		
+
 		pStmt = pCon->createStatement();
 		if(!pStmt)
 		{
 			res = UDF_E_CREATE_STATEMENT;
 			break;
 		}
-				
+
 		m_pConnection = pCon;
 		m_pStatement = pStmt;
 		res = UDF_OK;
 	}while(0);
-	
+
 	return res;
 }
 
@@ -73,7 +70,7 @@ void CDbConnection::Close()
 		delete m_pStatement;
 		m_pStatement = NULL;
 	}
-	
+
 	if(m_pConnection)
 	{
 		delete m_pConnection;
@@ -84,7 +81,7 @@ void CDbConnection::Close()
 sql::ResultSet* CDbConnection::ExecuteQuery(std::string query)
 {
 	sql::ResultSet* res = NULL;
-	
+
 	try
 	{
 		if(m_pStatement)
@@ -113,7 +110,7 @@ long CDbConnection::Execute(std::string query)
 		if(m_pStatement)
 		{
 			DEBUG_PRINTF("EXECUTE: %s \n", query.c_str());
-			m_pStatement->execute(query);	
+			m_pStatement->execute(query);
 		}
 		res = UDF_OK;
 	}
@@ -146,7 +143,7 @@ unsigned long long CDbConnection::GetLastInsertId()
 			DEBUG_PRINTF("Get last insert id: %ld", res);
 		}
 	}while(0);
-	
+
 	return res;
 }
 

@@ -1,9 +1,8 @@
 #ifndef __dbtable_h__
 #define __dbtable_h__
 
-#include "dbutils.h"
-#include "dberrors.h"
 #include "dbconnection.h"
+#include "dberrors.h"
 
 #define TABLE_AGECATEGORY						"age_category"
 #define TABLE_AGECODE							"age_code"
@@ -52,28 +51,29 @@ using namespace std;
 class CDbTable
 {
 public:
-typedef enum{
-	ST_NONE = 0,
-	ST_ASCENDING,
-	ST_DESCENDING
-} tSORT_TYPE;
+	typedef enum{
+		ST_NONE = 0,
+		ST_ASCENDING,
+		ST_DESCENDING
+	} tSORT_TYPE;
 
-typedef struct{
-	std::string		szName;
-	tSORT_TYPE		sort;
-} tORDER;
-	
-typedef std::list<tORDER> tOrder;
-typedef std::list<tORDER>::iterator tOrderIt;
+	typedef struct{
+		std::string		szName;
+		tSORT_TYPE		sort;
+	} tORDER;
 
-typedef struct{
-} tDATA;
+	typedef std::list<tORDER> tOrder;
+	typedef std::list<tORDER>::iterator tOrderIt;
 
-typedef map<unsigned int, tDATA> tTableMap;
-typedef map<unsigned int, tDATA>::iterator tTableIt;
+	typedef struct{
+	} tDATA;
+
+	typedef map<unsigned int, tDATA> tTableMap;
+	typedef map<unsigned int, tDATA>::iterator tTableIt;
 
 protected:
 	tOrder					m_OrderMap;
+
 public:
     CDbTable(CDbConnection* pCon){};
     virtual ~CDbTable(void){};
@@ -83,14 +83,14 @@ protected:
 	virtual std::string		GetFieldList();
 	virtual std::string		GetFilterString(const tDATA& filter) { return "";};
 	virtual std::string		GetQuery(const char* table, const std::string& filter = "");
-	
+
 public:
 	virtual long			CreateTable(){ return UDF_OK;};
 	virtual long			DropTable(){ return UDF_OK;};
 	virtual std::string		GetTableName(){ return "";};
-	
+
 	virtual long			Reload(){ return UDF_OK;};
-	
+
 	virtual void			AddOrder(std::string szName, tSORT_TYPE sort = ST_NONE);
 	virtual void			SetOrderMap(const tOrder& orderMap){m_OrderMap = orderMap;};
 	virtual tOrder&			GetOrderMap(){return m_OrderMap;};

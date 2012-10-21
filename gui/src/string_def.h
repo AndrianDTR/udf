@@ -6,7 +6,7 @@
 
 /****************************************************
  * String definitions
- ****************************************************/ 
+ ****************************************************/
 
 //MACRO constant declaration
 #define STR_DEFINITION(x,y)		const wxString x = _( y )
@@ -149,7 +149,7 @@ STR_DEFINITION(STR_LIGUES_CODE_LIST, "Age categories list");
 
 /**********************************************************************************/
 
-STR_DEFINITION(STR_FORMAT_CATEGORY_LIST_ITEM, "%s, (%s)");
+STR_DEFINITION(STR_FORMAT_CATEGORY_LIST_ITEM, "%s - %s");
 
 
 

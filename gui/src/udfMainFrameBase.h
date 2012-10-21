@@ -56,17 +56,17 @@ protected:
 	void OnDiscard( wxCommandEvent& event );
 	void OnAboutDlg( wxCommandEvent& event );
 	void OnDancersTeams( wxCommandEvent& event );
-	
+
 	void OnDanceTypesCodeMgr( wxCommandEvent& event );
 	void OnLigueCodeMgr( wxCommandEvent& event );
 	void OnAgeCodesMgr( wxCommandEvent& event );
-	
+
 	void OnCountriesMngr( wxCommandEvent& event );
 	void OnCitiesMngr( wxCommandEvent& event );
-	
+
 	void OnSearch( wxCommandEvent& event );
 	void OnCsSelect(wxTreeEvent& event);
-	
+
 	void OnAddTour( wxCommandEvent& event );
 	void OnRemoveTour( wxCommandEvent& event );
 	void OnCsTourReport( wxCommandEvent& event );
@@ -80,36 +80,37 @@ private:
 	CChampionshipTable::tTableMap		m_Championships;
 	CCountriesTable::tTableMap			m_Countries;
 	CCitiesTable::tTableMap				m_Cities;
-	CChampionshipTypeTable::tTableMap 	m_ChampionshipTypes; 
-	
+	CChampionshipTypeTable::tTableMap 	m_ChampionshipTypes;
+
 	wxTreeItemId						m_root;
-	
+
 protected:
 	void			RefreshList();
 	void			RefreshCs(unsigned int id, wxTreeItemId parent);
+	void			RefreshCsBlock(unsigned int id, wxTreeItemId parent);
 	void			RefreshCategory(unsigned int id, wxTreeItemId parent);
-	
+
 	void			RefreshCities();
 	void			RefreshCountries();
 	void			RefreshTypes();
 	int				GetSelectedCity();
 	int				GetSelectedType();
-	
+
 	bool			ValidateValues();
-	
+
 	wxDateTime		GetChDateById(unsigned int nId);
-	
+
 	wxTreeItemId	GetItemByType(eITEM_TYPE type);
 	wxTreeItemId	GetSelectedCs();
 	wxTreeItemId	GetSelectedCsTour();
 	wxTreeItemId	GetSelectedCsCategory();
-	
+
 	bool			IsFinalTourAdded();
 
 public:
 	/** Constructor */
 	udfMainFrameBase( wxWindow* parent );
-	
+
 public:
 	int ShowDanceTypesMngrDlg();
 	int ShowLiguesMngrDlg();
