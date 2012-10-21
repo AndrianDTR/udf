@@ -1,9 +1,9 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
+-- Server version:               5.1.63-0ubuntu0.10.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-19 00:21:19
+-- Date/time:                    2012-10-21 14:57:57
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -66,6 +66,53 @@ CREATE TABLE IF NOT EXISTS `championship` (
   KEY `FK_championship_championship_type` (`type`),
   CONSTRAINT `FK_championship_championship_type` FOREIGN KEY (`type`) REFERENCES `championship_type` (`id`),
   CONSTRAINT `FK_championship_cities` FOREIGN KEY (`city`) REFERENCES `cities` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table udf.championship_blocks
+DROP TABLE IF EXISTS `championship_blocks`;
+CREATE TABLE IF NOT EXISTS `championship_blocks` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `championship_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `order` int(10) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_championship_id_id` (`championship_id`),
+  CONSTRAINT `FK_championship_id_id` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table udf.championship_block_categories
+DROP TABLE IF EXISTS `championship_block_categories`;
+CREATE TABLE IF NOT EXISTS `championship_block_categories` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `block_id` bigint(20) unsigned DEFAULT '0',
+  `cs_cat_id` bigint(20) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `FK_championship_categories_categoriesid` (`cs_cat_id`),
+  KEY `FK_championship_blocks_blockid` (`block_id`),
+  CONSTRAINT `FK_championship_categories_categoriesid` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
+  CONSTRAINT `FK_championship_blocks_blockid` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table udf.championship_block_judges
+DROP TABLE IF EXISTS `championship_block_judges`;
+CREATE TABLE IF NOT EXISTS `championship_block_judges` (
+  `id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `block_id` bigint(20) unsigned DEFAULT NULL,
+  `cs_judge_id` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_championship_judges_judges` (`cs_judge_id`),
+  KEY `FK_championship_blocks_block` (`block_id`),
+  CONSTRAINT `FK_championship_judges_judges` FOREIGN KEY (`cs_judge_id`) REFERENCES `championship_judges_team` (`id`),
+  CONSTRAINT `FK_championship_blocks_block` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
@@ -189,8 +236,8 @@ CREATE TABLE IF NOT EXISTS `championship_tours` (
   PRIMARY KEY (`id`),
   KEY `FK_championship_tours_championship_categories` (`cs_cat_id`),
   KEY `FK_championship_tours_tour_types` (`tour_id`),
-  CONSTRAINT `FK_championship_tours_tour_types` FOREIGN KEY (`tour_id`) REFERENCES `tour_types` (`id`),
-  CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`)
+  CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
+  CONSTRAINT `FK_championship_tours_tour_types` FOREIGN KEY (`tour_id`) REFERENCES `tour_types` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
@@ -406,6 +453,33 @@ CREATE TABLE IF NOT EXISTS `treners` (
   KEY `FK_treners_clubs` (`club_id`),
   CONSTRAINT `FK_treners_clubs` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table udf.users
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `cs_id` bigint(20) unsigned DEFAULT '0',
+  `role_id` bigint(20) unsigned DEFAULT '0',
+  `name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `login` varchar(30) CHARACTER SET latin1 DEFAULT NULL,
+  `pass` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_userroles_id_role` (`role_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table udf.user_roles
+DROP TABLE IF EXISTS `user_roles`;
+CREATE TABLE IF NOT EXISTS `user_roles` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 /*!40014 SET FOREIGN_KEY_CHECKS=1 */;

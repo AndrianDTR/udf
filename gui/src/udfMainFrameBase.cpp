@@ -854,20 +854,19 @@ void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
 		if(wxID_OK != dlg.ShowModal())
 			break;
 
-
 		CChampionshipToursTable::tDATA data = {0};
 
 		data.id = -(csItem->GetId() * m_treeCs->GetChildrenCount(itemCsId));
 		data.csCatId = csItem->GetId();
 		data.typeId = dlg.GetTypeId();
 		data.limit = dlg.GetLimit();
-
+/*
 		if(UDF_OK != CChampionshipToursTable(m_pCon).AddRow(data))
 		{
 			ShowWarning(STR_ERR_ADD_CHAMPIONSHIP_TOUR_FAILED);
 			break;
 		}
-
+//*/
 		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, GetTourTypeNameById(data.typeId), data.limit);
 		m_treeCs->AppendItem(itemCsId, tourName, -1, -1, new udfTreeItemData(data.id, IT_TOUR));
 	}while(0);
