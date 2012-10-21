@@ -3,7 +3,7 @@
 -- Server version:               5.1.63-0ubuntu0.10.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-21 14:57:57
+-- Date/time:                    2012-10-21 22:06:58
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -95,8 +95,8 @@ CREATE TABLE IF NOT EXISTS `championship_block_categories` (
   PRIMARY KEY (`id`),
   KEY `FK_championship_categories_categoriesid` (`cs_cat_id`),
   KEY `FK_championship_blocks_blockid` (`block_id`),
-  CONSTRAINT `FK_championship_categories_categoriesid` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
-  CONSTRAINT `FK_championship_blocks_blockid` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`)
+  CONSTRAINT `FK_championship_blocks_blockid` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`),
+  CONSTRAINT `FK_championship_categories_categoriesid` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
@@ -111,8 +111,8 @@ CREATE TABLE IF NOT EXISTS `championship_block_judges` (
   PRIMARY KEY (`id`),
   KEY `FK_championship_judges_judges` (`cs_judge_id`),
   KEY `FK_championship_blocks_block` (`block_id`),
-  CONSTRAINT `FK_championship_judges_judges` FOREIGN KEY (`cs_judge_id`) REFERENCES `championship_judges_team` (`id`),
-  CONSTRAINT `FK_championship_blocks_block` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`)
+  CONSTRAINT `FK_championship_blocks_block` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`),
+  CONSTRAINT `FK_championship_judges_judges` FOREIGN KEY (`cs_judge_id`) REFERENCES `championship_judges_team` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
@@ -230,14 +230,14 @@ DROP TABLE IF EXISTS `championship_tours`;
 CREATE TABLE IF NOT EXISTS `championship_tours` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `cs_cat_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `tour_id` bigint(20) unsigned NOT NULL,
+  `type_id` bigint(20) unsigned NOT NULL,
   `limit` int(10) unsigned NOT NULL,
   `final` enum('Y','N') NOT NULL DEFAULT 'N',
   PRIMARY KEY (`id`),
   KEY `FK_championship_tours_championship_categories` (`cs_cat_id`),
-  KEY `FK_championship_tours_tour_types` (`tour_id`),
+  KEY `FK_championship_tours_tour_types` (`type_id`),
   CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
-  CONSTRAINT `FK_championship_tours_tour_types` FOREIGN KEY (`tour_id`) REFERENCES `tour_types` (`id`)
+  CONSTRAINT `FK_championship_tours_type_types` FOREIGN KEY (`type_id`) REFERENCES `tour_types` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
