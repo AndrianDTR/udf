@@ -1,9 +1,9 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               5.1.63-0ubuntu0.10.04.1 - (Ubuntu)
+-- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-21 22:06:51
+-- Date/time:                    2012-10-22 00:30:14
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -290,6 +290,7 @@ CREATE TABLE IF NOT EXISTS `championship_team_categories` (
   `team_id` bigint(20) unsigned NOT NULL,
   `category_id` bigint(20) unsigned NOT NULL,
   `composition_name` varchar(150) DEFAULT NULL,
+  `lenght` time DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `team_id` (`team_id`),
   KEY `category_id` (`category_id`),
@@ -300,17 +301,17 @@ CREATE TABLE IF NOT EXISTS `championship_team_categories` (
 -- Dumping data for table udf.championship_team_categories: ~10 rows (approximately)
 DELETE FROM `championship_team_categories`;
 /*!40000 ALTER TABLE `championship_team_categories` DISABLE KEYS */;
-INSERT INTO `championship_team_categories` (`id`, `team_id`, `category_id`, `composition_name`) VALUES
-	(3, 5, 26, 'qqwe'),
-	(4, 5, 27, 'aaaa'),
-	(5, 9, 27, 'aaaa1'),
-	(6, 9, 36, '112qq'),
-	(7, 5, 36, 'AAA'),
-	(11, 2, 21, 'BB'),
-	(12, 14, 23, '1111'),
-	(13, 14, 36, '4444'),
-	(14, 14, 27, '3333'),
-	(15, 14, 26, '2222');
+INSERT INTO `championship_team_categories` (`id`, `team_id`, `category_id`, `composition_name`, `lenght`) VALUES
+	(3, 5, 26, 'qqwe', NULL),
+	(4, 5, 27, 'aaaa', NULL),
+	(5, 9, 27, 'aaaa1', NULL),
+	(6, 9, 36, '112qq', NULL),
+	(7, 5, 36, 'AAA', NULL),
+	(11, 2, 21, 'BB', NULL),
+	(12, 14, 23, '1111', NULL),
+	(13, 14, 36, '4444', NULL),
+	(14, 14, 27, '3333', NULL),
+	(15, 14, 26, '2222', NULL);
 /*!40000 ALTER TABLE `championship_team_categories` ENABLE KEYS */;
 
 
@@ -325,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `championship_team_dancers` (
   KEY `dancer_id` (`dancer_id`),
   CONSTRAINT `FK_championship_team_dancers_championship_team` FOREIGN KEY (`team_id`) REFERENCES `championship_team` (`id`),
   CONSTRAINT `FK_championship_team_dancers_dancers` FOREIGN KEY (`dancer_id`) REFERENCES `dancers` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table udf.championship_team_dancers: ~9 rows (approximately)
 DELETE FROM `championship_team_dancers`;
@@ -350,13 +351,13 @@ CREATE TABLE IF NOT EXISTS `championship_tours` (
   `cs_cat_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `type_id` bigint(20) unsigned NOT NULL,
   `limit` int(10) unsigned NOT NULL,
-  `final` enum('Y','N') NOT NULL DEFAULT 'N',
+  `final` enum('Y','N') CHARACTER SET latin1 NOT NULL DEFAULT 'N',
   PRIMARY KEY (`id`),
   KEY `FK_championship_tours_championship_categories` (`cs_cat_id`),
   KEY `FK_championship_tours_tour_types` (`type_id`),
   CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
   CONSTRAINT `FK_championship_tours_type_types` FOREIGN KEY (`type_id`) REFERENCES `tour_types` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table udf.championship_tours: ~4 rows (approximately)
 DELETE FROM `championship_tours`;
@@ -686,12 +687,12 @@ DROP TABLE IF EXISTS `payment_history`;
 CREATE TABLE IF NOT EXISTS `payment_history` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `person_id` bigint(20) unsigned NOT NULL,
-  `type` enum('D','C','T','J') NOT NULL,
+  `type` enum('D','C','T','J') CHARACTER SET latin1 NOT NULL,
   `pay_date` date NOT NULL,
   `exp_date` date NOT NULL,
   `sum` float DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table udf.payment_history: ~9 rows (approximately)
 DELETE FROM `payment_history`;
@@ -763,16 +764,19 @@ INSERT INTO `treners` (`id`, `club_id`, `name`, `bd`, `phone`, `contact_info`, `
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `cs_id` bigint(20) unsigned DEFAULT '0',
-  `role_id` bigint(20) unsigned DEFAULT '0',
-  `name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
-  `login` varchar(30) CHARACTER SET latin1 DEFAULT NULL,
-  `pass` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `cs_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `role_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(50) DEFAULT NULL,
+  `login` varchar(30) DEFAULT NULL,
+  `pass` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_userroles_id_role` (`role_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  KEY `FK_users_championship` (`cs_id`),
+  KEY `FK_users_user_roles` (`role_id`),
+  CONSTRAINT `FK_users_championship` FOREIGN KEY (`cs_id`) REFERENCES `championship` (`id`),
+  CONSTRAINT `FK_users_user_roles` FOREIGN KEY (`role_id`) REFERENCES `user_roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.users: 0 rows
+-- Dumping data for table udf.users: ~0 rows (approximately)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
@@ -782,11 +786,11 @@ DELETE FROM `users`;
 DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE IF NOT EXISTS `user_roles` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.user_roles: 0 rows
+-- Dumping data for table udf.user_roles: ~0 rows (approximately)
 DELETE FROM `user_roles`;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;

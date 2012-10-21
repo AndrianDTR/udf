@@ -1,9 +1,9 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               5.1.63-0ubuntu0.10.04.1 - (Ubuntu)
+-- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-21 22:06:58
+-- Date/time:                    2012-10-22 00:30:20
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -199,6 +199,7 @@ CREATE TABLE IF NOT EXISTS `championship_team_categories` (
   `team_id` bigint(20) unsigned NOT NULL,
   `category_id` bigint(20) unsigned NOT NULL,
   `composition_name` varchar(150) DEFAULT NULL,
+  `lenght` time DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `team_id` (`team_id`),
   KEY `category_id` (`category_id`),
@@ -220,7 +221,7 @@ CREATE TABLE IF NOT EXISTS `championship_team_dancers` (
   KEY `dancer_id` (`dancer_id`),
   CONSTRAINT `FK_championship_team_dancers_championship_team` FOREIGN KEY (`team_id`) REFERENCES `championship_team` (`id`),
   CONSTRAINT `FK_championship_team_dancers_dancers` FOREIGN KEY (`dancer_id`) REFERENCES `dancers` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 
@@ -232,13 +233,13 @@ CREATE TABLE IF NOT EXISTS `championship_tours` (
   `cs_cat_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `type_id` bigint(20) unsigned NOT NULL,
   `limit` int(10) unsigned NOT NULL,
-  `final` enum('Y','N') NOT NULL DEFAULT 'N',
+  `final` enum('Y','N') CHARACTER SET latin1 NOT NULL DEFAULT 'N',
   PRIMARY KEY (`id`),
   KEY `FK_championship_tours_championship_categories` (`cs_cat_id`),
   KEY `FK_championship_tours_tour_types` (`type_id`),
   CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
   CONSTRAINT `FK_championship_tours_type_types` FOREIGN KEY (`type_id`) REFERENCES `tour_types` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 
@@ -416,12 +417,12 @@ DROP TABLE IF EXISTS `payment_history`;
 CREATE TABLE IF NOT EXISTS `payment_history` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `person_id` bigint(20) unsigned NOT NULL,
-  `type` enum('D','C','T','J') NOT NULL,
+  `type` enum('D','C','T','J') CHARACTER SET latin1 NOT NULL,
   `pay_date` date NOT NULL,
   `exp_date` date NOT NULL,
   `sum` float DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 
@@ -461,14 +462,17 @@ CREATE TABLE IF NOT EXISTS `treners` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `cs_id` bigint(20) unsigned DEFAULT '0',
-  `role_id` bigint(20) unsigned DEFAULT '0',
-  `name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
-  `login` varchar(30) CHARACTER SET latin1 DEFAULT NULL,
-  `pass` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `cs_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `role_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(50) DEFAULT NULL,
+  `login` varchar(30) DEFAULT NULL,
+  `pass` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_userroles_id_role` (`role_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  KEY `FK_users_championship` (`cs_id`),
+  KEY `FK_users_user_roles` (`role_id`),
+  CONSTRAINT `FK_users_championship` FOREIGN KEY (`cs_id`) REFERENCES `championship` (`id`),
+  CONSTRAINT `FK_users_user_roles` FOREIGN KEY (`role_id`) REFERENCES `user_roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 
@@ -477,9 +481,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE IF NOT EXISTS `user_roles` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 /*!40014 SET FOREIGN_KEY_CHECKS=1 */;

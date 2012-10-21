@@ -8,6 +8,9 @@ void dbmgr_version();
 std::string date2str(time_t date);
 time_t str2date(std::string str);
 
+std::string time2str(time_t tTime);
+time_t str2time(std::string str);
+
 void SetGlobalDbConnection(CDbConnection* pCon);
 CDbConnection* GetGlobalDbConnection();
 

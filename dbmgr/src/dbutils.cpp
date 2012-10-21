@@ -43,6 +43,24 @@ time_t str2date(std::string str)
 	return res;
 }
 
+std::string time2str(time_t tTime)
+{
+	char buff[20];
+	strftime(buff, 20, "%T", localtime(&tTime));
+	return std::string(buff);
+}
+
+time_t str2time(std::string str)
+{
+	time_t res;
+	struct tm _time = {0};
+    strptime(str.c_str(), "%T", &_time);
+
+	res = mktime(&_time);
+
+	return res;
+}
+
 long GetTeamsCountForChampionship(unsigned int nId, int& count)
 {
 	long res = UDF_E_FAIL;

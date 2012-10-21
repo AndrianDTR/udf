@@ -29,14 +29,15 @@
 #include <wx/dialog.h>
 #include <wx/menu.h>
 #include <wx/treectrl.h>
+#include <wx/panel.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
-#include <wx/panel.h>
+#include <wx/notebook.h>
+#include <wx/splitter.h>
 #include <wx/frame.h>
 #include <wx/checkbox.h>
 #include <wx/listctrl.h>
 #include <wx/html/htmlwin.h>
-#include <wx/notebook.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -441,6 +442,191 @@ class MainFrameBase : public wxFrame
 		wxMenu* m_menu2;
 		wxMenu* m_menu5;
 		wxMenu* m_menu51;
+		wxSplitterWindow* m_splitter2;
+		wxPanel* m_panel1;
+		wxStaticText* m_championshipSearchText;
+		wxTextCtrl* m_textSearch;
+		wxTreeCtrl* m_treeCs;
+		wxPanel* m_panel12;
+		wxNotebook* m_notebook3;
+		wxPanel* m_panel16;
+		wxBitmapButton* m_bpAdd;
+		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
+		wxBitmapButton* m_bpCategoryMngr;
+		wxBitmapButton* m_bpJudgesMngr;
+		wxBitmapButton* m_bpSendinvitation;
+		wxBitmapButton* m_bpDancersTeams;
+		wxBitmapButton* m_bpStartNumberMngr;
+		wxBitmapButton* m_bpTourAdd;
+		wxBitmapButton* m_bpTourEdit;
+		wxBitmapButton* m_bpTourRemove;
+		wxBitmapButton* m_bpJudgesMark;
+		wxBitmapButton* m_bpTourReport;
+		wxStaticText* m_staticText4;
+		wxTextCtrl* m_textChName;
+		wxStaticText* m_staticText2;
+		wxComboBox* m_comboType;
+		wxStaticText* m_staticText5;
+		wxDatePickerCtrl* m_dateDate;
+		wxStaticText* m_staticText7;
+		wxComboBox* m_comboCity;
+		wxStaticText* m_staticText8;
+		wxTextCtrl* m_textAddress;
+		wxStaticText* m_staticText12;
+		wxDatePickerCtrl* m_dateRegOpen;
+		wxStaticText* m_staticText13;
+		wxDatePickerCtrl* m_dateRegClose;
+		wxStaticText* m_staticText14;
+		wxTextCtrl* m_textAdditionalInfo;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnCloseFrame( wxCloseEvent& event ) { event.Skip(); }
+		virtual void OnExitClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuClubManage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuJudgeManage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuCategoryManage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDanceTypesCodeMgr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLigueCodeMgr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAgeCodesMgr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuChampionshipTypes( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCitiesMngr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCountriesMngr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenySync( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuOptions( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditTour( wxTreeEvent& event ) { event.Skip(); }
+		virtual void OnCsSelect( wxTreeEvent& event ) { event.Skip(); }
+		virtual void OnAddChampionsip( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemoveChampionship( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCategoryMngr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnJudgeMngr( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSendInvitation( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDancersTeams( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnStartNumberAssign( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddTour( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTourEdit( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemoveTour( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnJudgesMark( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCsTourReport( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		MainFrameBase( wxWindow* parent, wxWindowID id = ID_MAINFRAME_FORM, const wxString& title = _("Championship calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 983,667 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxMAXIMIZE|wxTAB_TRAVERSAL );
+		~MainFrameBase();
+		
+		void m_splitter2OnIdle( wxIdleEvent& )
+		{
+			m_splitter2->SetSashPosition( 300 );
+			m_splitter2->Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrameBase::m_splitter2OnIdle ), NULL, this );
+		}
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class MainFrameBase1
+///////////////////////////////////////////////////////////////////////////////
+class MainFrameBase1 : public wxFrame 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnCloseFrame( wxCloseEvent& event ){ OnCloseFrame( event ); }
+		void _wxFB_OnExitClick( wxCommandEvent& event ){ OnExitClick( event ); }
+		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
+		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
+		void _wxFB_OnMenuCategoryManage( wxCommandEvent& event ){ OnMenuCategoryManage( event ); }
+		void _wxFB_OnDanceTypesCodeMgr( wxCommandEvent& event ){ OnDanceTypesCodeMgr( event ); }
+		void _wxFB_OnLigueCodeMgr( wxCommandEvent& event ){ OnLigueCodeMgr( event ); }
+		void _wxFB_OnAgeCodesMgr( wxCommandEvent& event ){ OnAgeCodesMgr( event ); }
+		void _wxFB_OnMenuChampionshipTypes( wxCommandEvent& event ){ OnMenuChampionshipTypes( event ); }
+		void _wxFB_OnCitiesMngr( wxCommandEvent& event ){ OnCitiesMngr( event ); }
+		void _wxFB_OnCountriesMngr( wxCommandEvent& event ){ OnCountriesMngr( event ); }
+		void _wxFB_OnMenySync( wxCommandEvent& event ){ OnMenySync( event ); }
+		void _wxFB_OnMenuOptions( wxCommandEvent& event ){ OnMenuOptions( event ); }
+		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
+		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnEditTour( wxTreeEvent& event ){ OnEditTour( event ); }
+		void _wxFB_OnCsSelect( wxTreeEvent& event ){ OnCsSelect( event ); }
+		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
+		void _wxFB_OnRemoveChampionship( wxCommandEvent& event ){ OnRemoveChampionship( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		void _wxFB_OnCategoryMngr( wxCommandEvent& event ){ OnCategoryMngr( event ); }
+		void _wxFB_OnJudgeMngr( wxCommandEvent& event ){ OnJudgeMngr( event ); }
+		void _wxFB_OnSendInvitation( wxCommandEvent& event ){ OnSendInvitation( event ); }
+		void _wxFB_OnDancersTeams( wxCommandEvent& event ){ OnDancersTeams( event ); }
+		void _wxFB_OnStartNumberAssign( wxCommandEvent& event ){ OnStartNumberAssign( event ); }
+		void _wxFB_OnAddTour( wxCommandEvent& event ){ OnAddTour( event ); }
+		void _wxFB_OnTourEdit( wxCommandEvent& event ){ OnTourEdit( event ); }
+		void _wxFB_OnRemoveTour( wxCommandEvent& event ){ OnRemoveTour( event ); }
+		void _wxFB_OnJudgesMark( wxCommandEvent& event ){ OnJudgesMark( event ); }
+		void _wxFB_OnCsTourReport( wxCommandEvent& event ){ OnCsTourReport( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_MAINFRAME_FORM = 1000,
+			ID_CS_ADD,
+			ID_CS_REMOVE,
+			ID_CS_UPDATE,
+			ID_CS_CATEGORIES,
+			ID_CS_STARTNUMB,
+			ID_CS_JUDGESTEAM,
+			ID_CS_INVITATIONS,
+			ID_CS_RESULTS,
+			ID_CS_RAITING,
+			ID_MENU_MNGR_CLUBS,
+			ID_MENU_MNGR_JUDGE,
+			ID_MENU_MNGR_CATEGORIES,
+			ID_MENU_MNGR_DANCE_TYPES,
+			ID_MENU_MNGR_LIGUES,
+			ID_MENU_MNGR_AGE_CATEGORIES,
+			ID_MENU_MNGR_ChTYPES_MNGR,
+			ID_MENU_MNGR_CITIES,
+			ID_MENU_MNGR_COUNTRIES,
+			ID_MENU_TOOLS_SYUNC,
+			ID_MENU_TOOLS_OPTIONS,
+			ID_ABOUT,
+			ID_SEARCH,
+			ID_CS_TREE,
+			wxID_CHAMPIONSIP_ADD,
+			wxID_CHAMPIONSIP_REMOVE,
+			wxID_CHAMPIONSHIP_SAVE,
+			wxID_CHAMPIONSHIP_DISCARD,
+			wxID_CHAMPIONSHIP_CATEGORIES,
+			wxID_CHAMPIONSHIP_JUDGESTEAMMNGR,
+			wxID_CHAMPIONSHIP_SENDINVITATION,
+			ID_TEAMS,
+			wxID_CHAMPIONSHIP_STARTNUMBERMNGR,
+			ID_TOUR_ADD,
+			ID_TOUR_EDIT,
+			ID_TOUR_REMOVE,
+			ID_TOUR_JUIDGES_MARKS,
+			ID_TOUR_REPORT,
+			ID_NAME,
+			ID_TYPE,
+			ID_DATE,
+			ID_CITY,
+			ID_ADDRESS,
+			ID_REG_OPEN,
+			ID_REG_CLOSE,
+			ID_INFO,
+		};
+		
+		wxMenuBar* m_menuBar;
+		wxMenu* m_menuFile;
+		wxMenu* m_menu8;
+		wxMenu* m_menu2;
+		wxMenu* m_menu5;
+		wxMenu* m_menu51;
 		wxPanel* m_panel1;
 		wxStaticText* m_championshipSearchText;
 		wxTextCtrl* m_textSearch;
@@ -512,8 +698,8 @@ class MainFrameBase : public wxFrame
 	
 	public:
 		
-		MainFrameBase( wxWindow* parent, wxWindowID id = ID_MAINFRAME_FORM, const wxString& title = _("Championship calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 983,667 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxMAXIMIZE|wxTAB_TRAVERSAL );
-		~MainFrameBase();
+		MainFrameBase1( wxWindow* parent, wxWindowID id = ID_MAINFRAME_FORM, const wxString& title = _("Championship calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 983,667 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxMAXIMIZE|wxTAB_TRAVERSAL );
+		~MainFrameBase1();
 	
 };
 
@@ -886,12 +1072,15 @@ class AddTeamCategory : public wxDialog
 		{
 			ID_CATEGORY = 1000,
 			ID_PASS,
+			ID_LENGHT,
 		};
 		
 		wxStaticText* m_staticText56;
 		wxStaticText* m_staticCategory;
 		wxStaticText* m_staticText57;
 		wxTextCtrl* m_textComposition;
+		wxStaticText* m_staticText102;
+		wxTextCtrl* m_textLenght;
 		wxBitmapButton* m_bpButton39;
 		wxBitmapButton* m_bpButton40;
 		
@@ -902,7 +1091,7 @@ class AddTeamCategory : public wxDialog
 	
 	public:
 		
-		AddTeamCategory( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Add team categort"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 384,163 ), long style = wxCAPTION|wxCLOSE_BOX|wxSTAY_ON_TOP );
+		AddTeamCategory( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Add team categort"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 529,189 ), long style = wxCAPTION|wxCLOSE_BOX|wxSTAY_ON_TOP );
 		~AddTeamCategory();
 	
 };
