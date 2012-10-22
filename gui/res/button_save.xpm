@@ -1,5 +1,5 @@
 /* XPM */
-static char *save_xpm[] = {
+static char *button_save_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "32 32 160 2 ",
 "   c #003E6A",
