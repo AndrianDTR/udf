@@ -1,34 +1,53 @@
-#include "tcities.h"
+#include "tcsblocksjudges.h"
 
-#define	TABLE	TABLE_CITIES
+#define	TABLE	TABLE_CHAMPIONSHIPBLOCKJUDGES
 
-CCitiesTable::CCitiesTable(CDbConnection* pCon)
+CCsBlockJudgesTable::CCsBlockJudgesTable(CDbConnection* pCon)
 : CDbTable(pCon)
-, m_pConnection(pCon)
 {
 }
 
-CCitiesTable::~CCitiesTable(void)
+CCsBlockJudgesTable::~CCsBlockJudgesTable(void)
 {
 }
 
-long CCitiesTable::GetTable(tTableMap& data)
+long CCsBlockJudgesTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 
 	return Find(data, filter);
 }
 
-long CCitiesTable::Find(tTableMap& data, const tDATA& filter)
+std::string CCsBlockJudgesTable::GetFilterString(const tDATA& filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+
+	if (0 != filter.blockId)
+	{
+		sprintf(tmp, "%sand `block_id` like %d ", query, filter.blockId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter.csJudgeId)
+	{
+		sprintf(tmp, "%sand `cs_judge_id` like %d ", query, filter.csJudgeId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	return string(query);
+}
+
+
+long CCsBlockJudgesTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 
 		if(! m_pConnection)
 		{
@@ -36,31 +55,9 @@ long CCitiesTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 
-		if (0 != filter.countryId)
-		{
-			sprintf(tmp, "%sand `country_id` like %d ", query, filter.countryId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.Name.empty())
-		{
-			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.Name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
@@ -73,9 +70,9 @@ long CCitiesTable::Find(tTableMap& data, const tDATA& filter)
 		{
 			tDATA el = {0};
 
-			el.id = qRes->getUInt(1);
-			el.countryId = qRes->getUInt(2);
-			el.Name = qRes->getString(3);
+			el.id = qRes->getUInt("id");
+			el.blockId = qRes->getUInt("block_id");
+			el.csJudgeId = qRes->getUInt("cs_judge_id");
 
 			data.insert(make_pair(el.id, el));
 		}
@@ -86,7 +83,7 @@ long CCitiesTable::Find(tTableMap& data, const tDATA& filter)
 	return res;
 }
 
-long CCitiesTable::AddRow(tDATA& rec)
+long CCsBlockJudgesTable::AddRow(tDATA& rec)
 {
 	long res = UDF_E_FAIL;
 
@@ -101,10 +98,11 @@ long CCitiesTable::AddRow(tDATA& rec)
 			break;
 		}
 
-		sprintf(query, "insert into %s(`country_id`,`name`) values(%d, '%s')"
+		sprintf(query, "insert into %s(`block_id`,`cs_judge_id`) values(%d, %d)"
 			, TABLE
-			, rec.countryId
-			, rec.Name.c_str());
+			, rec.blockId
+			, rec.csJudgeId
+			);
 		res = m_pConnection->Execute(query);
 
 		rec.id = m_pConnection->GetLastInsertId();
@@ -113,7 +111,7 @@ long CCitiesTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CCitiesTable::DelRow(unsigned int nId)
+long CCsBlockJudgesTable::DelRow(unsigned int nId)
 {
 	long res = UDF_E_FAIL;
 
@@ -133,7 +131,7 @@ long CCitiesTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CCitiesTable::GetRow(unsigned int nId, tDATA& data)
+long CCsBlockJudgesTable::GetRow(unsigned int nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 
@@ -156,9 +154,9 @@ long CCitiesTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getUInt(1);
-		data.countryId = qRes->getUInt(2);
-		data.Name = qRes->getString(3);
+		data.id = qRes->getUInt("id");
+		data.blockId = qRes->getUInt("block_id");
+		data.csJudgeId = qRes->getUInt("cs_judge_id");
 
 		res = UDF_OK;
 	}while(0);
@@ -166,7 +164,7 @@ long CCitiesTable::GetRow(unsigned int nId, tDATA& data)
 	return res;
 }
 
-long CCitiesTable::UpdateRow(unsigned int nId, const tDATA& data)
+long CCsBlockJudgesTable::UpdateRow(unsigned int nId, const tDATA& data)
 {
 	long res = UDF_E_FAIL;
 
@@ -182,16 +180,16 @@ long CCitiesTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 
-		if (0 != data.countryId)
+		if (0 != data.blockId)
 		{
-			sprintf(tmp, "%s `country_id` = %d,", query, data.countryId);
+			sprintf(tmp, "%s `block_id` = %d,", query, data.blockId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 
-		if (!data.Name.empty())
+		if (0 != data.blockId)
 		{
-			sprintf(tmp, "%s `name` = '%s',", query, data.Name.c_str());
+			sprintf(tmp, "%s `cs_judge_id` = %d,", query, data.csJudgeId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

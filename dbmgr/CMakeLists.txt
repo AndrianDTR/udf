@@ -41,7 +41,12 @@ set( HEADER_FILES
 	src/tliga.h
 	src/ttreiners.h
 	src/ttourtypes.h
+	src/tuserroles.h
 	src/tpaymenthistory.h
+	src/tcsblockscategories.h
+	src/tcsblocks.h
+	src/tcsblocksjudges.h
+	src/tstaff.h
 )
 
 set( SOURCE_FILES 
@@ -73,7 +78,12 @@ set( SOURCE_FILES
 	src/tliga.cpp
 	src/ttreiners.cpp
 	src/ttourtypes.cpp
+	src/tuserroles.cpp
 	src/tpaymenthistory.cpp
+	src/tcsblockscategories.cpp
+	src/tcsblocks.cpp
+	src/tcsblocksjudges.cpp
+	src/tstaff.cpp
 )
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined

@@ -25,6 +25,11 @@
 #include "tchampionshipcategories.h"
 #include "tchampionshiptour.h"
 #include "tchampionshipteam.h"
+#include "tuserroles.h"
+#include "tcsblockscategories.h"
+#include "tcsblocks.h"
+#include "tcsblocksjudges.h"
+#include "tstaff.h"
 
 using namespace std;
 

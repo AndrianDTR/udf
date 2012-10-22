@@ -1,28 +1,26 @@
-#ifndef __tTourTypes_h__
-#define __tTourTypes_h__
+#ifndef __tUserRoles_h__
+#define __tUserRoles_h__
 
-#include "dbconnection.h"
-#include "dbtable.h"
+#include "db.h"
 
-class CTourTypesTable : public CDbTable
+class CUserRolesTable : public CDbTable
 {
 public:
 	typedef struct{
 		unsigned int	id;
 		std::string		name;
-		unsigned int	min;
-		unsigned int	max;
+		std::string		url;
 	} tDATA;
 
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
-	
+
 protected:
 	CDbConnection* m_pConnection;
-	
+
 public:
-    CTourTypesTable(CDbConnection* pCon);
-    virtual ~CTourTypesTable(void);
+    CUserRolesTable(CDbConnection* pCon);
+    virtual ~CUserRolesTable(void);
 
 public:
     virtual long		GetTable(tTableMap& data);
@@ -36,4 +34,4 @@ protected:
 	std::string 		GetFilterString(const tDATA& filter);
 };
 
-#endif //__tTourTypes_h__
+#endif //__tUserRoles_h__

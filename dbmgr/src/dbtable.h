@@ -29,6 +29,11 @@
 #define TABLE_TRAINERS							"treners"
 #define TABLE_PAYMENTHISTORY					"payment_history"
 #define TABLE_TOURTYPES							"tour_types"
+#define TABLE_USERROLES							"user_roles"
+#define TABLE_STAFF								"staff"
+#define TABLE_CHAMPIONSHIPBLOCKS				"championship_blocks"
+#define TABLE_CHAMPIONSHIPBLOCKCATEGORIES		"championship_block_categories"
+#define TABLE_CHAMPIONSHIPBLOCKJUDGES			"championship_block_judges"
 
 #define MAX_QUERY_LEN							1500
 
@@ -73,9 +78,10 @@ public:
 
 protected:
 	tOrder					m_OrderMap;
+	CDbConnection*	 		m_pConnection;
 
 public:
-    CDbTable(CDbConnection* pCon){};
+    CDbTable(CDbConnection* pCon):m_pConnection(pCon){};
     virtual ~CDbTable(void){};
 
 protected:
