@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="udf" />
+		<Option makefile_is_custom="1" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="build/bin/gui" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/bin/" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+				<MakeCommands>
+					<Build command="cd build; $make -j4" />
+					<CompileFile command="$make -f $makefile $file" />
+					<Clean command="$make -f $makefile clean$target" />
+					<DistClean command="$make -f $makefile distclean$target" />
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="common/CMakeLists.txt" />
+		<Unit filename="common/src/common.h" />
+		<Unit filename="common/src/connection_data.h" />
+		<Unit filename="common/src/version.h" />
+		<Unit filename="dbmgr/CMakeLists.txt" />
+		<Unit filename="dbmgr/src/db.h" />
+		<Unit filename="dbmgr/src/dbconnection.cpp" />
+		<Unit filename="dbmgr/src/dbconnection.h" />
+		<Unit filename="dbmgr/src/dberrors.cpp" />
+		<Unit filename="dbmgr/src/dberrors.h" />
+		<Unit filename="dbmgr/src/dbtable.cpp" />
+		<Unit filename="dbmgr/src/dbtable.h" />
+		<Unit filename="dbmgr/src/dbutils.cpp" />
+		<Unit filename="dbmgr/src/dbutils.h" />
+		<Unit filename="dbmgr/src/tagecategory.cpp" />
+		<Unit filename="dbmgr/src/tagecategory.h" />
+		<Unit filename="dbmgr/src/tcategories.cpp" />
+		<Unit filename="dbmgr/src/tcategories.h" />
+		<Unit filename="dbmgr/src/tchampionship.cpp" />
+		<Unit filename="dbmgr/src/tchampionship.h" />
+		<Unit filename="dbmgr/src/tchampionshipcategories.cpp" />
+		<Unit filename="dbmgr/src/tchampionshipcategories.h" />
+		<Unit filename="dbmgr/src/tchampionshipjudgesmark.cpp" />
+		<Unit filename="dbmgr/src/tchampionshipjudgesmark.h" />
+		<Unit filename="dbmgr/src/tchampionshipjudgesteam.cpp" />
+		<Unit filename="dbmgr/src/tchampionshipjudgesteam.h" />
+		<Unit filename="dbmgr/src/tchampionshipteam.cpp" />
+		<Unit filename="dbmgr/src/tchampionshipteam.h" />
+		<Unit filename="dbmgr/src/tchampionshipteamcategories.cpp" />
+		<Unit filename="dbmgr/src/tchampionshipteamcategories.h" />
+		<Unit filename="dbmgr/src/tchampionshipteamdancers.cpp" />
+		<Unit filename="dbmgr/src/tchampionshipteamdancers.h" />
+		<Unit filename="dbmgr/src/tchampionshiptour.cpp" />
+		<Unit filename="dbmgr/src/tchampionshiptour.h" />
+		<Unit filename="dbmgr/src/tchampionshiptype.cpp" />
+		<Unit filename="dbmgr/src/tchampionshiptype.h" />
+		<Unit filename="dbmgr/src/tcities.cpp" />
+		<Unit filename="dbmgr/src/tcities.h" />
+		<Unit filename="dbmgr/src/tclubs.cpp" />
+		<Unit filename="dbmgr/src/tclubs.h" />
+		<Unit filename="dbmgr/src/tcountries.cpp" />
+		<Unit filename="dbmgr/src/tcountries.h" />
+		<Unit filename="dbmgr/src/tdancers.cpp" />
+		<Unit filename="dbmgr/src/tdancers.h" />
+		<Unit filename="dbmgr/src/tdancetypes.cpp" />
+		<Unit filename="dbmgr/src/tdancetypes.h" />
+		<Unit filename="dbmgr/src/tgender.cpp" />
+		<Unit filename="dbmgr/src/tgender.h" />
+		<Unit filename="dbmgr/src/tjudges.cpp" />
+		<Unit filename="dbmgr/src/tjudges.h" />
+		<Unit filename="dbmgr/src/tjudgescategorieshave.cpp" />
+		<Unit filename="dbmgr/src/tjudgescategorieshave.h" />
+		<Unit filename="dbmgr/src/tjudgescategoriesname.cpp" />
+		<Unit filename="dbmgr/src/tjudgescategoriesname.h" />
+		<Unit filename="dbmgr/src/tliga.cpp" />
+		<Unit filename="dbmgr/src/tliga.h" />
+		<Unit filename="dbmgr/src/tpaymenthistory.cpp" />
+		<Unit filename="dbmgr/src/tpaymenthistory.h" />
+		<Unit filename="dbmgr/src/ttourtypes.cpp" />
+		<Unit filename="dbmgr/src/ttourtypes.h" />
+		<Unit filename="dbmgr/src/ttreiners.cpp" />
+		<Unit filename="dbmgr/src/ttreiners.h" />
+		<Unit filename="gui/CMakeLists.txt" />
+		<Unit filename="gui/res/button_account.xpm" />
+		<Unit filename="gui/res/button_add.xpm" />
+		<Unit filename="gui/res/button_assign.xpm" />
+		<Unit filename="gui/res/button_cancel.xpm" />
+		<Unit filename="gui/res/button_categories.xpm" />
+		<Unit filename="gui/res/button_categoryadd.xpm" />
+		<Unit filename="gui/res/button_categoryremove.xpm" />
+		<Unit filename="gui/res/button_danceradd.xpm" />
+		<Unit filename="gui/res/button_dancerremove.xpm" />
+		<Unit filename="gui/res/button_delete.xpm" />
+		<Unit filename="gui/res/button_judges.xpm" />
+		<Unit filename="gui/res/button_left.xpm" />
+		<Unit filename="gui/res/button_leftall.xpm" />
+		<Unit filename="gui/res/button_mark.xpm" />
+		<Unit filename="gui/res/button_minus.xpm" />
+		<Unit filename="gui/res/button_money.xpm" />
+		<Unit filename="gui/res/button_move_down.xpm" />
+		<Unit filename="gui/res/button_move_down10.xpm" />
+		<Unit filename="gui/res/button_move_up.xpm" />
+		<Unit filename="gui/res/button_move_up10.xpm" />
+		<Unit filename="gui/res/button_ok.xpm" />
+		<Unit filename="gui/res/button_other.xpm" />
+		<Unit filename="gui/res/button_payments.xpm" />
+		<Unit filename="gui/res/button_plus.xpm" />
+		<Unit filename="gui/res/button_raiting.xpm" />
+		<Unit filename="gui/res/button_random.xpm" />
+		<Unit filename="gui/res/button_report.xpm" />
+		<Unit filename="gui/res/button_results.xpm" />
+		<Unit filename="gui/res/button_right.xpm" />
+		<Unit filename="gui/res/button_rightall.xpm" />
+		<Unit filename="gui/res/button_save.xpm" />
+		<Unit filename="gui/res/button_startnumber.xpm" />
+		<Unit filename="gui/res/button_tour_add.xpm" />
+		<Unit filename="gui/res/button_tour_edit.xpm" />
+		<Unit filename="gui/res/button_tour_remove.xpm" />
+		<Unit filename="gui/res/button_undo.xpm" />
+		<Unit filename="gui/res/button_update.xpm" />
+		<Unit filename="gui/res/button_update2.xpm" />
+		<Unit filename="gui/res/button_user.xpm" />
+		<Unit filename="gui/res/convertall-res.sh" />
+		<Unit filename="gui/res/icon-database.xpm" />
+		<Unit filename="gui/res/icon_championship.xpm" />
+		<Unit filename="gui/res/mail.xpm" />
+		<Unit filename="gui/src/cdbmanager.cpp" />
+		<Unit filename="gui/src/cdbmanager.h" />
+		<Unit filename="gui/src/main.cpp" />
+		<Unit filename="gui/src/main.h" />
+		<Unit filename="gui/src/string_def.h" />
+		<Unit filename="gui/src/udf.cpp" />
+		<Unit filename="gui/src/udf.h" />
+		<Unit filename="gui/src/udfAccountInfo.cpp" />
+		<Unit filename="gui/src/udfAccountInfo.h" />
+		<Unit filename="gui/src/udfAddTeamCategory.cpp" />
+		<Unit filename="gui/src/udfAddTeamCategory.h" />
+		<Unit filename="gui/src/udfCategoriesMngrDlg.cpp" />
+		<Unit filename="gui/src/udfCategoriesMngrDlg.h" />
+		<Unit filename="gui/src/udfChampionshipCategoriesMngrDlg.cpp" />
+		<Unit filename="gui/src/udfChampionshipCategoriesMngrDlg.h" />
+		<Unit filename="gui/src/udfChampionshipJudgesTeamMngrDlg.cpp" />
+		<Unit filename="gui/src/udfChampionshipJudgesTeamMngrDlg.h" />
+		<Unit filename="gui/src/udfChampionshipTypeMngr.cpp" />
+		<Unit filename="gui/src/udfChampionshipTypeMngr.h" />
+		<Unit filename="gui/src/udfCitiesMngr.cpp" />
+		<Unit filename="gui/src/udfCitiesMngr.h" />
+		<Unit filename="gui/src/udfClubsMngrDlg.cpp" />
+		<Unit filename="gui/src/udfClubsMngrDlg.h" />
+		<Unit filename="gui/src/udfCodeDialog.cpp" />
+		<Unit filename="gui/src/udfCodeDialog.h" />
+		<Unit filename="gui/src/udfCountriesMngr.cpp" />
+		<Unit filename="gui/src/udfCountriesMngr.h" />
+		<Unit filename="gui/src/udfCsTourReport.cpp" />
+		<Unit filename="gui/src/udfCsTourReport.h" />
+		<Unit filename="gui/src/udfCsTours.cpp" />
+		<Unit filename="gui/src/udfCsTours.h" />
+		<Unit filename="gui/src/udfDancersMngrDlg.cpp" />
+		<Unit filename="gui/src/udfDancersMngrDlg.h" />
+		<Unit filename="gui/src/udfDancersTeamMngr.cpp" />
+		<Unit filename="gui/src/udfDancersTeamMngr.h" />
+		<Unit filename="gui/src/udfDirectorInfo.cpp" />
+		<Unit filename="gui/src/udfDirectorInfo.h" />
+		<Unit filename="gui/src/udfJudgeMark.cpp" />
+		<Unit filename="gui/src/udfJudgeMark.h" />
+		<Unit filename="gui/src/udfJudgesMngr.cpp" />
+		<Unit filename="gui/src/udfJudgesMngr.h" />
+		<Unit filename="gui/src/udfMainFrameBase.cpp" />
+		<Unit filename="gui/src/udfMainFrameBase.h" />
+		<Unit filename="gui/src/udfPayment.cpp" />
+		<Unit filename="gui/src/udfPayment.h" />
+		<Unit filename="gui/src/udfPaymentHistory.cpp" />
+		<Unit filename="gui/src/udfPaymentHistory.h" />
+		<Unit filename="gui/src/udfReportPreview.cpp" />
+		<Unit filename="gui/src/udfReportPreview.h" />
+		<Unit filename="gui/src/udfStartNumberAssignDlg.cpp" />
+		<Unit filename="gui/src/udfStartNumberAssignDlg.h" />
+		<Unit filename="gui/src/udfTeamCategoryMngrDlg.cpp" />
+		<Unit filename="gui/src/udfTeamCategoryMngrDlg.h" />
+		<Unit filename="gui/src/udfTrainersMngrDlg.cpp" />
+		<Unit filename="gui/src/udfTrainersMngrDlg.h" />
+		<Unit filename="gui/src/udfcategoriesdata.cpp" />
+		<Unit filename="gui/src/udfcategoriesdata.h" />
+		<Unit filename="gui/src/udfexceptions.cpp" />
+		<Unit filename="gui/src/udfexceptions.h" />
+		<Unit filename="gui/src/udfuiutils.cpp" />
+		<Unit filename="gui/src/udfuiutils.h" />
+		<Extensions>
+			<code_completion>
+				<search_path add="/home/andrian/Projects/udf/gui/res" />
+				<search_path add="/home/andrian/Projects/udf/gui/src" />
+				<search_path add="/home/andrian/Projects/udf/dbmgr/src" />
+				<search_path add="/home/andrian/Projects/udf/common/src" />
+				<search_path add="/home/andrian/Projects/udf/build/3rd_party/wx_widgets-prefix/src/wxWidgets-2.9.4/include" />
+				<search_path add="/home/andrian/Projects/udf/build/3rd_party/wx_widgets-prefix/src/wx_widgets-build/lib/wx/include/gtk2-unicode-static-2.9/wx" />
+				<search_path add="/home/andrian/Projects/udf/build/3rd_party/mysql_connector-prefix/src/mysql_connector/driver" />
+				<search_path add="/home/andrian/Projects/udf/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppconn" />
+				<search_path add="/usr/include" />
+			</code_completion>
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
