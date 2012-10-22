@@ -5,55 +5,88 @@
 		<Cursor position="81" topLine="0" />
 	</File>
 	<File name="dbmgr/src/db.h" open="0" top="0" tabpos="0">
-		<Cursor position="649" topLine="4" />
+		<Cursor position="132" topLine="0" />
+	</File>
+	<File name="dbmgr/src/dbconnection.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="380" topLine="0" />
 	</File>
 	<File name="dbmgr/src/dbconnection.h" open="0" top="0" tabpos="0">
-		<Cursor position="168" topLine="8" />
+		<Cursor position="168" topLine="1" />
 	</File>
-	<File name="dbmgr/src/dbtable.cpp" open="0" top="0" tabpos="0">
+	<File name="dbmgr/src/dbtable.cpp" open="1" top="0" tabpos="2">
 		<Cursor position="1580" topLine="60" />
 	</File>
-	<File name="dbmgr/src/dbtable.h" open="0" top="0" tabpos="0">
-		<Cursor position="1639" topLine="78" />
-	</File>
-	<File name="dbmgr/src/dbutils.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1848" topLine="85" />
+	<File name="dbmgr/src/dbtable.h" open="1" top="0" tabpos="1">
+		<Cursor position="2136" topLine="78" />
 	</File>
 	<File name="dbmgr/src/dbutils.h" open="0" top="0" tabpos="0">
 		<Cursor position="378" topLine="0" />
 	</File>
-	<File name="dbmgr/src/tagecategory.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="455" topLine="30" />
+	<File name="dbmgr/src/tagecategory.cpp" open="1" top="1" tabpos="4">
+		<Cursor position="1031" topLine="34" />
 	</File>
-	<File name="dbmgr/src/tagecategory.h" open="0" top="0" tabpos="0">
-		<Cursor position="194" topLine="1" />
+	<File name="dbmgr/src/tagecategory.h" open="1" top="0" tabpos="3">
+		<Cursor position="594" topLine="2" />
+	</File>
+	<File name="dbmgr/src/tcategories.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="164" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tcategories.h" open="0" top="0" tabpos="0">
-		<Cursor position="56" topLine="0" />
+		<Cursor position="73" topLine="0" />
 	</File>
-	<File name="dbmgr/src/tchampionship.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="7582" topLine="313" />
+	<File name="dbmgr/src/tchampionship.h" open="0" top="0" tabpos="0">
+		<Cursor position="75" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tchampionshipcategories.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="3870" topLine="195" />
+		<Cursor position="284" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tchampionshipcategories.h" open="0" top="0" tabpos="0">
-		<Cursor position="1003" topLine="23" />
+		<Cursor position="95" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tchampionshipjudgesmark.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2738" topLine="116" />
 	</File>
 	<File name="dbmgr/src/tchampionshipjudgesmark.h" open="0" top="0" tabpos="0">
 		<Cursor position="422" topLine="0" />
 	</File>
+	<File name="dbmgr/src/tchampionshipjudgesteam.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="214" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tchampionshipjudgesteam.h" open="0" top="0" tabpos="0">
+		<Cursor position="95" topLine="0" />
+	</File>
 	<File name="dbmgr/src/tchampionshipteam.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="22" topLine="0" />
+		<Cursor position="313" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tchampionshipteam.h" open="0" top="0" tabpos="0">
-		<Cursor position="163" topLine="25" />
+		<Cursor position="85" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tchampionshipteamcategories.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2272" topLine="92" />
+	</File>
+	<File name="dbmgr/src/tchampionshipteamdancers.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="295" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tchampionshipteamdancers.h" open="0" top="0" tabpos="0">
+		<Cursor position="109" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tchampionshiptour.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="4379" topLine="204" />
+		<Cursor position="161" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tchampionshiptour.h" open="0" top="0" tabpos="0">
+		<Cursor position="84" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tchampionshiptype.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="190" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tchampionshiptype.h" open="0" top="0" tabpos="0">
+		<Cursor position="83" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tcities.h" open="0" top="0" tabpos="0">
 		<Cursor position="48" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tclubs.h" open="0" top="0" tabpos="0">
+		<Cursor position="61" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tcountries.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="27" topLine="0" />
@@ -61,38 +94,68 @@
 	<File name="dbmgr/src/tcountries.h" open="0" top="0" tabpos="0">
 		<Cursor position="72" topLine="0" />
 	</File>
-	<File name="dbmgr/src/tcsblocks.cpp" open="1" top="0" tabpos="1">
+	<File name="dbmgr/src/tcsblocks.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="3533" topLine="147" />
 	</File>
-	<File name="dbmgr/src/tcsblocks.h" open="1" top="0" tabpos="2">
+	<File name="dbmgr/src/tcsblocks.h" open="0" top="0" tabpos="2">
 		<Cursor position="195" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tcsblockscategories.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="606" topLine="57" />
+		<Cursor position="205" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tcsblockscategories.h" open="0" top="0" tabpos="0">
-		<Cursor position="282" topLine="0" />
+		<Cursor position="521" topLine="0" />
 	</File>
-	<File name="dbmgr/src/tcsblocksjudges.cpp" open="1" top="1" tabpos="3">
+	<File name="dbmgr/src/tcsblocksjudges.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="3839" topLine="171" />
 	</File>
-	<File name="dbmgr/src/tcsblocksjudges.h" open="1" top="0" tabpos="4">
+	<File name="dbmgr/src/tcsblocksjudges.h" open="0" top="0" tabpos="4">
 		<Cursor position="221" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tdancers.h" open="0" top="0" tabpos="0">
+		<Cursor position="65" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tdancetypes.h" open="0" top="0" tabpos="0">
 		<Cursor position="117" topLine="0" />
 	</File>
+	<File name="dbmgr/src/tgender.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="188" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tgender.h" open="0" top="0" tabpos="0">
+		<Cursor position="63" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tjudges.h" open="0" top="0" tabpos="0">
+		<Cursor position="63" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tjudgescategorieshave.h" open="0" top="0" tabpos="0">
+		<Cursor position="91" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tjudgescategoriesname.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="277" topLine="0" />
+	</File>
+	<File name="dbmgr/src/tjudgescategoriesname.h" open="0" top="0" tabpos="0">
+		<Cursor position="75" topLine="0" />
+	</File>
 	<File name="dbmgr/src/tliga.h" open="0" top="0" tabpos="0">
 		<Cursor position="97" topLine="0" />
 	</File>
-	<File name="dbmgr/src/tstaff.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1559" topLine="54" />
+	<File name="dbmgr/src/tpaymenthistory.h" open="0" top="0" tabpos="0">
+		<Cursor position="79" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tstaff.h" open="0" top="0" tabpos="0">
-		<Cursor position="871" topLine="6" />
+		<Cursor position="871" topLine="0" />
+	</File>
+	<File name="dbmgr/src/ttourtypes.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="131" topLine="0" />
+	</File>
+	<File name="dbmgr/src/ttourtypes.h" open="0" top="0" tabpos="0">
+		<Cursor position="226" topLine="0" />
 	</File>
 	<File name="dbmgr/src/tuserroles.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="25" topLine="0" />
+	</File>
+	<File name="gui/res/button_raiting.xpm" open="0" top="0" tabpos="0">
+		<Cursor position="3703" topLine="122" />
 	</File>
 	<File name="gui/src/main.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1006" topLine="23" />
@@ -122,7 +185,7 @@
 		<Cursor position="20319" topLine="854" />
 	</File>
 	<File name="gui/src/udfMainFrameBase.h" open="0" top="0" tabpos="0">
-		<Cursor position="2706" topLine="3" />
+		<Cursor position="730" topLine="20" />
 	</File>
 	<File name="gui/src/udfStartNumberAssignDlg.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="90" topLine="0" />

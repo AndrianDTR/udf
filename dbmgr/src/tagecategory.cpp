@@ -107,7 +107,7 @@ long CAgeCategoryTable::AddRow(tDATA& rec)
 			break;
 		}
 
-		sprintf(query, "insert into %s(`code`,`name`) values(%d,'%s')", TABLE, rec.code, rec.name.c_str());
+		sprintf(query, "insert into %s(`code`, `name`) values(%d, '%s')", TABLE, rec.code, rec.name.c_str());
 		res = m_pConnection->Execute(query);
 
 		rec.id = m_pConnection->GetLastInsertId();
