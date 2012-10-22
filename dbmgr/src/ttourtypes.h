@@ -1,8 +1,7 @@
 #ifndef __tTourTypes_h__
 #define __tTourTypes_h__
 
-#include "dbconnection.h"
-#include "dbtable.h"
+#include "db.h"
 
 class CTourTypesTable : public CDbTable
 {
@@ -16,10 +15,10 @@ public:
 
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
-	
+
 protected:
 	CDbConnection* m_pConnection;
-	
+
 public:
     CTourTypesTable(CDbConnection* pCon);
     virtual ~CTourTypesTable(void);

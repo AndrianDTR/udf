@@ -1,7 +1,3 @@
-
-#include "stdio.h"
-
-#include "dberrors.h"
 #include "tchampionshipteam.h"
 
 #define	TABLE	TABLE_CHAMPIONSHIPTEAM

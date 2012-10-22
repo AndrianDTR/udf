@@ -1,12 +1,7 @@
 #ifndef __tChampionshipTour_h__
 #define __tChampionshipTour_h__
 
-#include "dbconnection.h"
-#include "dbtable.h"
-
-#include "map"
-
-using namespace std;
+#include "db.h"
 
 class CChampionshipToursTable : public CDbTable
 {
@@ -17,13 +12,13 @@ public:
 		unsigned int	typeId;
 		int				limit;
 	};
-	
+
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
-	
+
 protected:
 	CDbConnection* m_pConnection;
-	
+
 public:
     CChampionshipToursTable(CDbConnection* pCon);
     virtual ~CChampionshipToursTable(void);
@@ -35,7 +30,7 @@ public:
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);
 	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
-	
+
 protected:
 	std::string			GetFilterString(const tDATA& filter);
 };

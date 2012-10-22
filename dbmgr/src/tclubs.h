@@ -1,12 +1,7 @@
 #ifndef __tClubs_h__
 #define __tClubs_h__
 
-#include "dbconnection.h"
-#include "dbtable.h"
-
-#include "map"
-
-using namespace std;
+#include "db.h"
 
 class CClubsTable : public CDbTable
 {
@@ -21,7 +16,7 @@ public:
 		std::string		contacts;
 		std::string		web;
 		std::string		additionalInfo;
-		
+
 		std::string		director;
 		time_t			director_bd;
 		std::string		director_phone;
@@ -30,10 +25,10 @@ public:
 
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
-	
+
 protected:
 	CDbConnection* m_pConnection;
-	
+
 public:
     CClubsTable(CDbConnection* pCon);
     virtual ~CClubsTable(void);

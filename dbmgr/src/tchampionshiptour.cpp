@@ -1,8 +1,3 @@
-
-#include "stdio.h"
-
-#include "common.h"
-#include "dberrors.h"
 #include "tchampionshiptour.h"
 
 #define	TABLE	TABLE_CHAMPIONSHIPTOUR

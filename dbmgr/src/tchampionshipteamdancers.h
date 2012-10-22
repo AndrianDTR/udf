@@ -1,12 +1,7 @@
 #ifndef __tCChampionshipTeamDancersTable_h__
 #define __tCChampionshipTeamDancersTable_h__
 
-#include "dbconnection.h"
-#include "dbtable.h"
-
-#include "map"
-
-using namespace std;
+#include "db.h"
 
 class CChampionshipTeamDancersTable : public CDbTable
 {
@@ -19,10 +14,10 @@ public:
 
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
-	
+
 protected:
 	CDbConnection* m_pConnection;
-	
+
 public:
     CChampionshipTeamDancersTable(CDbConnection* pCon);
     virtual ~CChampionshipTeamDancersTable(void);

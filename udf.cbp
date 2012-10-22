@@ -4,10 +4,19 @@
 	<Project>
 		<Option title="udf" />
 		<Option makefile_is_custom="1" />
+		<Option execution_dir="/home/TOROKI-WIND/andrian.yablonskyy/Projects/udf/build" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<MakeCommands>
+			<Build command="$make -f $makefile $target" />
+			<CompileFile command="$make -f $makefile $file" />
+			<Clean command="$make -f $makefile clean$target" />
+			<DistClean command="$make -f $makefile distclean$target" />
+			<AskRebuildNeeded command="$make -q -f $makefile $target" />
+			<SilentBuild command="$make -s -f $makefile $target" />
+		</MakeCommands>
 		<Build>
-			<Target title="Release">
+			<Target title="all">
 				<Option output="build/bin/gui" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="build/bin/" />
 				<Option object_output="obj/Release/" />
@@ -21,10 +30,12 @@
 					<Add option="-s" />
 				</Linker>
 				<MakeCommands>
-					<Build command="cd build; $make -j4" />
+					<Build command="$make -j4 -f $makefile $target" />
 					<CompileFile command="$make -f $makefile $file" />
 					<Clean command="$make -f $makefile clean$target" />
 					<DistClean command="$make -f $makefile distclean$target" />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -s -f $makefile $target" />
 				</MakeCommands>
 			</Target>
 		</Build>
@@ -73,6 +84,12 @@
 		<Unit filename="dbmgr/src/tclubs.h" />
 		<Unit filename="dbmgr/src/tcountries.cpp" />
 		<Unit filename="dbmgr/src/tcountries.h" />
+		<Unit filename="dbmgr/src/tcsblocks.cpp" />
+		<Unit filename="dbmgr/src/tcsblocks.h" />
+		<Unit filename="dbmgr/src/tcsblockscategories.cpp" />
+		<Unit filename="dbmgr/src/tcsblockscategories.h" />
+		<Unit filename="dbmgr/src/tcsblocksjudges.cpp" />
+		<Unit filename="dbmgr/src/tcsblocksjudges.h" />
 		<Unit filename="dbmgr/src/tdancers.cpp" />
 		<Unit filename="dbmgr/src/tdancers.h" />
 		<Unit filename="dbmgr/src/tdancetypes.cpp" />
@@ -89,10 +106,14 @@
 		<Unit filename="dbmgr/src/tliga.h" />
 		<Unit filename="dbmgr/src/tpaymenthistory.cpp" />
 		<Unit filename="dbmgr/src/tpaymenthistory.h" />
+		<Unit filename="dbmgr/src/tstaff.cpp" />
+		<Unit filename="dbmgr/src/tstaff.h" />
 		<Unit filename="dbmgr/src/ttourtypes.cpp" />
 		<Unit filename="dbmgr/src/ttourtypes.h" />
 		<Unit filename="dbmgr/src/ttreiners.cpp" />
 		<Unit filename="dbmgr/src/ttreiners.h" />
+		<Unit filename="dbmgr/src/tuserroles.cpp" />
+		<Unit filename="dbmgr/src/tuserroles.h" />
 		<Unit filename="gui/CMakeLists.txt" />
 		<Unit filename="gui/res/button_account.xpm" />
 		<Unit filename="gui/res/button_add.xpm" />
@@ -211,6 +232,7 @@
 				<search_path add="/usr/include" />
 			</code_completion>
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

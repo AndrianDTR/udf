@@ -1,12 +1,7 @@
 #ifndef __tJedgesCategoriesName_h__
 #define __tJedgesCategoriesName_h__
 
-#include "dbconnection.h"
-#include "dbtable.h"
-
-#include "map"
-
-using namespace std;
+#include "db.h"
 
 class CJudgesCategoriesNameTable : public CDbTable
 {
@@ -18,10 +13,10 @@ public:
 
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
-	
+
 protected:
 	CDbConnection* m_pConnection;
-	
+
 public:
     CJudgesCategoriesNameTable(CDbConnection* pCon);
     virtual ~CJudgesCategoriesNameTable(void);

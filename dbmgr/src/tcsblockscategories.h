@@ -1,12 +1,7 @@
 #ifndef __tCsBlockCategories_h__
 #define __tCsBlockCategories_h__
 
-#include "dbconnection.h"
-#include "dbtable.h"
-
-#include "map"
-
-using namespace std;
+#include "db.h"
 
 class CCsBlockCategoriesTable : public CDbTable
 {

@@ -1,10 +1,4 @@
-
-#include "stdio.h"
-
-#include "dberrors.h"
 #include "tchampionshipcategories.h"
-
-#include "common.h"
 
 #define	TABLE	TABLE_CHAMPIONSHIPCATEGORIES
 

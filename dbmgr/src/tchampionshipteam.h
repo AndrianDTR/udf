@@ -1,12 +1,7 @@
 #ifndef __tChampionshipTeams_h__
 #define __tChampionshipTeams_h__
 
-#include "dbconnection.h"
-#include "dbtable.h"
-
-#include "map"
-
-using namespace std;
+#include "db.h"
 
 class CChampionshipTeamsTable : public CDbTable
 {
