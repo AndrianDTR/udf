@@ -32,11 +32,12 @@
 #include <wx/panel.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
+#include <wx/grid.h>
+#include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/splitter.h>
 #include <wx/frame.h>
 #include <wx/checkbox.h>
-#include <wx/listctrl.h>
 #include <wx/html/htmlwin.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -367,9 +368,9 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnMenuOptions( wxCommandEvent& event ){ OnMenuOptions( event ); }
 		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
 		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
+		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
 		void _wxFB_OnEditTour( wxTreeEvent& event ){ OnEditTour( event ); }
 		void _wxFB_OnCsSelect( wxTreeEvent& event ){ OnCsSelect( event ); }
-		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
 		void _wxFB_OnRemoveChampionship( wxCommandEvent& event ){ OnRemoveChampionship( event ); }
 		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
 		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
@@ -383,6 +384,9 @@ class MainFrameBase : public wxFrame
 		void _wxFB_OnRemoveTour( wxCommandEvent& event ){ OnRemoveTour( event ); }
 		void _wxFB_OnJudgesMark( wxCommandEvent& event ){ OnJudgesMark( event ); }
 		void _wxFB_OnCsTourReport( wxCommandEvent& event ){ OnCsTourReport( event ); }
+		void _wxFB_OnCellChange( wxGridEvent& event ){ OnCellChange( event ); }
+		void _wxFB_OnCellLeftClick( wxGridEvent& event ){ OnCellLeftClick( event ); }
+		void _wxFB_OnSelectCell( wxGridEvent& event ){ OnSelectCell( event ); }
 		
 	
 	protected:
@@ -411,8 +415,8 @@ class MainFrameBase : public wxFrame
 			ID_MENU_TOOLS_OPTIONS,
 			ID_ABOUT,
 			ID_SEARCH,
-			ID_CS_TREE,
 			wxID_CHAMPIONSIP_ADD,
+			ID_CS_TREE,
 			wxID_CHAMPIONSIP_REMOVE,
 			wxID_CHAMPIONSHIP_SAVE,
 			wxID_CHAMPIONSHIP_DISCARD,
@@ -435,7 +439,15 @@ class MainFrameBase : public wxFrame
 			ID_REG_CLOSE,
 			ID_INFO,
 			ID_M_PANELBLOCKINFO,
+			ID_M_BPUPDATE,
+			ID_M_BPCSCATEGORIES,
+			ID_M_BPJUDGES,
+			ID_M_STATICLENGHT,
+			ID_M_TEXTPAUSE,
+			ID_M_GRIDJUDGESCATS,
+			ID_M_LISTREGISTEREDTEAMS,
 			ID_M_PANELTOURINFO,
+			ID_M_LISTSUCCESSTEAMS,
 		};
 		
 		wxMenuBar* m_menuBar;
@@ -448,11 +460,11 @@ class MainFrameBase : public wxFrame
 		wxPanel* m_panel1;
 		wxStaticText* m_championshipSearchText;
 		wxTextCtrl* m_textSearch;
+		wxBitmapButton* m_bpAdd;
 		wxTreeCtrl* m_treeCs;
 		wxPanel* m_panel12;
 		wxNotebook* m_notebook3;
-		wxPanel* m_panel16;
-		wxBitmapButton* m_bpAdd;
+		wxPanel* m_panelCs;
 		wxBitmapButton* m_bpRemove;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
@@ -483,8 +495,24 @@ class MainFrameBase : public wxFrame
 		wxStaticText* m_staticText14;
 		wxTextCtrl* m_textAdditionalInfo;
 		wxPanel* m_panelBlockInfo;
+		wxBitmapButton* m_bpUpdate;
+		wxBitmapButton* m_bpCsCategories;
+		wxBitmapButton* m_bpJudges;
+		wxStaticText* m_staticText106;
+		wxTextCtrl* m_textStart;
+		wxStaticText* m_staticText107;
+		wxStaticText* m_staticLenght;
+		wxStaticText* m_staticText109;
+		wxTextCtrl* m_textPause;
+		wxGrid* m_gridJudgesCats;
 		wxPanel* m_panelCatinfo;
+		wxButton* m_button2;
+		wxButton* m_button3;
+		wxListCtrl* m_listRegisteredTeams;
 		wxPanel* m_panelTourInfo;
+		wxBitmapButton* m_bpButton146;
+		wxBitmapButton* m_bpButton147;
+		wxListCtrl* m_listSuccessTeams;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnCloseFrame( wxCloseEvent& event ) { event.Skip(); }
@@ -502,9 +530,9 @@ class MainFrameBase : public wxFrame
 		virtual void OnMenuOptions( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddChampionsip( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditTour( wxTreeEvent& event ) { event.Skip(); }
 		virtual void OnCsSelect( wxTreeEvent& event ) { event.Skip(); }
-		virtual void OnAddChampionsip( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveChampionship( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
@@ -518,6 +546,9 @@ class MainFrameBase : public wxFrame
 		virtual void OnRemoveTour( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnJudgesMark( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCsTourReport( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCellChange( wxGridEvent& event ) { event.Skip(); }
+		virtual void OnCellLeftClick( wxGridEvent& event ) { event.Skip(); }
+		virtual void OnSelectCell( wxGridEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -881,6 +912,61 @@ class AccountInfo : public wxDialog
 		
 		AccountInfo( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Account info"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 384,185 ), long style = wxCAPTION|wxCLOSE_BOX|wxSTAY_ON_TOP );
 		~AccountInfo();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class UserRolesMgr
+///////////////////////////////////////////////////////////////////////////////
+class UserRolesMgr : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
+		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
+		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		void _wxFB_OnSelectRole( wxListEvent& event ){ OnSelectRole( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_M_TEXTROLE = 1000,
+			ID_M_TEXTURL,
+			ID_M_BPADD,
+			ID_M_BPUPDATE,
+			ID_M_BPREMOVE,
+			ID_M_LISTROLES,
+		};
+		
+		wxStaticText* m_staticText103;
+		wxTextCtrl* m_textRole;
+		wxStaticText* m_staticText104;
+		wxTextCtrl* m_textUrl;
+		wxBitmapButton* m_bpAdd;
+		wxBitmapButton* m_bpUpdate;
+		wxBitmapButton* m_bpRemove;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
+		wxListCtrl* m_listRoles;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectRole( wxListEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		UserRolesMgr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("User roles"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 617,460 ), long style = wxCAPTION|wxCLOSE_BOX|wxSYSTEM_MENU );
+		~UserRolesMgr();
 	
 };
 
@@ -1611,6 +1697,9 @@ class Settings : public wxDialog
 		enum
 		{
 			ID_SETTINGS = 1000,
+			ID_M_TEXTMINFINAL,
+			ID_M_TEXTMIN164,
+			ID_M_TEXTMAX164,
 		};
 		
 		wxNotebook* m_notebook1;
@@ -1636,21 +1725,21 @@ class Settings : public wxDialog
 		wxStaticText* m_staticText93;
 		wxStaticText* m_staticText94;
 		wxStaticText* m_staticText95;
-		wxTextCtrl* m_textCtrl53;
-		wxTextCtrl* m_textCtrl54;
-		wxTextCtrl* m_textCtrl55;
-		wxTextCtrl* m_textCtrl56;
-		wxTextCtrl* m_textCtrl57;
-		wxTextCtrl* m_textCtrl58;
-		wxTextCtrl* m_textCtrl59;
+		wxTextCtrl* m_textMinFinal;
+		wxTextCtrl* m_textMin12;
+		wxTextCtrl* m_textMin14;
+		wxTextCtrl* m_textMin18;
+		wxTextCtrl* m_textMin116;
+		wxTextCtrl* m_textMin132;
+		wxTextCtrl* m_textMin164;
 		wxStaticText* m_staticText96;
-		wxTextCtrl* m_textCtrl60;
-		wxTextCtrl* m_textCtrl61;
-		wxTextCtrl* m_textCtrl62;
-		wxTextCtrl* m_textCtrl63;
-		wxTextCtrl* m_textCtrl64;
-		wxTextCtrl* m_textCtrl65;
-		wxTextCtrl* m_textCtrl66;
+		wxTextCtrl* m_textMaxFinal;
+		wxTextCtrl* m_textMax12;
+		wxTextCtrl* m_textMax14;
+		wxTextCtrl* m_textMax18;
+		wxTextCtrl* m_textMax116;
+		wxTextCtrl* m_textMax132;
+		wxTextCtrl* m_textMax164;
 		wxPanel* m_panel6;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
@@ -1664,6 +1753,52 @@ class Settings : public wxDialog
 		
 		Settings( wxWindow* parent, wxWindowID id = ID_SETTINGS, const wxString& title = _("Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 704,267 ), long style = wxCAPTION|wxCLOSE_BOX );
 		~Settings();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class Staff
+///////////////////////////////////////////////////////////////////////////////
+class Staff : public wxDialog 
+{
+	DECLARE_EVENT_TABLE()
+	private:
+		
+		// Private event handlers
+		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
+		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
+		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
+		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
+		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
+		
+	
+	protected:
+		enum
+		{
+			ID_STAFF = 1000,
+			ID_M_BPUPDATE,
+			ID_M_BPDELETE,
+		};
+		
+		wxBoxSizer* m_bSizerMain;
+		wxBitmapButton* m_bpAdd;
+		wxBitmapButton* m_bpUpdate;
+		wxBitmapButton* m_bpDelete;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		Staff( wxWindow* parent, wxWindowID id = ID_STAFF, const wxString& title = _("Staff"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 630,392 ), long style = wxCAPTION|wxCLOSE_BOX );
+		~Staff();
 	
 };
 
