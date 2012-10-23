@@ -132,3 +132,42 @@ long GetRegisteredTeamsForCategory(unsigned int nId, int& count)
 	return res;
 }
 
+long GetBlockLenById(unsigned int nId, time_t& len)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+
+		/*
+		sprintf(query, "select count(t2.team_id) as `count` from %s t1"
+		" inner join %s t2 on t1.id=t2.category_id and t2.category_id=%d group by t1.id"
+			, TABLE_CHAMPIONSHIPTEAM
+			, TABLE_CHAMPIONSHIPTEAMCATEGORIES
+			, nId);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+
+		if(qRes->next())
+			count = atoi(string(qRes->getString("count")).c_str());
+		DEBUG_PRINTF("Count : %i", count);
+		*/
+	}while(0);
+
+	return res;
+}
+

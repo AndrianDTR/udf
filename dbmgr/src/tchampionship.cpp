@@ -159,9 +159,11 @@ long CChampionshipTable::DelRow(unsigned int nId)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-
+		DEBUG_PRINTF("AAAAAAAAAAA 1A %d", nId);
 		sprintf(query, "delete from %s where id = %d", TABLE, nId);
+		DEBUG_PRINT("AAAAAAAAAAA 1B");
 		res = m_pConnection->Execute(query);
+		DEBUG_PRINT("AAAAAAAAAAA 1C");
 	}while(0);
 
 	return res;

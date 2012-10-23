@@ -14,6 +14,11 @@
 #include "udfJudgeMark.h"
 #include "udfCsTourReport.h"
 
+#include "udfCsInfo.h"
+#include "udfBlockInfo.h"
+#include "udfCategoryInfo.h"
+#include "udfTourInfo.h"
+
 #include "db.h"
 
 #include "wx/aboutdlg.h"
@@ -35,9 +40,27 @@ udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 
 	m_root = m_treeCs->AddRoot(_("Root"));
 
+	m_pageCsInfo = new udfCsInfo(m_notebook);
+	m_pageCsInfo->SetMainWindow(this);
+	m_notebook->AddPage(m_pageCsInfo, _("Championship info"));
+	m_pageCsInfo->Hide();
+	
+	m_pageBlockInfo = new udfBlockInfo(m_notebook);
+	m_pageBlockInfo->SetMainWindow(this);
+	m_notebook->AddPage(m_pageBlockInfo, _("Block info"));
+	m_pageBlockInfo->Hide();
+	
+	m_pageCatInfo = new udfCategoryInfo(m_notebook);
+	m_pageCatInfo->SetMainWindow(this);
+	m_notebook->AddPage(m_pageCatInfo, _("Category info"));
+	m_pageCatInfo->Hide();
+	
+	m_pageTourInfo = new udfTourInfo(m_notebook);
+	m_pageTourInfo->SetMainWindow(this);
+	m_notebook->AddPage(m_pageTourInfo, _("Tour info"));
+	m_pageTourInfo->Hide();
+	
 	RefreshList();
-	RefreshCities();
-	RefreshTypes();
 }
 
 void udfMainFrameBase::OnCloseFrame( wxCloseEvent& event )
@@ -77,67 +100,24 @@ wxTreeItemId udfMainFrameBase::GetSelectedCs()
 	return GetItemByType(IT_CS);
 }
 
-wxTreeItemId udfMainFrameBase::GetSelectedCsCategory()
+wxTreeItemId udfMainFrameBase::GetSelectedCsBlock()
+{
+	return GetItemByType(IT_BLOCK);
+}
+
+wxTreeItemId udfMainFrameBase::GetSelectedBlockCategory()
 {
 	return GetItemByType(IT_CAT);
 }
 
-wxTreeItemId udfMainFrameBase::GetSelectedCsTour()
+wxTreeItemId udfMainFrameBase::GetSelectedCatTour()
 {
 	return GetItemByType(IT_TOUR);
 }
 
-void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
-{
-	/** Append categories **/
-	CChampionshipCategoriesTable::tTableMap categories;
-	CChampionshipCategoriesTable::tDATA catFilter = {0};
-	catFilter.championshipId = id;
-
-	CChampionshipCategoriesTable(m_pCon).Find(categories, catFilter);
-
-	CChampionshipCategoriesTable::tTableIt itCat = categories.begin();
-	while(itCat != categories.end())
-	{
-		CChampionshipCategoriesTable::tDATA& catData = itCat->second;
-		int regTeams = 0;
-
-		GetRegisteredTeamsForCategory(itCat->first, regTeams);
-		wxString catName = wxString::Format(STR_FORMAT_CS_NAME, GetCategoryNameById(catData.catId), regTeams);
-		wxTreeItemId csCat = m_treeCs->AppendItem(parent, catName, -1, -1, new udfTreeItemData(itCat->first, IT_CAT));
-
-		RefreshCategory(itCat->first, csCat);
-
-		itCat++;
-	}
-}
-
-void udfMainFrameBase::RefreshCsBlock(unsigned int id, wxTreeItemId parent)
-{
-
-}
-
-void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
-{
-	CChampionshipToursTable::tTableMap tours;
-	CChampionshipToursTable::tDATA filter = {0};
-	filter.csCatId = id;
-
-	CChampionshipToursTable(m_pCon).Find(tours, filter);
-
-	CChampionshipToursTable::tTableIt itTour = tours.begin();
-	while(itTour != tours.end())
-	{
-		CChampionshipToursTable::tDATA& data = itTour->second;
-		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, GetTourTypeNameById(data.typeId), data.limit);
-		m_treeCs->AppendItem(parent, tourName, -1, -1, new udfTreeItemData(itTour->first, IT_TOUR));
-
-		itTour++;
-	}
-}
-
 void udfMainFrameBase::RefreshList()
 {
+	/** Refresh championship list **/
 	CChampionshipTable table(m_pCon);
 	table.GetTable(m_Championships);
 
@@ -159,231 +139,74 @@ void udfMainFrameBase::RefreshList()
 	}
 }
 
-void udfMainFrameBase::RefreshTypes()
+void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 {
-	CChampionshipTypeTable table(m_pCon);
-	table.GetTable(m_ChampionshipTypes);
+	/** Refresh championship blocks **/
+	CCsBlocksTable::tTableMap blocks;
+	CCsBlocksTable::tDATA filter = {0};
+	filter.csId = id;
 
-	m_comboType->Clear();
+	CCsBlocksTable(m_pCon).Find(blocks, filter);
 
-	CChampionshipTypeTable::tTableIt it = m_ChampionshipTypes.begin();
-	while(it != m_ChampionshipTypes.end())
+	CCsBlocksTable::tTableIt it = blocks.begin();
+	while(it != blocks.end())
 	{
-		CChampionshipTypeTable::tDATA& data = it->second;
-		int nPos = m_comboType->GetCount();
-		m_comboType->Insert(data.name, nPos, (void*)&it->first);
+		CCsBlocksTable::tDATA& data = it->second;
+		time_t len;
+
+		GetBlockLenById(it->first, len);
+		wxString name = wxString::Format(STR_FORMAT_BLOCK_NAME, data.name, time2str(len));
+		wxTreeItemId csBlock = m_treeCs->AppendItem(parent, name, -1, -1, new udfTreeItemData(it->first, IT_BLOCK));
+
+		RefreshCsBlock(it->first, csBlock);
+
 		it++;
 	}
-	m_comboType->AutoComplete(m_comboType->GetStrings());
 }
 
-void udfMainFrameBase::RefreshCountries()
+void udfMainFrameBase::RefreshCsBlock(unsigned int id, wxTreeItemId parent)
 {
-	CCountriesTable table(m_pCon);
-	table.GetTable(m_Countries);
-}
+	/** Append block categories **/
+	CCsBlockCategoriesTable::tTableMap categories;
+	CCsBlockCategoriesTable::tDATA catFilter = {0};
+	catFilter.blockId = id;
 
-void udfMainFrameBase::RefreshCities()
-{
-	RefreshCountries();
+	CCsBlockCategoriesTable(m_pCon).Find(categories, catFilter);
 
-	CCitiesTable table(m_pCon);
-	table.GetTable(m_Cities);
-
-	m_comboCity->Clear();
-
-	CCitiesTable::tTableIt it = m_Cities.begin();
-	while(it != m_Cities.end())
+	CCsBlockCategoriesTable::tTableIt it = categories.begin();
+	while(it != categories.end())
 	{
-		CCitiesTable::tDATA& data = it->second;
-		int nPos = m_comboCity->GetCount();
+		CCsBlockCategoriesTable::tDATA& data = it->second;
+		int regTeams = 0;
 
-		CCountriesTable::tTableIt cIt = m_Countries.find(data.countryId);
-		if(cIt != m_Countries.end())
-		{
-			CCountriesTable::tDATA& cData = cIt->second;
-			wxString city = wxString::Format(STR_FORMAT_CITY_NAME, data.Name, cData.name);
-			m_comboCity->Insert(city, nPos, (void*)&it->first);
-		}
+		GetRegisteredTeamsForCategory(data.csCatId, regTeams);
+		wxString catName = wxString::Format(STR_FORMAT_CS_NAME, GetCsCategoryNameById(data.csCatId), regTeams);
+		wxTreeItemId csCat = m_treeCs->AppendItem(parent, catName, -1, -1, new udfTreeItemData(it->first, IT_CAT));
+
+		RefreshCategory(it->first, csCat);
+
 		it++;
 	}
-	m_comboCity->AutoComplete(m_comboCity->GetStrings());
 }
 
-int udfMainFrameBase::GetSelectedType()
+void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
 {
-	int res = -1;
-	while(1)
+	/** Refresh category tours **/
+	CChampionshipToursTable::tTableMap tours;
+	CChampionshipToursTable::tDATA filter = {0};
+	filter.csCatId = id;
+
+	CChampionshipToursTable(m_pCon).Find(tours, filter);
+
+	CChampionshipToursTable::tTableIt itTour = tours.begin();
+	while(itTour != tours.end())
 	{
-		wxString value = m_comboType->GetValue();
-		res = m_comboType->FindString(value);
-		if(-1 != res)
-			break;
-		if(wxNO == wxMessageBox(
-			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_CHAMPIONSHIP_TYPE)
-			, STR_INCORRECT_VALUE
-			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
-			, this)
-		)
-			break;
+		CChampionshipToursTable::tDATA& data = itTour->second;
+		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, GetTourTypeNameById(data.typeId), data.limit);
+		m_treeCs->AppendItem(parent, tourName, -1, -1, new udfTreeItemData(itTour->first, IT_TOUR));
 
-		udfChampionshipTypeMngr dlg(this);
-		if(wxID_OK != dlg.ShowModal())
-			break;
-
-		RefreshTypes();
-		m_comboType->SetValue(value);
+		itTour++;
 	}
-
-	return res;
-}
-
-bool udfMainFrameBase::ValidateValues()
-{
-	bool res = false;
-	do
-	{
-		if(-1 == GetSelectedType())
-			break;
-
-		if(-1 == GetSelectedCity())
-			break;
-
-		wxDateTime date = m_dateDate->GetValue();
-		wxDateTime open = m_dateRegOpen->GetValue();
-		wxDateTime close = m_dateRegClose->GetValue();
-
-		if(date < wxDateTime::Now())
-		{
-			ShowWarning(STR_WARN_NOW_GREATTHEN_ChDATE);
-			break;
-		}
-		if(close >= date)
-		{
-			ShowWarning(STR_WARN_REGCLOSE_GREATTHEN_ChDATE);
-			break;
-		}
-		if(open >= close)
-		{
-			ShowWarning(STR_WARN_REGOPEN_GREATTHEN_REGCLOSE);
-			break;
-		}
-
-		res = true;
-	}while(0);
-
-	return res;
-}
-
-int udfMainFrameBase::GetSelectedCity()
-{
-	int res = -1;
-	while(1)
-	{
-		wxString value = m_comboCity->GetValue();
-		res = m_comboCity->FindString(value);
-		if(-1 != res)
-			break;
-		if(wxNO == wxMessageBox(
-			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_CITY)
-			, STR_INCORRECT_VALUE
-			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
-			, this)
-		)
-			break;
-
-		udfCitiesMngr dlg(this);
-		if(wxID_OK != dlg.ShowModal())
-			break;
-
-		RefreshCountries();
-		m_comboCity->SetValue(value);
-	}
-
-	return res;
-}
-
-void udfMainFrameBase::OnAddChampionsip( wxCommandEvent& event )
-{
-	do
-	{
-		if(! ValidateValues())
-			break;
-
-		CChampionshipTable::tDATA data = {0};
-		data.type = *(int*)m_comboType->GetClientData(GetSelectedType());
-		data.city = *(int*)m_comboCity->GetClientData(GetSelectedCity());
-
-		data.name = m_textChName->GetValue();
-		data.additionalInfo = m_textAdditionalInfo->GetValue();
-		data.address = m_textAddress->GetValue();
-		data.date = m_dateDate->GetValue().GetTicks();
-		data.regOpenDate = m_dateRegOpen->GetValue().GetTicks();
-		data.regCloseDate = m_dateRegClose->GetValue().GetTicks();
-
-		if(UDF_OK != CChampionshipTable(m_pCon).AddRow(data))
-		{
-			ShowError(STR_ERR_ADD_CHAMPIONSHIP_FAILED);
-			break;
-		}
-
-		CChampionshipTable::tTableIt it = m_Championships.insert(std::make_pair(data.id, data)).first;
-
-		m_treeCs->AppendItem(m_root, data.name, -1, -1, new udfTreeItemData(it->first, IT_CS));
-
-	}while(0);
-}
-
-void udfMainFrameBase::OnRemoveChampionship( wxCommandEvent& event )
-{
-	do
-	{
-		wxTreeItemId item = GetSelectedCs();
-		udfTreeItemData* csItem = (udfTreeItemData*)m_treeCs->GetItemData(item);
-
-		if(UDF_OK != CChampionshipTable(m_pCon).DelRow(csItem->GetId()))
-		{
-			ShowError(STR_ERR_DEL_CHAMPIONSHIP_FAILED);
-			break;
-		}
-
-		m_Championships.erase(csItem->GetId());
-		m_treeCs->Delete(item);
-	}while(0);
-}
-
-void udfMainFrameBase::OnSave( wxCommandEvent& event )
-{
-	do
-	{
-		wxTreeItemId item = GetSelectedCs();
-		udfTreeItemData* csItem = (udfTreeItemData*)m_treeCs->GetItemData(item);
-
-		if(!ValidateValues())
-			break;
-
-		CChampionshipTable::tTableIt it = m_Championships.find(csItem->GetId());
-		if(it == m_Championships.end())
-			break;
-
-		CChampionshipTable::tDATA& data = it->second;
-		data.type = *(int*)m_comboType->GetClientData(GetSelectedType());
-		data.city = *(int*)m_comboCity->GetClientData(GetSelectedCity());
-
-		data.name = m_textChName->GetValue();
-		data.additionalInfo = m_textAdditionalInfo->GetValue();
-		data.address = m_textAddress->GetValue();
-		data.date = m_dateDate->GetValue().GetTicks();
-		data.regOpenDate = m_dateRegOpen->GetValue().GetTicks();
-		data.regCloseDate = m_dateRegClose->GetValue().GetTicks();
-
-		if(UDF_OK != CChampionshipTable(m_pCon).UpdateRow(csItem->GetId(), data))
-		{
-			ShowError(STR_ERR_UPD_CHAMPIONSHIP_FAILED);
-			break;
-		}
-		m_treeCs->SetItemText(item, data.name);
-	}while(0);
 }
 
 void udfMainFrameBase::OnDiscard( wxCommandEvent& event )
@@ -401,45 +224,27 @@ void udfMainFrameBase::OnCsSelect(wxTreeEvent& event)
 {
 	do
 	{
-		wxTreeItemId itemId = GetSelectedCs();
-		if(!itemId.IsOk())
+		wxTreeItemId item = m_treeCs->GetSelection();
+		if(!item.IsOk())
 			break;
 
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
-
-		CChampionshipTable::tTableIt it = m_Championships.find(csItem->GetId());
-		if(it == m_Championships.end())
-			break;
-
-		CChampionshipTable::tDATA& data = it->second;
-		m_textChName->SetValue(data.name);
-		m_textAddress->SetValue(data.address);
-		m_textAdditionalInfo->SetValue(data.additionalInfo);
-
-		CChampionshipTypeTable::tTableIt typeIt = m_ChampionshipTypes.find(data.type);
-		if(typeIt == m_ChampionshipTypes.end())
-			break;
-
-		CChampionshipTypeTable::tDATA& typeData = typeIt->second;
-		m_comboType->SetValue(typeData.name);
-
-		CCitiesTable::tTableIt cityIt = m_Cities.find(data.city);
-		if(cityIt == m_Cities.end())
-			break;
-
-		CCitiesTable::tDATA& cityData = cityIt->second;
-		CCountriesTable::tTableIt countryIt = m_Countries.find(cityData.countryId);
-		if(countryIt == m_Countries.end())
-			break;
-
-		CCountriesTable::tDATA& countryData = countryIt->second;
-		wxString city = wxString::Format(STR_FORMAT_CITY_NAME, cityData.Name, countryData.name);
-		m_comboCity->SetValue(city);
-
-		m_dateDate->SetValue(wxDateTime(data.date));
-		m_dateRegOpen->SetValue(wxDateTime(data.regOpenDate));
-		m_dateRegClose->SetValue(wxDateTime(data.regCloseDate));
-
+		udfTreeItemData* pData = (udfTreeItemData*)m_treeCs->GetItemData(item);
+		switch(pData->GetType())
+		{
+			case IT_CS:
+				CsSelected();
+				break;
+			case IT_BLOCK:
+				BlockSelected();
+				break;
+			case IT_CAT:
+				CatSelected();
+				break;
+			case IT_TOUR:
+				TourSelected();
+				break;
+		}
+	
 	}while(0);
 }
 
@@ -791,24 +596,16 @@ void udfMainFrameBase::OnSendInvitation( wxCommandEvent& event )
 
 void udfMainFrameBase::OnCitiesMngr(wxCommandEvent& event)
 {
-	wxString val = m_comboCity->GetValue();
-
 	udfCitiesMngr	dlg(this);
 	dlg.ShowModal();
-	RefreshCities();
-
-	m_comboCity->SetValue(val);
+	m_pageCsInfo->RefreshCities();
 }
 
 void udfMainFrameBase::OnCountriesMngr(wxCommandEvent& event)
 {
-	wxString val = m_comboCity->GetValue();
-
 	udfCountriesMngr	dlg(this);
 	dlg.ShowModal();
-	RefreshCities();
-
-	m_comboCity->SetValue(val);
+	m_pageCsInfo->RefreshCities();
 }
 
 void udfMainFrameBase::OnMenuCategoryManage( wxCommandEvent& event )
@@ -831,19 +628,15 @@ void udfMainFrameBase::OnMenuJudgeManage( wxCommandEvent& event )
 
 void udfMainFrameBase::OnMenuChampionshipTypes(wxCommandEvent& event)
 {
-	wxString val = m_comboType->GetValue();
-
 	udfChampionshipTypeMngr dlg(this);
 	dlg.ShowModal();
-	RefreshTypes();
-
-	m_comboType->SetValue(val);
+	m_pageCsInfo->RefreshTypes();
 }
 
 void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
 {
 	do{
-		wxTreeItemId itemCsId = GetSelectedCsCategory();
+		wxTreeItemId itemCsId = GetSelectedBlockCategory();
 		if(!itemCsId.IsOk())
 			break;
 
@@ -876,7 +669,7 @@ void udfMainFrameBase::OnRemoveTour(wxCommandEvent& event)
 {
 	do
 	{
-		wxTreeItemId itemTourId = GetSelectedCsTour();
+		wxTreeItemId itemTourId = GetSelectedCatTour();
 		if(!itemTourId.IsOk())
 			break;
 
@@ -896,7 +689,7 @@ void udfMainFrameBase::EditTourInfo()
 {
 	do
 	{
-		wxTreeItemId itemTourId = GetSelectedCsTour();
+		wxTreeItemId itemTourId = GetSelectedCatTour();
 		if(!itemTourId.IsOk())
 			break;
 
@@ -936,7 +729,7 @@ void udfMainFrameBase::OnCsTourReport(wxCommandEvent& event)
 
 		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemCsId);
 
-		wxTreeItemId itemTourId = GetSelectedCsTour();
+		wxTreeItemId itemTourId = GetSelectedCatTour();
 		if(!itemTourId.IsOk())
 			break;
 
@@ -1002,12 +795,90 @@ void udfMainFrameBase::OnJudgesMark(wxCommandEvent& event)
 
 		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemCsId);
 
-		wxTreeItemId itemTourId = GetSelectedCsTour();
+		wxTreeItemId itemTourId = GetSelectedCatTour();
 		if(!itemTourId.IsOk())
 			break;
 
 		udfTreeItemData *tourItem = (udfTreeItemData *)m_treeCs->GetItemData(itemTourId);
 
 		udfJudgeMark(this, csItem->GetId(), tourItem->GetId(), true).ShowModal();
+	}while(0);
+}
+
+/************************************************************************/
+void udfMainFrameBase::OnAddChampionsip(wxCommandEvent& event)
+{
+	do
+	{
+		wxTreeItemId id;
+		m_pageCsInfo->SetCsTreeItem(m_treeCs, m_root, id);
+		
+		m_pageCsInfo->Show(true);
+		m_pageBlockInfo->Show(false);
+		m_pageCatInfo->Show(false);
+		m_pageTourInfo->Show(false);
+	}while(0);
+}
+
+void udfMainFrameBase::CsSelected()
+{
+	do
+	{
+		wxTreeItemId csItem = GetSelectedCs();
+		if(!csItem.IsOk())
+			break;
+			
+		m_pageCsInfo->SetCsTreeItem(m_treeCs, m_root, csItem);
+		
+		m_pageCsInfo->Show(true);
+		m_pageBlockInfo->Show(false);
+		m_pageCatInfo->Show(false);
+		m_pageTourInfo->Show(false);
+	}while(0);
+}
+
+void udfMainFrameBase::OnAddBlock(wxCommandEvent& event)
+{
+	do{
+		wxTreeItemId csItem = GetSelectedCs();
+		m_pageBlockInfo->SetCsTreeItem(m_treeCs, &csItem, NULL);
+
+		m_pageCsInfo->Show(false);
+		m_pageBlockInfo->Show(true);
+		m_pageCatInfo->Show(false);
+		m_pageTourInfo->Show(false);
+	}while(0);
+}
+
+void udfMainFrameBase::BlockSelected()
+{
+	do
+	{
+		m_pageCsInfo->Show(false);
+		m_pageBlockInfo->Show(true);
+		m_pageCatInfo->Show(false);
+		m_pageTourInfo->Show(false);
+	}while(0);
+}
+
+void udfMainFrameBase::CatSelected()
+{
+	do
+	{
+		m_pageCsInfo->Show(false);
+		m_pageBlockInfo->Show(false);
+		m_pageCatInfo->Show(true);
+		m_pageTourInfo->Show(false);
+	}while(0);
+}
+
+void udfMainFrameBase::TourSelected()
+{
+	do
+	{
+		m_pageCsInfo->Show(false);
+		m_pageBlockInfo->Show(false);
+		m_pageCatInfo->Show(false);
+		m_pageTourInfo->Show(true);
 	}while(0);
 }

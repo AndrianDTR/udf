@@ -3,13 +3,17 @@
 #include "string_def.h"
 #include "wx/msgdlg.h"
 
-int ShowError(wxString msg, int style)
+int ShowError(wxString msg, int style, wxWindow* parent)
 {
-	wxMessageBox(msg, STR_ERROR, style);
+	return wxMessageBox(msg, STR_ERROR, style, parent);
 }
 
-int ShowWarning(wxString msg, int style)
+int ShowWarning(wxString msg, int style, wxWindow* parent)
 {
-	return wxMessageBox(msg, STR_WARNING, style);
+	return wxMessageBox(msg, STR_WARNING, style, parent);
 }
 
+int ShowQuestion(wxString msg, wxString title, int style, wxWindow* parent)
+{
+	return wxMessageBox(msg, title, style, parent);
+}

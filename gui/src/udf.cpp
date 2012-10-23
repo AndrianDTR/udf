@@ -41,7 +41,6 @@
 #include "../res/button_tour_add.xpm"
 #include "../res/button_tour_edit.xpm"
 #include "../res/button_tour_remove.xpm"
-#include "../res/button_undo.xpm"
 #include "../res/button_update2.xpm"
 #include "../res/button_user.xpm"
 #include "../res/icon-database.xpm"
@@ -617,22 +616,6 @@ BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
 	EVT_BUTTON( wxID_CHAMPIONSIP_ADD, MainFrameBase::_wxFB_OnAddChampionsip )
 	EVT_TREE_ITEM_ACTIVATED( ID_CS_TREE, MainFrameBase::_wxFB_OnEditTour )
 	EVT_TREE_SEL_CHANGED( ID_CS_TREE, MainFrameBase::_wxFB_OnCsSelect )
-	EVT_BUTTON( wxID_CHAMPIONSIP_REMOVE, MainFrameBase::_wxFB_OnRemoveChampionship )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_SAVE, MainFrameBase::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_DISCARD, MainFrameBase::_wxFB_OnDiscard )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_CATEGORIES, MainFrameBase::_wxFB_OnCategoryMngr )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_JUDGESTEAMMNGR, MainFrameBase::_wxFB_OnJudgeMngr )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_SENDINVITATION, MainFrameBase::_wxFB_OnSendInvitation )
-	EVT_BUTTON( ID_TEAMS, MainFrameBase::_wxFB_OnDancersTeams )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_STARTNUMBERMNGR, MainFrameBase::_wxFB_OnStartNumberAssign )
-	EVT_BUTTON( ID_TOUR_ADD, MainFrameBase::_wxFB_OnAddTour )
-	EVT_BUTTON( ID_TOUR_EDIT, MainFrameBase::_wxFB_OnTourEdit )
-	EVT_BUTTON( ID_TOUR_REMOVE, MainFrameBase::_wxFB_OnRemoveTour )
-	EVT_BUTTON( ID_TOUR_JUIDGES_MARKS, MainFrameBase::_wxFB_OnJudgesMark )
-	EVT_BUTTON( ID_TOUR_REPORT, MainFrameBase::_wxFB_OnCsTourReport )
-	EVT_GRID_CELL_CHANGE( MainFrameBase::_wxFB_OnCellChange )
-	EVT_GRID_CELL_LEFT_CLICK( MainFrameBase::_wxFB_OnCellLeftClick )
-	EVT_GRID_SELECT_CELL( MainFrameBase::_wxFB_OnSelectCell )
 END_EVENT_TABLE()
 
 MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
@@ -798,36 +781,253 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxVERTICAL );
 	
+	m_notebook = new wxNotebook( m_panel12, ID_M_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_TOP );
+	
+	bSizer6->Add( m_notebook, 1, wxEXPAND | wxALL, 5 );
+	
+	m_panel12->SetSizer( bSizer6 );
+	m_panel12->Layout();
+	bSizer6->Fit( m_panel12 );
+	m_splitter2->SplitVertically( m_panel1, m_panel12, 300 );
+	mainSizer->Add( m_splitter2, 1, wxEXPAND, 5 );
+	
+	this->SetSizer( mainSizer );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+}
+
+MainFrameBase::~MainFrameBase()
+{
+}
+
+BEGIN_EVENT_TABLE( MainFrameBase1, wxFrame )
+	EVT_CLOSE( MainFrameBase1::_wxFB_OnCloseFrame )
+	EVT_MENU( wxID_EXIT, MainFrameBase1::_wxFB_OnExitClick )
+	EVT_MENU( ID_MENU_MNGR_CLUBS, MainFrameBase1::_wxFB_OnMenuClubManage )
+	EVT_MENU( ID_MENU_MNGR_JUDGE, MainFrameBase1::_wxFB_OnMenuJudgeManage )
+	EVT_MENU( ID_MENU_MNGR_CATEGORIES, MainFrameBase1::_wxFB_OnMenuCategoryManage )
+	EVT_MENU( ID_MENU_MNGR_DANCE_TYPES, MainFrameBase1::_wxFB_OnDanceTypesCodeMgr )
+	EVT_MENU( ID_MENU_MNGR_LIGUES, MainFrameBase1::_wxFB_OnLigueCodeMgr )
+	EVT_MENU( ID_MENU_MNGR_AGE_CATEGORIES, MainFrameBase1::_wxFB_OnAgeCodesMgr )
+	EVT_MENU( ID_MENU_MNGR_ChTYPES_MNGR, MainFrameBase1::_wxFB_OnMenuChampionshipTypes )
+	EVT_MENU( ID_MENU_MNGR_CITIES, MainFrameBase1::_wxFB_OnCitiesMngr )
+	EVT_MENU( ID_MENU_MNGR_COUNTRIES, MainFrameBase1::_wxFB_OnCountriesMngr )
+	EVT_MENU( ID_MENU_TOOLS_SYUNC, MainFrameBase1::_wxFB_OnMenySync )
+	EVT_MENU( ID_MENU_TOOLS_OPTIONS, MainFrameBase1::_wxFB_OnMenuOptions )
+	EVT_MENU( ID_ABOUT, MainFrameBase1::_wxFB_OnAboutDlg )
+	EVT_TEXT( ID_SEARCH, MainFrameBase1::_wxFB_OnSearch )
+	EVT_BUTTON( wxID_CHAMPIONSIP_ADD, MainFrameBase1::_wxFB_OnAddChampionsip )
+	EVT_TREE_ITEM_ACTIVATED( ID_CS_TREE, MainFrameBase1::_wxFB_OnEditTour )
+	EVT_TREE_SEL_CHANGED( ID_CS_TREE, MainFrameBase1::_wxFB_OnCsSelect )
+	EVT_BUTTON( wxID_CHAMPIONSIP_REMOVE, MainFrameBase1::_wxFB_OnRemoveChampionship )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_SAVE, MainFrameBase1::_wxFB_OnSave )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_DISCARD, MainFrameBase1::_wxFB_OnDiscard )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_CATEGORIES, MainFrameBase1::_wxFB_OnCategoryMngr )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_JUDGESTEAMMNGR, MainFrameBase1::_wxFB_OnJudgeMngr )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_SENDINVITATION, MainFrameBase1::_wxFB_OnSendInvitation )
+	EVT_BUTTON( ID_TEAMS, MainFrameBase1::_wxFB_OnDancersTeams )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_STARTNUMBERMNGR, MainFrameBase1::_wxFB_OnStartNumberAssign )
+	EVT_BUTTON( ID_TOUR_ADD, MainFrameBase1::_wxFB_OnAddTour )
+	EVT_BUTTON( ID_TOUR_EDIT, MainFrameBase1::_wxFB_OnTourEdit )
+	EVT_BUTTON( ID_TOUR_REMOVE, MainFrameBase1::_wxFB_OnRemoveTour )
+	EVT_BUTTON( ID_TOUR_JUIDGES_MARKS, MainFrameBase1::_wxFB_OnJudgesMark )
+	EVT_BUTTON( ID_TOUR_REPORT, MainFrameBase1::_wxFB_OnCsTourReport )
+END_EVENT_TABLE()
+
+MainFrameBase1::MainFrameBase1( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	m_menuBar = new wxMenuBar( 0 );
+	m_menuFile = new wxMenu();
+	wxMenuItem* menuFileExit;
+	menuFileExit = new wxMenuItem( m_menuFile, wxID_EXIT, wxString( _("E&xit") ) + wxT('\t') + wxT("Alt+X"), wxEmptyString, wxITEM_NORMAL );
+	m_menuFile->Append( menuFileExit );
+	
+	m_menuBar->Append( m_menuFile, _("&File") ); 
+	
+	m_menu8 = new wxMenu();
+	wxMenuItem* m_menuItem11;
+	m_menuItem11 = new wxMenuItem( m_menu8, ID_CS_ADD, wxString( _("Add new championship") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu8->Append( m_menuItem11 );
+	
+	wxMenuItem* m_menuItem12;
+	m_menuItem12 = new wxMenuItem( m_menu8, ID_CS_REMOVE, wxString( _("Remove current championship") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu8->Append( m_menuItem12 );
+	
+	wxMenuItem* m_menuItem13;
+	m_menuItem13 = new wxMenuItem( m_menu8, ID_CS_UPDATE, wxString( _("Save changes") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu8->Append( m_menuItem13 );
+	
+	wxMenuItem* m_separator2;
+	m_separator2 = m_menu8->AppendSeparator();
+	
+	wxMenuItem* m_menuItem15;
+	m_menuItem15 = new wxMenuItem( m_menu8, ID_CS_CATEGORIES, wxString( _("Categories") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu8->Append( m_menuItem15 );
+	
+	wxMenuItem* m_menuItem17;
+	m_menuItem17 = new wxMenuItem( m_menu8, ID_CS_STARTNUMB, wxString( _("Start number assign") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu8->Append( m_menuItem17 );
+	
+	wxMenuItem* m_menuItem18;
+	m_menuItem18 = new wxMenuItem( m_menu8, ID_CS_JUDGESTEAM, wxString( _("Judges team") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu8->Append( m_menuItem18 );
+	
+	wxMenuItem* m_menuItem19;
+	m_menuItem19 = new wxMenuItem( m_menu8, ID_CS_INVITATIONS, wxString( _("Send invitations") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu8->Append( m_menuItem19 );
+	
+	wxMenuItem* m_menuItem20;
+	m_menuItem20 = new wxMenuItem( m_menu8, ID_CS_RESULTS, wxString( _("Results") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu8->Append( m_menuItem20 );
+	
+	wxMenuItem* m_menuItem21;
+	m_menuItem21 = new wxMenuItem( m_menu8, ID_CS_RAITING, wxString( _("Raiting") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu8->Append( m_menuItem21 );
+	
+	m_menuBar->Append( m_menu8, _("Championship") ); 
+	
+	m_menu2 = new wxMenu();
+	wxMenuItem* m_menuItem5;
+	m_menuItem5 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CLUBS, wxString( _("Clubs") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem5 );
+	
+	wxMenuItem* m_menuItem6;
+	m_menuItem6 = new wxMenuItem( m_menu2, ID_MENU_MNGR_JUDGE, wxString( _("Judges") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem6 );
+	
+	wxMenuItem* m_separator21;
+	m_separator21 = m_menu2->AppendSeparator();
+	
+	wxMenuItem* m_menuItem9;
+	m_menuItem9 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CATEGORIES, wxString( _("Categories") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem9 );
+	
+	wxMenuItem* m_menuItem62;
+	m_menuItem62 = new wxMenuItem( m_menu2, ID_MENU_MNGR_DANCE_TYPES, wxString( _("Dance types") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem62 );
+	
+	wxMenuItem* m_menuItem7;
+	m_menuItem7 = new wxMenuItem( m_menu2, ID_MENU_MNGR_LIGUES, wxString( _("Ligues") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem7 );
+	
+	wxMenuItem* m_menuItem8;
+	m_menuItem8 = new wxMenuItem( m_menu2, ID_MENU_MNGR_AGE_CATEGORIES, wxString( _("Age gategories") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem8 );
+	
+	wxMenuItem* m_menuItem201;
+	m_menuItem201 = new wxMenuItem( m_menu2, ID_MENU_MNGR_ChTYPES_MNGR, wxString( _("Championship types") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem201 );
+	
+	wxMenuItem* m_separator3;
+	m_separator3 = m_menu2->AppendSeparator();
+	
+	wxMenuItem* m_menuItem10;
+	m_menuItem10 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CITIES, wxString( _("Cities") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem10 );
+	
+	wxMenuItem* m_menuItem91;
+	m_menuItem91 = new wxMenuItem( m_menu2, ID_MENU_MNGR_COUNTRIES, wxString( _("Countries") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu2->Append( m_menuItem91 );
+	
+	m_menuBar->Append( m_menu2, _("Manage") ); 
+	
+	m_menu5 = new wxMenu();
+	wxMenuItem* m_menuItem211;
+	m_menuItem211 = new wxMenuItem( m_menu5, ID_MENU_TOOLS_SYUNC, wxString( _("Synchronize DB") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu5->Append( m_menuItem211 );
+	
+	wxMenuItem* m_separator4;
+	m_separator4 = m_menu5->AppendSeparator();
+	
+	wxMenuItem* m_menuItem22;
+	m_menuItem22 = new wxMenuItem( m_menu5, ID_MENU_TOOLS_OPTIONS, wxString( _("Options") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menu5->Append( m_menuItem22 );
+	
+	m_menuBar->Append( m_menu5, _("Tools") ); 
+	
+	m_menu51 = new wxMenu();
+	wxMenuItem* m_menuItem61;
+	m_menuItem61 = new wxMenuItem( m_menu51, ID_ABOUT, wxString( _("About") ) , _("Show information about program."), wxITEM_NORMAL );
+	m_menu51->Append( m_menuItem61 );
+	
+	m_menuBar->Append( m_menu51, _("Help") ); 
+	
+	this->SetMenuBar( m_menuBar );
+	
+	wxBoxSizer* mainSizer;
+	mainSizer = new wxBoxSizer( wxVERTICAL );
+	
+	m_splitter2 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_3DSASH );
+	m_splitter2->Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrameBase1::m_splitter2OnIdle ), NULL, this );
+	m_splitter2->SetMinimumPaneSize( 300 );
+	
+	m_panel1 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer150;
+	bSizer150 = new wxBoxSizer( wxVERTICAL );
+	
+	wxStaticBoxSizer* sbSizer9;
+	sbSizer9 = new wxStaticBoxSizer( new wxStaticBox( m_panel1, wxID_ANY, _("Championship list") ), wxVERTICAL );
+	
+	wxBoxSizer* bSizer5;
+	bSizer5 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_championshipSearchText = new wxStaticText( m_panel1, wxID_ANY, _("Search"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_championshipSearchText->Wrap( -1 );
+	bSizer5->Add( m_championshipSearchText, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textSearch = new wxTextCtrl( m_panel1, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer5->Add( m_textSearch, 1, wxALL|wxEXPAND, 5 );
+	
+	m_bpAdd = new wxBitmapButton( m_panel1, wxID_CHAMPIONSIP_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer5->Add( m_bpAdd, 0, wxALL, 5 );
+	
+	sbSizer9->Add( bSizer5, 0, wxALIGN_RIGHT|wxEXPAND, 5 );
+	
+	m_treeCs = new wxTreeCtrl( m_panel1, ID_CS_TREE, wxDefaultPosition, wxSize( -1,-1 ), wxTR_DEFAULT_STYLE|wxTR_FULL_ROW_HIGHLIGHT|wxTR_HIDE_ROOT|wxTR_SINGLE|wxSUNKEN_BORDER );
+	sbSizer9->Add( m_treeCs, 1, wxALL|wxEXPAND, 5 );
+	
+	bSizer150->Add( sbSizer9, 1, wxEXPAND|wxALL, 5 );
+	
+	m_panel1->SetSizer( bSizer150 );
+	m_panel1->Layout();
+	bSizer150->Fit( m_panel1 );
+	m_panel12 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer6;
+	bSizer6 = new wxBoxSizer( wxVERTICAL );
+	
 	m_notebook3 = new wxNotebook( m_panel12, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP );
-	m_panelCs = new wxPanel( m_notebook3, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelCsInfo = new wxPanel( m_notebook3, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer13;
 	bSizer13 = new wxBoxSizer( wxVERTICAL );
 	
 	wxBoxSizer* bSizer7;
 	bSizer7 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpRemove = new wxBitmapButton( m_panelCs, wxID_CHAMPIONSIP_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpRemove = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSIP_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpRemove, 0, wxALL, 5 );
 	
-	m_bpSave = new wxBitmapButton( m_panelCs, wxID_CHAMPIONSHIP_SAVE, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpSave = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_SAVE, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpSave, 0, wxALL, 5 );
 	
-	m_bpDiscard = new wxBitmapButton( m_panelCs, wxID_CHAMPIONSHIP_DISCARD, wxBitmap( button_undo_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpDiscard = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_DISCARD, wxBitmap( button_update2_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpDiscard, 0, wxALL, 5 );
 	
-	m_bpCategoryMngr = new wxBitmapButton( m_panelCs, wxID_CHAMPIONSHIP_CATEGORIES, wxBitmap( button_categories_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpCategoryMngr = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_CATEGORIES, wxBitmap( button_categories_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpCategoryMngr, 0, wxALL, 5 );
 	
-	m_bpJudgesMngr = new wxBitmapButton( m_panelCs, wxID_CHAMPIONSHIP_JUDGESTEAMMNGR, wxBitmap( button_judges_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpJudgesMngr = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_JUDGESTEAMMNGR, wxBitmap( button_judges_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpJudgesMngr, 0, wxALL, 5 );
 	
-	m_bpSendinvitation = new wxBitmapButton( m_panelCs, wxID_CHAMPIONSHIP_SENDINVITATION, wxBitmap( mail_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpSendinvitation = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_SENDINVITATION, wxBitmap( mail_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpSendinvitation, 0, wxALL, 5 );
 	
-	m_bpDancersTeams = new wxBitmapButton( m_panelCs, ID_TEAMS, wxBitmap( button_championship_teams_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpDancersTeams = new wxBitmapButton( m_panelCsInfo, ID_TEAMS, wxBitmap( button_championship_teams_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpDancersTeams, 0, wxALL, 5 );
 	
-	m_bpStartNumberMngr = new wxBitmapButton( m_panelCs, wxID_CHAMPIONSHIP_STARTNUMBERMNGR, wxBitmap( button_startnumber_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpStartNumberMngr = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_STARTNUMBERMNGR, wxBitmap( button_startnumber_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpStartNumberMngr, 0, wxALL, 5 );
 	
 	bSizer13->Add( bSizer7, 0, wxALIGN_RIGHT, 5 );
@@ -835,19 +1035,19 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer71;
 	bSizer71 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_bpTourAdd = new wxBitmapButton( m_panelCs, ID_TOUR_ADD, wxBitmap( button_tour_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpTourAdd = new wxBitmapButton( m_panelCsInfo, ID_TOUR_ADD, wxBitmap( button_tour_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer71->Add( m_bpTourAdd, 0, wxALL, 5 );
 	
-	m_bpTourEdit = new wxBitmapButton( m_panelCs, ID_TOUR_EDIT, wxBitmap( button_tour_edit_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpTourEdit = new wxBitmapButton( m_panelCsInfo, ID_TOUR_EDIT, wxBitmap( button_tour_edit_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer71->Add( m_bpTourEdit, 0, wxALL, 5 );
 	
-	m_bpTourRemove = new wxBitmapButton( m_panelCs, ID_TOUR_REMOVE, wxBitmap( button_tour_remove_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpTourRemove = new wxBitmapButton( m_panelCsInfo, ID_TOUR_REMOVE, wxBitmap( button_tour_remove_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer71->Add( m_bpTourRemove, 0, wxALL, 5 );
 	
-	m_bpJudgesMark = new wxBitmapButton( m_panelCs, ID_TOUR_JUIDGES_MARKS, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpJudgesMark = new wxBitmapButton( m_panelCsInfo, ID_TOUR_JUIDGES_MARKS, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer71->Add( m_bpJudgesMark, 0, wxALL, 5 );
 	
-	m_bpTourReport = new wxBitmapButton( m_panelCs, ID_TOUR_REPORT, wxBitmap( button_results_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpTourReport = new wxBitmapButton( m_panelCsInfo, ID_TOUR_REPORT, wxBitmap( button_results_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer71->Add( m_bpTourReport, 0, wxALL, 5 );
 	
 	bSizer13->Add( bSizer71, 0, wxALIGN_RIGHT, 5 );
@@ -858,199 +1058,79 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	fgSizer1->SetFlexibleDirection( wxBOTH );
 	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText4 = new wxStaticText( m_panelCs, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText4->Wrap( -1 );
 	fgSizer1->Add( m_staticText4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
-	m_textChName = new wxTextCtrl( m_panelCs, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textChName = new wxTextCtrl( m_panelCsInfo, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_textChName->SetMaxLength( 100 ); 
 	fgSizer1->Add( m_textChName, 0, wxEXPAND|wxALL, 5 );
 	
-	m_staticText2 = new wxStaticText( m_panelCs, wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
 	fgSizer1->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
-	m_comboType = new wxComboBox( m_panelCs, ID_TYPE, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
+	m_comboType = new wxComboBox( m_panelCsInfo, ID_TYPE, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
 	fgSizer1->Add( m_comboType, 0, wxALL|wxEXPAND, 5 );
 	
-	m_staticText5 = new wxStaticText( m_panelCs, wxID_ANY, _("Date"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText5->Wrap( -1 );
 	fgSizer1->Add( m_staticText5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
-	m_dateDate = new wxDatePickerCtrl( m_panelCs, ID_DATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	m_dateDate = new wxDatePickerCtrl( m_panelCsInfo, ID_DATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	fgSizer1->Add( m_dateDate, 0, wxALL, 5 );
 	
-	m_staticText7 = new wxStaticText( m_panelCs, wxID_ANY, _("City"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("City"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText7->Wrap( -1 );
 	fgSizer1->Add( m_staticText7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
-	m_comboCity = new wxComboBox( m_panelCs, ID_CITY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
+	m_comboCity = new wxComboBox( m_panelCsInfo, ID_CITY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
 	fgSizer1->Add( m_comboCity, 0, wxALL|wxEXPAND, 5 );
 	
-	m_staticText8 = new wxStaticText( m_panelCs, wxID_ANY, _("Adsress"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText8 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Adsress"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText8->Wrap( -1 );
 	fgSizer1->Add( m_staticText8, 0, wxALL, 5 );
 	
-	m_textAddress = new wxTextCtrl( m_panelCs, ID_ADDRESS, wxEmptyString, wxDefaultPosition, wxSize( -1,50 ), wxTE_MULTILINE );
+	m_textAddress = new wxTextCtrl( m_panelCsInfo, ID_ADDRESS, wxEmptyString, wxDefaultPosition, wxSize( -1,50 ), wxTE_MULTILINE );
 	fgSizer1->Add( m_textAddress, 0, wxEXPAND|wxALL, 5 );
 	
 	bSizer13->Add( fgSizer1, 0, wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer1;
-	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( m_panelCs, wxID_ANY, _("Online registration") ), wxHORIZONTAL );
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( m_panelCsInfo, wxID_ANY, _("Online registration") ), wxHORIZONTAL );
 	
-	m_staticText12 = new wxStaticText( m_panelCs, wxID_ANY, _("Open date"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Open date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText12->Wrap( -1 );
 	sbSizer1->Add( m_staticText12, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_dateRegOpen = new wxDatePickerCtrl( m_panelCs, ID_REG_OPEN, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	m_dateRegOpen = new wxDatePickerCtrl( m_panelCsInfo, ID_REG_OPEN, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	sbSizer1->Add( m_dateRegOpen, 0, wxALL, 5 );
 	
-	m_staticText13 = new wxStaticText( m_panelCs, wxID_ANY, _("Close date"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Close date"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText13->Wrap( -1 );
 	sbSizer1->Add( m_staticText13, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_dateRegClose = new wxDatePickerCtrl( m_panelCs, ID_REG_CLOSE, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	m_dateRegClose = new wxDatePickerCtrl( m_panelCsInfo, ID_REG_CLOSE, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT|wxDP_SHOWCENTURY );
 	sbSizer1->Add( m_dateRegClose, 0, wxALL|wxEXPAND, 5 );
 	
 	bSizer13->Add( sbSizer1, 0, wxEXPAND|wxALL, 5 );
 	
-	m_staticText14 = new wxStaticText( m_panelCs, wxID_ANY, _("Aditional info"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Aditional info"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText14->Wrap( -1 );
 	bSizer13->Add( m_staticText14, 0, wxALL, 5 );
 	
-	m_textAdditionalInfo = new wxTextCtrl( m_panelCs, ID_INFO, wxEmptyString, wxDefaultPosition, wxSize( -1,100 ), wxTE_MULTILINE );
+	m_textAdditionalInfo = new wxTextCtrl( m_panelCsInfo, ID_INFO, wxEmptyString, wxDefaultPosition, wxSize( -1,100 ), wxTE_MULTILINE );
 	bSizer13->Add( m_textAdditionalInfo, 1, wxALL|wxEXPAND, 5 );
 	
-	m_panelCs->SetSizer( bSizer13 );
-	m_panelCs->Layout();
-	bSizer13->Fit( m_panelCs );
-	m_notebook3->AddPage( m_panelCs, _("Championship info"), true );
+	m_panelCsInfo->SetSizer( bSizer13 );
+	m_panelCsInfo->Layout();
+	bSizer13->Fit( m_panelCsInfo );
+	m_notebook3->AddPage( m_panelCsInfo, _("Championship info"), false );
 	m_panelBlockInfo = new wxPanel( m_notebook3, ID_M_PANELBLOCKINFO, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer125;
-	bSizer125 = new wxBoxSizer( wxVERTICAL );
-	
-	wxBoxSizer* bSizer126;
-	bSizer126 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpUpdate = new wxBitmapButton( m_panelBlockInfo, ID_M_BPUPDATE, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer126->Add( m_bpUpdate, 0, wxALL, 5 );
-	
-	m_bpCsCategories = new wxBitmapButton( m_panelBlockInfo, ID_M_BPCSCATEGORIES, wxBitmap( button_categories_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer126->Add( m_bpCsCategories, 0, wxALL, 5 );
-	
-	m_bpJudges = new wxBitmapButton( m_panelBlockInfo, ID_M_BPJUDGES, wxBitmap( button_judges_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer126->Add( m_bpJudges, 0, wxALL, 5 );
-	
-	bSizer125->Add( bSizer126, 0, wxALIGN_RIGHT, 5 );
-	
-	wxBoxSizer* bSizer130;
-	bSizer130 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_staticText106 = new wxStaticText( m_panelBlockInfo, wxID_ANY, _("Start time"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText106->Wrap( -1 );
-	bSizer130->Add( m_staticText106, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_textStart = new wxTextCtrl( m_panelBlockInfo, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer130->Add( m_textStart, 0, wxALL, 5 );
-	
-	m_staticText107 = new wxStaticText( m_panelBlockInfo, wxID_ANY, _("End time"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText107->Wrap( -1 );
-	bSizer130->Add( m_staticText107, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_staticLenght = new wxStaticText( m_panelBlockInfo, ID_M_STATICLENGHT, _("00:00:00"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticLenght->Wrap( -1 );
-	bSizer130->Add( m_staticLenght, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_staticText109 = new wxStaticText( m_panelBlockInfo, wxID_ANY, _("Pause len"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText109->Wrap( -1 );
-	bSizer130->Add( m_staticText109, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_textPause = new wxTextCtrl( m_panelBlockInfo, ID_M_TEXTPAUSE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer130->Add( m_textPause, 0, wxALL, 5 );
-	
-	bSizer125->Add( bSizer130, 0, wxEXPAND, 5 );
-	
-	wxStaticBoxSizer* sbSizer17;
-	sbSizer17 = new wxStaticBoxSizer( new wxStaticBox( m_panelBlockInfo, wxID_ANY, _("Judges per categories") ), wxVERTICAL );
-	
-	m_gridJudgesCats = new wxGrid( m_panelBlockInfo, ID_M_GRIDJUDGESCATS, wxDefaultPosition, wxDefaultSize, wxRAISED_BORDER|wxVSCROLL );
-	
-	// Grid
-	m_gridJudgesCats->CreateGrid( 5, 5 );
-	m_gridJudgesCats->EnableEditing( true );
-	m_gridJudgesCats->EnableGridLines( true );
-	m_gridJudgesCats->EnableDragGridSize( false );
-	m_gridJudgesCats->SetMargins( 0, 0 );
-	
-	// Columns
-	m_gridJudgesCats->AutoSizeColumns();
-	m_gridJudgesCats->EnableDragColMove( false );
-	m_gridJudgesCats->EnableDragColSize( true );
-	m_gridJudgesCats->SetColLabelSize( 170 );
-	m_gridJudgesCats->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_TOP );
-	
-	// Rows
-	m_gridJudgesCats->AutoSizeRows();
-	m_gridJudgesCats->EnableDragRowSize( false );
-	m_gridJudgesCats->SetRowLabelSize( 100 );
-	m_gridJudgesCats->SetRowLabelAlignment( wxALIGN_RIGHT, wxALIGN_CENTRE );
-	
-	// Label Appearance
-	
-	// Cell Defaults
-	m_gridJudgesCats->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
-	sbSizer17->Add( m_gridJudgesCats, 1, wxALL|wxEXPAND, 5 );
-	
-	bSizer125->Add( sbSizer17, 1, wxALL|wxEXPAND, 5 );
-	
-	m_panelBlockInfo->SetSizer( bSizer125 );
-	m_panelBlockInfo->Layout();
-	bSizer125->Fit( m_panelBlockInfo );
-	m_notebook3->AddPage( m_panelBlockInfo, _("Block info"), false );
-	m_panelCatinfo = new wxPanel( m_notebook3, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer129;
-	bSizer129 = new wxBoxSizer( wxVERTICAL );
-	
-	wxBoxSizer* bSizer131;
-	bSizer131 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_button2 = new wxButton( m_panelCatinfo, wxID_ANY, _("MyButton"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer131->Add( m_button2, 0, wxALL, 5 );
-	
-	m_button3 = new wxButton( m_panelCatinfo, wxID_ANY, _("MyButton"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer131->Add( m_button3, 0, wxALL, 5 );
-	
-	bSizer129->Add( bSizer131, 0, wxALIGN_RIGHT, 5 );
-	
-	m_listRegisteredTeams = new wxListCtrl( m_panelCatinfo, ID_M_LISTREGISTEREDTEAMS, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-	bSizer129->Add( m_listRegisteredTeams, 1, wxALL|wxEXPAND, 5 );
-	
-	m_panelCatinfo->SetSizer( bSizer129 );
-	m_panelCatinfo->Layout();
-	bSizer129->Fit( m_panelCatinfo );
-	m_notebook3->AddPage( m_panelCatinfo, _("Category info"), false );
+	m_notebook3->AddPage( m_panelBlockInfo, _("Block info"), true );
+	m_panelCatInfo = new wxPanel( m_notebook3, ID_M_PANELCATINFO, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_notebook3->AddPage( m_panelCatInfo, _("Category info"), false );
 	m_panelTourInfo = new wxPanel( m_notebook3, ID_M_PANELTOURINFO, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer132;
-	bSizer132 = new wxBoxSizer( wxVERTICAL );
-	
-	wxBoxSizer* bSizer133;
-	bSizer133 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpButton146 = new wxBitmapButton( m_panelTourInfo, wxID_ANY, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer133->Add( m_bpButton146, 0, wxALL, 5 );
-	
-	m_bpButton147 = new wxBitmapButton( m_panelTourInfo, wxID_ANY, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer133->Add( m_bpButton147, 0, wxALL, 5 );
-	
-	bSizer132->Add( bSizer133, 0, wxALIGN_RIGHT, 5 );
-	
-	m_listSuccessTeams = new wxListCtrl( m_panelTourInfo, ID_M_LISTSUCCESSTEAMS, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-	bSizer132->Add( m_listSuccessTeams, 1, wxALL|wxEXPAND, 5 );
-	
-	m_panelTourInfo->SetSizer( bSizer132 );
-	m_panelTourInfo->Layout();
-	bSizer132->Fit( m_panelTourInfo );
 	m_notebook3->AddPage( m_panelTourInfo, _("Tour info"), false );
 	
 	bSizer6->Add( m_notebook3, 1, wxEXPAND | wxALL, 5 );
@@ -1067,7 +1147,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	this->Centre( wxBOTH );
 }
 
-MainFrameBase::~MainFrameBase()
+MainFrameBase1::~MainFrameBase1()
 {
 }
 
@@ -3098,5 +3178,311 @@ Staff::Staff( wxWindow* parent, wxWindowID id, const wxString& title, const wxPo
 }
 
 Staff::~Staff()
+{
+}
+
+BEGIN_EVENT_TABLE( CsInfo, wxPanel )
+	EVT_BUTTON( wxID_CHAMPIONSIP_REMOVE, CsInfo::_wxFB_OnRemoveChampionship )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_SAVE, CsInfo::_wxFB_OnSave )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_DISCARD, CsInfo::_wxFB_OnDiscard )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_CATEGORIES, CsInfo::_wxFB_OnCategoryMngr )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_JUDGESTEAMMNGR, CsInfo::_wxFB_OnJudgeMngr )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_SENDINVITATION, CsInfo::_wxFB_OnSendInvitation )
+	EVT_BUTTON( ID_TEAMS, CsInfo::_wxFB_OnDancersTeams )
+	EVT_BUTTON( wxID_CHAMPIONSHIP_STARTNUMBERMNGR, CsInfo::_wxFB_OnStartNumberAssign )
+	EVT_BUTTON( ID_TOUR_ADD, CsInfo::_wxFB_OnAddBlock )
+	EVT_BUTTON( ID_TOUR_EDIT, CsInfo::_wxFB_OnTourEdit )
+	EVT_BUTTON( ID_TOUR_REMOVE, CsInfo::_wxFB_OnRemoveTour )
+	EVT_BUTTON( ID_TOUR_JUIDGES_MARKS, CsInfo::_wxFB_OnJudgesMark )
+	EVT_BUTTON( ID_TOUR_REPORT, CsInfo::_wxFB_OnCsTourReport )
+END_EVENT_TABLE()
+
+CsInfo::CsInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+{
+	wxBoxSizer* bSizer13;
+	bSizer13 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer7;
+	bSizer7 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpRemove = new wxBitmapButton( this, wxID_CHAMPIONSIP_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer7->Add( m_bpRemove, 0, wxALL, 5 );
+	
+	m_bpSave = new wxBitmapButton( this, wxID_CHAMPIONSHIP_SAVE, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer7->Add( m_bpSave, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( this, wxID_CHAMPIONSHIP_DISCARD, wxBitmap( button_update2_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer7->Add( m_bpDiscard, 0, wxALL, 5 );
+	
+	m_bpCategoryMngr = new wxBitmapButton( this, wxID_CHAMPIONSHIP_CATEGORIES, wxBitmap( button_categories_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer7->Add( m_bpCategoryMngr, 0, wxALL, 5 );
+	
+	m_bpJudgesMngr = new wxBitmapButton( this, wxID_CHAMPIONSHIP_JUDGESTEAMMNGR, wxBitmap( button_judges_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer7->Add( m_bpJudgesMngr, 0, wxALL, 5 );
+	
+	m_bpSendinvitation = new wxBitmapButton( this, wxID_CHAMPIONSHIP_SENDINVITATION, wxBitmap( mail_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer7->Add( m_bpSendinvitation, 0, wxALL, 5 );
+	
+	m_bpDancersTeams = new wxBitmapButton( this, ID_TEAMS, wxBitmap( button_championship_teams_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer7->Add( m_bpDancersTeams, 0, wxALL, 5 );
+	
+	m_bpStartNumberMngr = new wxBitmapButton( this, wxID_CHAMPIONSHIP_STARTNUMBERMNGR, wxBitmap( button_startnumber_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer7->Add( m_bpStartNumberMngr, 0, wxALL, 5 );
+	
+	m_bpTourAdd = new wxBitmapButton( this, ID_TOUR_ADD, wxBitmap( button_tour_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer7->Add( m_bpTourAdd, 0, wxALL, 5 );
+	
+	bSizer13->Add( bSizer7, 0, wxALIGN_RIGHT, 5 );
+	
+	wxBoxSizer* bSizer71;
+	bSizer71 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpTourEdit = new wxBitmapButton( this, ID_TOUR_EDIT, wxBitmap( button_tour_edit_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer71->Add( m_bpTourEdit, 0, wxALL, 5 );
+	
+	m_bpTourRemove = new wxBitmapButton( this, ID_TOUR_REMOVE, wxBitmap( button_tour_remove_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer71->Add( m_bpTourRemove, 0, wxALL, 5 );
+	
+	m_bpJudgesMark = new wxBitmapButton( this, ID_TOUR_JUIDGES_MARKS, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer71->Add( m_bpJudgesMark, 0, wxALL, 5 );
+	
+	m_bpTourReport = new wxBitmapButton( this, ID_TOUR_REPORT, wxBitmap( button_results_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer71->Add( m_bpTourReport, 0, wxALL, 5 );
+	
+	bSizer13->Add( bSizer71, 0, wxALIGN_RIGHT, 5 );
+	
+	wxFlexGridSizer* fgSizer1;
+	fgSizer1 = new wxFlexGridSizer( 6, 2, 0, 0 );
+	fgSizer1->AddGrowableCol( 1 );
+	fgSizer1->SetFlexibleDirection( wxBOTH );
+	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4->Wrap( -1 );
+	fgSizer1->Add( m_staticText4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_textChName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textChName->SetMaxLength( 100 ); 
+	fgSizer1->Add( m_textChName, 0, wxEXPAND|wxALL, 5 );
+	
+	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2->Wrap( -1 );
+	fgSizer1->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_comboType = new wxComboBox( this, ID_TYPE, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
+	fgSizer1->Add( m_comboType, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Date"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5->Wrap( -1 );
+	fgSizer1->Add( m_staticText5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_dateDate = new wxDatePickerCtrl( this, ID_DATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	fgSizer1->Add( m_dateDate, 0, wxALL, 5 );
+	
+	m_staticText7 = new wxStaticText( this, wxID_ANY, _("City"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7->Wrap( -1 );
+	fgSizer1->Add( m_staticText7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_comboCity = new wxComboBox( this, ID_CITY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
+	fgSizer1->Add( m_comboCity, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText8 = new wxStaticText( this, wxID_ANY, _("Adsress"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText8->Wrap( -1 );
+	fgSizer1->Add( m_staticText8, 0, wxALL, 5 );
+	
+	m_textAddress = new wxTextCtrl( this, ID_ADDRESS, wxEmptyString, wxDefaultPosition, wxSize( -1,50 ), wxTE_MULTILINE );
+	fgSizer1->Add( m_textAddress, 0, wxEXPAND|wxALL, 5 );
+	
+	bSizer13->Add( fgSizer1, 0, wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer1;
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Online registration") ), wxHORIZONTAL );
+	
+	m_staticText12 = new wxStaticText( this, wxID_ANY, _("Open date"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12->Wrap( -1 );
+	sbSizer1->Add( m_staticText12, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_dateRegOpen = new wxDatePickerCtrl( this, ID_REG_OPEN, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	sbSizer1->Add( m_dateRegOpen, 0, wxALL, 5 );
+	
+	m_staticText13 = new wxStaticText( this, wxID_ANY, _("Close date"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	sbSizer1->Add( m_staticText13, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_dateRegClose = new wxDatePickerCtrl( this, ID_REG_CLOSE, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT|wxDP_SHOWCENTURY );
+	sbSizer1->Add( m_dateRegClose, 0, wxALL|wxEXPAND, 5 );
+	
+	bSizer13->Add( sbSizer1, 0, wxEXPAND|wxALL, 5 );
+	
+	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Aditional info"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14->Wrap( -1 );
+	bSizer13->Add( m_staticText14, 0, wxALL, 5 );
+	
+	m_textAdditionalInfo = new wxTextCtrl( this, ID_INFO, wxEmptyString, wxDefaultPosition, wxSize( -1,100 ), wxTE_MULTILINE );
+	bSizer13->Add( m_textAdditionalInfo, 1, wxALL|wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer13 );
+	this->Layout();
+}
+
+CsInfo::~CsInfo()
+{
+}
+
+BEGIN_EVENT_TABLE( BlockInfo, wxPanel )
+	EVT_BUTTON( ID_M_BPUPDATE, BlockInfo::_wxFB_OnUpdateBlock )
+	EVT_BUTTON( ID_M_BPCSCATEGORIES, BlockInfo::_wxFB_OnBlockCategories )
+	EVT_GRID_CELL_CHANGE( BlockInfo::_wxFB_OnCellChange )
+	EVT_GRID_CELL_LEFT_CLICK( BlockInfo::_wxFB_OnCellLeftClick )
+	EVT_GRID_SELECT_CELL( BlockInfo::_wxFB_OnSelectCell )
+END_EVENT_TABLE()
+
+BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+{
+	wxBoxSizer* bSizer125;
+	bSizer125 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer126;
+	bSizer126 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpUpdate = new wxBitmapButton( this, ID_M_BPUPDATE, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer126->Add( m_bpUpdate, 0, wxALL, 5 );
+	
+	m_bpCsCategories = new wxBitmapButton( this, ID_M_BPCSCATEGORIES, wxBitmap( button_categories_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer126->Add( m_bpCsCategories, 0, wxALL, 5 );
+	
+	m_bpJudges = new wxBitmapButton( this, ID_M_BPJUDGES, wxBitmap( button_judges_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer126->Add( m_bpJudges, 0, wxALL, 5 );
+	
+	bSizer125->Add( bSizer126, 0, wxALIGN_RIGHT, 5 );
+	
+	wxBoxSizer* bSizer130;
+	bSizer130 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticText1091 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1091->Wrap( -1 );
+	bSizer130->Add( m_staticText1091, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textName = new wxTextCtrl( this, ID_M_TEXTNAME, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
+	bSizer130->Add( m_textName, 0, wxALL, 5 );
+	
+	m_staticText106 = new wxStaticText( this, wxID_ANY, _("Start time"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText106->Wrap( -1 );
+	bSizer130->Add( m_staticText106, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textStart = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer130->Add( m_textStart, 0, wxALL, 5 );
+	
+	m_staticText109 = new wxStaticText( this, wxID_ANY, _("Pause len"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText109->Wrap( -1 );
+	bSizer130->Add( m_staticText109, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textPause = new wxTextCtrl( this, ID_M_TEXTPAUSE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer130->Add( m_textPause, 0, wxALL, 5 );
+	
+	m_staticText107 = new wxStaticText( this, wxID_ANY, _("End time"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText107->Wrap( -1 );
+	bSizer130->Add( m_staticText107, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticLenght = new wxStaticText( this, ID_M_STATICLENGHT, _("00:00:00"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticLenght->Wrap( -1 );
+	m_staticLenght->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	bSizer130->Add( m_staticLenght, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	bSizer125->Add( bSizer130, 0, wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer17;
+	sbSizer17 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Judges per categories") ), wxVERTICAL );
+	
+	m_gridJudgesCats = new wxGrid( this, ID_M_GRIDJUDGESCATS, wxDefaultPosition, wxDefaultSize, wxRAISED_BORDER|wxVSCROLL );
+	
+	// Grid
+	m_gridJudgesCats->CreateGrid( 5, 5 );
+	m_gridJudgesCats->EnableEditing( true );
+	m_gridJudgesCats->EnableGridLines( true );
+	m_gridJudgesCats->EnableDragGridSize( false );
+	m_gridJudgesCats->SetMargins( 0, 0 );
+	
+	// Columns
+	m_gridJudgesCats->AutoSizeColumns();
+	m_gridJudgesCats->EnableDragColMove( false );
+	m_gridJudgesCats->EnableDragColSize( true );
+	m_gridJudgesCats->SetColLabelSize( 170 );
+	m_gridJudgesCats->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_TOP );
+	
+	// Rows
+	m_gridJudgesCats->AutoSizeRows();
+	m_gridJudgesCats->EnableDragRowSize( false );
+	m_gridJudgesCats->SetRowLabelSize( 100 );
+	m_gridJudgesCats->SetRowLabelAlignment( wxALIGN_RIGHT, wxALIGN_CENTRE );
+	
+	// Label Appearance
+	
+	// Cell Defaults
+	m_gridJudgesCats->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
+	sbSizer17->Add( m_gridJudgesCats, 1, wxALL|wxEXPAND, 5 );
+	
+	bSizer125->Add( sbSizer17, 1, wxALL|wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer125 );
+	this->Layout();
+}
+
+BlockInfo::~BlockInfo()
+{
+}
+
+CategoryInfo::CategoryInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+{
+	wxBoxSizer* bSizer129;
+	bSizer129 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer131;
+	bSizer131 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_button2 = new wxButton( this, wxID_ANY, _("MyButton"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer131->Add( m_button2, 0, wxALL, 5 );
+	
+	m_button3 = new wxButton( this, wxID_ANY, _("MyButton"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer131->Add( m_button3, 0, wxALL, 5 );
+	
+	bSizer129->Add( bSizer131, 0, wxALIGN_RIGHT, 5 );
+	
+	m_listRegisteredTeams = new wxListCtrl( this, ID_M_LISTREGISTEREDTEAMS, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+	bSizer129->Add( m_listRegisteredTeams, 1, wxALL|wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer129 );
+	this->Layout();
+}
+
+CategoryInfo::~CategoryInfo()
+{
+}
+
+TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+{
+	wxBoxSizer* bSizer132;
+	bSizer132 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer133;
+	bSizer133 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpButton146 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer133->Add( m_bpButton146, 0, wxALL, 5 );
+	
+	m_bpButton147 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer133->Add( m_bpButton147, 0, wxALL, 5 );
+	
+	bSizer132->Add( bSizer133, 0, wxALIGN_RIGHT, 5 );
+	
+	m_listSuccessTeams = new wxListCtrl( this, ID_M_LISTSUCCESSTEAMS, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+	bSizer132->Add( m_listSuccessTeams, 1, wxALL|wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer132 );
+	this->Layout();
+}
+
+TourInfo::~TourInfo()
 {
 }

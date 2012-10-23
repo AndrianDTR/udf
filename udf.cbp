@@ -150,6 +150,7 @@
 		<Unit filename="gui/res/icon-database.xpm" />
 		<Unit filename="gui/res/icon_championship.xpm" />
 		<Unit filename="gui/res/mail.xpm" />
+		<Unit filename="gui/src/aaa.xrc" />
 		<Unit filename="gui/src/cdbmanager.cpp" />
 		<Unit filename="gui/src/cdbmanager.h" />
 		<Unit filename="gui/src/main.cpp" />
@@ -199,12 +200,18 @@
 		<Unit filename="gui/src/udfPaymentHistory.h" />
 		<Unit filename="gui/src/udfReportPreview.cpp" />
 		<Unit filename="gui/src/udfReportPreview.h" />
+		<Unit filename="gui/src/udfSettings.cpp" />
+		<Unit filename="gui/src/udfSettings.h" />
+		<Unit filename="gui/src/udfStaff.cpp" />
+		<Unit filename="gui/src/udfStaff.h" />
 		<Unit filename="gui/src/udfStartNumberAssignDlg.cpp" />
 		<Unit filename="gui/src/udfStartNumberAssignDlg.h" />
 		<Unit filename="gui/src/udfTeamCategoryMngrDlg.cpp" />
 		<Unit filename="gui/src/udfTeamCategoryMngrDlg.h" />
 		<Unit filename="gui/src/udfTrainersMngrDlg.cpp" />
 		<Unit filename="gui/src/udfTrainersMngrDlg.h" />
+		<Unit filename="gui/src/udfUserRolesMgr.cpp" />
+		<Unit filename="gui/src/udfUserRolesMgr.h" />
 		<Unit filename="gui/src/udfcategoriesdata.cpp" />
 		<Unit filename="gui/src/udfcategoriesdata.h" />
 		<Unit filename="gui/src/udfexceptions.cpp" />

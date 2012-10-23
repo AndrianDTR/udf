@@ -70,6 +70,20 @@
     <File Name="src/udfPayment.h"/>
     <File Name="src/udfPaymentHistory.cpp"/>
     <File Name="src/udfPaymentHistory.h"/>
+    <File Name="src/udfUserRolesMgr.cpp"/>
+    <File Name="src/udfBlockInfo.h"/>
+    <File Name="src/udfCsInfo.cpp"/>
+    <File Name="src/udfTourInfo.cpp"/>
+    <File Name="src/udfCategoryInfo.h"/>
+    <File Name="src/udfSettings.h"/>
+    <File Name="src/udfStaff.h"/>
+    <File Name="src/udfStaff.cpp"/>
+    <File Name="src/udfCategoryInfo.cpp"/>
+    <File Name="src/udfBlockInfo.cpp"/>
+    <File Name="src/udfUserRolesMgr.h"/>
+    <File Name="src/udfCsInfo.h"/>
+    <File Name="src/udfSettings.cpp"/>
+    <File Name="src/udfTourInfo.h"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -90,6 +104,7 @@
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(WorkspacePath)/build/bin" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/build/bin" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       ]]>
       </Environment>
@@ -152,6 +167,7 @@ $(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppc
       
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -184,4 +200,21 @@ $(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppc
   </Settings>
   <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>
+  <VirtualDirectory Name="res">
+    <File Name="res/button_money.png"/>
+    <File Name="res/button_move_up10.png"/>
+    <File Name="res/button_payments.png"/>
+    <File Name="res/button_mark.png"/>
+    <File Name="res/button_tour_edit.png"/>
+    <File Name="res/button_report.png"/>
+    <File Name="res/icon-database.png"/>
+    <File Name="res/icon_championship.png"/>
+    <File Name="res/button_move_down10.png"/>
+    <File Name="res/button_move_down.png"/>
+    <File Name="res/button_plus.png"/>
+    <File Name="res/button_minus.png"/>
+    <File Name="res/button_tour_remove.png"/>
+    <File Name="res/button_move_up.png"/>
+    <File Name="res/button_tour_add.png"/>
+  </VirtualDirectory>
 </CodeLite_Project>

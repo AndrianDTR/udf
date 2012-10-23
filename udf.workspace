@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CodeLite_Workspace Name="udf" Database="./udf.tags">
-  <Project Name="gui" Path="gui/gui.project" Active="Yes"/>
   <Project Name="db" Path="db/db.project" Active="No"/>
   <Project Name="common" Path="common/common.project" Active="No"/>
   <Project Name="dbtest" Path="dbtest/dbtest.project" Active="No"/>
   <Environment>
     <![CDATA[
   
+  
   ]]>
   </Environment>
   <Project Name="dbmgr" Path="dbmgr/dbmgr.project" Active="No"/>
+  <Project Name="gui" Path="gui/gui.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Project Name="udf" ConfigName="Debug"/>
       <Project Name="DBManager" ConfigName="Debug"/>
       <Project Name="gui" ConfigName="Debug"/>
-      <Project Name="gui" ConfigName="Debug"/>
       <Project Name="db" ConfigName="Debug"/>
       <Project Name="common" ConfigName="Debug"/>
       <Project Name="dbtest" ConfigName="Debug"/>
       <Project Name="dbmgr" ConfigName="Debug"/>
+      <Project Name="gui" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="udf" ConfigName="Release"/>
       <Project Name="DBManager" ConfigName="Release"/>
       <Project Name="gui" ConfigName="Release"/>
-      <Project Name="gui" ConfigName="Release"/>
       <Project Name="db" ConfigName="Debug"/>
       <Project Name="common" ConfigName="Debug"/>
       <Project Name="dbtest" ConfigName="Release"/>
       <Project Name="dbmgr" ConfigName="Release"/>
+      <Project Name="gui" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

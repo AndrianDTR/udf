@@ -17,5 +17,7 @@ CDbConnection* GetGlobalDbConnection();
 long GetTeamsCountForChampionship(unsigned int nId, int& count);
 long GetRegisteredTeamsForCategory(unsigned int nId, int& count);
 
+long GetBlockLenById(unsigned int nId, time_t& len);
+
 
 #endif // __udfutils_h__
