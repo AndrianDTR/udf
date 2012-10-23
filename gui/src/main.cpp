@@ -18,6 +18,11 @@
 
 #include "locale.h"
 // initialize the application
+//(*AppHeaders
+#include <wx/xrc/xmlres.h>
+#include <wx/image.h>
+//*)
+
 IMPLEMENT_APP(MainApp);
 
 ////////////////////////////////////////////////////////////////////////////////

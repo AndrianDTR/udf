@@ -22,7 +22,7 @@ public:
 	/** Constructor */
 	udfPayment( wxWindow* parent );
 //// end generated class members
-	
+
 public:
 	void				SetPayDate(wxDateTime pay){m_datePay->SetValue(pay);};
 	const wxDateTime	GetPayDate(){return m_datePay->GetValue();};
