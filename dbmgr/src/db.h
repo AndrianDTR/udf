@@ -44,9 +44,8 @@
 #include "tcountries.h"
 #include "tcities.h"
 #include "tuserroles.h"
-#include "tcsblockscategories.h"
 #include "tcsblocks.h"
-#include "tcsblocksjudges.h"
+#include "tcsblocksj2c.h"
 #include "tstaff.h"
 
 using namespace std;

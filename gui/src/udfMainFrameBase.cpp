@@ -167,8 +167,9 @@ void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 void udfMainFrameBase::RefreshCsBlock(unsigned int id, wxTreeItemId parent)
 {
 	/** Append block categories **/
-	CCsBlockCategoriesTable::tTableMap categories;
-	CCsBlockCategoriesTable::tDATA catFilter = {0};
+	/*
+	CCsBlockJudgesTable::tTableMap categories;
+	CCsBlockJudgesTable::tDATA catFilter = {0};
 	catFilter.blockId = id;
 
 	CCsBlockCategoriesTable(m_pCon).Find(categories, catFilter);
@@ -187,6 +188,7 @@ void udfMainFrameBase::RefreshCsBlock(unsigned int id, wxTreeItemId parent)
 
 		it++;
 	}
+	*/
 }
 
 void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
@@ -431,17 +433,7 @@ int udfMainFrameBase::ShowDanceTypesMngrDlg()
 					table.UpdateRow(listIt->first, data);
 				}
 				rList.erase(rLstIt);
-			}class MyTreeItemData : public wxTreeItemData
-{
-public:
-    MyTreeItemData(const wxString& desc) : m_desc(desc) { }
-
-    void ShowInfo(wxTreeCtrl *tree);
-    const wxChar *GetDesc() const { return m_desc.c_str(); }
-
-private:
-    wxString m_desc;
-};
+			}
 			listIt++;
 		}
 
@@ -533,20 +525,7 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 
 void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
 {
-	do{
-		wxTreeItemId csId = GetSelectedCs();
-		if(!csId.IsOk())
-			break;
-
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(csId);
-
-		if(wxID_OK == udfChampionshipCategoriesMngrDlg(this, csItem->GetId()).ShowModal())
-		{
-			m_treeCs->DeleteChildren(csId);
-			RefreshCs(csItem->GetId(), csId);
-		}
-
-	}while(0);
+	ShowCsCategoryManager();
 }
 
 void udfMainFrameBase::OnDancersTeams(wxCommandEvent& event)
@@ -580,15 +559,7 @@ void udfMainFrameBase::OnStartNumberAssign( wxCommandEvent& event )
 
 void udfMainFrameBase::OnJudgeMngr( wxCommandEvent& event )
 {
-	do{
-		wxTreeItemId itemId = GetSelectedCs();
-		if(!itemId.IsOk())
-			break;
-
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
-
-		udfChampionshipJudgesTeamMngrDlg(this, csItem->GetId()).ShowModal();
-	}while(0);
+	ShowCsJudgesManager();
 }
 
 void udfMainFrameBase::OnSendInvitation( wxCommandEvent& event )
@@ -808,11 +779,55 @@ void udfMainFrameBase::OnJudgesMark(wxCommandEvent& event)
 }
 
 /************************************************************************/
+int udfMainFrameBase::ShowCsCategoryManager()
+{
+	int res = wxID_CANCEL;
+	
+	do{
+		wxTreeItemId csId = GetSelectedCs();
+		if(!csId.IsOk())
+			break;
+		
+		wxTreeItemId blockId = GetSelectedCsBlock();
+		if(!blockId.IsOk())
+			break;
+
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(csId);
+		udfTreeItemData *blockItem = (udfTreeItemData *)m_treeCs->GetItemData(blockId);
+		
+		res = udfChampionshipCategoriesMngrDlg(this, csItem->GetId()).ShowModal();
+		if(wxID_OK == res)
+		{
+			m_treeCs->DeleteChildren(blockId);
+			RefreshCsBlock(blockItem->GetId(), blockId);
+		}
+
+	}while(0);
+	
+	return res;
+}
+
+int udfMainFrameBase::ShowCsJudgesManager()
+{
+	int res = wxID_CANCEL;
+	
+	do{
+		wxTreeItemId itemId = GetSelectedCs();
+		if(!itemId.IsOk())
+			break;
+
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
+
+		res = udfChampionshipJudgesTeamMngrDlg(this, csItem->GetId()).ShowModal();
+	}while(0);
+	
+	return res;
+}
+
 void udfMainFrameBase::OnAddChampionsip(wxCommandEvent& event)
 {
 	do
 	{
-		DEBUG_PRINT("Add Cs");
 		wxTreeItemId id = wxTreeItemId();
 		m_pageCsInfo->SetCsTreeItem(m_treeCs, m_root, id);
 
@@ -827,7 +842,6 @@ void udfMainFrameBase::CsSelected()
 {
 	do
 	{
-		DEBUG_PRINT("Cs selected");
 		wxTreeItemId csItem = GetSelectedCs();
 		if(!csItem.IsOk())
 			break;
@@ -844,14 +858,13 @@ void udfMainFrameBase::CsSelected()
 void udfMainFrameBase::OnAddBlock(wxCommandEvent& event)
 {
 	do{
-		DEBUG_PRINT("Add block");
 		wxTreeItemId id = wxTreeItemId();
 
 		wxTreeItemId csItem = GetSelectedCs();
 		if(!csItem.IsOk())
 			break;
 
-		m_pageBlockInfo->SetCsTreeItem(m_treeCs, m_root, csItem);
+		m_pageBlockInfo->SetCsTreeItem(m_treeCs, csItem, id);
 
 		m_pageCsInfo->Show(false);
 		m_pageBlockInfo->Show(true);
@@ -864,17 +877,16 @@ void udfMainFrameBase::BlockSelected()
 {
 	do
 	{
-		DEBUG_PRINT("Block selected");
 		wxTreeItemId csItem = GetSelectedCs();
 		if(!csItem.IsOk())
 			break;
-
+		
 		wxTreeItemId blockItem = GetSelectedCsBlock();
 		if(!blockItem.IsOk())
 			break;
-
-		m_pageCsInfo->SetCsTreeItem(m_treeCs, csItem, blockItem);
-
+		
+		m_pageBlockInfo->SetCsTreeItem(m_treeCs, csItem, blockItem);
+		
 		m_pageCsInfo->Show(false);
 		m_pageBlockInfo->Show(true);
 		m_pageCatInfo->Show(false);

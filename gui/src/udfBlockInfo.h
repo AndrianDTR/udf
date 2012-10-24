@@ -18,7 +18,8 @@ class udfBlockInfo : public BlockInfo
 {
 public:
 	typedef std::map<int, unsigned int>				tI2UiMap;
-	typedef std::map<int, unsigned int>::iterator	tI2UiIt;
+	typedef std::map<int, unsigned int>				tUi2IMap;
+	
 
 protected:
 	// Handlers for BlockInfo events.
@@ -26,7 +27,6 @@ protected:
 	void OnBlockCategories( wxCommandEvent& event );
 	void OnCellChange( wxGridEvent& event );
 	void OnCellLeftClick( wxGridEvent& event );
-	void OnSelectCell( wxGridEvent& event );
 public:
 	/** Constructor */
 	udfBlockInfo( wxWindow* parent);
@@ -36,13 +36,20 @@ protected:
 	wxString				GetVerticalText(wxString str);
 	tI2UiMap				m_RowIdMap;
 	tI2UiMap				m_ColIdMap;
-
+	tUi2IMap				m_IdRowMap;
+	tUi2IMap				m_IdColMap;
+	
 private:
 	CDbConnection*			m_pCon;
 	udfMainFrameBase*		m_pMainWindow;
 	wxTreeCtrl*				m_pTree;
 	wxTreeItemId			m_parentItem;
 	wxTreeItemId			m_itemId;
+
+private:
+	bool 			ValidateData();
+	void			CreateNewBlock();
+	void			FillData();
 
 public:
 	bool			Show(bool show = true);

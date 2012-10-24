@@ -34,7 +34,13 @@ std::string CCsBlocksTable::GetFilterString(const tDATA& filter)
 		sprintf(tmp, "%sand `order` like %d ", query, filter.order);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
-
+	
+	if (0 != filter.pause)
+	{
+		sprintf(tmp, "%sand `pause` like %d ", query, filter.pause);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+	
 	if (0 != filter.startTime)
 	{
 		sprintf(tmp, "%sand `start_time` like %d ", query, time2str(filter.startTime).c_str());
@@ -86,6 +92,7 @@ long CCsBlocksTable::Find(tTableMap& data, const tDATA& filter)
 			el.order = qRes->getUInt("order");
 			el.name = qRes->getString("name");
 			el.startTime = str2time(qRes->getString("start_time"));
+			el.pause = qRes->getUInt("pause");
 
 			data.insert(make_pair(el.id, el));
 		}
@@ -111,13 +118,14 @@ long CCsBlocksTable::AddRow(tDATA& rec)
 			break;
 		}
 
-		sprintf(query, "insert into %s(`championship_id`, `order`, `name`, `start_time`)"
-			" values(%d, %d, '%s', '%s')"
+		sprintf(query, "insert into %s(`championship_id`, `order`, `name`, `start_time`, `pause`)"
+			" values(%d, %d, '%s', '%s', %d)"
 			, TABLE
 			, rec.csId
 			, rec.order
 			, rec.name.c_str()
-			, time2str(rec.startTime).c_str());
+			, time2str(rec.startTime).c_str()
+			, rec.pause);
 		res = m_pConnection->Execute(query);
 
 		rec.id = m_pConnection->GetLastInsertId();
@@ -174,6 +182,7 @@ long CCsBlocksTable::GetRow(unsigned int nId, tDATA& data)
 		data.order = qRes->getUInt("order");
 		data.name = qRes->getString("name");
 		data.startTime = str2time(qRes->getString("start_time"));
+		data.pause = qRes->getUInt("pause");
 
 		res = UDF_OK;
 	}while(0);
@@ -207,6 +216,13 @@ long CCsBlocksTable::UpdateRow(unsigned int nId, const tDATA& data)
 		if (0 != data.order)
 		{
 			sprintf(tmp, "%s `order` = %d,", query, data.order);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+
+		if (0 != data.pause)
+		{
+			sprintf(tmp, "%s `pause` = %d,", query, data.pause);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

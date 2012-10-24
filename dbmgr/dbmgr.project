@@ -65,16 +65,14 @@
     <File Name="src/db.h"/>
     <File Name="src/tcsblocks.h"/>
     <File Name="src/tstaff.cpp"/>
-    <File Name="src/tcsblocksjudges.cpp"/>
     <File Name="src/tuserroles.cpp"/>
     <File Name="src/ttourtypes.h"/>
     <File Name="src/ttourtypes.cpp"/>
-    <File Name="src/tcsblockscategories.cpp"/>
     <File Name="src/tstaff.h"/>
     <File Name="src/tuserroles.h"/>
     <File Name="src/tcsblocks.cpp"/>
-    <File Name="src/tcsblocksjudges.h"/>
-    <File Name="src/tcsblockscategories.h"/>
+    <File Name="src/tcsblocksj2c.cpp"/>
+    <File Name="src/tcsblocksj2c.h"/>
   </VirtualDirectory>
   <Settings Type="Static Library">
     <GlobalSettings>
@@ -103,6 +101,7 @@
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       
@@ -159,6 +158,7 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       

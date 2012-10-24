@@ -12,6 +12,7 @@ public:
 		unsigned int	order;
 		std::string		name;
 		time_t			startTime;
+		int				pause;
 	};
 
 	typedef map<unsigned int, tDATA> tTableMap;

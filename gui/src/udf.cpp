@@ -48,21 +48,6 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-BEGIN_EVENT_TABLE( DancersTeamMngr, wxDialog )
-	EVT_TEXT( ID_SEARCH, DancersTeamMngr::_wxFB_OnSearch )
-	EVT_LISTBOX( ID_TEAM_LIST, DancersTeamMngr::_wxFB_OnSelectTeam )
-	EVT_BUTTON( wxID_ADD, DancersTeamMngr::_wxFB_OnAddTeam )
-	EVT_BUTTON( wxID_REMOVE, DancersTeamMngr::_wxFB_OnRemoveTeam )
-	EVT_BUTTON( ID_APPLY, DancersTeamMngr::_wxFB_OnUpdate )
-	EVT_BUTTON( wxID_OK, DancersTeamMngr::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, DancersTeamMngr::_wxFB_OnDiscard )
-	EVT_COMBOBOX( ID_CLUB, DancersTeamMngr::_wxFB_OnClubChanged )
-	EVT_BUTTON( wxID_ADDDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnAddDancerTeamCategory )
-	EVT_BUTTON( wxID_REMOVEDANCERTEAMCATEGORY, DancersTeamMngr::_wxFB_OnRemoveDancerTeamCategory )
-	EVT_BUTTON( wxID_ADDDANCER, DancersTeamMngr::_wxFB_OnAddDancer2Team )
-	EVT_BUTTON( wxID_REMOVEDANCER, DancersTeamMngr::_wxFB_OnRemoveDancerFromTeam )
-END_EVENT_TABLE()
-
 DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
@@ -224,20 +209,39 @@ DancersTeamMngr::DancersTeamMngr( wxWindow* parent, wxWindowID id, const wxStrin
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( DancersTeamMngr::OnSearch ), NULL, this );
+	m_listTeams->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( DancersTeamMngr::OnSelectTeam ), NULL, this );
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnAddTeam ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnRemoveTeam ), NULL, this );
+	m_bpApply->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnUpdate ), NULL, this );
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnDiscard ), NULL, this );
+	m_comboClub->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( DancersTeamMngr::OnClubChanged ), NULL, this );
+	m_bpAddDancerTeamCategory->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnAddDancerTeamCategory ), NULL, this );
+	m_bpRemoveDancerTeamCategory->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnRemoveDancerTeamCategory ), NULL, this );
+	m_bpAddDancerTeamDancer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnAddDancer2Team ), NULL, this );
+	m_bpRemoveDancerTeamDancer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnRemoveDancerFromTeam ), NULL, this );
 }
 
 DancersTeamMngr::~DancersTeamMngr()
 {
+	// Disconnect Events
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( DancersTeamMngr::OnSearch ), NULL, this );
+	m_listTeams->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( DancersTeamMngr::OnSelectTeam ), NULL, this );
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnAddTeam ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnRemoveTeam ), NULL, this );
+	m_bpApply->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnUpdate ), NULL, this );
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnDiscard ), NULL, this );
+	m_comboClub->Disconnect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( DancersTeamMngr::OnClubChanged ), NULL, this );
+	m_bpAddDancerTeamCategory->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnAddDancerTeamCategory ), NULL, this );
+	m_bpRemoveDancerTeamCategory->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnRemoveDancerTeamCategory ), NULL, this );
+	m_bpAddDancerTeamDancer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnAddDancer2Team ), NULL, this );
+	m_bpRemoveDancerTeamDancer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersTeamMngr::OnRemoveDancerFromTeam ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( ChampionshipCategoriesMngrDlg, wxDialog )
-	EVT_BUTTON( wxID_ADDALL, ChampionshipCategoriesMngrDlg::_wxFB_OnAddAll )
-	EVT_BUTTON( wxID_ADDONE, ChampionshipCategoriesMngrDlg::_wxFB_OnAdd )
-	EVT_BUTTON( wxID_REMOVEONE, ChampionshipCategoriesMngrDlg::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_REMOVEALL, ChampionshipCategoriesMngrDlg::_wxFB_OnRemoveAll )
-	EVT_BUTTON( wxID_OK, ChampionshipCategoriesMngrDlg::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, ChampionshipCategoriesMngrDlg::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -308,24 +312,27 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpAddAll->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnAddAll ), NULL, this );
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnAdd ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnRemove ), NULL, this );
+	m_bpRemoveAll->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnRemoveAll ), NULL, this );
+	m_bpButton31->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnSave ), NULL, this );
+	m_bpButton32->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnDiscard ), NULL, this );
 }
 
 ChampionshipCategoriesMngrDlg::~ChampionshipCategoriesMngrDlg()
 {
+	// Disconnect Events
+	m_bpAddAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnAddAll ), NULL, this );
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnAdd ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnRemove ), NULL, this );
+	m_bpRemoveAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnRemoveAll ), NULL, this );
+	m_bpButton31->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnSave ), NULL, this );
+	m_bpButton32->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( CategoriesMngrDlg, wxDialog )
-	EVT_TEXT( ID_CATEGORY_LIST_SEARCH, CategoriesMngrDlg::_wxFB_OnCategorySearch )
-	EVT_LISTBOX( ID_CATEGORY_LIST, CategoriesMngrDlg::_wxFB_OnCategorySelected )
-	EVT_BUTTON( wxID_ADD, CategoriesMngrDlg::_wxFB_OnAdd )
-	EVT_BUTTON( wxID_REMOVE, CategoriesMngrDlg::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_APPLY, CategoriesMngrDlg::_wxFB_OnUpdate )
-	EVT_BUTTON( wxID_OK, CategoriesMngrDlg::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, CategoriesMngrDlg::_wxFB_OnDiscard )
-	EVT_COMBOBOX( ID_AGE_LIST, CategoriesMngrDlg::_wxFB_OnAgeCganged )
-	EVT_COMBOBOX( ID_LIGA_LIST, CategoriesMngrDlg::_wxFB_OnLigaCganged )
-	EVT_COMBOBOX( ID_DANCE_LIST, CategoriesMngrDlg::_wxFB_OnDanceChanged )
-END_EVENT_TABLE()
 
 CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -434,26 +441,35 @@ CategoriesMngrDlg::CategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxS
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CategoriesMngrDlg::OnCategorySearch ), NULL, this );
+	m_listCategories->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CategoriesMngrDlg::OnCategorySelected ), NULL, this );
+	m_bpButton13->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoriesMngrDlg::OnAdd ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoriesMngrDlg::OnRemove ), NULL, this );
+	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoriesMngrDlg::OnUpdate ), NULL, this );
+	m_bpButton29->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoriesMngrDlg::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoriesMngrDlg::OnDiscard ), NULL, this );
+	m_comboAge->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( CategoriesMngrDlg::OnAgeCganged ), NULL, this );
+	m_comboLiga->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( CategoriesMngrDlg::OnLigaCganged ), NULL, this );
+	m_comboDance->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( CategoriesMngrDlg::OnDanceChanged ), NULL, this );
 }
 
 CategoriesMngrDlg::~CategoriesMngrDlg()
 {
+	// Disconnect Events
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CategoriesMngrDlg::OnCategorySearch ), NULL, this );
+	m_listCategories->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CategoriesMngrDlg::OnCategorySelected ), NULL, this );
+	m_bpButton13->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoriesMngrDlg::OnAdd ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoriesMngrDlg::OnRemove ), NULL, this );
+	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoriesMngrDlg::OnUpdate ), NULL, this );
+	m_bpButton29->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoriesMngrDlg::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoriesMngrDlg::OnDiscard ), NULL, this );
+	m_comboAge->Disconnect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( CategoriesMngrDlg::OnAgeCganged ), NULL, this );
+	m_comboLiga->Disconnect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( CategoriesMngrDlg::OnLigaCganged ), NULL, this );
+	m_comboDance->Disconnect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( CategoriesMngrDlg::OnDanceChanged ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( ClubsMngrDlg, wxDialog )
-	EVT_TEXT( ID_SEARCH, ClubsMngrDlg::_wxFB_OnSearch )
-	EVT_LISTBOX( ID_CLUBLIST, ClubsMngrDlg::_wxFB_OnSelectClub )
-	EVT_BUTTON( wxID_ADDCLUB, ClubsMngrDlg::_wxFB_OnAddClub )
-	EVT_BUTTON( wxID_APPLY, ClubsMngrDlg::_wxFB_OnUpdate )
-	EVT_BUTTON( wxID_REMOVECLUB, ClubsMngrDlg::_wxFB_OnRemoveClub )
-	EVT_BUTTON( wxID_ACCOUNTINFO, ClubsMngrDlg::_wxFB_OnAccountInfo )
-	EVT_BUTTON( wxID_DIRECTORINFO, ClubsMngrDlg::_wxFB_OnDirectorInfo )
-	EVT_BUTTON( wxID_TRAINERS, ClubsMngrDlg::_wxFB_OnTrainersMngr )
-	EVT_BUTTON( wxID_DANCERS, ClubsMngrDlg::_wxFB_OnDancersMngr )
-	EVT_BUTTON( ID_M_BPPAYMENT, ClubsMngrDlg::_wxFB_OnPayment )
-	EVT_BUTTON( wxID_OK, ClubsMngrDlg::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, ClubsMngrDlg::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -591,32 +607,39 @@ ClubsMngrDlg::ClubsMngrDlg( wxWindow* parent, wxWindowID id, const wxString& tit
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ClubsMngrDlg::OnSearch ), NULL, this );
+	m_listClubs->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( ClubsMngrDlg::OnSelectClub ), NULL, this );
+	m_bpAddClub->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnAddClub ), NULL, this );
+	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnUpdate ), NULL, this );
+	m_bpRemoveClub->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnRemoveClub ), NULL, this );
+	m_bpAccountInfo->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnAccountInfo ), NULL, this );
+	m_bpDirectorInfo->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnDirectorInfo ), NULL, this );
+	m_bpTarinersMngr->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnTrainersMngr ), NULL, this );
+	m_bpDancersMngr->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnDancersMngr ), NULL, this );
+	m_bpPayments->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnPayment ), NULL, this );
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnSave ), NULL, this );
+	m_bpCancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnDiscard ), NULL, this );
 }
 
 ClubsMngrDlg::~ClubsMngrDlg()
 {
+	// Disconnect Events
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ClubsMngrDlg::OnSearch ), NULL, this );
+	m_listClubs->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( ClubsMngrDlg::OnSelectClub ), NULL, this );
+	m_bpAddClub->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnAddClub ), NULL, this );
+	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnUpdate ), NULL, this );
+	m_bpRemoveClub->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnRemoveClub ), NULL, this );
+	m_bpAccountInfo->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnAccountInfo ), NULL, this );
+	m_bpDirectorInfo->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnDirectorInfo ), NULL, this );
+	m_bpTarinersMngr->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnTrainersMngr ), NULL, this );
+	m_bpDancersMngr->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnDancersMngr ), NULL, this );
+	m_bpPayments->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnPayment ), NULL, this );
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnSave ), NULL, this );
+	m_bpCancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ClubsMngrDlg::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( MainFrameBase, wxFrame )
-	EVT_CLOSE( MainFrameBase::_wxFB_OnCloseFrame )
-	EVT_MENU( wxID_EXIT, MainFrameBase::_wxFB_OnExitClick )
-	EVT_MENU( ID_MENU_MNGR_CLUBS, MainFrameBase::_wxFB_OnMenuClubManage )
-	EVT_MENU( ID_MENU_MNGR_JUDGE, MainFrameBase::_wxFB_OnMenuJudgeManage )
-	EVT_MENU( ID_MENU_MNGR_CATEGORIES, MainFrameBase::_wxFB_OnMenuCategoryManage )
-	EVT_MENU( ID_MENU_MNGR_DANCE_TYPES, MainFrameBase::_wxFB_OnDanceTypesCodeMgr )
-	EVT_MENU( ID_MENU_MNGR_LIGUES, MainFrameBase::_wxFB_OnLigueCodeMgr )
-	EVT_MENU( ID_MENU_MNGR_AGE_CATEGORIES, MainFrameBase::_wxFB_OnAgeCodesMgr )
-	EVT_MENU( ID_MENU_MNGR_ChTYPES_MNGR, MainFrameBase::_wxFB_OnMenuChampionshipTypes )
-	EVT_MENU( ID_MENU_MNGR_CITIES, MainFrameBase::_wxFB_OnCitiesMngr )
-	EVT_MENU( ID_MENU_MNGR_COUNTRIES, MainFrameBase::_wxFB_OnCountriesMngr )
-	EVT_MENU( ID_MENU_TOOLS_SYUNC, MainFrameBase::_wxFB_OnMenySync )
-	EVT_MENU( ID_MENU_TOOLS_OPTIONS, MainFrameBase::_wxFB_OnMenuOptions )
-	EVT_MENU( ID_ABOUT, MainFrameBase::_wxFB_OnAboutDlg )
-	EVT_TEXT( ID_SEARCH, MainFrameBase::_wxFB_OnSearch )
-	EVT_BUTTON( wxID_CHAMPIONSIP_ADD, MainFrameBase::_wxFB_OnAddChampionsip )
-	EVT_TREE_ITEM_ACTIVATED( ID_CS_TREE, MainFrameBase::_wxFB_OnEditTour )
-	EVT_TREE_SEL_CHANGED( ID_CS_TREE, MainFrameBase::_wxFB_OnCsSelect )
-END_EVENT_TABLE()
 
 MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
@@ -795,366 +818,51 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrameBase::OnCloseFrame ) );
+	this->Connect( menuFileExit->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnExitClick ) );
+	this->Connect( m_menuItem5->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuClubManage ) );
+	this->Connect( m_menuItem6->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuJudgeManage ) );
+	this->Connect( m_menuItem9->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuCategoryManage ) );
+	this->Connect( m_menuItem62->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnDanceTypesCodeMgr ) );
+	this->Connect( m_menuItem7->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnLigueCodeMgr ) );
+	this->Connect( m_menuItem8->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnAgeCodesMgr ) );
+	this->Connect( m_menuItem201->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuChampionshipTypes ) );
+	this->Connect( m_menuItem10->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnCitiesMngr ) );
+	this->Connect( m_menuItem91->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnCountriesMngr ) );
+	this->Connect( m_menuItem211->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenySync ) );
+	this->Connect( m_menuItem22->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuOptions ) );
+	this->Connect( m_menuItem61->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnAboutDlg ) );
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( MainFrameBase::OnSearch ), NULL, this );
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnAddChampionsip ), NULL, this );
+	m_treeCs->Connect( wxEVT_COMMAND_TREE_ITEM_ACTIVATED, wxTreeEventHandler( MainFrameBase::OnEditTour ), NULL, this );
+	m_treeCs->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( MainFrameBase::OnCsSelect ), NULL, this );
 }
 
 MainFrameBase::~MainFrameBase()
 {
+	// Disconnect Events
+	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrameBase::OnCloseFrame ) );
+	this->Disconnect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnExitClick ) );
+	this->Disconnect( ID_MENU_MNGR_CLUBS, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuClubManage ) );
+	this->Disconnect( ID_MENU_MNGR_JUDGE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuJudgeManage ) );
+	this->Disconnect( ID_MENU_MNGR_CATEGORIES, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuCategoryManage ) );
+	this->Disconnect( ID_MENU_MNGR_DANCE_TYPES, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnDanceTypesCodeMgr ) );
+	this->Disconnect( ID_MENU_MNGR_LIGUES, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnLigueCodeMgr ) );
+	this->Disconnect( ID_MENU_MNGR_AGE_CATEGORIES, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnAgeCodesMgr ) );
+	this->Disconnect( ID_MENU_MNGR_ChTYPES_MNGR, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuChampionshipTypes ) );
+	this->Disconnect( ID_MENU_MNGR_CITIES, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnCitiesMngr ) );
+	this->Disconnect( ID_MENU_MNGR_COUNTRIES, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnCountriesMngr ) );
+	this->Disconnect( ID_MENU_TOOLS_SYUNC, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenySync ) );
+	this->Disconnect( ID_MENU_TOOLS_OPTIONS, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuOptions ) );
+	this->Disconnect( ID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnAboutDlg ) );
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( MainFrameBase::OnSearch ), NULL, this );
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnAddChampionsip ), NULL, this );
+	m_treeCs->Disconnect( wxEVT_COMMAND_TREE_ITEM_ACTIVATED, wxTreeEventHandler( MainFrameBase::OnEditTour ), NULL, this );
+	m_treeCs->Disconnect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( MainFrameBase::OnCsSelect ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( MainFrameBase1, wxFrame )
-	EVT_CLOSE( MainFrameBase1::_wxFB_OnCloseFrame )
-	EVT_MENU( wxID_EXIT, MainFrameBase1::_wxFB_OnExitClick )
-	EVT_MENU( ID_MENU_MNGR_CLUBS, MainFrameBase1::_wxFB_OnMenuClubManage )
-	EVT_MENU( ID_MENU_MNGR_JUDGE, MainFrameBase1::_wxFB_OnMenuJudgeManage )
-	EVT_MENU( ID_MENU_MNGR_CATEGORIES, MainFrameBase1::_wxFB_OnMenuCategoryManage )
-	EVT_MENU( ID_MENU_MNGR_DANCE_TYPES, MainFrameBase1::_wxFB_OnDanceTypesCodeMgr )
-	EVT_MENU( ID_MENU_MNGR_LIGUES, MainFrameBase1::_wxFB_OnLigueCodeMgr )
-	EVT_MENU( ID_MENU_MNGR_AGE_CATEGORIES, MainFrameBase1::_wxFB_OnAgeCodesMgr )
-	EVT_MENU( ID_MENU_MNGR_ChTYPES_MNGR, MainFrameBase1::_wxFB_OnMenuChampionshipTypes )
-	EVT_MENU( ID_MENU_MNGR_CITIES, MainFrameBase1::_wxFB_OnCitiesMngr )
-	EVT_MENU( ID_MENU_MNGR_COUNTRIES, MainFrameBase1::_wxFB_OnCountriesMngr )
-	EVT_MENU( ID_MENU_TOOLS_SYUNC, MainFrameBase1::_wxFB_OnMenySync )
-	EVT_MENU( ID_MENU_TOOLS_OPTIONS, MainFrameBase1::_wxFB_OnMenuOptions )
-	EVT_MENU( ID_ABOUT, MainFrameBase1::_wxFB_OnAboutDlg )
-	EVT_TEXT( ID_SEARCH, MainFrameBase1::_wxFB_OnSearch )
-	EVT_BUTTON( wxID_CHAMPIONSIP_ADD, MainFrameBase1::_wxFB_OnAddChampionsip )
-	EVT_TREE_ITEM_ACTIVATED( ID_CS_TREE, MainFrameBase1::_wxFB_OnEditTour )
-	EVT_TREE_SEL_CHANGED( ID_CS_TREE, MainFrameBase1::_wxFB_OnCsSelect )
-	EVT_BUTTON( wxID_CHAMPIONSIP_REMOVE, MainFrameBase1::_wxFB_OnRemoveChampionship )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_SAVE, MainFrameBase1::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_DISCARD, MainFrameBase1::_wxFB_OnDiscard )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_CATEGORIES, MainFrameBase1::_wxFB_OnCategoryMngr )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_JUDGESTEAMMNGR, MainFrameBase1::_wxFB_OnJudgeMngr )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_SENDINVITATION, MainFrameBase1::_wxFB_OnSendInvitation )
-	EVT_BUTTON( ID_TEAMS, MainFrameBase1::_wxFB_OnDancersTeams )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_STARTNUMBERMNGR, MainFrameBase1::_wxFB_OnStartNumberAssign )
-	EVT_BUTTON( ID_TOUR_ADD, MainFrameBase1::_wxFB_OnAddTour )
-	EVT_BUTTON( ID_TOUR_EDIT, MainFrameBase1::_wxFB_OnTourEdit )
-	EVT_BUTTON( ID_TOUR_REMOVE, MainFrameBase1::_wxFB_OnRemoveTour )
-	EVT_BUTTON( ID_TOUR_JUIDGES_MARKS, MainFrameBase1::_wxFB_OnJudgesMark )
-	EVT_BUTTON( ID_TOUR_REPORT, MainFrameBase1::_wxFB_OnCsTourReport )
-END_EVENT_TABLE()
-
-MainFrameBase1::MainFrameBase1( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
-{
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-	
-	m_menuBar = new wxMenuBar( 0 );
-	m_menuFile = new wxMenu();
-	wxMenuItem* menuFileExit;
-	menuFileExit = new wxMenuItem( m_menuFile, wxID_EXIT, wxString( _("E&xit") ) + wxT('\t') + wxT("Alt+X"), wxEmptyString, wxITEM_NORMAL );
-	m_menuFile->Append( menuFileExit );
-	
-	m_menuBar->Append( m_menuFile, _("&File") ); 
-	
-	m_menu8 = new wxMenu();
-	wxMenuItem* m_menuItem11;
-	m_menuItem11 = new wxMenuItem( m_menu8, ID_CS_ADD, wxString( _("Add new championship") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu8->Append( m_menuItem11 );
-	
-	wxMenuItem* m_menuItem12;
-	m_menuItem12 = new wxMenuItem( m_menu8, ID_CS_REMOVE, wxString( _("Remove current championship") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu8->Append( m_menuItem12 );
-	
-	wxMenuItem* m_menuItem13;
-	m_menuItem13 = new wxMenuItem( m_menu8, ID_CS_UPDATE, wxString( _("Save changes") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu8->Append( m_menuItem13 );
-	
-	wxMenuItem* m_separator2;
-	m_separator2 = m_menu8->AppendSeparator();
-	
-	wxMenuItem* m_menuItem15;
-	m_menuItem15 = new wxMenuItem( m_menu8, ID_CS_CATEGORIES, wxString( _("Categories") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu8->Append( m_menuItem15 );
-	
-	wxMenuItem* m_menuItem17;
-	m_menuItem17 = new wxMenuItem( m_menu8, ID_CS_STARTNUMB, wxString( _("Start number assign") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu8->Append( m_menuItem17 );
-	
-	wxMenuItem* m_menuItem18;
-	m_menuItem18 = new wxMenuItem( m_menu8, ID_CS_JUDGESTEAM, wxString( _("Judges team") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu8->Append( m_menuItem18 );
-	
-	wxMenuItem* m_menuItem19;
-	m_menuItem19 = new wxMenuItem( m_menu8, ID_CS_INVITATIONS, wxString( _("Send invitations") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu8->Append( m_menuItem19 );
-	
-	wxMenuItem* m_menuItem20;
-	m_menuItem20 = new wxMenuItem( m_menu8, ID_CS_RESULTS, wxString( _("Results") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu8->Append( m_menuItem20 );
-	
-	wxMenuItem* m_menuItem21;
-	m_menuItem21 = new wxMenuItem( m_menu8, ID_CS_RAITING, wxString( _("Raiting") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu8->Append( m_menuItem21 );
-	
-	m_menuBar->Append( m_menu8, _("Championship") ); 
-	
-	m_menu2 = new wxMenu();
-	wxMenuItem* m_menuItem5;
-	m_menuItem5 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CLUBS, wxString( _("Clubs") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu2->Append( m_menuItem5 );
-	
-	wxMenuItem* m_menuItem6;
-	m_menuItem6 = new wxMenuItem( m_menu2, ID_MENU_MNGR_JUDGE, wxString( _("Judges") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu2->Append( m_menuItem6 );
-	
-	wxMenuItem* m_separator21;
-	m_separator21 = m_menu2->AppendSeparator();
-	
-	wxMenuItem* m_menuItem9;
-	m_menuItem9 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CATEGORIES, wxString( _("Categories") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu2->Append( m_menuItem9 );
-	
-	wxMenuItem* m_menuItem62;
-	m_menuItem62 = new wxMenuItem( m_menu2, ID_MENU_MNGR_DANCE_TYPES, wxString( _("Dance types") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu2->Append( m_menuItem62 );
-	
-	wxMenuItem* m_menuItem7;
-	m_menuItem7 = new wxMenuItem( m_menu2, ID_MENU_MNGR_LIGUES, wxString( _("Ligues") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu2->Append( m_menuItem7 );
-	
-	wxMenuItem* m_menuItem8;
-	m_menuItem8 = new wxMenuItem( m_menu2, ID_MENU_MNGR_AGE_CATEGORIES, wxString( _("Age gategories") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu2->Append( m_menuItem8 );
-	
-	wxMenuItem* m_menuItem201;
-	m_menuItem201 = new wxMenuItem( m_menu2, ID_MENU_MNGR_ChTYPES_MNGR, wxString( _("Championship types") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu2->Append( m_menuItem201 );
-	
-	wxMenuItem* m_separator3;
-	m_separator3 = m_menu2->AppendSeparator();
-	
-	wxMenuItem* m_menuItem10;
-	m_menuItem10 = new wxMenuItem( m_menu2, ID_MENU_MNGR_CITIES, wxString( _("Cities") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu2->Append( m_menuItem10 );
-	
-	wxMenuItem* m_menuItem91;
-	m_menuItem91 = new wxMenuItem( m_menu2, ID_MENU_MNGR_COUNTRIES, wxString( _("Countries") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu2->Append( m_menuItem91 );
-	
-	m_menuBar->Append( m_menu2, _("Manage") ); 
-	
-	m_menu5 = new wxMenu();
-	wxMenuItem* m_menuItem211;
-	m_menuItem211 = new wxMenuItem( m_menu5, ID_MENU_TOOLS_SYUNC, wxString( _("Synchronize DB") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu5->Append( m_menuItem211 );
-	
-	wxMenuItem* m_separator4;
-	m_separator4 = m_menu5->AppendSeparator();
-	
-	wxMenuItem* m_menuItem22;
-	m_menuItem22 = new wxMenuItem( m_menu5, ID_MENU_TOOLS_OPTIONS, wxString( _("Options") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menu5->Append( m_menuItem22 );
-	
-	m_menuBar->Append( m_menu5, _("Tools") ); 
-	
-	m_menu51 = new wxMenu();
-	wxMenuItem* m_menuItem61;
-	m_menuItem61 = new wxMenuItem( m_menu51, ID_ABOUT, wxString( _("About") ) , _("Show information about program."), wxITEM_NORMAL );
-	m_menu51->Append( m_menuItem61 );
-	
-	m_menuBar->Append( m_menu51, _("Help") ); 
-	
-	this->SetMenuBar( m_menuBar );
-	
-	wxBoxSizer* mainSizer;
-	mainSizer = new wxBoxSizer( wxVERTICAL );
-	
-	m_splitter2 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_3DSASH );
-	m_splitter2->Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrameBase1::m_splitter2OnIdle ), NULL, this );
-	m_splitter2->SetMinimumPaneSize( 300 );
-	
-	m_panel1 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer150;
-	bSizer150 = new wxBoxSizer( wxVERTICAL );
-	
-	wxStaticBoxSizer* sbSizer9;
-	sbSizer9 = new wxStaticBoxSizer( new wxStaticBox( m_panel1, wxID_ANY, _("Championship list") ), wxVERTICAL );
-	
-	wxBoxSizer* bSizer5;
-	bSizer5 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_championshipSearchText = new wxStaticText( m_panel1, wxID_ANY, _("Search"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_championshipSearchText->Wrap( -1 );
-	bSizer5->Add( m_championshipSearchText, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_textSearch = new wxTextCtrl( m_panel1, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer5->Add( m_textSearch, 1, wxALL|wxEXPAND, 5 );
-	
-	m_bpAdd = new wxBitmapButton( m_panel1, wxID_CHAMPIONSIP_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer5->Add( m_bpAdd, 0, wxALL, 5 );
-	
-	sbSizer9->Add( bSizer5, 0, wxALIGN_RIGHT|wxEXPAND, 5 );
-	
-	m_treeCs = new wxTreeCtrl( m_panel1, ID_CS_TREE, wxDefaultPosition, wxSize( -1,-1 ), wxTR_DEFAULT_STYLE|wxTR_FULL_ROW_HIGHLIGHT|wxTR_HIDE_ROOT|wxTR_SINGLE|wxSUNKEN_BORDER );
-	sbSizer9->Add( m_treeCs, 1, wxALL|wxEXPAND, 5 );
-	
-	bSizer150->Add( sbSizer9, 1, wxEXPAND|wxALL, 5 );
-	
-	m_panel1->SetSizer( bSizer150 );
-	m_panel1->Layout();
-	bSizer150->Fit( m_panel1 );
-	m_panel12 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer6;
-	bSizer6 = new wxBoxSizer( wxVERTICAL );
-	
-	m_notebook3 = new wxNotebook( m_panel12, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP );
-	m_panelCsInfo = new wxPanel( m_notebook3, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer13;
-	bSizer13 = new wxBoxSizer( wxVERTICAL );
-	
-	wxBoxSizer* bSizer7;
-	bSizer7 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpRemove = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSIP_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer7->Add( m_bpRemove, 0, wxALL, 5 );
-	
-	m_bpSave = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_SAVE, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer7->Add( m_bpSave, 0, wxALL, 5 );
-	
-	m_bpDiscard = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_DISCARD, wxBitmap( button_update2_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer7->Add( m_bpDiscard, 0, wxALL, 5 );
-	
-	m_bpCategoryMngr = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_CATEGORIES, wxBitmap( button_categories_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer7->Add( m_bpCategoryMngr, 0, wxALL, 5 );
-	
-	m_bpJudgesMngr = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_JUDGESTEAMMNGR, wxBitmap( button_judges_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer7->Add( m_bpJudgesMngr, 0, wxALL, 5 );
-	
-	m_bpSendinvitation = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_SENDINVITATION, wxBitmap( mail_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer7->Add( m_bpSendinvitation, 0, wxALL, 5 );
-	
-	m_bpDancersTeams = new wxBitmapButton( m_panelCsInfo, ID_TEAMS, wxBitmap( button_championship_teams_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer7->Add( m_bpDancersTeams, 0, wxALL, 5 );
-	
-	m_bpStartNumberMngr = new wxBitmapButton( m_panelCsInfo, wxID_CHAMPIONSHIP_STARTNUMBERMNGR, wxBitmap( button_startnumber_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer7->Add( m_bpStartNumberMngr, 0, wxALL, 5 );
-	
-	bSizer13->Add( bSizer7, 0, wxALIGN_RIGHT, 5 );
-	
-	wxBoxSizer* bSizer71;
-	bSizer71 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpTourAdd = new wxBitmapButton( m_panelCsInfo, ID_TOUR_ADD, wxBitmap( button_tour_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer71->Add( m_bpTourAdd, 0, wxALL, 5 );
-	
-	m_bpTourEdit = new wxBitmapButton( m_panelCsInfo, ID_TOUR_EDIT, wxBitmap( button_tour_edit_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer71->Add( m_bpTourEdit, 0, wxALL, 5 );
-	
-	m_bpTourRemove = new wxBitmapButton( m_panelCsInfo, ID_TOUR_REMOVE, wxBitmap( button_tour_remove_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer71->Add( m_bpTourRemove, 0, wxALL, 5 );
-	
-	m_bpJudgesMark = new wxBitmapButton( m_panelCsInfo, ID_TOUR_JUIDGES_MARKS, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer71->Add( m_bpJudgesMark, 0, wxALL, 5 );
-	
-	m_bpTourReport = new wxBitmapButton( m_panelCsInfo, ID_TOUR_REPORT, wxBitmap( button_results_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer71->Add( m_bpTourReport, 0, wxALL, 5 );
-	
-	bSizer13->Add( bSizer71, 0, wxALIGN_RIGHT, 5 );
-	
-	wxFlexGridSizer* fgSizer1;
-	fgSizer1 = new wxFlexGridSizer( 6, 2, 0, 0 );
-	fgSizer1->AddGrowableCol( 1 );
-	fgSizer1->SetFlexibleDirection( wxBOTH );
-	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_staticText4 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText4->Wrap( -1 );
-	fgSizer1->Add( m_staticText4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	
-	m_textChName = new wxTextCtrl( m_panelCsInfo, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textChName->SetMaxLength( 100 ); 
-	fgSizer1->Add( m_textChName, 0, wxEXPAND|wxALL, 5 );
-	
-	m_staticText2 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText2->Wrap( -1 );
-	fgSizer1->Add( m_staticText2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	
-	m_comboType = new wxComboBox( m_panelCsInfo, ID_TYPE, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
-	fgSizer1->Add( m_comboType, 0, wxALL|wxEXPAND, 5 );
-	
-	m_staticText5 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Date"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText5->Wrap( -1 );
-	fgSizer1->Add( m_staticText5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	
-	m_dateDate = new wxDatePickerCtrl( m_panelCsInfo, ID_DATE, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT|wxDP_SHOWCENTURY );
-	fgSizer1->Add( m_dateDate, 0, wxALL, 5 );
-	
-	m_staticText7 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("City"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText7->Wrap( -1 );
-	fgSizer1->Add( m_staticText7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	
-	m_comboCity = new wxComboBox( m_panelCsInfo, ID_CITY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
-	fgSizer1->Add( m_comboCity, 0, wxALL|wxEXPAND, 5 );
-	
-	m_staticText8 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Adsress"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText8->Wrap( -1 );
-	fgSizer1->Add( m_staticText8, 0, wxALL, 5 );
-	
-	m_textAddress = new wxTextCtrl( m_panelCsInfo, ID_ADDRESS, wxEmptyString, wxDefaultPosition, wxSize( -1,50 ), wxTE_MULTILINE );
-	fgSizer1->Add( m_textAddress, 0, wxEXPAND|wxALL, 5 );
-	
-	bSizer13->Add( fgSizer1, 0, wxEXPAND, 5 );
-	
-	wxStaticBoxSizer* sbSizer1;
-	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( m_panelCsInfo, wxID_ANY, _("Online registration") ), wxHORIZONTAL );
-	
-	m_staticText12 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Open date"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText12->Wrap( -1 );
-	sbSizer1->Add( m_staticText12, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_dateRegOpen = new wxDatePickerCtrl( m_panelCsInfo, ID_REG_OPEN, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT|wxDP_SHOWCENTURY );
-	sbSizer1->Add( m_dateRegOpen, 0, wxALL, 5 );
-	
-	m_staticText13 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Close date"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText13->Wrap( -1 );
-	sbSizer1->Add( m_staticText13, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_dateRegClose = new wxDatePickerCtrl( m_panelCsInfo, ID_REG_CLOSE, wxDefaultDateTime, wxDefaultPosition, wxSize( -1,25 ), wxDP_DEFAULT|wxDP_SHOWCENTURY );
-	sbSizer1->Add( m_dateRegClose, 0, wxALL|wxEXPAND, 5 );
-	
-	bSizer13->Add( sbSizer1, 0, wxEXPAND|wxALL, 5 );
-	
-	m_staticText14 = new wxStaticText( m_panelCsInfo, wxID_ANY, _("Aditional info"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText14->Wrap( -1 );
-	bSizer13->Add( m_staticText14, 0, wxALL, 5 );
-	
-	m_textAdditionalInfo = new wxTextCtrl( m_panelCsInfo, ID_INFO, wxEmptyString, wxDefaultPosition, wxSize( -1,100 ), wxTE_MULTILINE );
-	bSizer13->Add( m_textAdditionalInfo, 1, wxALL|wxEXPAND, 5 );
-	
-	m_panelCsInfo->SetSizer( bSizer13 );
-	m_panelCsInfo->Layout();
-	bSizer13->Fit( m_panelCsInfo );
-	m_notebook3->AddPage( m_panelCsInfo, _("Championship info"), false );
-	m_panelBlockInfo = new wxPanel( m_notebook3, ID_M_PANELBLOCKINFO, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_notebook3->AddPage( m_panelBlockInfo, _("Block info"), true );
-	m_panelCatInfo = new wxPanel( m_notebook3, ID_M_PANELCATINFO, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_notebook3->AddPage( m_panelCatInfo, _("Category info"), false );
-	m_panelTourInfo = new wxPanel( m_notebook3, ID_M_PANELTOURINFO, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_notebook3->AddPage( m_panelTourInfo, _("Tour info"), false );
-	
-	bSizer6->Add( m_notebook3, 1, wxEXPAND | wxALL, 5 );
-	
-	m_panel12->SetSizer( bSizer6 );
-	m_panel12->Layout();
-	bSizer6->Fit( m_panel12 );
-	m_splitter2->SplitVertically( m_panel1, m_panel12, 300 );
-	mainSizer->Add( m_splitter2, 1, wxEXPAND, 5 );
-	
-	this->SetSizer( mainSizer );
-	this->Layout();
-	
-	this->Centre( wxBOTH );
-}
-
-MainFrameBase1::~MainFrameBase1()
-{
-}
-
-BEGIN_EVENT_TABLE( DirectorInfo, wxDialog )
-	EVT_BUTTON( wxID_OK, DirectorInfo::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, DirectorInfo::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 DirectorInfo::DirectorInfo( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -1215,22 +923,19 @@ DirectorInfo::DirectorInfo( wxWindow* parent, wxWindowID id, const wxString& tit
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpButton25->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DirectorInfo::OnSave ), NULL, this );
+	m_bpButton26->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DirectorInfo::OnDiscard ), NULL, this );
 }
 
 DirectorInfo::~DirectorInfo()
 {
+	// Disconnect Events
+	m_bpButton25->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DirectorInfo::OnSave ), NULL, this );
+	m_bpButton26->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DirectorInfo::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( TrainersMngrDlg, wxDialog )
-	EVT_TEXT( ID_SEARCH, TrainersMngrDlg::_wxFB_OnSearch )
-	EVT_LISTBOX( ID_TRAINERS_LIST, TrainersMngrDlg::_wxFB_OnSelectTrainer )
-	EVT_BUTTON( wxID_ADD, TrainersMngrDlg::_wxFB_OnAddTrainer )
-	EVT_BUTTON( wxID_UPDATE, TrainersMngrDlg::_wxFB_OnUpdate )
-	EVT_BUTTON( wxID_REMOVE, TrainersMngrDlg::_wxFB_OnRemoveTrainer )
-	EVT_BUTTON( ID_M_BPPAYMENTS, TrainersMngrDlg::_wxFB_OnPayment )
-	EVT_BUTTON( wxID_OK, TrainersMngrDlg::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, TrainersMngrDlg::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 TrainersMngrDlg::TrainersMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -1353,16 +1058,31 @@ TrainersMngrDlg::TrainersMngrDlg( wxWindow* parent, wxWindowID id, const wxStrin
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( TrainersMngrDlg::OnSearch ), NULL, this );
+	m_listTrainers->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( TrainersMngrDlg::OnSelectTrainer ), NULL, this );
+	m_bpAddTrainer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnAddTrainer ), NULL, this );
+	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnUpdate ), NULL, this );
+	m_bpRemoveTrainer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnRemoveTrainer ), NULL, this );
+	m_bpPayments->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnPayment ), NULL, this );
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnDiscard ), NULL, this );
 }
 
 TrainersMngrDlg::~TrainersMngrDlg()
 {
+	// Disconnect Events
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( TrainersMngrDlg::OnSearch ), NULL, this );
+	m_listTrainers->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( TrainersMngrDlg::OnSelectTrainer ), NULL, this );
+	m_bpAddTrainer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnAddTrainer ), NULL, this );
+	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnUpdate ), NULL, this );
+	m_bpRemoveTrainer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnRemoveTrainer ), NULL, this );
+	m_bpPayments->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnPayment ), NULL, this );
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TrainersMngrDlg::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( CsTours, wxDialog )
-	EVT_BUTTON( wxID_OK, CsTours::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, CsTours::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -1419,22 +1139,19 @@ CsTours::CsTours( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTours::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTours::OnDiscard ), NULL, this );
 }
 
 CsTours::~CsTours()
 {
+	// Disconnect Events
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTours::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTours::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( CsTourReport, wxDialog )
-	EVT_BUTTON( ID_PRINT, CsTourReport::_wxFB_OnReport )
-	EVT_BUTTON( wxID_CANCEL, CsTourReport::_wxFB_OnDiscard )
-	EVT_LIST_BEGIN_DRAG( ID_LIST_TEAMS, CsTourReport::_wxFB_OnStartDrag )
-	EVT_LIST_ITEM_SELECTED( ID_LIST_TEAMS, CsTourReport::_wxFB_OnTeamSelect )
-	EVT_BUTTON( ID_MOVEUP10, CsTourReport::_wxFB_OnUp10 )
-	EVT_BUTTON( ID_MOVE_UP, CsTourReport::_wxFB_OnUp )
-	EVT_BUTTON( ID_MOVE_DOWN, CsTourReport::_wxFB_OnDown )
-	EVT_BUTTON( ID_MOVE_DOWN10, CsTourReport::_wxFB_OnDown10 )
-END_EVENT_TABLE()
 
 CsTourReport::CsTourReport( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -1509,22 +1226,31 @@ CsTourReport::CsTourReport( wxWindow* parent, wxWindowID id, const wxString& tit
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpPrint->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnReport ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnDiscard ), NULL, this );
+	m_listTeams->Connect( wxEVT_COMMAND_LIST_BEGIN_DRAG, wxListEventHandler( CsTourReport::OnStartDrag ), NULL, this );
+	m_listTeams->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( CsTourReport::OnTeamSelect ), NULL, this );
+	m_bpMoveUp10->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnUp10 ), NULL, this );
+	m_bpMoveUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnUp ), NULL, this );
+	m_bpMoveDown->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnDown ), NULL, this );
+	m_bpMoveDown10->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnDown10 ), NULL, this );
 }
 
 CsTourReport::~CsTourReport()
 {
+	// Disconnect Events
+	m_bpPrint->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnReport ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnDiscard ), NULL, this );
+	m_listTeams->Disconnect( wxEVT_COMMAND_LIST_BEGIN_DRAG, wxListEventHandler( CsTourReport::OnStartDrag ), NULL, this );
+	m_listTeams->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( CsTourReport::OnTeamSelect ), NULL, this );
+	m_bpMoveUp10->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnUp10 ), NULL, this );
+	m_bpMoveUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnUp ), NULL, this );
+	m_bpMoveDown->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnDown ), NULL, this );
+	m_bpMoveDown10->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsTourReport::OnDown10 ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( DancersMngrDlg, wxDialog )
-	EVT_TEXT( ID_SEARCH, DancersMngrDlg::_wxFB_OnSearch )
-	EVT_LISTBOX( ID_DANCERS_LIST, DancersMngrDlg::_wxFB_OnDancerSelect )
-	EVT_BUTTON( wxID_ADD, DancersMngrDlg::_wxFB_OnAddDancer )
-	EVT_BUTTON( wxID_REMOVE, DancersMngrDlg::_wxFB_OnRemoveDancer )
-	EVT_BUTTON( wxID_APPLY, DancersMngrDlg::_wxFB_OnUpdate )
-	EVT_BUTTON( ID_M_BPPAYMENTS, DancersMngrDlg::_wxFB_OnPayment )
-	EVT_BUTTON( wxID_OK, DancersMngrDlg::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, DancersMngrDlg::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 DancersMngrDlg::DancersMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -1678,17 +1404,31 @@ DancersMngrDlg::DancersMngrDlg( wxWindow* parent, wxWindowID id, const wxString&
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( DancersMngrDlg::OnSearch ), NULL, this );
+	m_listDancers->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( DancersMngrDlg::OnDancerSelect ), NULL, this );
+	m_bpAddDancer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnAddDancer ), NULL, this );
+	m_bpRemoveDancer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnRemoveDancer ), NULL, this );
+	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnUpdate ), NULL, this );
+	m_bpPayments->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnPayment ), NULL, this );
+	m_bpOk->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnDiscard ), NULL, this );
 }
 
 DancersMngrDlg::~DancersMngrDlg()
 {
+	// Disconnect Events
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( DancersMngrDlg::OnSearch ), NULL, this );
+	m_listDancers->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( DancersMngrDlg::OnDancerSelect ), NULL, this );
+	m_bpAddDancer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnAddDancer ), NULL, this );
+	m_bpRemoveDancer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnRemoveDancer ), NULL, this );
+	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnUpdate ), NULL, this );
+	m_bpPayments->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnPayment ), NULL, this );
+	m_bpOk->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( DancersMngrDlg::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( AccountInfo, wxDialog )
-	EVT_CHECKBOX( wxID_ANY, AccountInfo::_wxFB_OnShowPass )
-	EVT_BUTTON( wxID_OK, AccountInfo::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, AccountInfo::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 AccountInfo::AccountInfo( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -1741,20 +1481,21 @@ AccountInfo::AccountInfo( wxWindow* parent, wxWindowID id, const wxString& title
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_checkShowPass->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( AccountInfo::OnShowPass ), NULL, this );
+	m_bpButton39->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AccountInfo::OnSave ), NULL, this );
+	m_bpButton40->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AccountInfo::OnDiscard ), NULL, this );
 }
 
 AccountInfo::~AccountInfo()
 {
+	// Disconnect Events
+	m_checkShowPass->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( AccountInfo::OnShowPass ), NULL, this );
+	m_bpButton39->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AccountInfo::OnSave ), NULL, this );
+	m_bpButton40->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AccountInfo::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( UserRolesMgr, wxDialog )
-	EVT_BUTTON( ID_M_BPADD, UserRolesMgr::_wxFB_OnAdd )
-	EVT_BUTTON( ID_M_BPUPDATE, UserRolesMgr::_wxFB_OnUpdate )
-	EVT_BUTTON( ID_M_BPREMOVE, UserRolesMgr::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_OK, UserRolesMgr::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, UserRolesMgr::_wxFB_OnDiscard )
-	EVT_LIST_ITEM_ACTIVATED( ID_M_LISTROLES, UserRolesMgr::_wxFB_OnSelectRole )
-END_EVENT_TABLE()
 
 UserRolesMgr::UserRolesMgr( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -1804,16 +1545,27 @@ UserRolesMgr::UserRolesMgr( wxWindow* parent, wxWindowID id, const wxString& tit
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserRolesMgr::OnAdd ), NULL, this );
+	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserRolesMgr::OnUpdate ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserRolesMgr::OnRemove ), NULL, this );
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserRolesMgr::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserRolesMgr::OnDiscard ), NULL, this );
+	m_listRoles->Connect( wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler( UserRolesMgr::OnSelectRole ), NULL, this );
 }
 
 UserRolesMgr::~UserRolesMgr()
 {
+	// Disconnect Events
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserRolesMgr::OnAdd ), NULL, this );
+	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserRolesMgr::OnUpdate ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserRolesMgr::OnRemove ), NULL, this );
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserRolesMgr::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( UserRolesMgr::OnDiscard ), NULL, this );
+	m_listRoles->Disconnect( wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler( UserRolesMgr::OnSelectRole ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( AddTeamCategory, wxDialog )
-	EVT_BUTTON( wxID_OK, AddTeamCategory::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, AddTeamCategory::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 AddTeamCategory::AddTeamCategory( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -1868,22 +1620,19 @@ AddTeamCategory::AddTeamCategory( wxWindow* parent, wxWindowID id, const wxStrin
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpButton39->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddTeamCategory::OnSave ), NULL, this );
+	m_bpButton40->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddTeamCategory::OnDiscard ), NULL, this );
 }
 
 AddTeamCategory::~AddTeamCategory()
 {
+	// Disconnect Events
+	m_bpButton39->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddTeamCategory::OnSave ), NULL, this );
+	m_bpButton40->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AddTeamCategory::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( JudgesMngr, wxDialog )
-	EVT_TEXT( ID_SEARCH, JudgesMngr::_wxFB_OnSearch )
-	EVT_LISTBOX( ID_LIST_JUDGES, JudgesMngr::_wxFB_OnSelectJudge )
-	EVT_BUTTON( wxID_ADD, JudgesMngr::_wxFB_OnAddJudge )
-	EVT_BUTTON( wxID_REMOVE, JudgesMngr::_wxFB_OnRemoveJudge )
-	EVT_BUTTON( ID_APPLY, JudgesMngr::_wxFB_OnUpdate )
-	EVT_BUTTON( ID_M_BPPAYMENT, JudgesMngr::_wxFB_OnPayment )
-	EVT_BUTTON( wxID_OK, JudgesMngr::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, JudgesMngr::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 JudgesMngr::JudgesMngr( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2007,20 +1756,31 @@ JudgesMngr::JudgesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( JudgesMngr::OnSearch ), NULL, this );
+	m_listJudges->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( JudgesMngr::OnSelectJudge ), NULL, this );
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnAddJudge ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnRemoveJudge ), NULL, this );
+	m_bpApply->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnUpdate ), NULL, this );
+	m_bpPayments->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnPayment ), NULL, this );
+	m_bpButton19->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnSave ), NULL, this );
+	m_bpButton20->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnDiscard ), NULL, this );
 }
 
 JudgesMngr::~JudgesMngr()
 {
+	// Disconnect Events
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( JudgesMngr::OnSearch ), NULL, this );
+	m_listJudges->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( JudgesMngr::OnSelectJudge ), NULL, this );
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnAddJudge ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnRemoveJudge ), NULL, this );
+	m_bpApply->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnUpdate ), NULL, this );
+	m_bpPayments->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnPayment ), NULL, this );
+	m_bpButton19->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnSave ), NULL, this );
+	m_bpButton20->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( TeamCategoryMngrDlg, wxDialog )
-	EVT_BUTTON( wxID_ADDALL, TeamCategoryMngrDlg::_wxFB_OnAddAll )
-	EVT_BUTTON( wxID_ADDONE, TeamCategoryMngrDlg::_wxFB_OnAdd )
-	EVT_BUTTON( wxID_REMOVEONE, TeamCategoryMngrDlg::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_REMOVEALL, TeamCategoryMngrDlg::_wxFB_OnRemoveAll )
-	EVT_BUTTON( wxID_OK, TeamCategoryMngrDlg::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, TeamCategoryMngrDlg::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 TeamCategoryMngrDlg::TeamCategoryMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2091,20 +1851,27 @@ TeamCategoryMngrDlg::TeamCategoryMngrDlg( wxWindow* parent, wxWindowID id, const
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpButton9->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnAddAll ), NULL, this );
+	m_bpButton10->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnAdd ), NULL, this );
+	m_bpButton11->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnRemove ), NULL, this );
+	m_bpButton12->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnRemoveAll ), NULL, this );
+	m_bpButton31->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnSave ), NULL, this );
+	m_bpButton32->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnDiscard ), NULL, this );
 }
 
 TeamCategoryMngrDlg::~TeamCategoryMngrDlg()
 {
+	// Disconnect Events
+	m_bpButton9->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnAddAll ), NULL, this );
+	m_bpButton10->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnAdd ), NULL, this );
+	m_bpButton11->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnRemove ), NULL, this );
+	m_bpButton12->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnRemoveAll ), NULL, this );
+	m_bpButton31->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnSave ), NULL, this );
+	m_bpButton32->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( ChampionshipJudgesTeamMngrDlg, wxDialog )
-	EVT_BUTTON( wxID_ADDALL, ChampionshipJudgesTeamMngrDlg::_wxFB_OnAddAll )
-	EVT_BUTTON( wxID_ADDONE, ChampionshipJudgesTeamMngrDlg::_wxFB_OnAdd )
-	EVT_BUTTON( wxID_REMOVEONE, ChampionshipJudgesTeamMngrDlg::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_REMOVEALL, ChampionshipJudgesTeamMngrDlg::_wxFB_OnRemoveAll )
-	EVT_BUTTON( wxID_OK, ChampionshipJudgesTeamMngrDlg::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, ChampionshipJudgesTeamMngrDlg::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 ChampionshipJudgesTeamMngrDlg::ChampionshipJudgesTeamMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2175,21 +1942,27 @@ ChampionshipJudgesTeamMngrDlg::ChampionshipJudgesTeamMngrDlg( wxWindow* parent, 
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpAddAll->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnAddAll ), NULL, this );
+	m_bpAddOne->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnAdd ), NULL, this );
+	m_bpRemoveOne->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnRemove ), NULL, this );
+	m_bpRemoveAll->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnRemoveAll ), NULL, this );
+	m_bpButton31->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnSave ), NULL, this );
+	m_bpButton32->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnDiscard ), NULL, this );
 }
 
 ChampionshipJudgesTeamMngrDlg::~ChampionshipJudgesTeamMngrDlg()
 {
+	// Disconnect Events
+	m_bpAddAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnAddAll ), NULL, this );
+	m_bpAddOne->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnAdd ), NULL, this );
+	m_bpRemoveOne->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnRemove ), NULL, this );
+	m_bpRemoveAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnRemoveAll ), NULL, this );
+	m_bpButton31->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnSave ), NULL, this );
+	m_bpButton32->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( StartNumberAssignDlg, wxDialog )
-	EVT_LISTBOX( ID_TEAMS_LIST, StartNumberAssignDlg::_wxFB_OnSelectTeam )
-	EVT_TEXT( ID_SEARCH, StartNumberAssignDlg::_wxFB_OnSearch )
-	EVT_BUTTON( wxID_RANDOM, StartNumberAssignDlg::_wxFB_OnRandomFind )
-	EVT_BUTTON( wxID_NEXT, StartNumberAssignDlg::_wxFB_OnNextFind )
-	EVT_BUTTON( wxID_ASSIGN, StartNumberAssignDlg::_wxFB_OnAssign )
-	EVT_BUTTON( wxID_OK, StartNumberAssignDlg::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, StartNumberAssignDlg::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 StartNumberAssignDlg::StartNumberAssignDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2259,22 +2032,29 @@ StartNumberAssignDlg::StartNumberAssignDlg( wxWindow* parent, wxWindowID id, con
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_listTeams->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( StartNumberAssignDlg::OnSelectTeam ), NULL, this );
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( StartNumberAssignDlg::OnSearch ), NULL, this );
+	m_bpRandomNumber->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StartNumberAssignDlg::OnRandomFind ), NULL, this );
+	m_bpNextNumber->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StartNumberAssignDlg::OnNextFind ), NULL, this );
+	m_bpAssign->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StartNumberAssignDlg::OnAssign ), NULL, this );
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StartNumberAssignDlg::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StartNumberAssignDlg::OnDiscard ), NULL, this );
 }
 
 StartNumberAssignDlg::~StartNumberAssignDlg()
 {
+	// Disconnect Events
+	m_listTeams->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( StartNumberAssignDlg::OnSelectTeam ), NULL, this );
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( StartNumberAssignDlg::OnSearch ), NULL, this );
+	m_bpRandomNumber->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StartNumberAssignDlg::OnRandomFind ), NULL, this );
+	m_bpNextNumber->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StartNumberAssignDlg::OnNextFind ), NULL, this );
+	m_bpAssign->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StartNumberAssignDlg::OnAssign ), NULL, this );
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StartNumberAssignDlg::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( StartNumberAssignDlg::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( JudgeMark, wxDialog )
-	EVT_COMBOBOX( wxID_ANY, JudgeMark::_wxFB_OnSelectJudge )
-	EVT_BUTTON( wxID_OK, JudgeMark::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, JudgeMark::_wxFB_OnDiscard )
-	EVT_LISTBOX( ID_TEAMS_LIST, JudgeMark::_wxFB_OnSelectNumber )
-	EVT_CHECKBOX( ID_SHOW_ALL, JudgeMark::_wxFB_OnShowAll )
-	EVT_TEXT( ID_SEARCH, JudgeMark::_wxFB_OnSearch )
-	EVT_BUTTON( ID_GOOD, JudgeMark::_wxFB_OnPlus )
-	EVT_BUTTON( ID_BED, JudgeMark::_wxFB_OnMinus )
-END_EVENT_TABLE()
 
 JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2374,21 +2154,31 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_comboJudge->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( JudgeMark::OnSelectJudge ), NULL, this );
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnDiscard ), NULL, this );
+	m_listNumbers->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( JudgeMark::OnSelectNumber ), NULL, this );
+	m_checkShowAll->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( JudgeMark::OnShowAll ), NULL, this );
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( JudgeMark::OnSearch ), NULL, this );
+	m_bpGood->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnPlus ), NULL, this );
+	m_bpBed->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnMinus ), NULL, this );
 }
 
 JudgeMark::~JudgeMark()
 {
+	// Disconnect Events
+	m_comboJudge->Disconnect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( JudgeMark::OnSelectJudge ), NULL, this );
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnDiscard ), NULL, this );
+	m_listNumbers->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( JudgeMark::OnSelectNumber ), NULL, this );
+	m_checkShowAll->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( JudgeMark::OnShowAll ), NULL, this );
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( JudgeMark::OnSearch ), NULL, this );
+	m_bpGood->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnPlus ), NULL, this );
+	m_bpBed->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnMinus ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( CodeDialog, wxDialog )
-	EVT_TEXT( ID_SEARCH, CodeDialog::_wxFB_OnSearch )
-	EVT_LISTBOX( ID_ITEM_LIST, CodeDialog::_wxFB_OnSelectItem )
-	EVT_BUTTON( wxID_ADD, CodeDialog::_wxFB_OnAdd )
-	EVT_BUTTON( wxID_REMOVE, CodeDialog::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_UPDATE, CodeDialog::_wxFB_OnUpdateCode )
-	EVT_BUTTON( wxID_OK, CodeDialog::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, CodeDialog::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2475,21 +2265,29 @@ CodeDialog::CodeDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CodeDialog::OnSearch ), NULL, this );
+	m_listItems->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CodeDialog::OnSelectItem ), NULL, this );
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CodeDialog::OnAdd ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CodeDialog::OnRemove ), NULL, this );
+	m_bpAplly->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CodeDialog::OnUpdateCode ), NULL, this );
+	m_bpButton81->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CodeDialog::OnSave ), NULL, this );
+	m_bpButton82->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CodeDialog::OnDiscard ), NULL, this );
 }
 
 CodeDialog::~CodeDialog()
 {
+	// Disconnect Events
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CodeDialog::OnSearch ), NULL, this );
+	m_listItems->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CodeDialog::OnSelectItem ), NULL, this );
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CodeDialog::OnAdd ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CodeDialog::OnRemove ), NULL, this );
+	m_bpAplly->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CodeDialog::OnUpdateCode ), NULL, this );
+	m_bpButton81->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CodeDialog::OnSave ), NULL, this );
+	m_bpButton82->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CodeDialog::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( CountriesMngr, wxDialog )
-	EVT_TEXT( ID_SEARCH, CountriesMngr::_wxFB_OnSearch )
-	EVT_LISTBOX( ID_ITEM_LIST, CountriesMngr::_wxFB_OnSelectItem )
-	EVT_BUTTON( wxID_ADD, CountriesMngr::_wxFB_OnAdd )
-	EVT_BUTTON( wxID_REMOVE, CountriesMngr::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_UPDATE, CountriesMngr::_wxFB_OnUpdateCode )
-	EVT_BUTTON( wxID_OK, CountriesMngr::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, CountriesMngr::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 CountriesMngr::CountriesMngr( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2570,21 +2368,29 @@ CountriesMngr::CountriesMngr( wxWindow* parent, wxWindowID id, const wxString& t
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CountriesMngr::OnSearch ), NULL, this );
+	m_listItems->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CountriesMngr::OnSelectItem ), NULL, this );
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CountriesMngr::OnAdd ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CountriesMngr::OnRemove ), NULL, this );
+	m_bpAplly->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CountriesMngr::OnUpdateCode ), NULL, this );
+	m_bpButton81->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CountriesMngr::OnSave ), NULL, this );
+	m_bpButton82->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CountriesMngr::OnDiscard ), NULL, this );
 }
 
 CountriesMngr::~CountriesMngr()
 {
+	// Disconnect Events
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CountriesMngr::OnSearch ), NULL, this );
+	m_listItems->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CountriesMngr::OnSelectItem ), NULL, this );
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CountriesMngr::OnAdd ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CountriesMngr::OnRemove ), NULL, this );
+	m_bpAplly->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CountriesMngr::OnUpdateCode ), NULL, this );
+	m_bpButton81->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CountriesMngr::OnSave ), NULL, this );
+	m_bpButton82->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CountriesMngr::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( ChampionshipTypeMngr, wxDialog )
-	EVT_TEXT( ID_SEARCH, ChampionshipTypeMngr::_wxFB_OnSearch )
-	EVT_LISTBOX( ID_ITEM_LIST, ChampionshipTypeMngr::_wxFB_OnSelectItem )
-	EVT_BUTTON( wxID_ADD, ChampionshipTypeMngr::_wxFB_OnAdd )
-	EVT_BUTTON( wxID_REMOVE, ChampionshipTypeMngr::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_UPDATE, ChampionshipTypeMngr::_wxFB_OnUpdateCode )
-	EVT_BUTTON( wxID_OK, ChampionshipTypeMngr::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, ChampionshipTypeMngr::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 ChampionshipTypeMngr::ChampionshipTypeMngr( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2665,21 +2471,29 @@ ChampionshipTypeMngr::ChampionshipTypeMngr( wxWindow* parent, wxWindowID id, con
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ChampionshipTypeMngr::OnSearch ), NULL, this );
+	m_listItems->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( ChampionshipTypeMngr::OnSelectItem ), NULL, this );
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipTypeMngr::OnAdd ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipTypeMngr::OnRemove ), NULL, this );
+	m_bpAplly->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipTypeMngr::OnUpdateCode ), NULL, this );
+	m_bpButton81->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipTypeMngr::OnSave ), NULL, this );
+	m_bpButton82->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipTypeMngr::OnDiscard ), NULL, this );
 }
 
 ChampionshipTypeMngr::~ChampionshipTypeMngr()
 {
+	// Disconnect Events
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ChampionshipTypeMngr::OnSearch ), NULL, this );
+	m_listItems->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( ChampionshipTypeMngr::OnSelectItem ), NULL, this );
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipTypeMngr::OnAdd ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipTypeMngr::OnRemove ), NULL, this );
+	m_bpAplly->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipTypeMngr::OnUpdateCode ), NULL, this );
+	m_bpButton81->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipTypeMngr::OnSave ), NULL, this );
+	m_bpButton82->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipTypeMngr::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( CitiesMngr, wxDialog )
-	EVT_TEXT( ID_SEARCH, CitiesMngr::_wxFB_OnSearch )
-	EVT_LISTBOX( ID_ITEM_LIST, CitiesMngr::_wxFB_OnSelectItem )
-	EVT_BUTTON( wxID_ADD, CitiesMngr::_wxFB_OnAdd )
-	EVT_BUTTON( wxID_REMOVE, CitiesMngr::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_UPDATE, CitiesMngr::_wxFB_OnUpdateCode )
-	EVT_BUTTON( wxID_OK, CitiesMngr::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, CitiesMngr::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 CitiesMngr::CitiesMngr( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2771,16 +2585,29 @@ CitiesMngr::CitiesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CitiesMngr::OnSearch ), NULL, this );
+	m_listItems->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CitiesMngr::OnSelectItem ), NULL, this );
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CitiesMngr::OnAdd ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CitiesMngr::OnRemove ), NULL, this );
+	m_bpAplly->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CitiesMngr::OnUpdateCode ), NULL, this );
+	m_bpButton81->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CitiesMngr::OnSave ), NULL, this );
+	m_bpButton82->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CitiesMngr::OnDiscard ), NULL, this );
 }
 
 CitiesMngr::~CitiesMngr()
 {
+	// Disconnect Events
+	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CitiesMngr::OnSearch ), NULL, this );
+	m_listItems->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CitiesMngr::OnSelectItem ), NULL, this );
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CitiesMngr::OnAdd ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CitiesMngr::OnRemove ), NULL, this );
+	m_bpAplly->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CitiesMngr::OnUpdateCode ), NULL, this );
+	m_bpButton81->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CitiesMngr::OnSave ), NULL, this );
+	m_bpButton82->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CitiesMngr::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( ReportPreview, wxDialog )
-	EVT_BUTTON( ID_PRINT, ReportPreview::_wxFB_OnPrint )
-	EVT_BUTTON( wxID_CANCEL, ReportPreview::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 ReportPreview::ReportPreview( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2805,19 +2632,19 @@ ReportPreview::ReportPreview( wxWindow* parent, wxWindowID id, const wxString& t
 	
 	this->SetSizer( bSizer108 );
 	this->Layout();
+	
+	// Connect Events
+	m_bpPrint->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ReportPreview::OnPrint ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ReportPreview::OnDiscard ), NULL, this );
 }
 
 ReportPreview::~ReportPreview()
 {
+	// Disconnect Events
+	m_bpPrint->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ReportPreview::OnPrint ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ReportPreview::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( PaymentHistory, wxDialog )
-	EVT_BUTTON( wxID_ADD, PaymentHistory::_wxFB_OnAdd )
-	EVT_BUTTON( ID_M_BPUPDATE, PaymentHistory::_wxFB_OnUpdate )
-	EVT_BUTTON( ID_M_BPREMOVE, PaymentHistory::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_OK, PaymentHistory::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, PaymentHistory::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 PaymentHistory::PaymentHistory( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2859,16 +2686,25 @@ PaymentHistory::PaymentHistory( wxWindow* parent, wxWindowID id, const wxString&
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PaymentHistory::OnAdd ), NULL, this );
+	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PaymentHistory::OnUpdate ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PaymentHistory::OnRemove ), NULL, this );
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PaymentHistory::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PaymentHistory::OnDiscard ), NULL, this );
 }
 
 PaymentHistory::~PaymentHistory()
 {
+	// Disconnect Events
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PaymentHistory::OnAdd ), NULL, this );
+	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PaymentHistory::OnUpdate ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PaymentHistory::OnRemove ), NULL, this );
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PaymentHistory::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PaymentHistory::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( Payment, wxDialog )
-	EVT_BUTTON( wxID_OK, Payment::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, Payment::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 Payment::Payment( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -2930,16 +2766,19 @@ Payment::Payment( wxWindow* parent, wxWindowID id, const wxString& title, const 
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Payment::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Payment::OnDiscard ), NULL, this );
 }
 
 Payment::~Payment()
 {
+	// Disconnect Events
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Payment::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Payment::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( Settings, wxDialog )
-	EVT_BUTTON( wxID_OK, Settings::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, Settings::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -3131,19 +2970,19 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Settings::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Settings::OnDiscard ), NULL, this );
 }
 
 Settings::~Settings()
 {
+	// Disconnect Events
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Settings::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Settings::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( Staff, wxDialog )
-	EVT_BUTTON( wxID_ANY, Staff::_wxFB_OnAdd )
-	EVT_BUTTON( ID_M_BPUPDATE, Staff::_wxFB_OnUpdate )
-	EVT_BUTTON( ID_M_BPDELETE, Staff::_wxFB_OnRemove )
-	EVT_BUTTON( wxID_OK, Staff::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CANCEL, Staff::_wxFB_OnDiscard )
-END_EVENT_TABLE()
 
 Staff::Staff( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -3175,27 +3014,25 @@ Staff::Staff( wxWindow* parent, wxWindowID id, const wxString& title, const wxPo
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnAdd ), NULL, this );
+	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnUpdate ), NULL, this );
+	m_bpDelete->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnRemove ), NULL, this );
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnDiscard ), NULL, this );
 }
 
 Staff::~Staff()
 {
+	// Disconnect Events
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnAdd ), NULL, this );
+	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnUpdate ), NULL, this );
+	m_bpDelete->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnRemove ), NULL, this );
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnDiscard ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( CsInfo, wxPanel )
-	EVT_BUTTON( wxID_CHAMPIONSIP_REMOVE, CsInfo::_wxFB_OnRemoveChampionship )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_SAVE, CsInfo::_wxFB_OnSave )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_DISCARD, CsInfo::_wxFB_OnDiscard )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_CATEGORIES, CsInfo::_wxFB_OnCategoryMngr )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_JUDGESTEAMMNGR, CsInfo::_wxFB_OnJudgeMngr )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_SENDINVITATION, CsInfo::_wxFB_OnSendInvitation )
-	EVT_BUTTON( ID_TEAMS, CsInfo::_wxFB_OnDancersTeams )
-	EVT_BUTTON( wxID_CHAMPIONSHIP_STARTNUMBERMNGR, CsInfo::_wxFB_OnStartNumberAssign )
-	EVT_BUTTON( ID_TOUR_ADD, CsInfo::_wxFB_OnAddBlock )
-	EVT_BUTTON( ID_TOUR_EDIT, CsInfo::_wxFB_OnTourEdit )
-	EVT_BUTTON( ID_TOUR_REMOVE, CsInfo::_wxFB_OnRemoveTour )
-	EVT_BUTTON( ID_TOUR_JUIDGES_MARKS, CsInfo::_wxFB_OnJudgesMark )
-	EVT_BUTTON( ID_TOUR_REPORT, CsInfo::_wxFB_OnCsTourReport )
-END_EVENT_TABLE()
 
 CsInfo::CsInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
@@ -3323,19 +3160,41 @@ CsInfo::CsInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSiz
 	
 	this->SetSizer( bSizer13 );
 	this->Layout();
+	
+	// Connect Events
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnRemoveChampionship ), NULL, this );
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnDiscard ), NULL, this );
+	m_bpCategoryMngr->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnCategoryMngr ), NULL, this );
+	m_bpJudgesMngr->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnJudgeMngr ), NULL, this );
+	m_bpSendinvitation->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnSendInvitation ), NULL, this );
+	m_bpDancersTeams->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnDancersTeams ), NULL, this );
+	m_bpStartNumberMngr->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnStartNumberAssign ), NULL, this );
+	m_bpTourAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnAddBlock ), NULL, this );
+	m_bpTourEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnTourEdit ), NULL, this );
+	m_bpTourRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnRemoveTour ), NULL, this );
+	m_bpJudgesMark->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnJudgesMark ), NULL, this );
+	m_bpTourReport->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnCsTourReport ), NULL, this );
 }
 
 CsInfo::~CsInfo()
 {
+	// Disconnect Events
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnRemoveChampionship ), NULL, this );
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnDiscard ), NULL, this );
+	m_bpCategoryMngr->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnCategoryMngr ), NULL, this );
+	m_bpJudgesMngr->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnJudgeMngr ), NULL, this );
+	m_bpSendinvitation->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnSendInvitation ), NULL, this );
+	m_bpDancersTeams->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnDancersTeams ), NULL, this );
+	m_bpStartNumberMngr->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnStartNumberAssign ), NULL, this );
+	m_bpTourAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnAddBlock ), NULL, this );
+	m_bpTourEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnTourEdit ), NULL, this );
+	m_bpTourRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnRemoveTour ), NULL, this );
+	m_bpJudgesMark->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnJudgesMark ), NULL, this );
+	m_bpTourReport->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnCsTourReport ), NULL, this );
+	
 }
-
-BEGIN_EVENT_TABLE( BlockInfo, wxPanel )
-	EVT_BUTTON( ID_M_BPUPDATE, BlockInfo::_wxFB_OnUpdateBlock )
-	EVT_BUTTON( ID_M_BPCSCATEGORIES, BlockInfo::_wxFB_OnBlockCategories )
-	EVT_GRID_CELL_CHANGE( BlockInfo::_wxFB_OnCellChange )
-	EVT_GRID_CELL_LEFT_CLICK( BlockInfo::_wxFB_OnCellLeftClick )
-	EVT_GRID_SELECT_CELL( BlockInfo::_wxFB_OnSelectCell )
-END_EVENT_TABLE()
 
 BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
@@ -3373,11 +3232,12 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	m_textStart = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer130->Add( m_textStart, 0, wxALL, 5 );
 	
-	m_staticText109 = new wxStaticText( this, wxID_ANY, _("Pause len"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText109 = new wxStaticText( this, wxID_ANY, _("Pause, sec"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText109->Wrap( -1 );
 	bSizer130->Add( m_staticText109, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textPause = new wxTextCtrl( this, ID_M_TEXTPAUSE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textPause = new wxTextCtrl( this, ID_M_TEXTPAUSE, _("30"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_textPause->SetMaxLength( 3 ); 
 	bSizer130->Add( m_textPause, 0, wxALL, 5 );
 	
 	m_staticText107 = new wxStaticText( this, wxID_ANY, _("End time"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -3395,10 +3255,27 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	wxStaticBoxSizer* sbSizer17;
 	sbSizer17 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Judges per categories") ), wxVERTICAL );
 	
+	wxFlexGridSizer* fgSizer22;
+	fgSizer22 = new wxFlexGridSizer( 1, 2, 0, 0 );
+	fgSizer22->SetFlexibleDirection( wxBOTH );
+	fgSizer22->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText119 = new wxStaticText( this, wxID_ANY, _("Category description"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText119->Wrap( -1 );
+	fgSizer22->Add( m_staticText119, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticDescription = new wxStaticText( this, ID_M_STATICDESCRIPTION, _(" "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticDescription->Wrap( -1 );
+	m_staticDescription->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	fgSizer22->Add( m_staticDescription, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	sbSizer17->Add( fgSizer22, 0, wxEXPAND, 5 );
+	
 	m_gridJudgesCats = new wxGrid( this, ID_M_GRIDJUDGESCATS, wxDefaultPosition, wxDefaultSize, wxRAISED_BORDER|wxVSCROLL );
 	
 	// Grid
-	m_gridJudgesCats->CreateGrid( 5, 5 );
+	m_gridJudgesCats->CreateGrid( 0, 0 );
 	m_gridJudgesCats->EnableEditing( true );
 	m_gridJudgesCats->EnableGridLines( true );
 	m_gridJudgesCats->EnableDragGridSize( false );
@@ -3427,10 +3304,26 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	
 	this->SetSizer( bSizer125 );
 	this->Layout();
+	
+	// Connect Events
+	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnUpdateBlock ), NULL, this );
+	m_bpCsCategories->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnBlockCategories ), NULL, this );
+	m_textStart->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( BlockInfo::OnTextChanged ), NULL, this );
+	m_textPause->Connect( wxEVT_KILL_FOCUS, wxFocusEventHandler( BlockInfo::OnPauseKillFocuss ), NULL, this );
+	m_gridJudgesCats->Connect( wxEVT_GRID_CELL_CHANGE, wxGridEventHandler( BlockInfo::OnCellChange ), NULL, this );
+	m_gridJudgesCats->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( BlockInfo::OnCellLeftClick ), NULL, this );
 }
 
 BlockInfo::~BlockInfo()
 {
+	// Disconnect Events
+	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnUpdateBlock ), NULL, this );
+	m_bpCsCategories->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnBlockCategories ), NULL, this );
+	m_textStart->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( BlockInfo::OnTextChanged ), NULL, this );
+	m_textPause->Disconnect( wxEVT_KILL_FOCUS, wxFocusEventHandler( BlockInfo::OnPauseKillFocuss ), NULL, this );
+	m_gridJudgesCats->Disconnect( wxEVT_GRID_CELL_CHANGE, wxGridEventHandler( BlockInfo::OnCellChange ), NULL, this );
+	m_gridJudgesCats->Disconnect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( BlockInfo::OnCellLeftClick ), NULL, this );
+	
 }
 
 CategoryInfo::CategoryInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )

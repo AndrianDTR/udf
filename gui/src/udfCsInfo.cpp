@@ -164,6 +164,9 @@ bool udfCsInfo::Show(bool show)
 {
 	do
 	{
+		if(!show)
+			break;
+		
 		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
 			break;
 		

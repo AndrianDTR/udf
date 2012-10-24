@@ -24,7 +24,7 @@ typedef enum{
 	UDF_E_NOMEMORY,
 	UDF_E_EXECUTE_QUERY_FAILED,
 	
-	UDF_E_,
+	UDF_E_NOTFOUND,
 	
 } UDF_ERRORS;
 

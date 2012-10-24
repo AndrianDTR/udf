@@ -35,57 +35,9 @@ bool udfBlockInfo::Show(bool show)
 		if(!show)
 			break;
 
-		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
-		{
-			DEBUG_PRINT("Undefined item.");
-			break;
-		}
-
-		CChampionshipCategoriesTable::tDATA catFilter = {0};
-		CChampionshipJudgesTeamTable::tDATA judFilter = {0};
-		CChampionshipCategoriesTable::tTableMap cats;
-		CChampionshipJudgesTeamTable::tTableMap juds;
-
-		udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
-		catFilter.championshipId = judFilter.championshipId = csItem->GetId();
-
-		CChampionshipCategoriesTable(m_pCon).Find(cats, catFilter);
-		CChampionshipJudgesTeamTable(m_pCon).Find(juds, judFilter);
-
-		m_gridJudgesCats->ClearGrid();
-		m_gridJudgesCats->DeleteCols(0, m_gridJudgesCats->GetNumberCols(), false);
-		m_gridJudgesCats->DeleteRows(0, m_gridJudgesCats->GetNumberRows(), false);
-		m_gridJudgesCats->SetDefaultColSize(25);
-		m_gridJudgesCats->SetDefaultRowSize(25);
-		m_gridJudgesCats->SetDefaultCellAlignment(wxALIGN_CENTRE,wxALIGN_CENTRE);
-		m_gridJudgesCats->SetRowLabelAlignment(wxALIGN_LEFT,wxALIGN_CENTRE);
-
-
-		m_gridJudgesCats->AppendCols(juds.size());
-		m_gridJudgesCats->AppendRows(cats.size());
-
-		CChampionshipJudgesTeamTable::tTableIt jIt = juds.begin();
-		int nCol = 0;
-		while(jIt != juds.end())
-		{
-			CChampionshipJudgesTeamTable::tDATA& data = jIt->second;
-			m_gridJudgesCats->SetColLabelValue(nCol, GetVerticalText(GetJudgeNameById(data.judgeId)));
-			m_ColIdMap[nCol] = jIt->first;
-			nCol++;
-			jIt++;
-		}
-
-		CChampionshipCategoriesTable::tTableIt cIt = cats.begin();
-		int nRow = 0;
-		while(cIt != cats.end())
-		{
-			CChampionshipCategoriesTable::tDATA& data = cIt->second;
-			m_gridJudgesCats->SetRowLabelValue(nRow, GetCategoryShortNameById(data.catId));
-			m_RowIdMap[nRow] = cIt->first;
-			nRow++;
-			cIt++;
-		}
-
+		CreateNewBlock();
+		FillData();
+		
 	}while(0);
 
 	wxPanel::Show(show);
@@ -97,52 +49,85 @@ void udfBlockInfo::OnUpdateBlock( wxCommandEvent& event )
 	{
 		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk())
 			break;
-
-		/*CCsBlockCategoriesTable::tDATA catFilter = {0};
-		CCsBlockJudgesTable::tDATA judFilter = {0};
-
-		catFilter.blockId =
-		data.type = *(int*)m_comboType->GetClientData(GetSelectedType());
-		data.city = *(int*)m_comboCity->GetClientData(GetSelectedCity());
-
-		data.name = m_textChName->GetValue();
-		data.additionalInfo = m_textAdditionalInfo->GetValue();
-		data.address = m_textAddress->GetValue();
-		data.date = m_dateDate->GetValue().GetTicks();
-		data.regOpenDate = m_dateRegOpen->GetValue().GetTicks();
-		data.regCloseDate = m_dateRegClose->GetValue().GetTicks();
-
+		
+		if(!ValidateData())
+		{
+			break;
+		}
+		
+		unsigned int nId = -1;
+		
 		if(m_itemId.IsOk())
 		{
-			udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
-			data.id = csItem->GetId();
-
-			if(UDF_OK != CChampionshipTable(m_pCon).UpdateRow(csItem->GetId(), data))
-			{
-				ShowError(STR_ERR_UPD_CHAMPIONSHIP_FAILED);
-				break;
-			}
-			m_pTree->SetItemText(m_itemId, data.name);
+			udfTreeItemData* blockItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
+			nId = blockItem->GetId();
+		}
+		
+		udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
+				
+		CCsBlocksTable::tDATA blockInfo = {0};
+		blockInfo.id = nId;
+		blockInfo.csId = csItem->GetId();
+		blockInfo.name = m_textName->GetValue();
+		string startTime = m_textStart->GetValue().ToStdString();
+		blockInfo.startTime = str2time(startTime);
+		m_textPause->GetValue().ToCLong((long*)&blockInfo.pause);
+		
+		if(!m_itemId.IsOk())
+		{
+			CCsBlocksTable(m_pCon).AddRow(blockInfo);
 		}
 		else
 		{
-			data.id = -1;
-
-			if(UDF_OK != CChampionshipTable(m_pCon).AddRow(data))
-			{
-				ShowError(STR_ERR_ADD_CHAMPIONSHIP_FAILED);
-				break;
-			}
-
-			m_pTree->AppendItem(m_parentItem, data.name, -1, -1, new udfTreeItemData(data.id, IT_CS));
+			CCsBlocksTable(m_pCon).UpdateRow(nId, blockInfo);
 		}
-		*/
+						
+		int nRow = 0;
+		for(nRow = 0; nRow < m_gridJudgesCats->GetNumberRows(); ++nRow)
+		{
+			int nCol = 0;
+			for(nCol = 0; nCol < m_gridJudgesCats->GetNumberCols(); ++nCol)
+			{
+				wxString value = m_gridJudgesCats->GetCellValue(nRow, nCol);
+				unsigned int id = -1;
+				
+				CCsBlockJ2CTable::tDATA data = {0};
+				data.blockId = blockInfo.id;
+				data.csCatId = m_RowIdMap[nRow];
+				data.csJudgeId = m_ColIdMap[nCol];
+				long found = CCsBlockJ2CTable(m_pCon).FindId(id, data);
+				if(UDF_OK == found && value != _("X"))
+				{
+					DEBUG_PRINTF("Found! ID: %d. Delete it...", id);
+					CCsBlockJ2CTable(m_pCon).DelRow(id);
+				}
+				else if(found == UDF_E_NOTFOUND && value == _("X"))
+				{
+					DEBUG_PRINT("NOT Found! Insert it...");
+					CCsBlockJ2CTable(m_pCon).AddRow(data);
+				}
+			}
+		}
 	}while(0);
 }
 
 void udfBlockInfo::OnBlockCategories( wxCommandEvent& event )
 {
-// TODO: Implement OnBlockCategories
+	do
+	{
+		if(!m_pMainWindow)
+			break;
+			
+		if(UDF_OK == m_pMainWindow->ShowCsCategoryManager())
+		{
+			CreateNewBlock();
+			FillData();
+			this->GetParent()->Update();
+		}
+			
+	}while(0);
+	
+	event.Skip();
 }
 
 void udfBlockInfo::OnCellChange( wxGridEvent& event )
@@ -150,10 +135,9 @@ void udfBlockInfo::OnCellChange( wxGridEvent& event )
 	int row = event.GetRow(),
 		col = event.GetCol();
 
-	wxString value1 = event.GetString();
-	wxString value2 = m_gridJudgesCats->GetCellValue(row, col);
+	wxString value = m_gridJudgesCats->GetCellValue(row, col);
 
-	if(value2 != _(" "))
+	if(!value.IsEmpty() && value != _(" "))
 		m_gridJudgesCats->SetCellValue(row, col, _("X"));
 
 	event.Skip();
@@ -161,11 +145,122 @@ void udfBlockInfo::OnCellChange( wxGridEvent& event )
 
 void udfBlockInfo::OnCellLeftClick( wxGridEvent& event )
 {
-// TODO: Implement OnCellLeftClick
+	int row = event.GetRow(),
+		col = event.GetCol();
+
+	wxString value = m_gridJudgesCats->GetCellValue(row, col);
+	if(value.IsEmpty())
+		m_gridJudgesCats->SetCellValue(row, col, _("X"));
+	else
+		m_gridJudgesCats->SetCellValue(row, col, _(""));
+	
+	event.Skip();
 }
 
-void udfBlockInfo::OnSelectCell( wxGridEvent& event )
+bool udfBlockInfo::ValidateData()
 {
-	wxArrayInt rows = m_gridJudgesCats->GetSelectedRows();
-	m
+	// check time format
+	return true;
+}
+
+void udfBlockInfo::CreateNewBlock()
+{
+	do
+	{
+		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk())
+		{
+			DEBUG_PRINT("Undefined item.");
+			break;
+		}
+	
+		CChampionshipCategoriesTable::tDATA catFilter = {0};
+		CChampionshipJudgesTeamTable::tDATA judFilter = {0};
+		CChampionshipCategoriesTable::tTableMap cats;
+		CChampionshipJudgesTeamTable::tTableMap juds;
+
+		udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
+		catFilter.championshipId = judFilter.championshipId = csItem->GetId();
+
+		CChampionshipCategoriesTable(m_pCon).Find(cats, catFilter);
+		CChampionshipJudgesTeamTable(m_pCon).Find(juds, judFilter);
+
+		m_gridJudgesCats->ClearGrid();
+		if(m_gridJudgesCats->GetNumberCols())
+			m_gridJudgesCats->DeleteCols(0, m_gridJudgesCats->GetNumberCols(), true);
+		if(m_gridJudgesCats->GetNumberRows())
+			m_gridJudgesCats->DeleteRows(0, m_gridJudgesCats->GetNumberRows(), true);
+		
+		m_gridJudgesCats->SetDefaultColSize(25);
+		m_gridJudgesCats->SetDefaultRowSize(25);
+		m_gridJudgesCats->SetDefaultCellAlignment(wxALIGN_CENTRE,wxALIGN_CENTRE);
+		m_gridJudgesCats->SetRowLabelAlignment(wxALIGN_LEFT,wxALIGN_CENTRE);
+
+		m_gridJudgesCats->AppendCols(juds.size());
+		m_gridJudgesCats->AppendRows(cats.size());
+
+		CChampionshipJudgesTeamTable::tTableIt jIt = juds.begin();
+		int nCol = 0;
+		while(jIt != juds.end())
+		{
+			CChampionshipJudgesTeamTable::tDATA& data = jIt->second;
+			m_gridJudgesCats->SetColLabelValue(nCol, GetVerticalText(GetJudgeNameById(data.judgeId)));
+			m_ColIdMap[nCol] = jIt->first;
+			m_IdColMap[jIt->first] = nCol;
+			nCol++;
+			jIt++;
+		}
+
+		CChampionshipCategoriesTable::tTableIt cIt = cats.begin();
+		int nRow = 0;
+		while(cIt != cats.end())
+		{
+			CChampionshipCategoriesTable::tDATA& data = cIt->second;
+			m_gridJudgesCats->SetRowLabelValue(nRow, GetCategoryShortNameById(data.catId));
+			m_RowIdMap[nRow] = cIt->first;
+			m_IdRowMap[cIt->first] = nRow;
+			nRow++;
+			cIt++;
+		}
+
+		FillData();
+		
+	}while(0);
+}
+
+void udfBlockInfo::FillData()
+{
+	do
+	{
+		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
+		{
+			break;
+		}
+		
+		udfTreeItemData* blockItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
+		unsigned int nId = blockItem->GetId();
+		
+		CCsBlocksTable::tDATA blockData = {0};
+		CCsBlocksTable(m_pCon).GetRow(nId, blockData);
+		
+		m_textName->SetValue(blockData.name);
+		m_textStart->SetValue(time2str(blockData.startTime));
+		m_textPause->SetValue(wxString::Format(_("%d"), blockData.pause));
+				
+		CCsBlockJ2CTable::tDATA 					j2cFilter = {0};
+		CCsBlockJ2CTable::tTableMap 				j2c;
+
+		j2cFilter.blockId = nId;
+		CCsBlockJ2CTable(m_pCon).Find(j2c, j2cFilter);
+
+		CCsBlockJ2CTable::tTableIt it = j2c.begin();
+		while(it != j2c.end())
+		{
+			CCsBlockJ2CTable::tDATA& data = it->second;
+			int col = m_IdColMap[data.csJudgeId];
+			int row = m_IdRowMap[data.csCatId];
+			DEBUG_PRINTF("MARK: %d, %d", row, col);
+			m_gridJudgesCats->SetCellValue(row, col, _("X"));
+			it++;
+		}
+	}while(0);
 }

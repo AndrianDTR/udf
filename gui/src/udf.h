@@ -47,23 +47,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 class DancersTeamMngr : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnSelectTeam( wxCommandEvent& event ){ OnSelectTeam( event ); }
-		void _wxFB_OnAddTeam( wxCommandEvent& event ){ OnAddTeam( event ); }
-		void _wxFB_OnRemoveTeam( wxCommandEvent& event ){ OnRemoveTeam( event ); }
-		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		void _wxFB_OnClubChanged( wxCommandEvent& event ){ OnClubChanged( event ); }
-		void _wxFB_OnAddDancerTeamCategory( wxCommandEvent& event ){ OnAddDancerTeamCategory( event ); }
-		void _wxFB_OnRemoveDancerTeamCategory( wxCommandEvent& event ){ OnRemoveDancerTeamCategory( event ); }
-		void _wxFB_OnAddDancer2Team( wxCommandEvent& event ){ OnAddDancer2Team( event ); }
-		void _wxFB_OnRemoveDancerFromTeam( wxCommandEvent& event ){ OnRemoveDancerFromTeam( event ); }
-		
 	
 	protected:
 		enum
@@ -131,17 +115,7 @@ class DancersTeamMngr : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class ChampionshipCategoriesMngrDlg : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnAddAll( wxCommandEvent& event ){ OnAddAll( event ); }
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnRemoveAll( wxCommandEvent& event ){ OnRemoveAll( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -186,21 +160,7 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class CategoriesMngrDlg : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnCategorySearch( wxCommandEvent& event ){ OnCategorySearch( event ); }
-		void _wxFB_OnCategorySelected( wxCommandEvent& event ){ OnCategorySelected( event ); }
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		void _wxFB_OnAgeCganged( wxCommandEvent& event ){ OnAgeCganged( event ); }
-		void _wxFB_OnLigaCganged( wxCommandEvent& event ){ OnLigaCganged( event ); }
-		void _wxFB_OnDanceChanged( wxCommandEvent& event ){ OnDanceChanged( event ); }
-		
 	
 	protected:
 		enum
@@ -258,23 +218,7 @@ class CategoriesMngrDlg : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class ClubsMngrDlg : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnSelectClub( wxCommandEvent& event ){ OnSelectClub( event ); }
-		void _wxFB_OnAddClub( wxCommandEvent& event ){ OnAddClub( event ); }
-		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
-		void _wxFB_OnRemoveClub( wxCommandEvent& event ){ OnRemoveClub( event ); }
-		void _wxFB_OnAccountInfo( wxCommandEvent& event ){ OnAccountInfo( event ); }
-		void _wxFB_OnDirectorInfo( wxCommandEvent& event ){ OnDirectorInfo( event ); }
-		void _wxFB_OnTrainersMngr( wxCommandEvent& event ){ OnTrainersMngr( event ); }
-		void _wxFB_OnDancersMngr( wxCommandEvent& event ){ OnDancersMngr( event ); }
-		void _wxFB_OnPayment( wxCommandEvent& event ){ OnPayment( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -349,29 +293,7 @@ class ClubsMngrDlg : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class MainFrameBase : public wxFrame 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnCloseFrame( wxCloseEvent& event ){ OnCloseFrame( event ); }
-		void _wxFB_OnExitClick( wxCommandEvent& event ){ OnExitClick( event ); }
-		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
-		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
-		void _wxFB_OnMenuCategoryManage( wxCommandEvent& event ){ OnMenuCategoryManage( event ); }
-		void _wxFB_OnDanceTypesCodeMgr( wxCommandEvent& event ){ OnDanceTypesCodeMgr( event ); }
-		void _wxFB_OnLigueCodeMgr( wxCommandEvent& event ){ OnLigueCodeMgr( event ); }
-		void _wxFB_OnAgeCodesMgr( wxCommandEvent& event ){ OnAgeCodesMgr( event ); }
-		void _wxFB_OnMenuChampionshipTypes( wxCommandEvent& event ){ OnMenuChampionshipTypes( event ); }
-		void _wxFB_OnCitiesMngr( wxCommandEvent& event ){ OnCitiesMngr( event ); }
-		void _wxFB_OnCountriesMngr( wxCommandEvent& event ){ OnCountriesMngr( event ); }
-		void _wxFB_OnMenySync( wxCommandEvent& event ){ OnMenySync( event ); }
-		void _wxFB_OnMenuOptions( wxCommandEvent& event ){ OnMenuOptions( event ); }
-		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
-		void _wxFB_OnEditTour( wxTreeEvent& event ){ OnEditTour( event ); }
-		void _wxFB_OnCsSelect( wxTreeEvent& event ){ OnCsSelect( event ); }
-		
 	
 	protected:
 		enum
@@ -454,208 +376,11 @@ class MainFrameBase : public wxFrame
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class MainFrameBase1
-///////////////////////////////////////////////////////////////////////////////
-class MainFrameBase1 : public wxFrame 
-{
-	DECLARE_EVENT_TABLE()
-	private:
-		
-		// Private event handlers
-		void _wxFB_OnCloseFrame( wxCloseEvent& event ){ OnCloseFrame( event ); }
-		void _wxFB_OnExitClick( wxCommandEvent& event ){ OnExitClick( event ); }
-		void _wxFB_OnMenuClubManage( wxCommandEvent& event ){ OnMenuClubManage( event ); }
-		void _wxFB_OnMenuJudgeManage( wxCommandEvent& event ){ OnMenuJudgeManage( event ); }
-		void _wxFB_OnMenuCategoryManage( wxCommandEvent& event ){ OnMenuCategoryManage( event ); }
-		void _wxFB_OnDanceTypesCodeMgr( wxCommandEvent& event ){ OnDanceTypesCodeMgr( event ); }
-		void _wxFB_OnLigueCodeMgr( wxCommandEvent& event ){ OnLigueCodeMgr( event ); }
-		void _wxFB_OnAgeCodesMgr( wxCommandEvent& event ){ OnAgeCodesMgr( event ); }
-		void _wxFB_OnMenuChampionshipTypes( wxCommandEvent& event ){ OnMenuChampionshipTypes( event ); }
-		void _wxFB_OnCitiesMngr( wxCommandEvent& event ){ OnCitiesMngr( event ); }
-		void _wxFB_OnCountriesMngr( wxCommandEvent& event ){ OnCountriesMngr( event ); }
-		void _wxFB_OnMenySync( wxCommandEvent& event ){ OnMenySync( event ); }
-		void _wxFB_OnMenuOptions( wxCommandEvent& event ){ OnMenuOptions( event ); }
-		void _wxFB_OnAboutDlg( wxCommandEvent& event ){ OnAboutDlg( event ); }
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnAddChampionsip( wxCommandEvent& event ){ OnAddChampionsip( event ); }
-		void _wxFB_OnEditTour( wxTreeEvent& event ){ OnEditTour( event ); }
-		void _wxFB_OnCsSelect( wxTreeEvent& event ){ OnCsSelect( event ); }
-		void _wxFB_OnRemoveChampionship( wxCommandEvent& event ){ OnRemoveChampionship( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		void _wxFB_OnCategoryMngr( wxCommandEvent& event ){ OnCategoryMngr( event ); }
-		void _wxFB_OnJudgeMngr( wxCommandEvent& event ){ OnJudgeMngr( event ); }
-		void _wxFB_OnSendInvitation( wxCommandEvent& event ){ OnSendInvitation( event ); }
-		void _wxFB_OnDancersTeams( wxCommandEvent& event ){ OnDancersTeams( event ); }
-		void _wxFB_OnStartNumberAssign( wxCommandEvent& event ){ OnStartNumberAssign( event ); }
-		void _wxFB_OnAddTour( wxCommandEvent& event ){ OnAddTour( event ); }
-		void _wxFB_OnTourEdit( wxCommandEvent& event ){ OnTourEdit( event ); }
-		void _wxFB_OnRemoveTour( wxCommandEvent& event ){ OnRemoveTour( event ); }
-		void _wxFB_OnJudgesMark( wxCommandEvent& event ){ OnJudgesMark( event ); }
-		void _wxFB_OnCsTourReport( wxCommandEvent& event ){ OnCsTourReport( event ); }
-		
-	
-	protected:
-		enum
-		{
-			ID_MAINFRAME_FORM = 1000,
-			ID_CS_ADD,
-			ID_CS_REMOVE,
-			ID_CS_UPDATE,
-			ID_CS_CATEGORIES,
-			ID_CS_STARTNUMB,
-			ID_CS_JUDGESTEAM,
-			ID_CS_INVITATIONS,
-			ID_CS_RESULTS,
-			ID_CS_RAITING,
-			ID_MENU_MNGR_CLUBS,
-			ID_MENU_MNGR_JUDGE,
-			ID_MENU_MNGR_CATEGORIES,
-			ID_MENU_MNGR_DANCE_TYPES,
-			ID_MENU_MNGR_LIGUES,
-			ID_MENU_MNGR_AGE_CATEGORIES,
-			ID_MENU_MNGR_ChTYPES_MNGR,
-			ID_MENU_MNGR_CITIES,
-			ID_MENU_MNGR_COUNTRIES,
-			ID_MENU_TOOLS_SYUNC,
-			ID_MENU_TOOLS_OPTIONS,
-			ID_ABOUT,
-			ID_SEARCH,
-			wxID_CHAMPIONSIP_ADD,
-			ID_CS_TREE,
-			wxID_CHAMPIONSIP_REMOVE,
-			wxID_CHAMPIONSHIP_SAVE,
-			wxID_CHAMPIONSHIP_DISCARD,
-			wxID_CHAMPIONSHIP_CATEGORIES,
-			wxID_CHAMPIONSHIP_JUDGESTEAMMNGR,
-			wxID_CHAMPIONSHIP_SENDINVITATION,
-			ID_TEAMS,
-			wxID_CHAMPIONSHIP_STARTNUMBERMNGR,
-			ID_TOUR_ADD,
-			ID_TOUR_EDIT,
-			ID_TOUR_REMOVE,
-			ID_TOUR_JUIDGES_MARKS,
-			ID_TOUR_REPORT,
-			ID_NAME,
-			ID_TYPE,
-			ID_DATE,
-			ID_CITY,
-			ID_ADDRESS,
-			ID_REG_OPEN,
-			ID_REG_CLOSE,
-			ID_INFO,
-			ID_M_PANELBLOCKINFO,
-			ID_M_PANELCATINFO,
-			ID_M_PANELTOURINFO,
-		};
-		
-		wxMenuBar* m_menuBar;
-		wxMenu* m_menuFile;
-		wxMenu* m_menu8;
-		wxMenu* m_menu2;
-		wxMenu* m_menu5;
-		wxMenu* m_menu51;
-		wxSplitterWindow* m_splitter2;
-		wxPanel* m_panel1;
-		wxStaticText* m_championshipSearchText;
-		wxTextCtrl* m_textSearch;
-		wxBitmapButton* m_bpAdd;
-		wxTreeCtrl* m_treeCs;
-		wxPanel* m_panel12;
-		wxNotebook* m_notebook3;
-		wxPanel* m_panelCsInfo;
-		wxBitmapButton* m_bpRemove;
-		wxBitmapButton* m_bpSave;
-		wxBitmapButton* m_bpDiscard;
-		wxBitmapButton* m_bpCategoryMngr;
-		wxBitmapButton* m_bpJudgesMngr;
-		wxBitmapButton* m_bpSendinvitation;
-		wxBitmapButton* m_bpDancersTeams;
-		wxBitmapButton* m_bpStartNumberMngr;
-		wxBitmapButton* m_bpTourAdd;
-		wxBitmapButton* m_bpTourEdit;
-		wxBitmapButton* m_bpTourRemove;
-		wxBitmapButton* m_bpJudgesMark;
-		wxBitmapButton* m_bpTourReport;
-		wxStaticText* m_staticText4;
-		wxTextCtrl* m_textChName;
-		wxStaticText* m_staticText2;
-		wxComboBox* m_comboType;
-		wxStaticText* m_staticText5;
-		wxDatePickerCtrl* m_dateDate;
-		wxStaticText* m_staticText7;
-		wxComboBox* m_comboCity;
-		wxStaticText* m_staticText8;
-		wxTextCtrl* m_textAddress;
-		wxStaticText* m_staticText12;
-		wxDatePickerCtrl* m_dateRegOpen;
-		wxStaticText* m_staticText13;
-		wxDatePickerCtrl* m_dateRegClose;
-		wxStaticText* m_staticText14;
-		wxTextCtrl* m_textAdditionalInfo;
-		wxPanel* m_panelBlockInfo;
-		wxPanel* m_panelCatInfo;
-		wxPanel* m_panelTourInfo;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnCloseFrame( wxCloseEvent& event ) { event.Skip(); }
-		virtual void OnExitClick( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMenuClubManage( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMenuJudgeManage( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMenuCategoryManage( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDanceTypesCodeMgr( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnLigueCodeMgr( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAgeCodesMgr( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMenuChampionshipTypes( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnCitiesMngr( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnCountriesMngr( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMenySync( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMenuOptions( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddChampionsip( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEditTour( wxTreeEvent& event ) { event.Skip(); }
-		virtual void OnCsSelect( wxTreeEvent& event ) { event.Skip(); }
-		virtual void OnRemoveChampionship( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnCategoryMngr( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnJudgeMngr( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSendInvitation( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDancersTeams( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnStartNumberAssign( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddTour( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnTourEdit( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemoveTour( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnJudgesMark( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnCsTourReport( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		MainFrameBase1( wxWindow* parent, wxWindowID id = ID_MAINFRAME_FORM, const wxString& title = _("Championship calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1009,668 ), long style = wxCLOSE_BOX|wxDEFAULT_FRAME_STYLE|wxMAXIMIZE|wxTAB_TRAVERSAL );
-		~MainFrameBase1();
-		
-		void m_splitter2OnIdle( wxIdleEvent& )
-		{
-			m_splitter2->SetSashPosition( 300 );
-			m_splitter2->Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrameBase1::m_splitter2OnIdle ), NULL, this );
-		}
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class DirectorInfo
 ///////////////////////////////////////////////////////////////////////////////
 class DirectorInfo : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -694,19 +419,7 @@ class DirectorInfo : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class TrainersMngrDlg : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnSelectTrainer( wxCommandEvent& event ){ OnSelectTrainer( event ); }
-		void _wxFB_OnAddTrainer( wxCommandEvent& event ){ OnAddTrainer( event ); }
-		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
-		void _wxFB_OnRemoveTrainer( wxCommandEvent& event ){ OnRemoveTrainer( event ); }
-		void _wxFB_OnPayment( wxCommandEvent& event ){ OnPayment( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -768,13 +481,7 @@ class TrainersMngrDlg : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class CsTours : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -811,19 +518,7 @@ class CsTours : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class CsTourReport : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnReport( wxCommandEvent& event ){ OnReport( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		void _wxFB_OnStartDrag( wxListEvent& event ){ OnStartDrag( event ); }
-		void _wxFB_OnTeamSelect( wxListEvent& event ){ OnTeamSelect( event ); }
-		void _wxFB_OnUp10( wxCommandEvent& event ){ OnUp10( event ); }
-		void _wxFB_OnUp( wxCommandEvent& event ){ OnUp( event ); }
-		void _wxFB_OnDown( wxCommandEvent& event ){ OnDown( event ); }
-		void _wxFB_OnDown10( wxCommandEvent& event ){ OnDown10( event ); }
-		
 	
 	protected:
 		enum
@@ -872,19 +567,7 @@ class CsTourReport : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class DancersMngrDlg : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnDancerSelect( wxCommandEvent& event ){ OnDancerSelect( event ); }
-		void _wxFB_OnAddDancer( wxCommandEvent& event ){ OnAddDancer( event ); }
-		void _wxFB_OnRemoveDancer( wxCommandEvent& event ){ OnRemoveDancer( event ); }
-		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
-		void _wxFB_OnPayment( wxCommandEvent& event ){ OnPayment( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -957,14 +640,7 @@ class DancersMngrDlg : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class AccountInfo : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnShowPass( wxCommandEvent& event ){ OnShowPass( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1000,17 +676,7 @@ class AccountInfo : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class UserRolesMgr : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		void _wxFB_OnSelectRole( wxListEvent& event ){ OnSelectRole( event ); }
-		
 	
 	protected:
 		enum
@@ -1055,13 +721,7 @@ class UserRolesMgr : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class AddTeamCategory : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1097,19 +757,7 @@ class AddTeamCategory : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class JudgesMngr : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnSelectJudge( wxCommandEvent& event ){ OnSelectJudge( event ); }
-		void _wxFB_OnAddJudge( wxCommandEvent& event ){ OnAddJudge( event ); }
-		void _wxFB_OnRemoveJudge( wxCommandEvent& event ){ OnRemoveJudge( event ); }
-		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
-		void _wxFB_OnPayment( wxCommandEvent& event ){ OnPayment( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1174,17 +822,7 @@ class JudgesMngr : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class TeamCategoryMngrDlg : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnAddAll( wxCommandEvent& event ){ OnAddAll( event ); }
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnRemoveAll( wxCommandEvent& event ){ OnRemoveAll( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1227,17 +865,7 @@ class TeamCategoryMngrDlg : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class ChampionshipJudgesTeamMngrDlg : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnAddAll( wxCommandEvent& event ){ OnAddAll( event ); }
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnRemoveAll( wxCommandEvent& event ){ OnRemoveAll( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1282,18 +910,7 @@ class ChampionshipJudgesTeamMngrDlg : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class StartNumberAssignDlg : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSelectTeam( wxCommandEvent& event ){ OnSelectTeam( event ); }
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnRandomFind( wxCommandEvent& event ){ OnRandomFind( event ); }
-		void _wxFB_OnNextFind( wxCommandEvent& event ){ OnNextFind( event ); }
-		void _wxFB_OnAssign( wxCommandEvent& event ){ OnAssign( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1339,19 +956,7 @@ class StartNumberAssignDlg : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class JudgeMark : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSelectJudge( wxCommandEvent& event ){ OnSelectJudge( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		void _wxFB_OnSelectNumber( wxCommandEvent& event ){ OnSelectNumber( event ); }
-		void _wxFB_OnShowAll( wxCommandEvent& event ){ OnShowAll( event ); }
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnPlus( wxCommandEvent& event ){ OnPlus( event ); }
-		void _wxFB_OnMinus( wxCommandEvent& event ){ OnMinus( event ); }
-		
 	
 	protected:
 		enum
@@ -1402,18 +1007,7 @@ class JudgeMark : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class CodeDialog : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnSelectItem( wxCommandEvent& event ){ OnSelectItem( event ); }
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnUpdateCode( wxCommandEvent& event ){ OnUpdateCode( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1463,18 +1057,7 @@ class CodeDialog : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class CountriesMngr : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnSelectItem( wxCommandEvent& event ){ OnSelectItem( event ); }
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnUpdateCode( wxCommandEvent& event ){ OnUpdateCode( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1520,18 +1103,7 @@ class CountriesMngr : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class ChampionshipTypeMngr : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnSelectItem( wxCommandEvent& event ){ OnSelectItem( event ); }
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnUpdateCode( wxCommandEvent& event ){ OnUpdateCode( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1577,18 +1149,7 @@ class ChampionshipTypeMngr : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class CitiesMngr : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSearch( wxCommandEvent& event ){ OnSearch( event ); }
-		void _wxFB_OnSelectItem( wxCommandEvent& event ){ OnSelectItem( event ); }
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnUpdateCode( wxCommandEvent& event ){ OnUpdateCode( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1637,13 +1198,7 @@ class CitiesMngr : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class ReportPreview : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnPrint( wxCommandEvent& event ){ OnPrint( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1673,16 +1228,7 @@ class ReportPreview : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class PaymentHistory : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1720,13 +1266,7 @@ class PaymentHistory : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class Payment : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1765,13 +1305,7 @@ class Payment : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class Settings : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1841,16 +1375,7 @@ class Settings : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class Staff : public wxDialog 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnAdd( wxCommandEvent& event ){ OnAdd( event ); }
-		void _wxFB_OnUpdate( wxCommandEvent& event ){ OnUpdate( event ); }
-		void _wxFB_OnRemove( wxCommandEvent& event ){ OnRemove( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		
 	
 	protected:
 		enum
@@ -1887,24 +1412,7 @@ class Staff : public wxDialog
 ///////////////////////////////////////////////////////////////////////////////
 class CsInfo : public wxPanel 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnRemoveChampionship( wxCommandEvent& event ){ OnRemoveChampionship( event ); }
-		void _wxFB_OnSave( wxCommandEvent& event ){ OnSave( event ); }
-		void _wxFB_OnDiscard( wxCommandEvent& event ){ OnDiscard( event ); }
-		void _wxFB_OnCategoryMngr( wxCommandEvent& event ){ OnCategoryMngr( event ); }
-		void _wxFB_OnJudgeMngr( wxCommandEvent& event ){ OnJudgeMngr( event ); }
-		void _wxFB_OnSendInvitation( wxCommandEvent& event ){ OnSendInvitation( event ); }
-		void _wxFB_OnDancersTeams( wxCommandEvent& event ){ OnDancersTeams( event ); }
-		void _wxFB_OnStartNumberAssign( wxCommandEvent& event ){ OnStartNumberAssign( event ); }
-		void _wxFB_OnAddBlock( wxCommandEvent& event ){ OnAddBlock( event ); }
-		void _wxFB_OnTourEdit( wxCommandEvent& event ){ OnTourEdit( event ); }
-		void _wxFB_OnRemoveTour( wxCommandEvent& event ){ OnRemoveTour( event ); }
-		void _wxFB_OnJudgesMark( wxCommandEvent& event ){ OnJudgesMark( event ); }
-		void _wxFB_OnCsTourReport( wxCommandEvent& event ){ OnCsTourReport( event ); }
-		
 	
 	protected:
 		enum
@@ -1991,16 +1499,7 @@ class CsInfo : public wxPanel
 ///////////////////////////////////////////////////////////////////////////////
 class BlockInfo : public wxPanel 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnUpdateBlock( wxCommandEvent& event ){ OnUpdateBlock( event ); }
-		void _wxFB_OnBlockCategories( wxCommandEvent& event ){ OnBlockCategories( event ); }
-		void _wxFB_OnCellChange( wxGridEvent& event ){ OnCellChange( event ); }
-		void _wxFB_OnCellLeftClick( wxGridEvent& event ){ OnCellLeftClick( event ); }
-		void _wxFB_OnSelectCell( wxGridEvent& event ){ OnSelectCell( event ); }
-		
 	
 	protected:
 		enum
@@ -2012,6 +1511,7 @@ class BlockInfo : public wxPanel
 			ID_M_TEXTNAME,
 			ID_M_TEXTPAUSE,
 			ID_M_STATICLENGHT,
+			ID_M_STATICDESCRIPTION,
 			ID_M_GRIDJUDGESCATS,
 		};
 		
@@ -2026,14 +1526,17 @@ class BlockInfo : public wxPanel
 		wxTextCtrl* m_textPause;
 		wxStaticText* m_staticText107;
 		wxStaticText* m_staticLenght;
+		wxStaticText* m_staticText119;
+		wxStaticText* m_staticDescription;
 		wxGrid* m_gridJudgesCats;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnUpdateBlock( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnBlockCategories( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTextChanged( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPauseKillFocuss( wxFocusEvent& event ) { event.Skip(); }
 		virtual void OnCellChange( wxGridEvent& event ) { event.Skip(); }
 		virtual void OnCellLeftClick( wxGridEvent& event ) { event.Skip(); }
-		virtual void OnSelectCell( wxGridEvent& event ) { event.Skip(); }
 		
 	
 	public:

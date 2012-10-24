@@ -113,6 +113,8 @@ public:
 	int ShowDanceTypesMngrDlg();
 	int ShowLiguesMngrDlg();
 	int ShowAgeCatsMngrDlg();
+	int ShowCsCategoryManager();
+	int ShowCsJudgesManager();
 	
 	wxTreeItemId	GetSelectedCs();
 	wxTreeItemId	GetSelectedCsBlock();

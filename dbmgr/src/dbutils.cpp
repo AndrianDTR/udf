@@ -147,7 +147,8 @@ long GetBlockLenById(unsigned int nId, time_t& len)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-
+		
+		//Calculate summary registereg teams(time) + pause*(len(teams)-1)
 		/*
 		sprintf(query, "select count(t2.team_id) as `count` from %s t1"
 		" inner join %s t2 on t1.id=t2.category_id and t2.category_id=%d group by t1.id"

@@ -32,8 +32,7 @@
 #define TABLE_USERROLES							"user_roles"
 #define TABLE_STAFF								"staff"
 #define TABLE_CHAMPIONSHIPBLOCKS				"championship_blocks"
-#define TABLE_CHAMPIONSHIPBLOCKCATEGORIES		"championship_block_categories"
-#define TABLE_CHAMPIONSHIPBLOCKJUDGES			"championship_block_judges"
+#define TABLE_CHAMPIONSHIPBLOCKJ2C				"championship_block_j2c"
 
 #define MAX_QUERY_LEN							1500
 

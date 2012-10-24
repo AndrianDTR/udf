@@ -84,6 +84,27 @@
     <File Name="src/udfCsInfo.h"/>
     <File Name="src/udfSettings.cpp"/>
     <File Name="src/udfTourInfo.h"/>
+    <File Name="src/udftimectrl.h"/>
+    <File Name="src/udftimectrl.cpp"/>
+  </VirtualDirectory>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
+  <VirtualDirectory Name="res">
+    <File Name="res/button_money.png"/>
+    <File Name="res/button_move_up10.png"/>
+    <File Name="res/button_payments.png"/>
+    <File Name="res/button_mark.png"/>
+    <File Name="res/button_tour_edit.png"/>
+    <File Name="res/button_report.png"/>
+    <File Name="res/icon-database.png"/>
+    <File Name="res/icon_championship.png"/>
+    <File Name="res/button_move_down10.png"/>
+    <File Name="res/button_move_down.png"/>
+    <File Name="res/button_plus.png"/>
+    <File Name="res/button_minus.png"/>
+    <File Name="res/button_tour_remove.png"/>
+    <File Name="res/button_move_up.png"/>
+    <File Name="res/button_tour_add.png"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -103,10 +124,7 @@
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(WorkspacePath)/build/bin" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/build/bin" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
-        <![CDATA[
-      
-      
-      ]]>
+        <![CDATA[]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -117,7 +135,7 @@
       <CustomBuild Enabled="yes">
         <RebuildCommand>cd ..;./build</RebuildCommand>
         <CleanCommand>make clean</CleanCommand>
-        <BuildCommand>make</BuildCommand>
+        <BuildCommand>make -j8</BuildCommand>
         <PreprocessFileCommand>g++</PreprocessFileCommand>
         <SingleFileCommand>g++</SingleFileCommand>
         <MakefileGenerationCommand>cmake ../</MakefileGenerationCommand>
@@ -168,6 +186,7 @@ $(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppc
       
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -198,23 +217,4 @@ $(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppc
       </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="Debug"/>
-  <Dependencies Name="Release"/>
-  <VirtualDirectory Name="res">
-    <File Name="res/button_money.png"/>
-    <File Name="res/button_move_up10.png"/>
-    <File Name="res/button_payments.png"/>
-    <File Name="res/button_mark.png"/>
-    <File Name="res/button_tour_edit.png"/>
-    <File Name="res/button_report.png"/>
-    <File Name="res/icon-database.png"/>
-    <File Name="res/icon_championship.png"/>
-    <File Name="res/button_move_down10.png"/>
-    <File Name="res/button_move_down.png"/>
-    <File Name="res/button_plus.png"/>
-    <File Name="res/button_minus.png"/>
-    <File Name="res/button_tour_remove.png"/>
-    <File Name="res/button_move_up.png"/>
-    <File Name="res/button_tour_add.png"/>
-  </VirtualDirectory>
 </CodeLite_Project>

@@ -43,9 +43,8 @@ set( HEADER_FILES
 	src/ttourtypes.h
 	src/tuserroles.h
 	src/tpaymenthistory.h
-	src/tcsblockscategories.h
 	src/tcsblocks.h
-	src/tcsblocksjudges.h
+	src/tcsblocksj2c.h
 	src/tstaff.h
 )
 
@@ -80,9 +79,8 @@ set( SOURCE_FILES
 	src/ttourtypes.cpp
 	src/tuserroles.cpp
 	src/tpaymenthistory.cpp
-	src/tcsblockscategories.cpp
 	src/tcsblocks.cpp
-	src/tcsblocksjudges.cpp
+	src/tcsblocksj2c.cpp
 	src/tstaff.cpp
 )
 
