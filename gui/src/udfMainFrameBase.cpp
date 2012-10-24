@@ -44,22 +44,22 @@ udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 	m_pageCsInfo->SetMainWindow(this);
 	m_notebook->AddPage(m_pageCsInfo, _("Championship info"));
 	m_pageCsInfo->Hide();
-	
+
 	m_pageBlockInfo = new udfBlockInfo(m_notebook);
 	m_pageBlockInfo->SetMainWindow(this);
 	m_notebook->AddPage(m_pageBlockInfo, _("Block info"));
 	m_pageBlockInfo->Hide();
-	
+
 	m_pageCatInfo = new udfCategoryInfo(m_notebook);
 	m_pageCatInfo->SetMainWindow(this);
 	m_notebook->AddPage(m_pageCatInfo, _("Category info"));
 	m_pageCatInfo->Hide();
-	
+
 	m_pageTourInfo = new udfTourInfo(m_notebook);
 	m_pageTourInfo->SetMainWindow(this);
 	m_notebook->AddPage(m_pageTourInfo, _("Tour info"));
 	m_pageTourInfo->Hide();
-	
+
 	RefreshList();
 }
 
@@ -229,7 +229,9 @@ void udfMainFrameBase::OnCsSelect(wxTreeEvent& event)
 			break;
 
 		udfTreeItemData* pData = (udfTreeItemData*)m_treeCs->GetItemData(item);
-		switch(pData->GetType())
+		eITEM_TYPE type = pData->GetType();
+		DEBUG_PRINTF("Item type: %d", type);
+		switch(type)
 		{
 			case IT_CS:
 				CsSelected();
@@ -244,7 +246,7 @@ void udfMainFrameBase::OnCsSelect(wxTreeEvent& event)
 				TourSelected();
 				break;
 		}
-	
+
 	}while(0);
 }
 
@@ -810,9 +812,10 @@ void udfMainFrameBase::OnAddChampionsip(wxCommandEvent& event)
 {
 	do
 	{
-		wxTreeItemId id;
+		DEBUG_PRINT("Add Cs");
+		wxTreeItemId id = wxTreeItemId();
 		m_pageCsInfo->SetCsTreeItem(m_treeCs, m_root, id);
-		
+
 		m_pageCsInfo->Show(true);
 		m_pageBlockInfo->Show(false);
 		m_pageCatInfo->Show(false);
@@ -824,12 +827,13 @@ void udfMainFrameBase::CsSelected()
 {
 	do
 	{
+		DEBUG_PRINT("Cs selected");
 		wxTreeItemId csItem = GetSelectedCs();
 		if(!csItem.IsOk())
 			break;
-			
+
 		m_pageCsInfo->SetCsTreeItem(m_treeCs, m_root, csItem);
-		
+
 		m_pageCsInfo->Show(true);
 		m_pageBlockInfo->Show(false);
 		m_pageCatInfo->Show(false);
@@ -840,8 +844,14 @@ void udfMainFrameBase::CsSelected()
 void udfMainFrameBase::OnAddBlock(wxCommandEvent& event)
 {
 	do{
+		DEBUG_PRINT("Add block");
+		wxTreeItemId id = wxTreeItemId();
+
 		wxTreeItemId csItem = GetSelectedCs();
-		m_pageBlockInfo->SetCsTreeItem(m_treeCs, &csItem, NULL);
+		if(!csItem.IsOk())
+			break;
+
+		m_pageBlockInfo->SetCsTreeItem(m_treeCs, m_root, csItem);
 
 		m_pageCsInfo->Show(false);
 		m_pageBlockInfo->Show(true);
@@ -854,6 +864,17 @@ void udfMainFrameBase::BlockSelected()
 {
 	do
 	{
+		DEBUG_PRINT("Block selected");
+		wxTreeItemId csItem = GetSelectedCs();
+		if(!csItem.IsOk())
+			break;
+
+		wxTreeItemId blockItem = GetSelectedCsBlock();
+		if(!blockItem.IsOk())
+			break;
+
+		m_pageCsInfo->SetCsTreeItem(m_treeCs, csItem, blockItem);
+
 		m_pageCsInfo->Show(false);
 		m_pageBlockInfo->Show(true);
 		m_pageCatInfo->Show(false);

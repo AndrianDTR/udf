@@ -12,8 +12,6 @@ udfCategoryInfo::udfCategoryInfo( wxWindow* parent )
 , m_pCon(NULL)
 , m_pMainWindow(NULL)
 , m_pTree(NULL)
-, m_pParentItem(NULL)
-, m_pTreeItemId(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
 }
@@ -25,12 +23,12 @@ bool udfCategoryInfo::Show(bool show)
 		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
 		if(!pCon)
 			break;
-			
-		if(!m_pMainWindow || !m_pTree || m_pParentItem || !m_pTreeItemId)
+
+		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
 			break;
-		
+
 
 	}while(0);
-	
+
 	wxPanel::Show(show);
 }

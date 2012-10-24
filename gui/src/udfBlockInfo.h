@@ -16,6 +16,10 @@ class udfMainFrameBase;
 /** Implementing BlockInfo */
 class udfBlockInfo : public BlockInfo
 {
+public:
+	typedef std::map<int, unsigned int>				tI2UiMap;
+	typedef std::map<int, unsigned int>::iterator	tI2UiIt;
+
 protected:
 	// Handlers for BlockInfo events.
 	void OnUpdateBlock( wxCommandEvent& event );
@@ -28,17 +32,22 @@ public:
 	udfBlockInfo( wxWindow* parent);
 //// end generated class members
 
+protected:
+	wxString				GetVerticalText(wxString str);
+	tI2UiMap				m_RowIdMap;
+	tI2UiMap				m_ColIdMap;
+
 private:
 	CDbConnection*			m_pCon;
 	udfMainFrameBase*		m_pMainWindow;
 	wxTreeCtrl*				m_pTree;
-	wxTreeItemId*			m_pParentItem;
-	wxTreeItemId*			m_pTreeItemId;
-	
+	wxTreeItemId			m_parentItem;
+	wxTreeItemId			m_itemId;
+
 public:
 	bool			Show(bool show = true);
 	void			SetMainWindow(udfMainFrameBase* pMain) {m_pMainWindow = pMain;};
-	void			SetCsTreeItem(wxTreeCtrl* pTree, wxTreeItemId* pParentItem, wxTreeItemId* pItemId) {m_pTree = pTree; m_pParentItem = pParentItem; m_pTreeItemId = pItemId;};
+	void			SetCsTreeItem(wxTreeCtrl* pTree, wxTreeItemId& parentItem, wxTreeItemId& itemId) {m_pTree = pTree; m_parentItem = parentItem; m_itemId = itemId;};
 };
 
 #endif // __udfBlockInfo__

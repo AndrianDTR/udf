@@ -25,13 +25,13 @@ private:
 	CDbConnection*			m_pCon;
 	udfMainFrameBase*		m_pMainWindow;
 	wxTreeCtrl*				m_pTree;
-	wxTreeItemId*			m_pParentItem;
-	wxTreeItemId*			m_pTreeItemId;
-	
+	wxTreeItemId			m_parentItem;
+	wxTreeItemId			m_itemId;
+
 public:
 	bool			Show(bool show = true);
 	void			SetMainWindow(udfMainFrameBase* pMain) {m_pMainWindow = pMain;};
-	void			SetCsTreeItem(wxTreeCtrl* pTree, wxTreeItemId* pParentItem, wxTreeItemId* pItemId) {m_pTree = pTree; m_pParentItem = pParentItem; m_pTreeItemId = pItemId;};
+	void			SetCsTreeItem(wxTreeCtrl* pTree, wxTreeItemId& parentItem, wxTreeItemId& itemId) {m_pTree = pTree; m_parentItem = parentItem; m_itemId = itemId;};
 
 };
 

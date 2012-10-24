@@ -43,7 +43,7 @@ private:
 	wxTreeCtrl*				m_pTree;
 	wxTreeItemId			m_parentItem;
 	wxTreeItemId			m_itemId;
-	
+
 public:
 	bool			Show(bool show = true);
 	void			SetMainWindow(udfMainFrameBase* pMain) {m_pMainWindow = pMain;};
@@ -51,7 +51,7 @@ public:
 
 	void			RefreshCities();
 	void			RefreshTypes();
-	
+
 protected:
 	int				GetSelectedCity();
 	int				GetSelectedType();

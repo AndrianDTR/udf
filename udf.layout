@@ -13,20 +13,20 @@
 	<File name="dbmgr/src/dbconnection.h" open="0" top="0" tabpos="0">
 		<Cursor position="168" topLine="1" />
 	</File>
-	<File name="dbmgr/src/dbtable.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="1580" topLine="36" />
+	<File name="dbmgr/src/dbtable.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="1580" topLine="60" />
 	</File>
-	<File name="dbmgr/src/dbtable.h" open="0" top="0" tabpos="1">
-		<Cursor position="2136" topLine="54" />
+	<File name="dbmgr/src/dbtable.h" open="1" top="0" tabpos="1">
+		<Cursor position="2136" topLine="78" />
 	</File>
 	<File name="dbmgr/src/dbutils.h" open="0" top="0" tabpos="0">
 		<Cursor position="378" topLine="0" />
 	</File>
-	<File name="dbmgr/src/tagecategory.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="1742" topLine="88" />
+	<File name="dbmgr/src/tagecategory.cpp" open="1" top="1" tabpos="4">
+		<Cursor position="1649" topLine="73" />
 	</File>
-	<File name="dbmgr/src/tagecategory.h" open="0" top="0" tabpos="3">
-		<Cursor position="594" topLine="0" />
+	<File name="dbmgr/src/tagecategory.h" open="1" top="0" tabpos="3">
+		<Cursor position="594" topLine="2" />
 	</File>
 	<File name="dbmgr/src/tcategories.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="164" topLine="0" />
@@ -163,9 +163,6 @@
 	<File name="gui/src/string_def.h" open="0" top="0" tabpos="0">
 		<Cursor position="7772" topLine="136" />
 	</File>
-	<File name="gui/src/udf.h" open="1" top="1" tabpos="2">
-		<Cursor position="18720" topLine="547" />
-	</File>
 	<File name="gui/src/udfCategoriesMngrDlg.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="797" topLine="21" />
 	</File>
@@ -184,8 +181,8 @@
 	<File name="gui/src/udfDancersTeamMngr.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="10230" topLine="401" />
 	</File>
-	<File name="gui/src/udfMainFrameBase.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="24359" topLine="1010" />
+	<File name="gui/src/udfMainFrameBase.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="20319" topLine="854" />
 	</File>
 	<File name="gui/src/udfMainFrameBase.h" open="0" top="0" tabpos="0">
 		<Cursor position="730" topLine="20" />

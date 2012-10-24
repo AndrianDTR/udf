@@ -24,6 +24,7 @@
 #include "tcategories.h"
 #include "tchampionshipjudgesmark.h"
 #include "tchampionshipcategories.h"
+#include "tchampionshipjudgesteam.h"
 #include "tchampionshiptour.h"
 #include "tchampionshiptype.h"
 #include "tchampionshipteam.h"

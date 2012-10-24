@@ -10,6 +10,7 @@
 #include "ttreiners.h"
 #include "tchampionshipteam.h"
 #include "tchampionshipcategories.h"
+#include "tchampionshipjudgesteam.h"
 #include "tchampionshipjudgesmark.h"
 #include "tchampionshiptour.h"
 #include "tagecategory.h"
@@ -117,6 +118,26 @@ wxString	GetJudgeNameById(unsigned int nId)
 	return res;
 }
 
+wxString	GetCsJudgeNameById(unsigned int nId)
+{
+	wxString res;
+
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CChampionshipJudgesTeamTable::tDATA	data = {0};
+
+		if(UDF_OK != CChampionshipJudgesTeamTable(pCon).GetRow(nId, data))
+		{
+			break;
+		}
+
+		res = GetJudgeNameById(data.judgeId);
+	}while(0);
+
+	return res;
+}
+
 wxString	GetTrainerNameById(unsigned int nId)
 {
 	wxString res;
@@ -132,6 +153,26 @@ wxString	GetTrainerNameById(unsigned int nId)
 		}
 
 		res = data.name;
+	}while(0);
+
+	return res;
+}
+
+wxString	GetCategoryShortNameById(unsigned int nId)
+{
+	wxString res;
+
+	do
+	{
+		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
+		CCategoriesTable::tDATA	data = {0};
+
+		if(UDF_OK != CCategoriesTable(pCon).GetRow(nId, data))
+		{
+			break;
+		}
+
+		res = data.shortName;
 	}while(0);
 
 	return res;
