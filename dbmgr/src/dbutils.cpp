@@ -125,7 +125,7 @@ long GetRegisteredTeamsForCategory(unsigned int nId, int& count)
 
 		if(qRes->next())
 			count = atoi(string(qRes->getString("count")).c_str());
-		DEBUG_PRINTF("Count : %i", count);
+		__debug("Count : %i", count);
 
 	}while(0);
 
@@ -147,14 +147,26 @@ long GetBlockLenById(unsigned int nId, time_t& len)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		
+				
 		//Calculate summary registereg teams(time) + pause*(len(teams)-1)
 		/*
-		sprintf(query, "select count(t2.team_id) as `count` from %s t1"
-		" inner join %s t2 on t1.id=t2.category_id and t2.category_id=%d group by t1.id"
+		select sec_to_time(sum(tt.TT)) total from (select t1.name, sum(time_to_sec(t2.lenght)) as TT from championship_team t1 inner join (select b1.championship_id csId, b2.cs_cat_id catId from championship_blocks b1 inner join championship_block_j2c b2 on b1.id=b2.block_id and b1.id=2 group by b2.cs_cat_id) bc inner join championship_team_categories t2 on t1.id=t2.team_id and t1.championship_id=bc.csId and t2.category_id=bc.catId group by t1.name) tt
+		*/
+		
+		sprintf(query, "select sec_to_time(sum(tt.TT)) total from"
+			" (select t1.name, sum(time_to_sec(t2.lenght)) as TT from"
+			" %s t1 inner join (select b1.championship_id csId,"
+			" b2.cs_cat_id catId from %s b1 inner join"
+			" %s b2 on b1.id=b2.block_id and b1.id=%d"
+			" group by b2.cs_cat_id) bc inner join %s"
+			" t2 on t1.id=t2.team_id and t1.championship_id=bc.csId and"
+			" t2.category_id=bc.catId group by t1.name) tt"
 			, TABLE_CHAMPIONSHIPTEAM
+			, TABLE_CHAMPIONSHIPBLOCKS
+			, TABLE_CHAMPIONSHIPBLOCKJ2C
+			, nId
 			, TABLE_CHAMPIONSHIPTEAMCATEGORIES
-			, nId);
+			);
 
 		qRes = pCon->ExecuteQuery(query);
 		if(!qRes)
@@ -163,12 +175,97 @@ long GetBlockLenById(unsigned int nId, time_t& len)
 			break;
 		}
 
-		if(qRes->next())
-			count = atoi(string(qRes->getString("count")).c_str());
-		DEBUG_PRINTF("Count : %i", count);
-		*/
+		if(!qRes->next())
+		{
+			res = UDF_E_NOTFOUND;
+		}
+		
+		len = str2time(qRes->getString("total"));
+		res = UDF_OK;
 	}while(0);
 
 	return res;
 }
 
+long JudgeHaveCategory(unsigned int judId, unsigned int catId, unsigned int& rowId)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+
+		sprintf(query, "select id from %s where judge_id=%d and cat_id=%d"
+			, TABLE_JUDGESCATEGORIESHAVE
+			, judId
+			, catId);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+
+		if(!qRes->next())
+		{
+			res = UDF_E_NOTFOUND;
+			break;
+		}
+		
+		rowId = qRes->getUInt("id");
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}
+
+long JudgeHaveCsCategory(unsigned int judId, unsigned int csId)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+
+		sprintf(query, "select judge_id, count(cat_id) as `count` from %s t1 join %s t2"
+			" on t1.cat_id=t2.category_id and t2.championship_id=%d and t1.judge_id=%d group by judge_id"
+			, TABLE_JUDGESCATEGORIESHAVE
+			, TABLE_CHAMPIONSHIPCATEGORIES
+			, csId
+			, judId);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+
+		if(!qRes->next())
+		{
+			res = UDF_E_NOTFOUND;
+			break;
+		}
+		
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}

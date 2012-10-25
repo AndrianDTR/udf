@@ -16,7 +16,7 @@ udfCountriesMngr::udfCountriesMngr( wxWindow* parent )
 		CCountriesTable::tDATA data = it->second;
 		int nPos = m_listItems->GetCount();
 		m_listItems->Insert(data.name, nPos, (void*)&it->first);
-		DEBUG_PRINTF("Pos: %d, %d, %s", nPos, data.id, data.name.c_str());
+		__debug("Pos: %d, %d, %s", nPos, data.id, data.name.c_str());
 		it++;
 	}
 }

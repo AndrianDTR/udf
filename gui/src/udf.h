@@ -37,6 +37,7 @@
 #include <wx/dateevt.h>
 #include <wx/checkbox.h>
 #include <wx/listctrl.h>
+#include <wx/checklst.h>
 #include <wx/html/htmlwin.h>
 #include <wx/grid.h>
 
@@ -150,7 +151,7 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 	
 	public:
 		
-		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 664,446 ), long style = wxCAPTION|wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU );
+		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 798,517 ), long style = wxCAPTION|wxCLOSE_BOX|wxSYSTEM_MENU );
 		~ChampionshipCategoriesMngrDlg();
 	
 };
@@ -765,6 +766,7 @@ class JudgesMngr : public wxDialog
 			ID_SEARCH = 1000,
 			ID_LIST_JUDGES,
 			ID_APPLY,
+			ID_CATEGORIES,
 			ID_M_BPPAYMENT,
 			ID_NAME,
 			ID_CITY,
@@ -781,6 +783,7 @@ class JudgesMngr : public wxDialog
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
 		wxBitmapButton* m_bpApply;
+		wxBitmapButton* m_bpCategories;
 		wxBitmapButton* m_bpPayments;
 		wxBitmapButton* m_bpButton19;
 		wxBitmapButton* m_bpButton20;
@@ -805,6 +808,7 @@ class JudgesMngr : public wxDialog
 		virtual void OnAddJudge( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveJudge( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCategories( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPayment( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
@@ -814,49 +818,6 @@ class JudgesMngr : public wxDialog
 		
 		JudgesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judges manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 862,483 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~JudgesMngr();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class TeamCategoryMngrDlg
-///////////////////////////////////////////////////////////////////////////////
-class TeamCategoryMngrDlg : public wxDialog 
-{
-	private:
-	
-	protected:
-		enum
-		{
-			wxID_ADDALL = 1000,
-			wxID_ADDONE,
-			wxID_REMOVEONE,
-			wxID_REMOVEALL,
-		};
-		
-		wxStaticText* m_staticText8;
-		wxListBox* m_listBox2;
-		wxBitmapButton* m_bpButton9;
-		wxBitmapButton* m_bpButton10;
-		wxBitmapButton* m_bpButton11;
-		wxBitmapButton* m_bpButton12;
-		wxStaticText* m_staticText9;
-		wxListBox* m_listBox3;
-		wxBitmapButton* m_bpButton31;
-		wxBitmapButton* m_bpButton32;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnAddAll( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemoveAll( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		TeamCategoryMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Team categories manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 546,317 ), long style = wxDEFAULT_DIALOG_STYLE );
-		~TeamCategoryMngrDlg();
 	
 };
 
@@ -900,8 +861,44 @@ class ChampionshipJudgesTeamMngrDlg : public wxDialog
 	
 	public:
 		
-		ChampionshipJudgesTeamMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship judges team manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 546,316 ), long style = wxDEFAULT_DIALOG_STYLE );
+		ChampionshipJudgesTeamMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship judges team manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 791,525 ), long style = wxCAPTION|wxCLOSE_BOX|wxSYSTEM_MENU );
 		~ChampionshipJudgesTeamMngrDlg();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class JudgeCategories
+///////////////////////////////////////////////////////////////////////////////
+class JudgeCategories : public wxDialog 
+{
+	private:
+	
+	protected:
+		enum
+		{
+			ID_SET = 1000,
+			ID_CLEAR,
+		};
+		
+		wxStaticText* m_staticText112;
+		wxStaticText* m_staticJudge;
+		wxCheckListBox* m_checkCategories;
+		wxButton* m_buttonAll;
+		wxButton* m_buttonClear;
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnSetAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnClearAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		JudgeCategories( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judge categories"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 654,496 ), long style = wxCAPTION|wxCLOSE_BOX|wxSYSTEM_MENU );
+		~JudgeCategories();
 	
 };
 
@@ -1533,6 +1530,7 @@ class BlockInfo : public wxPanel
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnUpdateBlock( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnBlockCategories( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnJudgesTemManager( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTextChanged( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPauseKillFocuss( wxFocusEvent& event ) { event.Skip(); }
 		virtual void OnCellChange( wxGridEvent& event ) { event.Skip(); }

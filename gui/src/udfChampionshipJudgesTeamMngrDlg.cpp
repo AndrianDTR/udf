@@ -22,15 +22,17 @@ void udfChampionshipJudgesTeamMngrDlg::OnAddAll( wxCommandEvent& event )
 	CJudgesTable::tTableIt it = m_Judges.begin();
 	while(it != m_Judges.end())
 	{
-		CJudgesTable::tDATA& jData = it->second;
-		int nPos = m_listSelected->GetCount();
-		data.id = -nPos;
-		data.judgeId = it->first;
-		
-		CChampionshipJudgesTeamTable::tTableIt itemIt = 
-			m_ChampionshipsJudges.insert(std::make_pair(data.id, data)).first;
-		m_listSelected->Insert(jData.name, nPos, (void*)&itemIt->first);
-
+		if(UDF_OK == JudgeHaveCsCategory(it->first, m_nCSId))
+		{
+			CJudgesTable::tDATA& jData = it->second;
+			int nPos = m_listSelected->GetCount();
+			data.id = -nPos;
+			data.judgeId = it->first;
+			
+			CChampionshipJudgesTeamTable::tTableIt itemIt = 
+				m_ChampionshipsJudges.insert(std::make_pair(data.id, data)).first;
+			m_listSelected->Insert(jData.name, nPos, (void*)&itemIt->first);
+		}
 		it++;
 	}
 }
@@ -45,6 +47,9 @@ void udfChampionshipJudgesTeamMngrDlg::OnAdd( wxCommandEvent& event )
 	for(i = 0; i < nSelections.GetCount() ; ++i)
 	{
 		int nId = *(int*)m_listAll->GetClientData(nSelections[i]);
+		if(UDF_OK != JudgeHaveCsCategory(nId, m_nCSId))
+			continue;
+			
 		CJudgesTable::tTableIt it = m_Judges.find(nId);
 		if(it != m_Judges.end())
 		{
@@ -143,7 +148,8 @@ void udfChampionshipJudgesTeamMngrDlg::RefreshAllList()
 	{
 		CJudgesTable::tDATA& data = it->second;
 		int nPos = m_listAll->GetCount();
-		m_listAll->Insert(data.name, nPos, (void*)&it->first);
+		if(UDF_OK == JudgeHaveCsCategory(it->first, m_nCSId))
+			m_listAll->Insert(data.name, nPos, (void*)&it->first);
 		
 		it++;
 	}

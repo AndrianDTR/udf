@@ -260,27 +260,32 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 	m_staticText8->Wrap( -1 );
 	bSizer9->Add( m_staticText8, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_listAll = new wxListBox( this, ID_LIST_ALL, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_MULTIPLE ); 
-	bSizer9->Add( m_listAll, 1, wxALL|wxEXPAND, 5 );
+	m_listAll = new wxListBox( this, ID_LIST_ALL, wxDefaultPosition, wxSize( 350,-1 ), 0, NULL, wxLB_MULTIPLE ); 
+	bSizer9->Add( m_listAll, 1, wxALL, 5 );
 	
-	bSizer8->Add( bSizer9, 1, wxEXPAND, 5 );
+	bSizer8->Add( bSizer9, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxVERTICAL );
 	
+	wxBoxSizer* bSizer131;
+	bSizer131 = new wxBoxSizer( wxVERTICAL );
+	
 	m_bpAddAll = new wxBitmapButton( this, wxID_ADDALL, wxBitmap( button_rightall_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpAddAll, 0, wxALL, 5 );
+	bSizer131->Add( m_bpAddAll, 0, wxALL, 5 );
 	
 	m_bpAdd = new wxBitmapButton( this, wxID_ADDONE, wxBitmap( button_right_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpAdd, 0, wxALL, 5 );
+	bSizer131->Add( m_bpAdd, 0, wxALL, 5 );
 	
 	m_bpRemove = new wxBitmapButton( this, wxID_REMOVEONE, wxBitmap( button_left_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpRemove, 0, wxALL, 5 );
+	bSizer131->Add( m_bpRemove, 0, wxALL, 5 );
 	
 	m_bpRemoveAll = new wxBitmapButton( this, wxID_REMOVEALL, wxBitmap( button_leftall_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpRemoveAll, 0, wxALL, 5 );
+	bSizer131->Add( m_bpRemoveAll, 0, wxALL, 5 );
 	
-	bSizer8->Add( bSizer10, 0, wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer10->Add( bSizer131, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	bSizer8->Add( bSizer10, 1, wxALIGN_CENTER_VERTICAL, 5 );
 	
 	wxBoxSizer* bSizer11;
 	bSizer11 = new wxBoxSizer( wxVERTICAL );
@@ -289,10 +294,10 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 	m_staticText9->Wrap( -1 );
 	bSizer11->Add( m_staticText9, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_listSelected = new wxListBox( this, ID_SELECTED_LIST, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_MULTIPLE ); 
-	bSizer11->Add( m_listSelected, 1, wxALL|wxEXPAND, 5 );
+	m_listSelected = new wxListBox( this, ID_SELECTED_LIST, wxDefaultPosition, wxSize( 350,-1 ), 0, NULL, wxLB_MULTIPLE ); 
+	bSizer11->Add( m_listSelected, 1, wxALL, 5 );
 	
-	bSizer8->Add( bSizer11, 1, wxEXPAND, 5 );
+	bSizer8->Add( bSizer11, 0, wxEXPAND, 5 );
 	
 	bSizer7->Add( bSizer8, 1, wxEXPAND, 5 );
 	
@@ -1676,8 +1681,11 @@ JudgesMngr::JudgesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_bpRemove = new wxBitmapButton( this, wxID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer76->Add( m_bpRemove, 0, wxALL, 5 );
 	
-	m_bpApply = new wxBitmapButton( this, ID_APPLY, wxBitmap( button_update2_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpApply = new wxBitmapButton( this, ID_APPLY, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer76->Add( m_bpApply, 0, wxALL, 5 );
+	
+	m_bpCategories = new wxBitmapButton( this, ID_CATEGORIES, wxBitmap( button_categories_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer76->Add( m_bpCategories, 0, wxALL, 5 );
 	
 	m_bpPayments = new wxBitmapButton( this, ID_M_BPPAYMENT, wxBitmap( button_payments_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer76->Add( m_bpPayments, 0, wxALL, 5 );
@@ -1763,6 +1771,7 @@ JudgesMngr::JudgesMngr( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnAddJudge ), NULL, this );
 	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnRemoveJudge ), NULL, this );
 	m_bpApply->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnUpdate ), NULL, this );
+	m_bpCategories->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnCategories ), NULL, this );
 	m_bpPayments->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnPayment ), NULL, this );
 	m_bpButton19->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnSave ), NULL, this );
 	m_bpButton20->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnDiscard ), NULL, this );
@@ -1776,100 +1785,10 @@ JudgesMngr::~JudgesMngr()
 	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnAddJudge ), NULL, this );
 	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnRemoveJudge ), NULL, this );
 	m_bpApply->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnUpdate ), NULL, this );
+	m_bpCategories->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnCategories ), NULL, this );
 	m_bpPayments->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnPayment ), NULL, this );
 	m_bpButton19->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnSave ), NULL, this );
 	m_bpButton20->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgesMngr::OnDiscard ), NULL, this );
-	
-}
-
-TeamCategoryMngrDlg::TeamCategoryMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
-{
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-	
-	wxBoxSizer* bSizer7;
-	bSizer7 = new wxBoxSizer( wxVERTICAL );
-	
-	wxBoxSizer* bSizer8;
-	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
-	
-	wxBoxSizer* bSizer9;
-	bSizer9 = new wxBoxSizer( wxVERTICAL );
-	
-	m_staticText8 = new wxStaticText( this, wxID_ANY, _("Championship categories"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText8->Wrap( -1 );
-	bSizer9->Add( m_staticText8, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
-	
-	m_listBox2 = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer9->Add( m_listBox2, 1, wxALL|wxEXPAND, 5 );
-	
-	bSizer8->Add( bSizer9, 1, wxEXPAND, 5 );
-	
-	wxBoxSizer* bSizer10;
-	bSizer10 = new wxBoxSizer( wxVERTICAL );
-	
-	m_bpButton9 = new wxBitmapButton( this, wxID_ADDALL, wxBitmap( button_rightall_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpButton9, 0, wxALL, 5 );
-	
-	m_bpButton10 = new wxBitmapButton( this, wxID_ADDONE, wxBitmap( button_right_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpButton10, 0, wxALL, 5 );
-	
-	m_bpButton11 = new wxBitmapButton( this, wxID_REMOVEONE, wxBitmap( button_left_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpButton11, 0, wxALL, 5 );
-	
-	m_bpButton12 = new wxBitmapButton( this, wxID_REMOVEALL, wxBitmap( button_leftall_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpButton12, 0, wxALL, 5 );
-	
-	bSizer8->Add( bSizer10, 0, wxALIGN_BOTTOM, 5 );
-	
-	wxBoxSizer* bSizer11;
-	bSizer11 = new wxBoxSizer( wxVERTICAL );
-	
-	m_staticText9 = new wxStaticText( this, wxID_ANY, _("Team categories"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText9->Wrap( -1 );
-	bSizer11->Add( m_staticText9, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
-	
-	m_listBox3 = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer11->Add( m_listBox3, 1, wxALL|wxEXPAND, 5 );
-	
-	bSizer8->Add( bSizer11, 1, wxEXPAND, 5 );
-	
-	bSizer7->Add( bSizer8, 1, wxEXPAND, 5 );
-	
-	wxBoxSizer* bSizer34;
-	bSizer34 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpButton31 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	m_bpButton31->SetDefault(); 
-	bSizer34->Add( m_bpButton31, 0, wxALL, 5 );
-	
-	m_bpButton32 = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer34->Add( m_bpButton32, 0, wxALL, 5 );
-	
-	bSizer7->Add( bSizer34, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
-	
-	this->SetSizer( bSizer7 );
-	this->Layout();
-	
-	this->Centre( wxBOTH );
-	
-	// Connect Events
-	m_bpButton9->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnAddAll ), NULL, this );
-	m_bpButton10->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnAdd ), NULL, this );
-	m_bpButton11->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnRemove ), NULL, this );
-	m_bpButton12->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnRemoveAll ), NULL, this );
-	m_bpButton31->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnSave ), NULL, this );
-	m_bpButton32->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnDiscard ), NULL, this );
-}
-
-TeamCategoryMngrDlg::~TeamCategoryMngrDlg()
-{
-	// Disconnect Events
-	m_bpButton9->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnAddAll ), NULL, this );
-	m_bpButton10->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnAdd ), NULL, this );
-	m_bpButton11->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnRemove ), NULL, this );
-	m_bpButton12->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnRemoveAll ), NULL, this );
-	m_bpButton31->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnSave ), NULL, this );
-	m_bpButton32->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TeamCategoryMngrDlg::OnDiscard ), NULL, this );
 	
 }
 
@@ -1890,27 +1809,32 @@ ChampionshipJudgesTeamMngrDlg::ChampionshipJudgesTeamMngrDlg( wxWindow* parent, 
 	m_staticText8->Wrap( -1 );
 	bSizer9->Add( m_staticText8, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_listAll = new wxListBox( this, ID_LIST_ALL, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer9->Add( m_listAll, 1, wxALL|wxEXPAND, 5 );
+	m_listAll = new wxListBox( this, ID_LIST_ALL, wxDefaultPosition, wxSize( 350,-1 ), 0, NULL, wxLB_MULTIPLE ); 
+	bSizer9->Add( m_listAll, 1, wxALL, 5 );
 	
-	bSizer8->Add( bSizer9, 1, wxEXPAND, 5 );
+	bSizer8->Add( bSizer9, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxVERTICAL );
 	
+	wxBoxSizer* bSizer132;
+	bSizer132 = new wxBoxSizer( wxVERTICAL );
+	
 	m_bpAddAll = new wxBitmapButton( this, wxID_ADDALL, wxBitmap( button_rightall_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpAddAll, 0, wxALL, 5 );
+	bSizer132->Add( m_bpAddAll, 0, wxALL, 5 );
 	
 	m_bpAddOne = new wxBitmapButton( this, wxID_ADDONE, wxBitmap( button_right_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpAddOne, 0, wxALL, 5 );
+	bSizer132->Add( m_bpAddOne, 0, wxALL, 5 );
 	
 	m_bpRemoveOne = new wxBitmapButton( this, wxID_REMOVEONE, wxBitmap( button_left_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpRemoveOne, 0, wxALL, 5 );
+	bSizer132->Add( m_bpRemoveOne, 0, wxALL, 5 );
 	
 	m_bpRemoveAll = new wxBitmapButton( this, wxID_REMOVEALL, wxBitmap( button_leftall_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer10->Add( m_bpRemoveAll, 0, wxALL, 5 );
+	bSizer132->Add( m_bpRemoveAll, 0, wxALL, 5 );
 	
-	bSizer8->Add( bSizer10, 0, wxALIGN_BOTTOM, 5 );
+	bSizer10->Add( bSizer132, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	bSizer8->Add( bSizer10, 1, wxALIGN_CENTER_VERTICAL, 5 );
 	
 	wxBoxSizer* bSizer11;
 	bSizer11 = new wxBoxSizer( wxVERTICAL );
@@ -1919,10 +1843,10 @@ ChampionshipJudgesTeamMngrDlg::ChampionshipJudgesTeamMngrDlg( wxWindow* parent, 
 	m_staticText9->Wrap( -1 );
 	bSizer11->Add( m_staticText9, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_listSelected = new wxListBox( this, ID_SELECTED, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	bSizer11->Add( m_listSelected, 1, wxALL|wxEXPAND, 5 );
+	m_listSelected = new wxListBox( this, ID_SELECTED, wxDefaultPosition, wxSize( 350,-1 ), 0, NULL, wxLB_MULTIPLE ); 
+	bSizer11->Add( m_listSelected, 1, wxALL, 5 );
 	
-	bSizer8->Add( bSizer11, 1, wxEXPAND, 5 );
+	bSizer8->Add( bSizer11, 0, wxEXPAND, 5 );
 	
 	bSizer7->Add( bSizer8, 1, wxEXPAND, 5 );
 	
@@ -1961,6 +1885,76 @@ ChampionshipJudgesTeamMngrDlg::~ChampionshipJudgesTeamMngrDlg()
 	m_bpRemoveAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnRemoveAll ), NULL, this );
 	m_bpButton31->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnSave ), NULL, this );
 	m_bpButton32->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipJudgesTeamMngrDlg::OnDiscard ), NULL, this );
+	
+}
+
+JudgeCategories::JudgeCategories( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer133;
+	bSizer133 = new wxBoxSizer( wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer22;
+	fgSizer22 = new wxFlexGridSizer( 1, 2, 0, 0 );
+	fgSizer22->SetFlexibleDirection( wxBOTH );
+	fgSizer22->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText112 = new wxStaticText( this, wxID_ANY, _("Judge"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText112->Wrap( -1 );
+	fgSizer22->Add( m_staticText112, 0, wxALL, 5 );
+	
+	m_staticJudge = new wxStaticText( this, wxID_ANY, _(" "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticJudge->Wrap( -1 );
+	fgSizer22->Add( m_staticJudge, 0, wxALL, 5 );
+	
+	bSizer133->Add( fgSizer22, 0, wxEXPAND, 5 );
+	
+	wxArrayString m_checkCategoriesChoices;
+	m_checkCategories = new wxCheckListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_checkCategoriesChoices, wxLB_MULTIPLE );
+	bSizer133->Add( m_checkCategories, 1, wxALL|wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer136;
+	bSizer136 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_buttonAll = new wxButton( this, ID_SET, _("Set all"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer136->Add( m_buttonAll, 0, wxALL, 5 );
+	
+	m_buttonClear = new wxButton( this, ID_CLEAR, _("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer136->Add( m_buttonClear, 0, wxALL, 5 );
+	
+	bSizer133->Add( bSizer136, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	wxBoxSizer* bSizer135;
+	bSizer135 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer135->Add( m_bpSave, 0, wxALL, 5 );
+	
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer135->Add( m_bpDiscard, 0, wxALL, 5 );
+	
+	bSizer133->Add( bSizer135, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	this->SetSizer( bSizer133 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_buttonAll->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeCategories::OnSetAll ), NULL, this );
+	m_buttonClear->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeCategories::OnClearAll ), NULL, this );
+	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeCategories::OnSave ), NULL, this );
+	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeCategories::OnDiscard ), NULL, this );
+}
+
+JudgeCategories::~JudgeCategories()
+{
+	// Disconnect Events
+	m_buttonAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeCategories::OnSetAll ), NULL, this );
+	m_buttonClear->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeCategories::OnClearAll ), NULL, this );
+	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeCategories::OnSave ), NULL, this );
+	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeCategories::OnDiscard ), NULL, this );
 	
 }
 
@@ -3264,7 +3258,7 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	m_staticText119->Wrap( -1 );
 	fgSizer22->Add( m_staticText119, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_staticDescription = new wxStaticText( this, ID_M_STATICDESCRIPTION, _(" "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticDescription = new wxStaticText( this, ID_M_STATICDESCRIPTION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticDescription->Wrap( -1 );
 	m_staticDescription->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
@@ -3308,6 +3302,7 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	// Connect Events
 	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnUpdateBlock ), NULL, this );
 	m_bpCsCategories->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnBlockCategories ), NULL, this );
+	m_bpJudges->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnJudgesTemManager ), NULL, this );
 	m_textStart->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( BlockInfo::OnTextChanged ), NULL, this );
 	m_textPause->Connect( wxEVT_KILL_FOCUS, wxFocusEventHandler( BlockInfo::OnPauseKillFocuss ), NULL, this );
 	m_gridJudgesCats->Connect( wxEVT_GRID_CELL_CHANGE, wxGridEventHandler( BlockInfo::OnCellChange ), NULL, this );
@@ -3319,6 +3314,7 @@ BlockInfo::~BlockInfo()
 	// Disconnect Events
 	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnUpdateBlock ), NULL, this );
 	m_bpCsCategories->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnBlockCategories ), NULL, this );
+	m_bpJudges->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnJudgesTemManager ), NULL, this );
 	m_textStart->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( BlockInfo::OnTextChanged ), NULL, this );
 	m_textPause->Disconnect( wxEVT_KILL_FOCUS, wxFocusEventHandler( BlockInfo::OnPauseKillFocuss ), NULL, this );
 	m_gridJudgesCats->Disconnect( wxEVT_GRID_CELL_CHANGE, wxGridEventHandler( BlockInfo::OnCellChange ), NULL, this );

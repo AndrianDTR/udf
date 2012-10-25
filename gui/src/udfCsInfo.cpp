@@ -2,6 +2,7 @@
 #include "udfMainFrameBase.h"
 #include "udfChampionshipTypeMngr.h"
 #include "udfCitiesMngr.h"
+#include "udfDancersTeamMngr.h"
 
 #include "db.h"
 
@@ -256,6 +257,7 @@ void udfCsInfo::OnRemoveChampionship( wxCommandEvent& event )
 	{
 		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
 		{
+			__info("One of item is not set");
 			break;
 		}
 		
@@ -280,12 +282,38 @@ void udfCsInfo::OnDiscard( wxCommandEvent& event )
 
 void udfCsInfo::OnCategoryMngr( wxCommandEvent& event )
 {
-// TODO: Implement OnCategoryMngr
+	Enter();
+	do
+	{
+		if(!m_pMainWindow)
+		{
+			__info("Main window not set");
+			break;
+		}
+		
+		m_pMainWindow->ShowCsCategoryManager();
+	}while(0);
+	
+	event.Skip();
+	Leave();
 }
 
 void udfCsInfo::OnJudgeMngr( wxCommandEvent& event )
 {
-// TODO: Implement OnJudgeMngr
+	Enter();
+	do
+	{
+		if(!m_pMainWindow)
+		{
+			__info("Main window not set");
+			break;
+		}
+			
+		m_pMainWindow->ShowCsJudgesManager();
+	}while(0);
+	
+	event.Skip();
+	Leave();
 }
 
 void udfCsInfo::OnSendInvitation( wxCommandEvent& event )
@@ -295,7 +323,21 @@ void udfCsInfo::OnSendInvitation( wxCommandEvent& event )
 
 void udfCsInfo::OnDancersTeams( wxCommandEvent& event )
 {
-// TODO: Implement OnDancersTeams
+	do{
+		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk()|| !m_itemId.IsOk())
+		{
+			__info("One of item is not set");
+			break;
+		}
+
+		udfTreeItemData *csItem = (udfTreeItemData *)m_pTree->GetItemData(m_itemId);
+
+		if(wxID_OK == udfDancersTeamMngr(this, csItem->GetId()).ShowModal())
+		{
+			m_pMainWindow->RefreshCs(csItem->GetId(), m_parentItem);
+			m_pTree->Expand(m_itemId);
+		}
+	}while(0);
 }
 
 void udfCsInfo::OnStartNumberAssign( wxCommandEvent& event )

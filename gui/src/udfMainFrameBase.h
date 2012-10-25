@@ -50,7 +50,6 @@ protected:
 	void OnMenuJudgeManage( wxCommandEvent& event );
 	void OnMenuChampionshipTypes( wxCommandEvent& event );
 	void OnAddChampionsip( wxCommandEvent& event );
-	void OnCategoryMngr( wxCommandEvent& event );
 	void OnStartNumberAssign( wxCommandEvent& event );
 	void OnJudgeMngr( wxCommandEvent& event );
 	void OnSendInvitation( wxCommandEvent& event );

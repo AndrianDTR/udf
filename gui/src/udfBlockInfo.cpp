@@ -98,36 +98,69 @@ void udfBlockInfo::OnUpdateBlock( wxCommandEvent& event )
 				long found = CCsBlockJ2CTable(m_pCon).FindId(id, data);
 				if(UDF_OK == found && value != _("X"))
 				{
-					DEBUG_PRINTF("Found! ID: %d. Delete it...", id);
+					__debug("Found! ID: %d. Delete it...", id);
 					CCsBlockJ2CTable(m_pCon).DelRow(id);
 				}
 				else if(found == UDF_E_NOTFOUND && value == _("X"))
 				{
-					DEBUG_PRINT("NOT Found! Insert it...");
+					__debug("NOT Found! Insert it...");
 					CCsBlockJ2CTable(m_pCon).AddRow(data);
 				}
 			}
 		}
+		
+		time_t len;
+		GetBlockLenById(nId, len);
+		wxString name = wxString::Format(STR_FORMAT_BLOCK_NAME, blockInfo.name, time2str(len));
+		m_pTree->SetItemText(m_itemId, name);
+		
 	}while(0);
 }
 
 void udfBlockInfo::OnBlockCategories( wxCommandEvent& event )
 {
+	Enter();
 	do
 	{
 		if(!m_pMainWindow)
+		{
+			__info("Main window not set");
 			break;
+		}
 			
-		if(UDF_OK == m_pMainWindow->ShowCsCategoryManager())
+		if(wxID_OK == m_pMainWindow->ShowCsCategoryManager())
 		{
 			CreateNewBlock();
 			FillData();
-			this->GetParent()->Update();
 		}
 			
 	}while(0);
 	
 	event.Skip();
+	Leave();
+}
+
+void udfBlockInfo::OnJudgesTemManager(wxCommandEvent& event)
+{
+	Enter();
+	do
+	{
+		if(!m_pMainWindow)
+		{
+			__info("Main window not set");
+			break;
+		}
+			
+		if(wxID_OK == m_pMainWindow->ShowCsJudgesManager())
+		{
+			CreateNewBlock();
+			FillData();
+		}
+			
+	}while(0);
+	
+	event.Skip();
+	Leave();
 }
 
 void udfBlockInfo::OnCellChange( wxGridEvent& event )
@@ -165,11 +198,12 @@ bool udfBlockInfo::ValidateData()
 
 void udfBlockInfo::CreateNewBlock()
 {
+	Enter();
 	do
 	{
 		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk())
 		{
-			DEBUG_PRINT("Undefined item.");
+			__debug("Undefined item.");
 			break;
 		}
 	
@@ -186,14 +220,14 @@ void udfBlockInfo::CreateNewBlock()
 
 		m_gridJudgesCats->ClearGrid();
 		if(m_gridJudgesCats->GetNumberCols())
-			m_gridJudgesCats->DeleteCols(0, m_gridJudgesCats->GetNumberCols(), true);
+			m_gridJudgesCats->DeleteCols(0, m_gridJudgesCats->GetNumberCols());
 		if(m_gridJudgesCats->GetNumberRows())
-			m_gridJudgesCats->DeleteRows(0, m_gridJudgesCats->GetNumberRows(), true);
+			m_gridJudgesCats->DeleteRows(0, m_gridJudgesCats->GetNumberRows());
 		
 		m_gridJudgesCats->SetDefaultColSize(25);
 		m_gridJudgesCats->SetDefaultRowSize(25);
-		m_gridJudgesCats->SetDefaultCellAlignment(wxALIGN_CENTRE,wxALIGN_CENTRE);
-		m_gridJudgesCats->SetRowLabelAlignment(wxALIGN_LEFT,wxALIGN_CENTRE);
+		m_gridJudgesCats->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
+		m_gridJudgesCats->SetRowLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
 
 		m_gridJudgesCats->AppendCols(juds.size());
 		m_gridJudgesCats->AppendRows(cats.size());
@@ -225,14 +259,18 @@ void udfBlockInfo::CreateNewBlock()
 		FillData();
 		
 	}while(0);
+	
+	Leave();
 }
 
 void udfBlockInfo::FillData()
 {
+	Enter();
 	do
 	{
 		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
 		{
+			__info("One of item is not set");
 			break;
 		}
 		
@@ -256,11 +294,15 @@ void udfBlockInfo::FillData()
 		while(it != j2c.end())
 		{
 			CCsBlockJ2CTable::tDATA& data = it->second;
+			
 			int col = m_IdColMap[data.csJudgeId];
 			int row = m_IdRowMap[data.csCatId];
-			DEBUG_PRINTF("MARK: %d, %d", row, col);
+			
 			m_gridJudgesCats->SetCellValue(row, col, _("X"));
+			
 			it++;
 		}
 	}while(0);
+	
+	Leave();
 }

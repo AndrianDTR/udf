@@ -40,8 +40,8 @@ set( HEADER_FILES
 	src/udfMainFrameBase.h
 	src/udfStartNumberAssignDlg.h
 	src/udfTrainersMngrDlg.h
-	src/udfTeamCategoryMngrDlg.h
 	src/udfPaymentHistory.h
+	src/udfJudgeCategories.h
 	src/udfPayment.h
 	src/udfCsInfo.h
 	src/udfBlockInfo.h
@@ -77,8 +77,8 @@ set( SOURCE_FILES
 	src/udfMainFrameBase.cpp
 	src/udfStartNumberAssignDlg.cpp
 	src/udfTrainersMngrDlg.cpp
-	src/udfTeamCategoryMngrDlg.cpp
 	src/udfPaymentHistory.cpp
+	src/udfJudgeCategories.cpp
 	src/udfPayment.cpp
 	src/udfCsInfo.cpp
 	src/udfBlockInfo.cpp

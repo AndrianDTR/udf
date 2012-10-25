@@ -1,14 +1,11 @@
 #include "udfJudgesMngr.h"
 #include "udfPaymentHistory.h"
-
-#include "wx/msgdlg.h"
+#include "udfJudgeCategories.h"
 
 #include "common.h"
 #include "string_def.h"
 #include "udfexceptions.h"
 #include "udfCitiesMngr.h"
-
-#include "tpaymenthistory.h"
 
 udfJudgesMngr::udfJudgesMngr( wxWindow* parent )
 : JudgesMngr( parent )
@@ -265,7 +262,7 @@ int udfJudgesMngr::GetSelectedCity()
 		res = m_comboCity->FindString(value);
 		if(-1 != res)
 			break;
-		if(wxNO == wxMessageBox(
+		if(wxNO == ShowQuestion(
 			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_CITY)
 			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
@@ -330,3 +327,14 @@ void udfJudgesMngr::OnPayment(wxCommandEvent& event)
 	}while(0);	
 }
 
+void udfJudgesMngr::OnCategories(wxCommandEvent& event)
+{
+	do
+	{
+		CJudgesTable::tDATA* pData = NULL;
+		if(!GetSelectedItemData(pData))
+			break;
+		
+		udfJudgeCategories(this, pData->id).ShowModal();
+	}while(0);
+}

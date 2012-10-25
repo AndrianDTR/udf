@@ -5,23 +5,26 @@
 #include "stdio.h"
 
 #ifdef _DEBUG
-	#define	DEBUG_PRINTF(FMT, ... )	\
+	#define	__debug(...) \
 	{	\
-		char modInfo[300] = {0};	\
-		std::string fmt = std::string(FMT);	\
-		sprintf(modInfo, "\n----------------------------------------------------------------\nDebug info:\nFile: %s: %d\nFunction: %s\n%s\n----------------------------------------------------------------\n\n", __FILE__, __LINE__, __FUNCTION__, fmt.c_str());	\
-		printf(modInfo, __VA_ARGS__);\
+		printf("\n----------------------------------------------------------------"); \
+		printf("\nDebug info:\nFile: %s: %d\nFunction: %s\n", __FILE__, __LINE__, __FUNCTION__);	\
+		printf(__VA_ARGS__); \
+		printf("\n----------------------------------------------------------------\n\n"); \
 	}
-	#define	DEBUG_PRINT(FMT)	\
+	#define	__info(...)	\
 	{	\
-		char modInfo[300] = {0};	\
-		std::string fmt = std::string(FMT);	\
-		sprintf(modInfo, "\n----------------------------------------------------------------\nDebug info:\nFile: %s: %d\nFunction: %s\n%s\n----------------------------------------------------------------\n\n", __FILE__, __LINE__, __FUNCTION__, fmt.c_str());	\
-		printf(modInfo);\
+		printf("\nFile: %s: %d\n", __FILE__, __LINE__); \
+		printf(__VA_ARGS__); \
+		printf("\n\n"); \
 	}
+	#define Enter(); printf("Function %s enter...\n", __FUNCTION__);
+	#define Leave(); printf("Function %s leave.\n", __FUNCTION__);
 #else
-	#define	DEBUG_PRINTF(FMT, ... )
-	#define	DEBUG_PRINTF(FMT)
+	#define	__debug( ... )
+	#define	__info( ... )
+	#define Enter();
+	#define Leave();
 #endif //_DEBUG
 
 #endif //__udf_common_h__

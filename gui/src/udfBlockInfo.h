@@ -25,6 +25,7 @@ protected:
 	// Handlers for BlockInfo events.
 	void OnUpdateBlock( wxCommandEvent& event );
 	void OnBlockCategories( wxCommandEvent& event );
+	void OnJudgesTemManager( wxCommandEvent& event );
 	void OnCellChange( wxGridEvent& event );
 	void OnCellLeftClick( wxGridEvent& event );
 public:

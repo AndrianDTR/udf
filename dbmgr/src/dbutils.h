@@ -19,5 +19,8 @@ long GetRegisteredTeamsForCategory(unsigned int nId, int& count);
 
 long GetBlockLenById(unsigned int nId, time_t& len);
 
+long JudgeHaveCategory(unsigned int judId, unsigned int catId, unsigned int& rowId);
+long JudgeHaveCsCategory(unsigned int judId, unsigned int csId);
+
 
 #endif // __udfutils_h__

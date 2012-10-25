@@ -39,7 +39,7 @@ void udfCitiesMngr::RefreshCountries()
 		CCountriesTable::tDATA data = it->second;
 		int nPos = m_comboCounty->GetCount();
 		m_comboCounty->Insert(data.name, nPos, (void*)&it->first);
-		DEBUG_PRINTF("Pos: %d, %d, %s", nPos, data.id, data.name.c_str());
+		__debug("Pos: %d, %d, %s", nPos, data.id, data.name.c_str());
 		it++;
 	}
 	m_comboCounty->AutoComplete(m_comboCounty->GetStrings());

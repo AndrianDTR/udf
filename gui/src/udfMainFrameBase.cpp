@@ -232,7 +232,7 @@ void udfMainFrameBase::OnCsSelect(wxTreeEvent& event)
 
 		udfTreeItemData* pData = (udfTreeItemData*)m_treeCs->GetItemData(item);
 		eITEM_TYPE type = pData->GetType();
-		DEBUG_PRINTF("Item type: %d", type);
+		__debug("Item type: %d", type);
 		switch(type)
 		{
 			case IT_CS:
@@ -523,25 +523,9 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 	return res;
 }
 
-void udfMainFrameBase::OnCategoryMngr( wxCommandEvent& event )
-{
-	ShowCsCategoryManager();
-}
-
 void udfMainFrameBase::OnDancersTeams(wxCommandEvent& event)
 {
-	do{
-		wxTreeItemId csId = GetSelectedCs();
-		if(!csId.IsOk())
-			break;
 
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(csId);
-
-		if(wxID_OK == udfDancersTeamMngr(this, csItem->GetId()).ShowModal())
-		{
-			RefreshList();
-		}
-	}while(0);
 }
 
 void udfMainFrameBase::OnStartNumberAssign( wxCommandEvent& event )
@@ -781,34 +765,48 @@ void udfMainFrameBase::OnJudgesMark(wxCommandEvent& event)
 /************************************************************************/
 int udfMainFrameBase::ShowCsCategoryManager()
 {
+	Enter();
 	int res = wxID_CANCEL;
 	
 	do{
 		wxTreeItemId csId = GetSelectedCs();
 		if(!csId.IsOk())
+		{
+			__debug("Campionship not selected.");
 			break;
+		}
+		
+		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(csId);
+		
+		res = udfChampionshipCategoriesMngrDlg(this, csItem->GetId()).ShowModal();
+		if(wxID_OK != res)
+		{
+			__debug("Dialog canceled.");
+			break;
+		}
 		
 		wxTreeItemId blockId = GetSelectedCsBlock();
 		if(!blockId.IsOk())
+		{
+			__debug("Block isn't selected.");
 			break;
-
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(csId);
+		}
+		
 		udfTreeItemData *blockItem = (udfTreeItemData *)m_treeCs->GetItemData(blockId);
 		
-		res = udfChampionshipCategoriesMngrDlg(this, csItem->GetId()).ShowModal();
-		if(wxID_OK == res)
-		{
-			m_treeCs->DeleteChildren(blockId);
-			RefreshCsBlock(blockItem->GetId(), blockId);
-		}
+		m_treeCs->DeleteChildren(blockId);
+		RefreshCsBlock(blockItem->GetId(), blockId);
+		m_treeCs->Expand(blockId);
 
 	}while(0);
 	
+	Leave();
 	return res;
 }
 
 int udfMainFrameBase::ShowCsJudgesManager()
 {
+	Enter();
 	int res = wxID_CANCEL;
 	
 	do{
@@ -821,6 +819,7 @@ int udfMainFrameBase::ShowCsJudgesManager()
 		res = udfChampionshipJudgesTeamMngrDlg(this, csItem->GetId()).ShowModal();
 	}while(0);
 	
+	Leave();
 	return res;
 }
 
