@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-22 00:30:14
+-- Date/time:                    2012-10-28 02:53:10
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -100,7 +100,7 @@ INSERT INTO `championship` (`id`, `type`, `name`, `additional_info`, `city`, `ad
 	(3, 4, 'jashdjs d ', 'd gdgd hfg ', 1, 'jhdj jfhas jh', '2012-08-28', '2012-08-28', '2012-08-29'),
 	(4, 1, 'sdf d ddf ', ' diuk kjddl   dflgk ', 1, NULL, '2012-12-31', '2012-12-01', '2012-12-20'),
 	(7, 2, 'AAAAA', 'Additional AA', 2, 'Khreschatyk 22\n', '2012-09-06', '2012-08-28', '2012-09-04'),
-	(8, 2, 'BBBB', 'Additional AA', 2, 'Khreschatyk 22\n', '2012-10-07', '2012-09-28', '2012-10-06');
+	(8, 2, 'BBBBZZZZ', 'Additional AA', 2, 'Khreschatyk 22\n', '2012-10-31', '2012-07-17', '2012-09-27');
 /*!40000 ALTER TABLE `championship` ENABLE KEYS */;
 
 
@@ -111,53 +111,58 @@ CREATE TABLE IF NOT EXISTS `championship_blocks` (
   `championship_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `order` int(10) unsigned NOT NULL DEFAULT '0',
   `name` varchar(50) NOT NULL,
+  `start_time` time DEFAULT NULL,
+  `pause` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_championship_id_id` (`championship_id`),
   CONSTRAINT `FK_championship_id_id` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_blocks: ~0 rows (approximately)
+-- Dumping data for table udf.championship_blocks: ~3 rows (approximately)
 DELETE FROM `championship_blocks`;
 /*!40000 ALTER TABLE `championship_blocks` DISABLE KEYS */;
+INSERT INTO `championship_blocks` (`id`, `championship_id`, `order`, `name`, `start_time`, `pause`) VALUES
+	(1, 7, 0, 'AAA', '12:00:07', 30),
+	(3, 4, 0, 'AAA', '12:30:00', 30),
+	(7, 7, 0, 'ZZZ', '13:00:00', 30);
 /*!40000 ALTER TABLE `championship_blocks` ENABLE KEYS */;
 
 
--- Dumping structure for table udf.championship_block_categories
-DROP TABLE IF EXISTS `championship_block_categories`;
-CREATE TABLE IF NOT EXISTS `championship_block_categories` (
+-- Dumping structure for table udf.championship_block_j2c
+DROP TABLE IF EXISTS `championship_block_j2c`;
+CREATE TABLE IF NOT EXISTS `championship_block_j2c` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `block_id` bigint(20) unsigned DEFAULT '0',
-  `cs_cat_id` bigint(20) unsigned DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FK_championship_categories_categoriesid` (`cs_cat_id`),
-  KEY `FK_championship_blocks_blockid` (`block_id`),
-  CONSTRAINT `FK_championship_blocks_blockid` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`),
-  CONSTRAINT `FK_championship_categories_categoriesid` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Dumping data for table udf.championship_block_categories: ~0 rows (approximately)
-DELETE FROM `championship_block_categories`;
-/*!40000 ALTER TABLE `championship_block_categories` DISABLE KEYS */;
-/*!40000 ALTER TABLE `championship_block_categories` ENABLE KEYS */;
-
-
--- Dumping structure for table udf.championship_block_judges
-DROP TABLE IF EXISTS `championship_block_judges`;
-CREATE TABLE IF NOT EXISTS `championship_block_judges` (
-  `id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `block_id` bigint(20) unsigned DEFAULT NULL,
   `cs_judge_id` bigint(20) unsigned DEFAULT NULL,
+  `cs_cat_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_championship_judges_judges` (`cs_judge_id`),
   KEY `FK_championship_blocks_block` (`block_id`),
+  KEY `FK_championship_block_judges_championship_categories` (`cs_cat_id`),
   CONSTRAINT `FK_championship_blocks_block` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`),
+  CONSTRAINT `FK_championship_block_judges_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
   CONSTRAINT `FK_championship_judges_judges` FOREIGN KEY (`cs_judge_id`) REFERENCES `championship_judges_team` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_block_judges: ~0 rows (approximately)
-DELETE FROM `championship_block_judges`;
-/*!40000 ALTER TABLE `championship_block_judges` DISABLE KEYS */;
-/*!40000 ALTER TABLE `championship_block_judges` ENABLE KEYS */;
+-- Dumping data for table udf.championship_block_j2c: ~12 rows (approximately)
+DELETE FROM `championship_block_j2c`;
+/*!40000 ALTER TABLE `championship_block_j2c` DISABLE KEYS */;
+INSERT INTO `championship_block_j2c` (`id`, `block_id`, `cs_judge_id`, `cs_cat_id`) VALUES
+	(26, 3, 38, 20),
+	(27, 3, 40, 21),
+	(29, 7, 55, 26),
+	(30, 7, 56, 26),
+	(31, 7, 57, 26),
+	(36, 7, 55, 23),
+	(37, 7, 56, 23),
+	(38, 7, 57, 23),
+	(39, 1, 55, 27),
+	(40, 1, 56, 27),
+	(41, 1, 57, 27),
+	(42, 1, 55, 36),
+	(43, 1, 56, 36),
+	(44, 1, 57, 36);
+/*!40000 ALTER TABLE `championship_block_j2c` ENABLE KEYS */;
 
 
 -- Dumping structure for table udf.championship_categories
@@ -171,9 +176,9 @@ CREATE TABLE IF NOT EXISTS `championship_categories` (
   KEY `championship_id` (`championship_id`),
   CONSTRAINT `FK_championship_categories_categories` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
   CONSTRAINT `FK_championship_categories_championship` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_categories: ~9 rows (approximately)
+-- Dumping data for table udf.championship_categories: ~10 rows (approximately)
 DELETE FROM `championship_categories`;
 /*!40000 ALTER TABLE `championship_categories` DISABLE KEYS */;
 INSERT INTO `championship_categories` (`id`, `championship_id`, `category_id`) VALUES
@@ -185,7 +190,8 @@ INSERT INTO `championship_categories` (`id`, `championship_id`, `category_id`) V
 	(36, 7, 8),
 	(37, 3, 9),
 	(38, 3, 13),
-	(39, 3, 10);
+	(39, 3, 10),
+	(43, 7, 20);
 /*!40000 ALTER TABLE `championship_categories` ENABLE KEYS */;
 
 
@@ -208,18 +214,11 @@ CREATE TABLE IF NOT EXISTS `championship_judges_mark` (
   CONSTRAINT `FK_championship_judges_mark_championship_judges_team` FOREIGN KEY (`judge_id`) REFERENCES `championship_judges_team` (`id`),
   CONSTRAINT `FK_championship_judges_mark_championship_team` FOREIGN KEY (`team_id`) REFERENCES `championship_team` (`id`),
   CONSTRAINT `FK_championship_judges_mark_championship_tours` FOREIGN KEY (`tour_id`) REFERENCES `championship_tours` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_judges_mark: ~6 rows (approximately)
+-- Dumping data for table udf.championship_judges_mark: ~0 rows (approximately)
 DELETE FROM `championship_judges_mark`;
 /*!40000 ALTER TABLE `championship_judges_mark` DISABLE KEYS */;
-INSERT INTO `championship_judges_mark` (`id`, `championship_id`, `tour_id`, `judge_id`, `team_id`, `mark`, `order_num`) VALUES
-	(1, 7, 2, 34, 9, 1, 0),
-	(2, 7, 2, 34, 14, 1, 0),
-	(3, 7, 2, 34, 5, 1, 0),
-	(4, 7, 2, 35, 5, 1, 0),
-	(5, 7, 2, 35, 9, 1, 0),
-	(6, 7, 2, 35, 14, 1, 0);
 /*!40000 ALTER TABLE `championship_judges_mark` ENABLE KEYS */;
 
 
@@ -234,22 +233,21 @@ CREATE TABLE IF NOT EXISTS `championship_judges_team` (
   KEY `FK_championship_judges_team_judges` (`judge_id`),
   CONSTRAINT `FK_championship_judges_team_championship` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`),
   CONSTRAINT `FK_championship_judges_team_judges` FOREIGN KEY (`judge_id`) REFERENCES `judges` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_judges_team: ~10 rows (approximately)
+-- Dumping data for table udf.championship_judges_team: ~9 rows (approximately)
 DELETE FROM `championship_judges_team`;
 /*!40000 ALTER TABLE `championship_judges_team` DISABLE KEYS */;
 INSERT INTO `championship_judges_team` (`id`, `championship_id`, `judge_id`) VALUES
-	(34, 7, 2),
-	(35, 7, 3),
-	(36, 7, 4),
-	(37, 7, 5),
 	(38, 4, 1),
 	(40, 4, 3),
 	(41, 4, 4),
 	(42, 4, 5),
 	(43, 3, 2),
-	(44, 3, 4);
+	(44, 3, 4),
+	(55, 7, 1),
+	(56, 7, 5),
+	(57, 7, 4);
 /*!40000 ALTER TABLE `championship_judges_team` ENABLE KEYS */;
 
 
@@ -302,16 +300,16 @@ CREATE TABLE IF NOT EXISTS `championship_team_categories` (
 DELETE FROM `championship_team_categories`;
 /*!40000 ALTER TABLE `championship_team_categories` DISABLE KEYS */;
 INSERT INTO `championship_team_categories` (`id`, `team_id`, `category_id`, `composition_name`, `lenght`) VALUES
-	(3, 5, 26, 'qqwe', NULL),
-	(4, 5, 27, 'aaaa', NULL),
-	(5, 9, 27, 'aaaa1', NULL),
-	(6, 9, 36, '112qq', NULL),
-	(7, 5, 36, 'AAA', NULL),
-	(11, 2, 21, 'BB', NULL),
-	(12, 14, 23, '1111', NULL),
-	(13, 14, 36, '4444', NULL),
-	(14, 14, 27, '3333', NULL),
-	(15, 14, 26, '2222', NULL);
+	(3, 5, 26, 'qqwe', '00:03:00'),
+	(4, 5, 27, 'aaaa', '00:03:00'),
+	(5, 9, 27, 'aaaa1', '00:03:00'),
+	(6, 9, 36, '112qq', '00:03:30'),
+	(7, 5, 36, 'AAA', '00:03:15'),
+	(11, 2, 21, 'BB', '00:02:20'),
+	(12, 14, 23, '1111', '00:02:50'),
+	(13, 14, 36, '4444', '00:03:20'),
+	(14, 14, 27, '3333', '00:05:10'),
+	(15, 14, 26, '2222', '00:02:17');
 /*!40000 ALTER TABLE `championship_team_categories` ENABLE KEYS */;
 
 
@@ -617,42 +615,33 @@ DROP TABLE IF EXISTS `judges_categories_have`;
 CREATE TABLE IF NOT EXISTS `judges_categories_have` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `judge_id` bigint(20) unsigned NOT NULL,
-  `cat_id` int(10) NOT NULL,
+  `cat_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK__judges_categories_name` (`cat_id`),
   KEY `judge_id` (`judge_id`),
-  CONSTRAINT `FK__judges` FOREIGN KEY (`judge_id`) REFERENCES `judges` (`id`),
-  CONSTRAINT `FK__judges_categories_name` FOREIGN KEY (`cat_id`) REFERENCES `judges_categories_name` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  CONSTRAINT `FK_judges_categories_have_categories` FOREIGN KEY (`cat_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `FK__judges` FOREIGN KEY (`judge_id`) REFERENCES `judges` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.judges_categories_have: ~3 rows (approximately)
+-- Dumping data for table udf.judges_categories_have: ~14 rows (approximately)
 DELETE FROM `judges_categories_have`;
 /*!40000 ALTER TABLE `judges_categories_have` DISABLE KEYS */;
 INSERT INTO `judges_categories_have` (`id`, `judge_id`, `cat_id`) VALUES
-	(1, 1, 3),
-	(2, 1, 3),
-	(3, 1, 3);
+	(6, 5, 10),
+	(7, 5, 13),
+	(8, 4, 8),
+	(9, 4, 21),
+	(15, 1, 8),
+	(16, 1, 9),
+	(17, 1, 10),
+	(18, 1, 13),
+	(19, 1, 20),
+	(20, 1, 21),
+	(21, 5, 8),
+	(22, 5, 9),
+	(23, 5, 20),
+	(24, 5, 21);
 /*!40000 ALTER TABLE `judges_categories_have` ENABLE KEYS */;
-
-
--- Dumping structure for table udf.judges_categories_name
-DROP TABLE IF EXISTS `judges_categories_name`;
-CREATE TABLE IF NOT EXISTS `judges_categories_name` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-
--- Dumping data for table udf.judges_categories_name: ~5 rows (approximately)
-DELETE FROM `judges_categories_name`;
-/*!40000 ALTER TABLE `judges_categories_name` DISABLE KEYS */;
-INSERT INTO `judges_categories_name` (`id`, `name`) VALUES
-	(3, 'Cart 1'),
-	(4, 'osdfkl;sd '),
-	(5, 'isdfj ksd'),
-	(6, 'slfsdl sdfsd '),
-	(7, ' sf dfs d');
-/*!40000 ALTER TABLE `judges_categories_name` ENABLE KEYS */;
 
 
 -- Dumping structure for table udf.liga
@@ -710,6 +699,28 @@ INSERT INTO `payment_history` (`id`, `person_id`, `type`, `pay_date`, `exp_date`
 /*!40000 ALTER TABLE `payment_history` ENABLE KEYS */;
 
 
+-- Dumping structure for table udf.staff
+DROP TABLE IF EXISTS `staff`;
+CREATE TABLE IF NOT EXISTS `staff` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `cs_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `role_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(50) DEFAULT NULL,
+  `login` varchar(30) DEFAULT NULL,
+  `pass` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_users_championship` (`cs_id`),
+  KEY `FK_users_user_roles` (`role_id`),
+  CONSTRAINT `FK_users_championship` FOREIGN KEY (`cs_id`) REFERENCES `championship` (`id`),
+  CONSTRAINT `FK_users_user_roles` FOREIGN KEY (`role_id`) REFERENCES `user_roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table udf.staff: ~0 rows (approximately)
+DELETE FROM `staff`;
+/*!40000 ALTER TABLE `staff` DISABLE KEYS */;
+/*!40000 ALTER TABLE `staff` ENABLE KEYS */;
+
+
 -- Dumping structure for table udf.tour_types
 DROP TABLE IF EXISTS `tour_types`;
 CREATE TABLE IF NOT EXISTS `tour_types` (
@@ -758,28 +769,6 @@ INSERT INTO `treners` (`id`, `club_id`, `name`, `bd`, `phone`, `contact_info`, `
 	(5, 2, 'Тренер 2', '1970-12-30', 'телефон 2', 'інфо 2', 'пошта 2'),
 	(6, 2, 'Test name1', '0000-00-00', 'Test ph1', 'Test contactinfo1', 'Test em1');
 /*!40000 ALTER TABLE `treners` ENABLE KEYS */;
-
-
--- Dumping structure for table udf.users
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `cs_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `role_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(50) DEFAULT NULL,
-  `login` varchar(30) DEFAULT NULL,
-  `pass` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_users_championship` (`cs_id`),
-  KEY `FK_users_user_roles` (`role_id`),
-  CONSTRAINT `FK_users_championship` FOREIGN KEY (`cs_id`) REFERENCES `championship` (`id`),
-  CONSTRAINT `FK_users_user_roles` FOREIGN KEY (`role_id`) REFERENCES `user_roles` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Dumping data for table udf.users: ~0 rows (approximately)
-DELETE FROM `users`;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 
 -- Dumping structure for table udf.user_roles

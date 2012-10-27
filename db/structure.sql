@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-22 00:30:20
+-- Date/time:                    2012-10-28 02:53:02
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -78,6 +78,8 @@ CREATE TABLE IF NOT EXISTS `championship_blocks` (
   `championship_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `order` int(10) unsigned NOT NULL DEFAULT '0',
   `name` varchar(50) NOT NULL,
+  `start_time` time DEFAULT NULL,
+  `pause` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_championship_id_id` (`championship_id`),
   CONSTRAINT `FK_championship_id_id` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`)
@@ -86,32 +88,19 @@ CREATE TABLE IF NOT EXISTS `championship_blocks` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table udf.championship_block_categories
-DROP TABLE IF EXISTS `championship_block_categories`;
-CREATE TABLE IF NOT EXISTS `championship_block_categories` (
+-- Dumping structure for table udf.championship_block_j2c
+DROP TABLE IF EXISTS `championship_block_j2c`;
+CREATE TABLE IF NOT EXISTS `championship_block_j2c` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `block_id` bigint(20) unsigned DEFAULT '0',
-  `cs_cat_id` bigint(20) unsigned DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `FK_championship_categories_categoriesid` (`cs_cat_id`),
-  KEY `FK_championship_blocks_blockid` (`block_id`),
-  CONSTRAINT `FK_championship_blocks_blockid` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`),
-  CONSTRAINT `FK_championship_categories_categoriesid` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table udf.championship_block_judges
-DROP TABLE IF EXISTS `championship_block_judges`;
-CREATE TABLE IF NOT EXISTS `championship_block_judges` (
-  `id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `block_id` bigint(20) unsigned DEFAULT NULL,
   `cs_judge_id` bigint(20) unsigned DEFAULT NULL,
+  `cs_cat_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_championship_judges_judges` (`cs_judge_id`),
   KEY `FK_championship_blocks_block` (`block_id`),
+  KEY `FK_championship_block_judges_championship_categories` (`cs_cat_id`),
   CONSTRAINT `FK_championship_blocks_block` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`),
+  CONSTRAINT `FK_championship_block_judges_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
   CONSTRAINT `FK_championship_judges_judges` FOREIGN KEY (`cs_judge_id`) REFERENCES `championship_judges_team` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -378,23 +367,12 @@ DROP TABLE IF EXISTS `judges_categories_have`;
 CREATE TABLE IF NOT EXISTS `judges_categories_have` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `judge_id` bigint(20) unsigned NOT NULL,
-  `cat_id` int(10) NOT NULL,
+  `cat_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK__judges_categories_name` (`cat_id`),
   KEY `judge_id` (`judge_id`),
-  CONSTRAINT `FK__judges` FOREIGN KEY (`judge_id`) REFERENCES `judges` (`id`),
-  CONSTRAINT `FK__judges_categories_name` FOREIGN KEY (`cat_id`) REFERENCES `judges_categories_name` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table udf.judges_categories_name
-DROP TABLE IF EXISTS `judges_categories_name`;
-CREATE TABLE IF NOT EXISTS `judges_categories_name` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  CONSTRAINT `FK_judges_categories_have_categories` FOREIGN KEY (`cat_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `FK__judges` FOREIGN KEY (`judge_id`) REFERENCES `judges` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
@@ -427,6 +405,25 @@ CREATE TABLE IF NOT EXISTS `payment_history` (
 -- Data exporting was unselected.
 
 
+-- Dumping structure for table udf.staff
+DROP TABLE IF EXISTS `staff`;
+CREATE TABLE IF NOT EXISTS `staff` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `cs_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `role_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(50) DEFAULT NULL,
+  `login` varchar(30) DEFAULT NULL,
+  `pass` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_users_championship` (`cs_id`),
+  KEY `FK_users_user_roles` (`role_id`),
+  CONSTRAINT `FK_users_championship` FOREIGN KEY (`cs_id`) REFERENCES `championship` (`id`),
+  CONSTRAINT `FK_users_user_roles` FOREIGN KEY (`role_id`) REFERENCES `user_roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table udf.tour_types
 DROP TABLE IF EXISTS `tour_types`;
 CREATE TABLE IF NOT EXISTS `tour_types` (
@@ -453,25 +450,6 @@ CREATE TABLE IF NOT EXISTS `treners` (
   PRIMARY KEY (`id`),
   KEY `FK_treners_clubs` (`club_id`),
   CONSTRAINT `FK_treners_clubs` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table udf.users
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `cs_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `role_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(50) DEFAULT NULL,
-  `login` varchar(30) DEFAULT NULL,
-  `pass` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_users_championship` (`cs_id`),
-  KEY `FK_users_user_roles` (`role_id`),
-  CONSTRAINT `FK_users_championship` FOREIGN KEY (`cs_id`) REFERENCES `championship` (`id`),
-  CONSTRAINT `FK_users_user_roles` FOREIGN KEY (`role_id`) REFERENCES `user_roles` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.

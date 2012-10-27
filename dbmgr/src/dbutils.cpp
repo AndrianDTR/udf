@@ -94,44 +94,6 @@ long GetTeamsCountForChampionship(unsigned int nId, int& count)
 	return res;
 }
 
-long GetRegisteredTeamsForCategory(unsigned int nId, int& count)
-{
-	long res = UDF_E_FAIL;
-
-	do
-	{
-		CDbConnection*		pCon = GetGlobalDbConnection();
-		char 				query[MAX_QUERY_LEN] = {0};
-		sql::ResultSet*		qRes = NULL;
-
-		if(! pCon)
-		{
-			res = UDF_E_NOCONNECTION;
-			break;
-		}
-
-		sprintf(query, "select count(t2.team_id) as `count` from %s t1"
-		" inner join %s t2 on t1.id=t2.category_id and t2.category_id=%d group by t1.id"
-			, TABLE_CHAMPIONSHIPTEAM
-			, TABLE_CHAMPIONSHIPTEAMCATEGORIES
-			, nId);
-
-		qRes = pCon->ExecuteQuery(query);
-		if(!qRes)
-		{
-			res = UDF_E_EXECUTE_QUERY_FAILED;
-			break;
-		}
-
-		if(qRes->next())
-			count = atoi(string(qRes->getString("count")).c_str());
-		__debug("Count : %i", count);
-
-	}while(0);
-
-	return res;
-}
-
 long GetBlockLenById(unsigned int nId, time_t& len)
 {
 	long res = UDF_E_FAIL;
@@ -347,11 +309,20 @@ long IsCategoryUsedOnCsById(unsigned int nId, unsigned int blockId)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		// select count(t1.id) `count` from %s t1 where t1.cs_cat_id=%d and t1.block_id<>1
-		sprintf(query, "select t1.id from %s t1 where t1.cs_cat_id=%d and t1.block_id<>1"
+		/* select t1.cs_cat_id from championship_block_j2c t1 inner join 
+		(select  tb.id `id` from championship_blocks tb, (select championship_id `csid` from championship_blocks where id=1) bt where tb.championship_id=bt.csid and tb.id<>1) t2 
+		on t1.block_id=t2.id and t1.cs_cat_id=26
+		//*/
+		sprintf(query, "select t1.cs_cat_id from %s t1 inner join"
+			" (select tb.id `id` from %s tb, (select championship_id `csid`"
+			" from %s where id=%d) bt where tb.championship_id=bt.csid"
+			" and tb.id<>%d) t2 on t1.block_id=t2.id and t1.cs_cat_id=%d"
 			, TABLE_CHAMPIONSHIPBLOCKJ2C
-			, nId
+			, TABLE_CHAMPIONSHIPBLOCKS
+			, TABLE_CHAMPIONSHIPBLOCKS
 			, blockId
+			, blockId
+			, nId
 			);
 
 		qRes = pCon->ExecuteQuery(query);
@@ -365,6 +336,45 @@ long IsCategoryUsedOnCsById(unsigned int nId, unsigned int blockId)
 		{
 			res = UDF_E_NOTFOUND;
 			break;
+		}
+		
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}
+
+long GetBlockCategories(unsigned int nId, tCategoryList& cats)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		// select cs_cat_id from championship_block_j2c where block_id = 1 group by cs_cat_id
+		sprintf(query, "select cs_cat_id `id` from %s where block_id = %d group by cs_cat_id"
+			, TABLE_CHAMPIONSHIPBLOCKJ2C
+			, nId
+			);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+
+		while(qRes->next())
+		{
+			cats.push_back(qRes->getUInt("id"));
 		}
 		
 		res = UDF_OK;

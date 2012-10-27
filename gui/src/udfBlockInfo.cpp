@@ -7,6 +7,8 @@
 #include "udfuiutils.h"
 #include "string_def.h"
 
+#include "wx/regex.h"
+
 udfBlockInfo::udfBlockInfo( wxWindow* parent )
 : BlockInfo( parent )
 , m_pCon(NULL)
@@ -14,8 +16,6 @@ udfBlockInfo::udfBlockInfo( wxWindow* parent )
 , m_pTree(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	m_attr = new wxGridCellAttr();
-	m_attr->SetBackgroundColour(*wxRED);
 }
 
 wxString udfBlockInfo::GetVerticalText(wxString str)
@@ -70,7 +70,7 @@ void udfBlockInfo::OnUpdateBlock( wxCommandEvent& event )
 		blockInfo.id = nId;
 		blockInfo.csId = csItem->GetId();
 		blockInfo.name = m_textName->GetValue();
-		string startTime = m_textStart->GetValue().ToStdString();
+		string startTime = wxString(m_textStart->GetValue() + _(":00")).ToStdString();
 		blockInfo.startTime = str2time(startTime);
 		m_textPause->GetValue().ToCLong((long*)&blockInfo.pause);
 		
@@ -111,11 +111,20 @@ void udfBlockInfo::OnUpdateBlock( wxCommandEvent& event )
 		}
 		
 		time_t len;
-		GetBlockLenById(nId, len);
+		GetBlockLenById(blockInfo.id, len);
 		m_staticLenght->SetLabel(time2str(len));
 		wxString name = wxString::Format(STR_FORMAT_BLOCK_NAME, blockInfo.name, time2str(blockInfo.startTime));
-		m_pTree->SetItemText(m_itemId, name);
-			
+		if(m_itemId.IsOk())
+		{
+			m_pTree->SetItemText(m_itemId, name);
+			m_pMainWindow->RefreshCsBlock(blockInfo.id, m_itemId);
+		}
+		else
+		{
+			wxTreeItemId block = m_pTree->AppendItem(m_parentItem, name, -1, -1, new udfTreeItemData(blockInfo.id, IT_BLOCK));
+			m_pMainWindow->RefreshCsBlock(blockInfo.id, block);
+		}
+		
 	}while(0);
 }
 
@@ -192,10 +201,51 @@ void udfBlockInfo::OnCellLeftClick( wxGridEvent& event )
 	event.Skip();
 }
 
+void udfBlockInfo::OnRemove(wxCommandEvent& event)
+{
+	Enter();
+	do
+	{
+		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
+		{
+			__debug("Undefined item.");
+			break;
+		}
+		udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
+		udfTreeItemData* blockItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
+		
+		CCsBlocksTable(m_pCon).DelRow(blockItem->GetId());
+		
+		m_pMainWindow->RefreshCs(csItem->GetId(), m_parentItem);
+		
+	}while(0);
+	
+	Leave();
+}
+
 bool udfBlockInfo::ValidateData()
 {
-	// check time format
-	return true;
+	Enter();
+	bool res = false;
+	
+	do
+	{
+		wxString start = m_textStart->GetValue();
+		wxRegEx re(_("(([0-9]){1,2}:([0-9]){1,2})"));
+		if(start.Len() != 5 || !re.Matches(start))
+		{
+			ShowWarning(STR_ERR_CORRECT_TIME);
+			break;
+		}
+		
+		m_textStart->SetValue(re.GetMatch(start));
+		res = true;
+	
+	}while(0);
+	
+	Leave();
+	
+	return res;
 }
 
 void udfBlockInfo::CreateNewBlock()
@@ -203,6 +253,9 @@ void udfBlockInfo::CreateNewBlock()
 	Enter();
 	do
 	{
+		int nRow = 0;
+		int nCol = 0;
+		
 		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk())
 		{
 			__debug("Undefined item.");
@@ -221,10 +274,12 @@ void udfBlockInfo::CreateNewBlock()
 		CChampionshipJudgesTeamTable(m_pCon).Find(juds, judFilter);
 
 		m_gridJudgesCats->ClearGrid();
-		if(m_gridJudgesCats->GetNumberCols())
-			m_gridJudgesCats->DeleteCols(0, m_gridJudgesCats->GetNumberCols());
+		m_gridJudgesCats->GetTable()->UnRef();
+		
 		if(m_gridJudgesCats->GetNumberRows())
 			m_gridJudgesCats->DeleteRows(0, m_gridJudgesCats->GetNumberRows());
+		if(m_gridJudgesCats->GetNumberCols())
+			m_gridJudgesCats->DeleteCols(0, m_gridJudgesCats->GetNumberCols());
 		
 		m_gridJudgesCats->SetDefaultColSize(25);
 		m_gridJudgesCats->SetDefaultRowSize(25);
@@ -235,7 +290,7 @@ void udfBlockInfo::CreateNewBlock()
 		m_gridJudgesCats->AppendRows(cats.size());
 
 		CChampionshipJudgesTeamTable::tTableIt jIt = juds.begin();
-		int nCol = 0;
+		nCol = 0;
 		while(jIt != juds.end())
 		{
 			CChampionshipJudgesTeamTable::tDATA& data = jIt->second;
@@ -247,7 +302,7 @@ void udfBlockInfo::CreateNewBlock()
 		}
 
 		CChampionshipCategoriesTable::tTableIt cIt = cats.begin();
-		int nRow = 0;
+		nRow = 0;
 		while(cIt != cats.end())
 		{
 			CChampionshipCategoriesTable::tDATA& data = cIt->second;
@@ -262,7 +317,13 @@ void udfBlockInfo::CreateNewBlock()
 			{
 				udfTreeItemData* blockItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
 				if(UDF_OK == IsCategoryUsedOnCsById(data.id, blockItem->GetId()))
-					m_gridJudgesCats->SetRowAttr(nRow, m_attr);
+				{
+					wxGridCellAttr* attr = new wxGridCellAttr();
+					attr->SetBackgroundColour(*wxRED);
+					m_gridJudgesCats->SetRowAttr(nRow, attr);
+					attr->IncRef();
+				}
+					
 			}
 			m_RowIdMap[nRow] = cIt->first;
 			m_IdRowMap[cIt->first] = nRow;
@@ -295,7 +356,7 @@ void udfBlockInfo::FillData()
 		CCsBlocksTable(m_pCon).GetRow(nId, blockData);
 		
 		m_textName->SetValue(blockData.name);
-		m_textStart->SetValue(time2str(blockData.startTime));
+		m_textStart->SetValue(time2str(blockData.startTime).substr(0,5));
 		m_textPause->SetValue(wxString::Format(_("%d"), blockData.pause));
 				
 		CCsBlockJ2CTable::tDATA 					j2cFilter = {0};

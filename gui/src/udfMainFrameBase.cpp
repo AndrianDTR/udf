@@ -146,6 +146,7 @@ void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 	CCsBlocksTable::tDATA filter = {0};
 	filter.csId = id;
 
+	m_treeCs->DeleteChildren(parent);
 	CCsBlocksTable(m_pCon).Find(blocks, filter);
 
 	CCsBlocksTable::tTableIt it = blocks.begin();
@@ -166,34 +167,31 @@ void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 void udfMainFrameBase::RefreshCsBlock(unsigned int id, wxTreeItemId parent)
 {
 	/** Append block categories **/
-	/*
-	CCsBlockJudgesTable::tTableMap categories;
-	CCsBlockJudgesTable::tDATA catFilter = {0};
-	catFilter.blockId = id;
-
-	CCsBlockCategoriesTable(m_pCon).Find(categories, catFilter);
-
-	CCsBlockCategoriesTable::tTableIt it = categories.begin();
-	while(it != categories.end())
+	tCategoryList cats;
+	GetBlockCategories(id, cats);
+	
+	m_treeCs->DeleteChildren(parent);
+	
+	tCategoryListIt it = cats.begin();
+	while(it != cats.end())
 	{
-		CCsBlockCategoriesTable::tDATA& data = it->second;
+		unsigned int id = *it;
 		int regTeams = 0;
 
-		GetRegisteredTeamsForCategory(data.csCatId, regTeams);
-		wxString catName = wxString::Format(STR_FORMAT_CS_NAME, GetCsCategoryNameById(data.csCatId), regTeams);
-		wxTreeItemId csCat = m_treeCs->AppendItem(parent, catName, -1, -1, new udfTreeItemData(it->first, IT_CAT));
+		GetCategoryNTeamsById(id, regTeams);
+		wxString catName = wxString::Format(STR_FORMAT_CS_NAME, GetCsCategoryNameById(id), regTeams);
+		wxTreeItemId csCat = m_treeCs->AppendItem(parent, catName, -1, -1, new udfTreeItemData(id, IT_CAT));
 
-		RefreshCategory(it->first, csCat);
+		RefreshCategory(id, csCat);
 
 		it++;
 	}
-	*/
 }
 
 void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
 {
 	/** Refresh category tours **/
-	CChampionshipToursTable::tTableMap tours;
+	/*CChampionshipToursTable::tTableMap tours;
 	CChampionshipToursTable::tDATA filter = {0};
 	filter.csCatId = id;
 
@@ -208,6 +206,7 @@ void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
 
 		itTour++;
 	}
+	//*/
 }
 
 void udfMainFrameBase::OnDiscard( wxCommandEvent& event )

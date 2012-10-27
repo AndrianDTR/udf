@@ -1502,6 +1502,7 @@ class BlockInfo : public wxPanel
 		enum
 		{
 			ID_BLOCKINFO = 1000,
+			ID_REMOVE,
 			ID_M_BPUPDATE,
 			ID_M_BPCSCATEGORIES,
 			ID_M_BPJUDGES,
@@ -1512,6 +1513,7 @@ class BlockInfo : public wxPanel
 			ID_M_GRIDJUDGESCATS,
 		};
 		
+		wxBitmapButton* m_bpRemove;
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpCsCategories;
 		wxBitmapButton* m_bpJudges;
@@ -1528,6 +1530,7 @@ class BlockInfo : public wxPanel
 		wxGrid* m_gridJudgesCats;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdateBlock( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnBlockCategories( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnJudgesTemManager( wxCommandEvent& event ) { event.Skip(); }
