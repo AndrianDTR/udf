@@ -20,7 +20,6 @@ public:
 	typedef std::map<int, unsigned int>				tI2UiMap;
 	typedef std::map<int, unsigned int>				tUi2IMap;
 	
-
 protected:
 	// Handlers for BlockInfo events.
 	void OnUpdateBlock( wxCommandEvent& event );
@@ -46,6 +45,7 @@ private:
 	wxTreeCtrl*				m_pTree;
 	wxTreeItemId			m_parentItem;
 	wxTreeItemId			m_itemId;
+	wxGridCellAttr*			m_attr;
 
 private:
 	bool 			ValidateData();

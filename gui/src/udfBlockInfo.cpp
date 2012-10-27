@@ -14,7 +14,8 @@ udfBlockInfo::udfBlockInfo( wxWindow* parent )
 , m_pTree(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-
+	m_attr = new wxGridCellAttr();
+	m_attr->SetBackgroundColour(*wxRED);
 }
 
 wxString udfBlockInfo::GetVerticalText(wxString str)
@@ -111,9 +112,10 @@ void udfBlockInfo::OnUpdateBlock( wxCommandEvent& event )
 		
 		time_t len;
 		GetBlockLenById(nId, len);
-		wxString name = wxString::Format(STR_FORMAT_BLOCK_NAME, blockInfo.name, time2str(len));
+		m_staticLenght->SetLabel(time2str(len));
+		wxString name = wxString::Format(STR_FORMAT_BLOCK_NAME, blockInfo.name, time2str(blockInfo.startTime));
 		m_pTree->SetItemText(m_itemId, name);
-		
+			
 	}while(0);
 }
 
@@ -249,7 +251,19 @@ void udfBlockInfo::CreateNewBlock()
 		while(cIt != cats.end())
 		{
 			CChampionshipCategoriesTable::tDATA& data = cIt->second;
-			m_gridJudgesCats->SetRowLabelValue(nRow, GetCategoryShortNameById(data.catId));
+			int nTeams = 0;
+			GetCategoryNTeamsById(data.id, nTeams);
+			wxString rowName = wxString::Format(_("%s - %d")
+				, GetCategoryShortNameById(data.catId)
+				, nTeams);
+			m_gridJudgesCats->SetRowLabelValue(nRow, rowName);
+			
+			if(m_itemId.IsOk())
+			{
+				udfTreeItemData* blockItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
+				if(UDF_OK == IsCategoryUsedOnCsById(data.id, blockItem->GetId()))
+					m_gridJudgesCats->SetRowAttr(nRow, m_attr);
+			}
 			m_RowIdMap[nRow] = cIt->first;
 			m_IdRowMap[cIt->first] = nRow;
 			nRow++;
@@ -302,6 +316,10 @@ void udfBlockInfo::FillData()
 			
 			it++;
 		}
+		
+		time_t len;
+		GetBlockLenById(nId, len);
+		m_staticLenght->SetLabel(time2str(len));
 	}while(0);
 	
 	Leave();

@@ -154,8 +154,7 @@ void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 		CCsBlocksTable::tDATA& data = it->second;
 		time_t len;
 
-		GetBlockLenById(it->first, len);
-		wxString name = wxString::Format(STR_FORMAT_BLOCK_NAME, data.name, time2str(len));
+		wxString name = wxString::Format(STR_FORMAT_BLOCK_NAME, data.name, time2str(data.startTime));
 		wxTreeItemId csBlock = m_treeCs->AppendItem(parent, name, -1, -1, new udfTreeItemData(it->first, IT_BLOCK));
 
 		RefreshCsBlock(it->first, csBlock);

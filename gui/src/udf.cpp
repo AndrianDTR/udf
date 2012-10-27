@@ -1904,7 +1904,7 @@ JudgeCategories::JudgeCategories( wxWindow* parent, wxWindowID id, const wxStrin
 	m_staticText112->Wrap( -1 );
 	fgSizer22->Add( m_staticText112, 0, wxALL, 5 );
 	
-	m_staticJudge = new wxStaticText( this, wxID_ANY, _(" "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticJudge = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticJudge->Wrap( -1 );
 	fgSizer22->Add( m_staticJudge, 0, wxALL, 5 );
 	
@@ -3209,42 +3209,45 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	
 	bSizer125->Add( bSizer126, 0, wxALIGN_RIGHT, 5 );
 	
-	wxBoxSizer* bSizer130;
-	bSizer130 = new wxBoxSizer( wxHORIZONTAL );
+	wxFlexGridSizer* fgSizer23;
+	fgSizer23 = new wxFlexGridSizer( 1, 8, 0, 0 );
+	fgSizer23->AddGrowableCol( 1 );
+	fgSizer23->SetFlexibleDirection( wxBOTH );
+	fgSizer23->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	m_staticText1091 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1091->Wrap( -1 );
-	bSizer130->Add( m_staticText1091, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer23->Add( m_staticText1091, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textName = new wxTextCtrl( this, ID_M_TEXTNAME, wxEmptyString, wxDefaultPosition, wxSize( 150,-1 ), 0 );
-	bSizer130->Add( m_textName, 0, wxALL, 5 );
+	fgSizer23->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText106 = new wxStaticText( this, wxID_ANY, _("Start time"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText106->Wrap( -1 );
-	bSizer130->Add( m_staticText106, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer23->Add( m_staticText106, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textStart = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer130->Add( m_textStart, 0, wxALL, 5 );
+	fgSizer23->Add( m_textStart, 0, wxALL, 5 );
 	
 	m_staticText109 = new wxStaticText( this, wxID_ANY, _("Pause, sec"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText109->Wrap( -1 );
-	bSizer130->Add( m_staticText109, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer23->Add( m_staticText109, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textPause = new wxTextCtrl( this, ID_M_TEXTPAUSE, _("30"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_textPause->SetMaxLength( 3 ); 
-	bSizer130->Add( m_textPause, 0, wxALL, 5 );
+	fgSizer23->Add( m_textPause, 0, wxALL, 5 );
 	
-	m_staticText107 = new wxStaticText( this, wxID_ANY, _("End time"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText107 = new wxStaticText( this, wxID_ANY, _("Length:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText107->Wrap( -1 );
-	bSizer130->Add( m_staticText107, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer23->Add( m_staticText107, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_staticLenght = new wxStaticText( this, ID_M_STATICLENGHT, _("00:00:00"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticLenght->Wrap( -1 );
 	m_staticLenght->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
-	bSizer130->Add( m_staticLenght, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	fgSizer23->Add( m_staticLenght, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	bSizer125->Add( bSizer130, 0, wxEXPAND, 5 );
+	bSizer125->Add( fgSizer23, 0, wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer17;
 	sbSizer17 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Judges per categories") ), wxVERTICAL );
