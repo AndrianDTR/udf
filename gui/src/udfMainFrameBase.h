@@ -67,8 +67,7 @@ protected:
 
 	void OnSearch( wxCommandEvent& event );
 	void OnCsSelect(wxTreeEvent& event);
-
-	void OnAddTour( wxCommandEvent& event );
+	
 	void OnRemoveTour( wxCommandEvent& event );
 	void OnCsTourReport( wxCommandEvent& event );
 	void OnJudgesMark( wxCommandEvent& event );
@@ -125,7 +124,8 @@ public:
 	void			RefreshCsBlock(unsigned int id, wxTreeItemId parent);
 	void			RefreshCategory(unsigned int id, wxTreeItemId parent);
 	
-	void OnAddBlock( wxCommandEvent& event );
+	void 			OnAddBlock( wxCommandEvent& event );
+	void 			OnAddTour( wxCommandEvent& event );
 	
 };
 

@@ -167,19 +167,19 @@ void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 void udfMainFrameBase::RefreshCsBlock(unsigned int id, wxTreeItemId parent)
 {
 	/** Append block categories **/
-	tCategoryList cats;
+	tUIList cats;
 	GetBlockCategories(id, cats);
 	
 	m_treeCs->DeleteChildren(parent);
 	
-	tCategoryListIt it = cats.begin();
+	tUIListIt it = cats.begin();
 	while(it != cats.end())
 	{
 		unsigned int id = *it;
-		int regTeams = 0;
-
-		GetCategoryNTeamsById(id, regTeams);
-		wxString catName = wxString::Format(STR_FORMAT_CS_NAME, GetCsCategoryNameById(id), regTeams);
+		
+		tUIList	regTeams;
+		GetTeamsInCategory(id, regTeams);
+		wxString catName = wxString::Format(STR_FORMAT_CS_NAME, GetCsCategoryNameById(id), regTeams.size());
 		wxTreeItemId csCat = m_treeCs->AppendItem(parent, catName, -1, -1, new udfTreeItemData(id, IT_CAT));
 
 		RefreshCategory(id, csCat);
@@ -191,10 +191,11 @@ void udfMainFrameBase::RefreshCsBlock(unsigned int id, wxTreeItemId parent)
 void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
 {
 	/** Refresh category tours **/
-	/*CChampionshipToursTable::tTableMap tours;
+	CChampionshipToursTable::tTableMap tours;
 	CChampionshipToursTable::tDATA filter = {0};
 	filter.csCatId = id;
 
+	m_treeCs->DeleteChildren(parent);
 	CChampionshipToursTable(m_pCon).Find(tours, filter);
 
 	CChampionshipToursTable::tTableIt itTour = tours.begin();
@@ -206,7 +207,6 @@ void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
 
 		itTour++;
 	}
-	//*/
 }
 
 void udfMainFrameBase::OnDiscard( wxCommandEvent& event )
@@ -588,38 +588,6 @@ void udfMainFrameBase::OnMenuChampionshipTypes(wxCommandEvent& event)
 	m_pageCsInfo->RefreshTypes();
 }
 
-void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
-{
-	do{
-		wxTreeItemId itemCsId = GetSelectedBlockCategory();
-		if(!itemCsId.IsOk())
-			break;
-
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemCsId);
-
-		udfCsTours dlg(this, -1, -1);
-
-		if(wxID_OK != dlg.ShowModal())
-			break;
-
-		CChampionshipToursTable::tDATA data = {0};
-
-		data.id = -(csItem->GetId() * m_treeCs->GetChildrenCount(itemCsId));
-		data.csCatId = csItem->GetId();
-		data.typeId = dlg.GetTypeId();
-		data.limit = dlg.GetLimit();
-
-		if(UDF_OK != CChampionshipToursTable(m_pCon).AddRow(data))
-		{
-			ShowWarning(STR_ERR_ADD_CHAMPIONSHIP_TOUR_FAILED);
-			break;
-		}
-
-		m_treeCs->DeleteChildren(itemCsId);
-		RefreshCategory(csItem->GetId(), itemCsId);
-	}while(0);
-}
-
 void udfMainFrameBase::OnRemoveTour(wxCommandEvent& event)
 {
 	do
@@ -895,6 +863,16 @@ void udfMainFrameBase::CatSelected()
 {
 	do
 	{
+		wxTreeItemId blockItem = GetSelectedCsBlock();
+		if(!blockItem.IsOk())
+			break;
+		
+		wxTreeItemId catItem = GetSelectedBlockCategory();
+		if(!catItem.IsOk())
+			break;
+		
+		m_pageCatInfo->SetCsTreeItem(m_treeCs, blockItem, catItem);
+		
 		m_pageCsInfo->Show(false);
 		m_pageBlockInfo->Show(false);
 		m_pageCatInfo->Show(true);
@@ -902,10 +880,38 @@ void udfMainFrameBase::CatSelected()
 	}while(0);
 }
 
+void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
+{
+	do{
+		wxTreeItemId id = wxTreeItemId();
+
+		wxTreeItemId catItem = GetSelectedBlockCategory();
+		if(!catItem.IsOk())
+			break;
+
+		m_pageTourInfo->SetCsTreeItem(m_treeCs, catItem, id);
+		
+		m_pageCsInfo->Show(false);
+		m_pageBlockInfo->Show(false);
+		m_pageCatInfo->Show(false);
+		m_pageTourInfo->Show(true);
+	}while(0);
+}
+
 void udfMainFrameBase::TourSelected()
 {
 	do
 	{
+		wxTreeItemId catItem = GetSelectedBlockCategory();
+		if(!catItem.IsOk())
+			break;
+		
+		wxTreeItemId tourItem = GetSelectedCatTour();
+		if(!tourItem.IsOk())
+			break;
+		
+		m_pageTourInfo->SetCsTreeItem(m_treeCs, catItem, tourItem);
+		
 		m_pageCsInfo->Show(false);
 		m_pageBlockInfo->Show(false);
 		m_pageCatInfo->Show(false);

@@ -18,17 +18,6 @@ udfBlockInfo::udfBlockInfo( wxWindow* parent )
 	m_pCon = CDbManager::Instance()->GetConnection();
 }
 
-wxString udfBlockInfo::GetVerticalText(wxString str)
-{
-	wxString res;
-	int n = 0;
-	for(; n < str.Length(); n++)
-	{
-		res += wxString(str.GetChar(n)) + wxString('\n');
-	}
-	return res;
-}
-
 bool udfBlockInfo::Show(bool show)
 {
 	do
@@ -41,7 +30,7 @@ bool udfBlockInfo::Show(bool show)
 		
 	}while(0);
 
-	wxPanel::Show(show);
+	return wxPanel::Show(show);
 }
 
 void udfBlockInfo::OnUpdateBlock( wxCommandEvent& event )
@@ -306,11 +295,12 @@ void udfBlockInfo::CreateNewBlock()
 		while(cIt != cats.end())
 		{
 			CChampionshipCategoriesTable::tDATA& data = cIt->second;
-			int nTeams = 0;
-			GetCategoryNTeamsById(data.id, nTeams);
-			wxString rowName = wxString::Format(_("%s - %d")
+			tUIList nTeams;
+			GetTeamsInCategory(data.id, nTeams);
+			wxString rowName = wxString::Format(_("%s - %ld")
 				, GetCategoryShortNameById(data.catId)
-				, nTeams);
+				, nTeams.size());
+			
 			m_gridJudgesCats->SetRowLabelValue(nRow, rowName);
 			
 			if(m_itemId.IsOk())

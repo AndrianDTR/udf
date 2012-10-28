@@ -181,6 +181,7 @@ long CJudgesTable::DelRow(unsigned int nId)
 
 long CJudgesTable::GetRow(unsigned int nId, tDATA& data)
 {
+	Enter();
 	long res = UDF_E_FAIL;
 
 	do
@@ -201,19 +202,28 @@ long CJudgesTable::GetRow(unsigned int nId, tDATA& data)
 			res = UDF_E_EXECUTE_QUERY_FAILED;
 			break;
 		}
-		qRes->next();
-		data.id = qRes->getUInt(1);
-		data.name = qRes->getString(2);
-		data.cityId = qRes->getUInt(3);
-		data.practicer = qRes->getString(4)[0];
-		data.attestationInfo = qRes->getString(5);
-		data.phone = qRes->getString(6);
-		data.email = qRes->getString(7);
-		data.additionalInfo = qRes->getString(8);
-
+		
+		if(!qRes->next())
+		{
+			__debug("Not found");
+			res = UDF_E_NOTFOUND;
+			break;
+		}
+		
+		__info("Fill data for id: %d", nId);
+		data.id = qRes->getUInt("id");
+		data.name = qRes->getString("name");
+		data.cityId = qRes->getUInt("city");
+		data.practicer = qRes->getString("practicer")[0];
+		data.attestationInfo = qRes->getString("attestation_info");
+		data.phone = qRes->getString("phone");
+		data.email = qRes->getString("email");
+		data.additionalInfo = qRes->getString("additional_info");
+		
 		res = UDF_OK;
 	}while(0);
 
+	Leave();
 	return res;
 }
 

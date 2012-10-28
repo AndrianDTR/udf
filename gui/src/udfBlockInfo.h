@@ -34,7 +34,7 @@ public:
 //// end generated class members
 
 protected:
-	wxString				GetVerticalText(wxString str);
+	
 	tI2UiMap				m_RowIdMap;
 	tI2UiMap				m_ColIdMap;
 	tUi2IMap				m_IdRowMap;

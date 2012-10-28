@@ -30,8 +30,8 @@ void udfCsTourReport::CreateHeaders()
 	wxArrayInt order;
 	int index = 0;
 	int width = 850 - m_judgesMap.size()*20;
-	m_listTeams->InsertColumn(index++, STR_REPORT_START_NUMBER, wxLIST_FORMAT_LEFT, 50);
-	m_listTeams->InsertColumn(index++, STR_REPORT_TEAM, wxLIST_FORMAT_LEFT, width);
+	m_listTeams->InsertColumn(index++, STR_START_NUMBER, wxLIST_FORMAT_LEFT, 50);
+	m_listTeams->InsertColumn(index++, STR_TEAM, wxLIST_FORMAT_LEFT, width);
 	
 	wxString judgeDescr;
 	
@@ -126,9 +126,9 @@ void udfCsTourReport::FormatReportTableHeader()
 	wxArrayString row;
 	
 	// Start number
-	row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_HDR, STR_REPORT_START_NUMBER));
+	row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_HDR, STR_START_NUMBER));
 	// Team name
-	row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_HDR, STR_REPORT_TEAM));
+	row.Add(wxString::Format(STR_FORMAT_HTML_TABLE_HDR, STR_TEAM));
 	
 	tJudgesItC it = m_judgesMap.begin();
 	while(it != m_judgesMap.end())

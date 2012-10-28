@@ -20,7 +20,18 @@
 
 #include "string_def.h"
 
-wxString	GetClubNameById(unsigned int nId)
+wxString GetVerticalText(wxString str)
+{
+	wxString res;
+	int n = 0;
+	for(; n < str.Length(); n++)
+	{
+		res += wxString(str.GetChar(n)) + wxString('\n');
+	}
+	return res;
+}
+
+wxString GetClubNameById(unsigned int nId)
 {
 	wxString res;
 
@@ -100,26 +111,29 @@ wxString	GetDancerNameById(unsigned int nId)
 
 wxString	GetJudgeNameById(unsigned int nId)
 {
+	Enter();
 	wxString res;
 
 	do
 	{
 		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
 		CJudgesTable::tDATA 	data = {0};
-
+		
 		if(UDF_OK != CJudgesTable(pCon).GetRow(nId, data))
 		{
 			break;
 		}
-
+		__info("Get Judge name by judge id: %d - %s", nId, data.name.c_str());
 		res = data.name;
 	}while(0);
 
+	Leave();
 	return res;
 }
 
 wxString	GetCsJudgeNameById(unsigned int nId)
 {
+	Enter();
 	wxString res;
 
 	do
@@ -131,10 +145,11 @@ wxString	GetCsJudgeNameById(unsigned int nId)
 		{
 			break;
 		}
-
+		__info("Get Judge name by judge id: %d", data.judgeId);
 		res = GetJudgeNameById(data.judgeId);
 	}while(0);
 
+	Leave();
 	return res;
 }
 

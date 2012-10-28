@@ -19,6 +19,7 @@ class udfCategoryInfo : public CategoryInfo
 public:
 	/** Constructor */
 	udfCategoryInfo( wxWindow* parent );
+	virtual ~udfCategoryInfo();
 //// end generated class members
 
 private:
@@ -28,11 +29,18 @@ private:
 	wxTreeItemId			m_parentItem;
 	wxTreeItemId			m_itemId;
 
+protected:
+	virtual void			OnAddTour(wxCommandEvent& event);
+	virtual void			OnStartNumberMngr(wxCommandEvent& event);
+
 public:
 	bool			Show(bool show = true);
 	void			SetMainWindow(udfMainFrameBase* pMain) {m_pMainWindow = pMain;};
 	void			SetCsTreeItem(wxTreeCtrl* pTree, wxTreeItemId& parentItem, wxTreeItemId& itemId) {m_pTree = pTree; m_parentItem = parentItem; m_itemId = itemId;};
 
+protected:
+	void			CreateHeaders();
+	void			FillList();
 };
 
 #endif // __udfCategoryInfo__

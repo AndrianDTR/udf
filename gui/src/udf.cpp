@@ -3338,11 +3338,11 @@ CategoryInfo::CategoryInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	wxBoxSizer* bSizer131;
 	bSizer131 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_button2 = new wxButton( this, wxID_ANY, _("MyButton"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer131->Add( m_button2, 0, wxALL, 5 );
+	m_bpAddTour = new wxBitmapButton( this, ID_ADDTOUR, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer131->Add( m_bpAddTour, 0, wxALL, 5 );
 	
-	m_button3 = new wxButton( this, wxID_ANY, _("MyButton"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer131->Add( m_button3, 0, wxALL, 5 );
+	m_bpStartNumber = new wxBitmapButton( this, ID_STARTNUMBER, wxBitmap( button_startnumber_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer131->Add( m_bpStartNumber, 0, wxALL, 5 );
 	
 	bSizer129->Add( bSizer131, 0, wxALIGN_RIGHT, 5 );
 	
@@ -3351,10 +3351,18 @@ CategoryInfo::CategoryInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	
 	this->SetSizer( bSizer129 );
 	this->Layout();
+	
+	// Connect Events
+	m_bpAddTour->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoryInfo::OnAddTour ), NULL, this );
+	m_bpStartNumber->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoryInfo::OnStartNumberMngr ), NULL, this );
 }
 
 CategoryInfo::~CategoryInfo()
 {
+	// Disconnect Events
+	m_bpAddTour->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoryInfo::OnAddTour ), NULL, this );
+	m_bpStartNumber->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CategoryInfo::OnStartNumberMngr ), NULL, this );
+	
 }
 
 TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
@@ -3362,24 +3370,117 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	wxBoxSizer* bSizer132;
 	bSizer132 = new wxBoxSizer( wxVERTICAL );
 	
-	wxBoxSizer* bSizer133;
-	bSizer133 = new wxBoxSizer( wxHORIZONTAL );
+	wxFlexGridSizer* fgSizer25;
+	fgSizer25 = new wxFlexGridSizer( 1, 3, 0, 0 );
+	fgSizer25->AddGrowableCol( 0 );
+	fgSizer25->SetFlexibleDirection( wxBOTH );
+	fgSizer25->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_bpButton146 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer133->Add( m_bpButton146, 0, wxALL, 5 );
+	m_staticType = new wxStaticText( this, wxID_ANY, _("1/64"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticType->Wrap( -1 );
+	m_staticType->SetFont( wxFont( 20, 70, 90, 92, false, wxEmptyString ) );
 	
-	m_bpButton147 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer133->Add( m_bpButton147, 0, wxALL, 5 );
+	fgSizer25->Add( m_staticType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	bSizer132->Add( bSizer133, 0, wxALIGN_RIGHT, 5 );
+	m_bpRemoveTour = new wxBitmapButton( this, ID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	fgSizer25->Add( m_bpRemoveTour, 0, wxALL, 5 );
 	
-	m_listSuccessTeams = new wxListCtrl( this, ID_M_LISTSUCCESSTEAMS, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-	bSizer132->Add( m_listSuccessTeams, 1, wxALL|wxEXPAND, 5 );
+	m_bpButton144 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	fgSizer25->Add( m_bpButton144, 0, wxALL, 5 );
+	
+	bSizer132->Add( fgSizer25, 0, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer24;
+	fgSizer24 = new wxFlexGridSizer( 1, 8, 0, 0 );
+	fgSizer24->AddGrowableCol( 1 );
+	fgSizer24->SetFlexibleDirection( wxBOTH );
+	fgSizer24->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText113 = new wxStaticText( this, wxID_ANY, _("Tour name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText113->Wrap( -1 );
+	fgSizer24->Add( m_staticText113, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer24->Add( m_textName, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	
+	m_staticText114 = new wxStaticText( this, wxID_ANY, _("Tour members must be in range beetwen"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText114->Wrap( -1 );
+	fgSizer24->Add( m_staticText114, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticMin = new wxStaticText( this, ID_MIN, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticMin->Wrap( -1 );
+	m_staticMin->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	fgSizer24->Add( m_staticMin, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText116 = new wxStaticText( this, wxID_ANY, _("and"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText116->Wrap( -1 );
+	fgSizer24->Add( m_staticText116, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticMax = new wxStaticText( this, ID_MAX, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticMax->Wrap( -1 );
+	m_staticMax->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	fgSizer24->Add( m_staticMax, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText118 = new wxStaticText( this, wxID_ANY, _("Selected"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText118->Wrap( -1 );
+	fgSizer24->Add( m_staticText118, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticTCount = new wxStaticText( this, ID_COUNT, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTCount->Wrap( -1 );
+	m_staticTCount->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	fgSizer24->Add( m_staticTCount, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	bSizer132->Add( fgSizer24, 0, wxEXPAND, 5 );
+	
+	m_gridSuccess = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER );
+	
+	// Grid
+	m_gridSuccess->CreateGrid( 5, 5 );
+	m_gridSuccess->EnableEditing( false );
+	m_gridSuccess->EnableGridLines( true );
+	m_gridSuccess->EnableDragGridSize( false );
+	m_gridSuccess->SetMargins( 0, 0 );
+	
+	// Columns
+	m_gridSuccess->SetColSize( 0, 25 );
+	m_gridSuccess->EnableDragColMove( false );
+	m_gridSuccess->EnableDragColSize( true );
+	m_gridSuccess->SetColLabelSize( 150 );
+	m_gridSuccess->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_TOP );
+	
+	// Rows
+	m_gridSuccess->EnableDragRowSize( true );
+	m_gridSuccess->SetRowLabelSize( 60 );
+	m_gridSuccess->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+	
+	// Label Appearance
+	
+	// Cell Defaults
+	m_gridSuccess->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
+	bSizer132->Add( m_gridSuccess, 1, wxALL|wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer129;
+	bSizer129 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_staticJudges = new wxStaticText( this, ID_JUDGES, _(" "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticJudges->Wrap( -1 );
+	bSizer129->Add( m_staticJudges, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	bSizer132->Add( bSizer129, 0, wxEXPAND|wxALL, 5 );
 	
 	this->SetSizer( bSizer132 );
 	this->Layout();
+	
+	// Connect Events
+	m_gridSuccess->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( TourInfo::OnCellLeftClick ), NULL, this );
 }
 
 TourInfo::~TourInfo()
 {
+	// Disconnect Events
+	m_gridSuccess->Disconnect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( TourInfo::OnCellLeftClick ), NULL, this );
+	
 }

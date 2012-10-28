@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-28 02:53:10
+-- Date/time:                    2012-10-29 00:30:07
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -116,13 +116,13 @@ CREATE TABLE IF NOT EXISTS `championship_blocks` (
   PRIMARY KEY (`id`),
   KEY `FK_championship_id_id` (`championship_id`),
   CONSTRAINT `FK_championship_id_id` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table udf.championship_blocks: ~3 rows (approximately)
 DELETE FROM `championship_blocks`;
 /*!40000 ALTER TABLE `championship_blocks` DISABLE KEYS */;
 INSERT INTO `championship_blocks` (`id`, `championship_id`, `order`, `name`, `start_time`, `pause`) VALUES
-	(1, 7, 0, 'AAA', '12:00:07', 30),
+	(1, 7, 0, 'AAA', '12:00:00', 30),
 	(3, 4, 0, 'AAA', '12:30:00', 30),
 	(7, 7, 0, 'ZZZ', '13:00:00', 30);
 /*!40000 ALTER TABLE `championship_blocks` ENABLE KEYS */;
@@ -142,9 +142,9 @@ CREATE TABLE IF NOT EXISTS `championship_block_j2c` (
   CONSTRAINT `FK_championship_blocks_block` FOREIGN KEY (`block_id`) REFERENCES `championship_blocks` (`id`),
   CONSTRAINT `FK_championship_block_judges_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
   CONSTRAINT `FK_championship_judges_judges` FOREIGN KEY (`cs_judge_id`) REFERENCES `championship_judges_team` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_block_j2c: ~12 rows (approximately)
+-- Dumping data for table udf.championship_block_j2c: ~14 rows (approximately)
 DELETE FROM `championship_block_j2c`;
 /*!40000 ALTER TABLE `championship_block_j2c` DISABLE KEYS */;
 INSERT INTO `championship_block_j2c` (`id`, `block_id`, `cs_judge_id`, `cs_cat_id`) VALUES
@@ -161,7 +161,10 @@ INSERT INTO `championship_block_j2c` (`id`, `block_id`, `cs_judge_id`, `cs_cat_i
 	(41, 1, 57, 27),
 	(42, 1, 55, 36),
 	(43, 1, 56, 36),
-	(44, 1, 57, 36);
+	(44, 1, 57, 36),
+	(45, 1, 55, 43),
+	(46, 1, 56, 43),
+	(47, 1, 57, 43);
 /*!40000 ALTER TABLE `championship_block_j2c` ENABLE KEYS */;
 
 
@@ -605,7 +608,7 @@ INSERT INTO `judges` (`id`, `name`, `city`, `practicer`, `attestation_info`, `ph
 	(1, 'Суддя 1', 1, 'Y', 'Test attestation inf1', '333', 'aa', '3333333'),
 	(2, 'Суддя 2', 1, 'N', 'Test attestation inf1', 'телефон 2', 'пошта 2', 'Інфо 2'),
 	(3, 'Суддя 3', 2, 'N', 'Test attestation inf1', 'тел 3', 'пошта 3', 'інформація 3'),
-	(4, 'Суддя 4', 2, 'N', 'Test attestation inf1', NULL, NULL, NULL),
+	(4, 'Суддя 4', 2, 'N', 'Test attestation inf1', '444', 'wewee', 'cdcd'),
 	(5, 'Суддя 5', 3, 'N', 'Test attestation inf1', 'телефон 5', 'почта 5', 'информация 5');
 /*!40000 ALTER TABLE `judges` ENABLE KEYS */;
 

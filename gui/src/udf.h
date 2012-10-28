@@ -1557,12 +1557,19 @@ class CategoryInfo : public wxPanel
 	protected:
 		enum
 		{
-			ID_M_LISTREGISTEREDTEAMS = 1000,
+			ID_ADDTOUR = 1000,
+			ID_STARTNUMBER,
+			ID_M_LISTREGISTEREDTEAMS,
 		};
 		
-		wxButton* m_button2;
-		wxButton* m_button3;
+		wxBitmapButton* m_bpAddTour;
+		wxBitmapButton* m_bpStartNumber;
 		wxListCtrl* m_listRegisteredTeams;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnAddTour( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnStartNumberMngr( wxCommandEvent& event ) { event.Skip(); }
+		
 	
 	public:
 		
@@ -1582,12 +1589,31 @@ class TourInfo : public wxPanel
 		enum
 		{
 			ID_TOURINFO = 1000,
-			ID_M_LISTSUCCESSTEAMS,
+			ID_REMOVE,
+			ID_NAME,
+			ID_MIN,
+			ID_MAX,
+			ID_COUNT,
+			ID_JUDGES,
 		};
 		
-		wxBitmapButton* m_bpButton146;
-		wxBitmapButton* m_bpButton147;
-		wxListCtrl* m_listSuccessTeams;
+		wxStaticText* m_staticType;
+		wxBitmapButton* m_bpRemoveTour;
+		wxBitmapButton* m_bpButton144;
+		wxStaticText* m_staticText113;
+		wxTextCtrl* m_textName;
+		wxStaticText* m_staticText114;
+		wxStaticText* m_staticMin;
+		wxStaticText* m_staticText116;
+		wxStaticText* m_staticMax;
+		wxStaticText* m_staticText118;
+		wxStaticText* m_staticTCount;
+		wxGrid* m_gridSuccess;
+		wxStaticText* m_staticJudges;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnCellLeftClick( wxGridEvent& event ) { event.Skip(); }
+		
 	
 	public:
 		

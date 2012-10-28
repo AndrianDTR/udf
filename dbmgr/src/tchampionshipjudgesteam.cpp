@@ -156,8 +156,9 @@ long CChampionshipJudgesTeamTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.championshipId = qRes->getUInt(1);
-		data.judgeId = qRes->getUInt(2);
+		data.id = qRes->getUInt("id");
+		data.championshipId = qRes->getUInt("championship_id");
+		data.judgeId = qRes->getUInt("judge_id");
 
 		res = UDF_OK;
 	}while(0);

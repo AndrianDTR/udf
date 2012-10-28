@@ -251,7 +251,7 @@ long JudgeHaveCsCategory(unsigned int judId, unsigned int csId)
 	return res;
 }
 
-long GetCategoryNTeamsById(unsigned int nId, int& nCount)
+long GetTeamsInCategory(unsigned int nId, tUIList& teamsList)
 {
 	long res = UDF_E_FAIL;
 
@@ -266,8 +266,8 @@ long GetCategoryNTeamsById(unsigned int nId, int& nCount)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		// select count(t1.id) `count` from championship_team t1 inner join championship_team_categories t2 on t1.id=t2.team_id and t2.category_id=27
-		sprintf(query, "select count(t1.id) `count` from %s t1 inner join"
+		// select t1.id `id` from championship_team t1 inner join championship_team_categories t2 on t1.id=t2.team_id and t2.category_id=27
+		sprintf(query, "select t1.id `id` from %s t1 inner join"
 			" %s t2 on t1.id=t2.team_id and t2.category_id=%d"
 			, TABLE_CHAMPIONSHIPTEAM
 			, TABLE_CHAMPIONSHIPTEAMCATEGORIES
@@ -280,14 +280,13 @@ long GetCategoryNTeamsById(unsigned int nId, int& nCount)
 			res = UDF_E_EXECUTE_QUERY_FAILED;
 			break;
 		}
-
-		if(!qRes->next())
+		
+		teamsList.clear();
+		while(qRes->next())
 		{
-			res = UDF_E_NOTFOUND;
-			break;
+			teamsList.push_back(qRes->getUInt("id"));
 		}
 		
-		nCount = qRes->getInt("count");
 		res = UDF_OK;
 	}while(0);
 
@@ -344,7 +343,7 @@ long IsCategoryUsedOnCsById(unsigned int nId, unsigned int blockId)
 	return res;
 }
 
-long GetBlockCategories(unsigned int nId, tCategoryList& cats)
+long GetBlockCategories(unsigned int nId, tUIList& cats)
 {
 	long res = UDF_E_FAIL;
 
@@ -372,11 +371,135 @@ long GetBlockCategories(unsigned int nId, tCategoryList& cats)
 			break;
 		}
 
+		cats.clear();
 		while(qRes->next())
 		{
 			cats.push_back(qRes->getUInt("id"));
 		}
 		
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}
+
+long GetFirtsTourType(unsigned int nDancers, unsigned int& typeId)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		// select t1.id `id` from tour_types t1 where t1.min <= 70 and t1.max > 70
+		sprintf(query, "select t1.id `id` from %s t1 where t1.min <= %d and t1.max > %d"
+			, TABLE_TOURTYPES
+			, nDancers
+			, nDancers
+			);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+
+		if(!qRes->next())
+		{
+			res = UDF_E_NOTFOUND;
+			break;
+		}
+		
+		typeId = qRes->getUInt("id");
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}
+
+long GetJudgesForCategory(unsigned int catId, tUIList& judges)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		// select t1.cs_judge_id `id` from championship_block_j2c t1 where t1.cs_cat_id=26
+		sprintf(query, "select t1.cs_judge_id `id` from %s t1 where t1.cs_cat_id=%d"
+			, TABLE_CHAMPIONSHIPBLOCKJ2C
+			, catId
+			);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+		
+		judges.clear();
+		while(qRes->next())
+		{
+			judges.push_back(qRes->getUInt("id"));
+		}
+		
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}
+
+long GetTeamStartNumber(unsigned int teamId, unsigned int& startNum)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		// select t1.start_number `start_num` from %s t1 where t1.id=%d
+		sprintf(query, "select t1.start_number `start_num` from %s t1 where t1.id=%d"
+			, TABLE_CHAMPIONSHIPTEAM
+			, teamId
+			);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+
+		if(!qRes->next())
+		{
+			res = UDF_E_NOTFOUND;
+			break;
+		}
+		
+		startNum = qRes->getUInt("start_num");
 		res = UDF_OK;
 	}while(0);
 

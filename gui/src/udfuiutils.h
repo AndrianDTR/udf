@@ -3,6 +3,9 @@
 
 #include "wx/string.h"
 
+wxString	GetVerticalText(wxString str);
+
+
 wxString	GetClubNameById(unsigned int nId);
 wxString	GetCityNameById(unsigned int nId);
 wxString	GetDancerNameById(unsigned int nId);
