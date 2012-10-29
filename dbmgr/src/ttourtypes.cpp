@@ -76,8 +76,11 @@ long CTourTypesTable::Find(tTableMap& data, const tDATA& filter)
 		{
 			tDATA el = {0};
 
-			el.id = qRes->getInt(1);
-			el.name = qRes->getString(2);
+			el.id = qRes->getInt("id");
+			el.name = qRes->getString("name");
+			el.min = qRes->getInt("min");
+			el.max = qRes->getInt("max");
+			
 
 			data.insert(make_pair(el.id, el));
 		}
@@ -95,7 +98,6 @@ long CTourTypesTable::AddRow(tDATA& rec)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
-		sql::ResultSet*		qRes = NULL;
 
 		if(! m_pConnection)
 		{
@@ -103,7 +105,12 @@ long CTourTypesTable::AddRow(tDATA& rec)
 			break;
 		}
 
-		sprintf(query, "insert into %s(`name`) values('%s')", TABLE, rec.name.c_str());
+		sprintf(query, "insert into %s(`name`, `min`, `max`)"
+			" values('%s', %d, %d)"
+			, TABLE
+			, rec.name.c_str()
+			, rec.min
+			, rec.max);
 		res = m_pConnection->Execute(query);
 
 		rec.id = m_pConnection->GetLastInsertId();
@@ -156,8 +163,10 @@ long CTourTypesTable::GetRow(unsigned int nId, tDATA& data)
 			break;
 		}
 		qRes->next();
-		data.id = qRes->getInt(1);
-		data.name = qRes->getString(2);
+		data.id = qRes->getInt("id");
+		data.name = qRes->getString("name");
+		data.min = qRes->getInt("min");
+		data.max = qRes->getInt("max");
 
 		res = UDF_OK;
 	}while(0);
@@ -172,6 +181,8 @@ long CTourTypesTable::UpdateRow(unsigned int nId, const tDATA& data)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
+		char 				tmp[MAX_QUERY_LEN] = {0};
+		bool				useFilter = false;
 
 		if(! m_pConnection)
 		{
@@ -179,8 +190,33 @@ long CTourTypesTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 
-		sprintf(query, "update %s set `name`='%s' where id = %d", TABLE, data.name.c_str(), nId);
-		res = m_pConnection->Execute(query);
+		if (0 != data.min)
+		{
+			sprintf(tmp, "%s `min` = '%d',", query, data.min);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (0 != data.max)
+		{
+			sprintf(tmp, "%s `max` = '%d',", query, data.max);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if (!data.name.empty())
+		{
+			sprintf(tmp, "%s `name` = '%s',", query, data.name.c_str());
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			useFilter = true;
+		}
+		
+		if(useFilter)
+		{
+			sprintf(tmp, "update %s set %s `id`=%d where `id`=%d", TABLE, query, nId, nId);
+			strncpy(query, tmp, MAX_QUERY_LEN-1);
+			res = m_pConnection->Execute(query);
+		}
 
 	}while(0);
 

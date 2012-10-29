@@ -3371,12 +3371,12 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	bSizer132 = new wxBoxSizer( wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer25;
-	fgSizer25 = new wxFlexGridSizer( 1, 3, 0, 0 );
+	fgSizer25 = new wxFlexGridSizer( 1, 4, 0, 0 );
 	fgSizer25->AddGrowableCol( 0 );
 	fgSizer25->SetFlexibleDirection( wxBOTH );
 	fgSizer25->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticType = new wxStaticText( this, wxID_ANY, _("1/64"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticType = new wxStaticText( this, ID_TYPE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticType->Wrap( -1 );
 	m_staticType->SetFont( wxFont( 20, 70, 90, 92, false, wxEmptyString ) );
 	
@@ -3385,8 +3385,11 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	m_bpRemoveTour = new wxBitmapButton( this, ID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	fgSizer25->Add( m_bpRemoveTour, 0, wxALL, 5 );
 	
-	m_bpButton144 = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	fgSizer25->Add( m_bpButton144, 0, wxALL, 5 );
+	m_bpUpdate = new wxBitmapButton( this, ID_UPDATE, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	fgSizer25->Add( m_bpUpdate, 0, wxALL, 5 );
+	
+	m_bpresults = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	fgSizer25->Add( m_bpresults, 0, wxALL, 5 );
 	
 	bSizer132->Add( fgSizer25, 0, wxEXPAND, 5 );
 	
@@ -3465,7 +3468,7 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	wxBoxSizer* bSizer129;
 	bSizer129 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticJudges = new wxStaticText( this, ID_JUDGES, _(" "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticJudges = new wxStaticText( this, ID_JUDGES, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticJudges->Wrap( -1 );
 	bSizer129->Add( m_staticJudges, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
@@ -3475,12 +3478,16 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	this->Layout();
 	
 	// Connect Events
+	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnUpdate ), NULL, this );
+	m_bpresults->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnResults ), NULL, this );
 	m_gridSuccess->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( TourInfo::OnCellLeftClick ), NULL, this );
 }
 
 TourInfo::~TourInfo()
 {
 	// Disconnect Events
+	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnUpdate ), NULL, this );
+	m_bpresults->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnResults ), NULL, this );
 	m_gridSuccess->Disconnect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( TourInfo::OnCellLeftClick ), NULL, this );
 	
 }

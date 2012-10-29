@@ -8,7 +8,7 @@
 
 #include "wx/msgdlg.h"
 
-#include "common.h"
+#include "udfcommon.h"
 #include "string_def.h"
 #include "udfexceptions.h"
 

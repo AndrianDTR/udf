@@ -1,6 +1,6 @@
 #include "udfCountriesMngr.h"
 
-#include "common.h"
+#include "udfcommon.h"
 
 udfCountriesMngr::udfCountriesMngr( wxWindow* parent )
 : CountriesMngr( parent )

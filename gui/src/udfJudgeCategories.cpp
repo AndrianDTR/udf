@@ -1,6 +1,6 @@
 #include "udfJudgeCategories.h"
 
-#include "common.h"
+#include "udfcommon.h"
 #include "string_def.h"
 #include "udfexceptions.h"
 #include "udfuiutils.h"

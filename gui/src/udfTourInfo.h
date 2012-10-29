@@ -40,9 +40,12 @@ private:
 	wxTreeCtrl*				m_pTree;
 	wxTreeItemId			m_parentItem;
 	wxTreeItemId			m_itemId;
+	unsigned int 			m_tourType;
 
 protected:
 	void			OnCellLeftClick(wxGridEvent& event);
+	void			OnUpdate(wxCommandEvent& event);
+	void			OnResults(wxCommandEvent& event);
 
 protected:
 	void			CreateNewTour();

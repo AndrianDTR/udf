@@ -3,7 +3,7 @@
 #include "wx/msgdlg.h"
 
 #include "string_def.h"
-#include "common.h"
+#include "udfcommon.h"
 #include "udfCountriesMngr.h"
 
 udfCitiesMngr::udfCitiesMngr( wxWindow* parent )

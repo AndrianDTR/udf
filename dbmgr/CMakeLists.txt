@@ -36,7 +36,6 @@ set( HEADER_FILES
 	src/tdancetypes.h
 	src/tgender.h
 	src/tjudgescategorieshave.h
-	src/tjudgescategoriesname.h
 	src/tjudges.h
 	src/tliga.h
 	src/ttreiners.h
@@ -72,7 +71,6 @@ set( SOURCE_FILES
 	src/tdancetypes.cpp
 	src/tgender.cpp
 	src/tjudgescategorieshave.cpp
-	src/tjudgescategoriesname.cpp
 	src/tjudges.cpp
 	src/tliga.cpp
 	src/ttreiners.cpp

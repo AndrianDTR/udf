@@ -2,7 +2,7 @@
 
 #include "string_def.h"
 
-#include "common.h"
+#include "udfcommon.h"
 
 #include "udfexceptions.h"
 #include "udfuiutils.h"

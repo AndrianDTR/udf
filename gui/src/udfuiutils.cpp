@@ -255,26 +255,6 @@ wxString	GetTeamNameById(unsigned int nId)
 	return res;
 }
 
-wxString	GetTourTypeNameById(unsigned int nId)
-{
-	wxString res;
-
-	do
-	{
-		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
-		CTourTypesTable::tDATA	data = {0};
-
-		if(UDF_OK != CTourTypesTable(pCon).GetRow(nId, data))
-		{
-			break;
-		}
-
-		res = data.name;
-	}while(0);
-
-	return res;
-}
-
 void	GetTourTypeLimitsById(unsigned int nId, int& min, int& max)
 {
 	do

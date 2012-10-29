@@ -1,7 +1,7 @@
 #include "udfCategoriesMngrDlg.h"
 
 #include "string_def.h"
-#include "common.h"
+#include "udfcommon.h"
 
 #include "wx/msgdlg.h"
 #include "udfMainFrameBase.h"

@@ -15,10 +15,10 @@ class udfMainFrameBase;
 //// end generated include
 class udfBlockInfo : public BlockInfo
 {
-public:
-	typedef std::map<int, unsigned int>				tI2UiMap;
-	typedef std::map<int, unsigned int>				tUi2IMap;
-	
+protected:
+typedef std::map<int, unsigned int>				tI2UiMap;
+typedef std::map<unsigned int, int>				tUi2IMap;
+
 protected:
 	// Handlers for BlockInfo events.
 	void OnUpdateBlock( wxCommandEvent& event );

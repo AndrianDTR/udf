@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 
-#include "common.h"
+#include "udfcommon.h"
 
 #include "dberrors.h"
 #include "dbconnection.h"
@@ -25,7 +25,6 @@
 #include "tgender.h"
 #include "tjudges.h"
 #include "tjudgescategorieshave.h"
-#include "tjudgescategoriesname.h"
 #include "tliga.h"
 #include "ttreiners.h"
 
@@ -84,7 +83,6 @@ int main(int argc, char **argv)
 		if(UDF_OK == testTGender(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 		if(UDF_OK == testTJudges(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 		if(UDF_OK == testTJudgesCategoriesHave(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
-		if(UDF_OK == testTJudgesCategoriesName(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 		if(UDF_OK == testTLiga(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 		if(UDF_OK == testTTrainers(pCon)) printf("\n\n====== PASSED\n\n"); else printf("\n\n====== FAIL\n\n");
 
@@ -1532,75 +1530,6 @@ long testTJudgesCategoriesHave(CDbConnection* pCon)
 				, it->first
 				, it->second.judgeId
 				, it->second.judCatId);
-			it++;
-		}
-
-		// Remove row
-		res = tbl.DelRow(data.id);
-		if(UDF_OK != res)
-			break;
-		printf("%sDelRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
-	}while(0);
-
-	return res;
-}
-
-long testTJudgesCategoriesName(CDbConnection* pCon)
-{
-	long res = UDF_E_FAIL;
-	const char*	cName = "CJudgesCategoriesNameTable::";
-	printf("\n\nEnter to %s\n", cName);
-	do
-	{
-		CJudgesCategoriesNameTable tbl(pCon);
-		CJudgesCategoriesNameTable::tTableMap tmap;
-		CJudgesCategoriesNameTable::tTableIt it;
-
-		CJudgesCategoriesNameTable::tDATA data = {0};
-		data.name = string("Test Дорослі-8");
-
-		// Add row
-		res = tbl.AddRow(data);
-		if(UDF_OK != res)
-			break;
-		printf("%sAddRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
-
-		// Get row
-		res = tbl.GetRow(data.id, data);
-		if(UDF_OK != res)
-			break;
-		printf("%sGetRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
-
-		// Find record
-		res = tbl.Find(tmap, data);
-		if(UDF_OK != res)
-			break;
-		printf("%sFind res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
-
-		it = tmap.begin();
-		while(it != tmap.end())
-		{
-			printf("%u = %s\n", it->first, it->second.name.c_str());
-			it++;
-		}
-
-		// Update row
-		data.name = string("XXXXX-8");
-		res = tbl.UpdateRow(data.id, data);
-		if(UDF_OK != res)
-			break;
-		printf("%sUpdateRow ID = %u, res = %ld, %s\n", cName, data.id, res, GetErrorMsg(res).c_str());
-
-		// Get table
-		res = tbl.GetTable(tmap);
-		if(UDF_OK != res)
-			break;
-		printf("%sGetTable res = %ld, %s\n", cName, res, GetErrorMsg(res).c_str());
-
-		it = tmap.begin();
-		while(it != tmap.end())
-		{
-			printf("%d = %s\n", it->first, it->second.name.c_str());
 			it++;
 		}
 

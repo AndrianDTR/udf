@@ -3,8 +3,8 @@
 
 #include "db.h"
 
-typedef std::list<unsigned int> tUIList;
-typedef std::list<unsigned int>::iterator tUIListIt;
+typedef std::list<unsigned int> 				tUIList;
+typedef std::list<unsigned int>::iterator 		tUIListIt;
 
 void dbmgr_version();
 
@@ -27,7 +27,8 @@ long GetBlockCategories(unsigned int nId, tUIList& cats);
 long JudgeHaveCategory(unsigned int judId, unsigned int catId, unsigned int& rowId);
 long JudgeHaveCsCategory(unsigned int judId, unsigned int csId);
 
-long GetFirtsTourType(unsigned int nDancers, unsigned int& typeId);
+std::string 	GetTourTypeNameById(unsigned int nId);
+long 			GetTourTypeByDancersCount(unsigned int nDancers, unsigned int& typeId);
 
 long GetJudgesForCategory(unsigned int catId, tUIList& judges);
 

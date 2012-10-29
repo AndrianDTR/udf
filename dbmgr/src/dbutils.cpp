@@ -383,7 +383,44 @@ long GetBlockCategories(unsigned int nId, tUIList& cats)
 	return res;
 }
 
-long GetFirtsTourType(unsigned int nDancers, unsigned int& typeId)
+std::string GetTourTypeNameById(unsigned int nId)
+{
+	std:;string res;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			break;
+		}
+		// select t1.id `id` from tour_types t1 where t1.min <= 70 and t1.max > 70
+		sprintf(query, "select name from %s t1 where id = %d"
+			, TABLE_TOURTYPES
+			, nId
+			);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			break;
+		}
+
+		if(!qRes->next())
+		{
+			break;
+		}
+		
+		res = qRes->getString("name");
+	}while(0);
+
+	return res;
+}
+
+long GetTourTypeByDancersCount(unsigned int nDancers, unsigned int& typeId)
 {
 	long res = UDF_E_FAIL;
 

@@ -1,5 +1,5 @@
 #include "udfCodeDialog.h"
-#include "common.h"
+#include "udfcommon.h"
 
 udfCodeDialog::udfCodeDialog( wxWindow* parent )
 :

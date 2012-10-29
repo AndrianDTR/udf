@@ -2,7 +2,7 @@
 
 #include "udfReportPreview.h"
 
-#include "common.h"
+#include "udfcommon.h"
 
 #include "udfexceptions.h"
 #include "udfuiutils.h"

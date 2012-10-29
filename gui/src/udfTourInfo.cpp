@@ -60,14 +60,27 @@ udfTourInfo::udfTourInfo( wxWindow* parent )
 
 bool udfTourInfo::Show(bool show)
 {
+	Enter();
+	if(show)
+	{
+		CreateNewTour();
+		FillData();
+	}
+
+	Leave();
+	return wxPanel::Show(show);
+}
+
+void udfTourInfo::CreateNewTour()
+{
+	Enter();
 	do
 	{
-		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
-		if(!pCon)
+		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk())
+		{
+			__info("One of items is not set");
 			break;
-
-		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
-			break;
+		}
 
 		udfTreeItemData* catItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
 		
@@ -88,6 +101,16 @@ bool udfTourInfo::Show(bool show)
 		
 		tUIList teams;
 		GetTeamsInCategory(catItem->GetId(), teams);
+		
+		m_staticTCount->SetLabel(wxString::Format("%ld", teams.size()));
+		
+		CTourTypesTable::tDATA data = {0};
+		m_tourType = 0;
+		GetTourTypeByDancersCount(teams.size(), m_tourType);
+		CTourTypesTable(m_pCon).GetRow(m_tourType, data);
+		m_staticType->SetLabel(data.name);
+		m_staticMin->SetLabel(wxString::Format("%d", data.min));
+		m_staticMax->SetLabel(wxString::Format("%d", data.max));
 		
 		m_gridSuccess->AppendCols(nColsCount); 
 		
@@ -123,16 +146,24 @@ bool udfTourInfo::Show(bool show)
 			team++;
 		}
 	}while(0);
-
-	return wxPanel::Show(show);
-}
-
-void udfTourInfo::CreateNewTour()
-{
+	Leave();
 }
 
 void udfTourInfo::FillData()
 {
+	Enter();
+	do
+	{
+		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk())
+		{
+			__info("One of items is not set");
+			break;
+		}
+
+		udfTreeItemData* catItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
+	
+	}while(0);
+	Leave();
 }
 
 void udfTourInfo::OnCellLeftClick(wxGridEvent& event)
@@ -151,3 +182,97 @@ void udfTourInfo::OnCellLeftClick(wxGridEvent& event)
 	
 	event.Skip();
 }
+
+void udfTourInfo::OnResults(wxCommandEvent& event)
+{
+}
+
+void udfTourInfo::OnUpdate(wxCommandEvent& event)
+{
+	Enter();
+	do
+	{
+		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk())
+		{
+			__info("One of items is not set");
+			break;
+		}
+		/*
+		if(!ValidateData())
+		{
+			break;
+		}
+		
+		unsigned int nId = -1;
+		
+		if(m_itemId.IsOk())
+		{
+			udfTreeItemData* blockItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
+			nId = blockItem->GetId();
+		}
+		
+		udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
+				
+		CCsBlocksTable::tDATA blockInfo = {0};
+		blockInfo.id = nId;
+		blockInfo.csId = csItem->GetId();
+		blockInfo.name = m_textName->GetValue();
+		string startTime = wxString(m_textStart->GetValue() + _(":00")).ToStdString();
+		blockInfo.startTime = str2time(startTime);
+		m_textPause->GetValue().ToCLong((long*)&blockInfo.pause);
+		
+		if(!m_itemId.IsOk())
+		{
+			CCsBlocksTable(m_pCon).AddRow(blockInfo);
+		}
+		else
+		{
+			CCsBlocksTable(m_pCon).UpdateRow(nId, blockInfo);
+		}
+						
+		int nRow = 0;
+		for(nRow = 0; nRow < m_gridJudgesCats->GetNumberRows(); ++nRow)
+		{
+			int nCol = 0;
+			for(nCol = 0; nCol < m_gridJudgesCats->GetNumberCols(); ++nCol)
+			{
+				wxString value = m_gridJudgesCats->GetCellValue(nRow, nCol);
+				unsigned int id = -1;
+				
+				CCsBlockJ2CTable::tDATA data = {0};
+				data.blockId = blockInfo.id;
+				data.csCatId = m_RowIdMap[nRow];
+				data.csJudgeId = m_ColIdMap[nCol];
+				long found = CCsBlockJ2CTable(m_pCon).FindId(id, data);
+				if(UDF_OK == found && value != _("X"))
+				{
+					__debug("Found! ID: %d. Delete it...", id);
+					CCsBlockJ2CTable(m_pCon).DelRow(id);
+				}
+				else if(found == UDF_E_NOTFOUND && value == _("X"))
+				{
+					__debug("NOT Found! Insert it...");
+					CCsBlockJ2CTable(m_pCon).AddRow(data);
+				}
+			}
+		}
+		
+		time_t len;
+		GetBlockLenById(blockInfo.id, len);
+		m_staticLenght->SetLabel(time2str(len));
+		wxString name = wxString::Format(STR_FORMAT_BLOCK_NAME, blockInfo.name, time2str(blockInfo.startTime));
+		if(m_itemId.IsOk())
+		{
+			m_pTree->SetItemText(m_itemId, name);
+			m_pMainWindow->RefreshCsBlock(blockInfo.id, m_itemId);
+		}
+		else
+		{
+			wxTreeItemId block = m_pTree->AppendItem(m_parentItem, name, -1, -1, new udfTreeItemData(blockInfo.id, IT_BLOCK));
+			m_pMainWindow->RefreshCsBlock(blockInfo.id, block);
+		}
+		//*/
+	}while(0);
+	Leave();
+}
+

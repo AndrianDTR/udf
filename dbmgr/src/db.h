@@ -3,13 +3,13 @@
 
 #include "string.h"
 #include "time.h"
-#include "time.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "map"
 #include "list"
+#include "string"
 
-#include "common.h"
+#include "udfcommon.h"
 #include "version.h"
 
 #include "dbconnection.h"
@@ -36,7 +36,6 @@
 #include "tgender.h"
 #include "tjudges.h"
 #include "tjudgescategorieshave.h"
-#include "tjudgescategoriesname.h"
 #include "tpaymenthistory.h"
 #include "ttourtypes.h"
 #include "ttreiners.h"

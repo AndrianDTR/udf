@@ -32,6 +32,7 @@
       
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -63,7 +64,8 @@
   </Settings>
   <VirtualDirectory Name="src">
     <File Name="src/version.h"/>
-    <File Name="src/common.h"/>
+    <File Name="src/udfdebug.h"/>
+    <File Name="src/udfcommon.h"/>
   </VirtualDirectory>
   <Dependencies Name="Debug"/>
 </CodeLite_Project>

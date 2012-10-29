@@ -1589,7 +1589,9 @@ class TourInfo : public wxPanel
 		enum
 		{
 			ID_TOURINFO = 1000,
+			ID_TYPE,
 			ID_REMOVE,
+			ID_UPDATE,
 			ID_NAME,
 			ID_MIN,
 			ID_MAX,
@@ -1599,7 +1601,8 @@ class TourInfo : public wxPanel
 		
 		wxStaticText* m_staticType;
 		wxBitmapButton* m_bpRemoveTour;
-		wxBitmapButton* m_bpButton144;
+		wxBitmapButton* m_bpUpdate;
+		wxBitmapButton* m_bpresults;
 		wxStaticText* m_staticText113;
 		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText114;
@@ -1612,6 +1615,8 @@ class TourInfo : public wxPanel
 		wxStaticText* m_staticJudges;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnResults( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCellLeftClick( wxGridEvent& event ) { event.Skip(); }
 		
 	

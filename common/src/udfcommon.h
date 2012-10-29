@@ -1,8 +1,9 @@
 #ifndef __udf_common_h__
 #define __udf_common_h__
 
-#include "string"
 #include "stdio.h"
+
+using namespace std;
 
 #ifdef _DEBUG
 	#define	__debug(...) \
