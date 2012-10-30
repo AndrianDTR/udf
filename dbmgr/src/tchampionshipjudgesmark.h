@@ -13,7 +13,7 @@ public:
 		unsigned int	teamId;
 		unsigned int	tourId;
 		int				nMark;
-		unsigned int	nOrderNum;
+		char			passed;
 	};
 
 	typedef std::map<unsigned int, tDATA> tTableMap;
@@ -26,13 +26,18 @@ public:
     CChampionshipJudgesMarkTable(CDbConnection* pCon);
     virtual ~CChampionshipJudgesMarkTable(void);
 
+protected:
+	std::string 			GetFilterString(const tDATA& filter);
+
 public:
-    virtual long		GetTable(tTableMap& data);
-    virtual long		Find(tTableMap& data, const tDATA& filter);
-    virtual long		AddRow(tDATA& rec);
-    virtual long		DelRow(unsigned int nId);
-    virtual long		GetRow(unsigned int nId, tDATA& data);
-	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
+    virtual long			GetTable(tTableMap& data);
+    virtual long			Find(tTableMap& data, const tDATA& filter);
+    virtual long			AddRow(tDATA& rec);
+    virtual long			DelRow(unsigned int nId);
+    virtual long			GetRow(unsigned int nId, tDATA& data);
+	virtual long 			UpdateRow(unsigned int nId, const tDATA& data);
+
+	virtual std::string 	GetTableName();
 };
 
 #endif //__tChampionshipJudgesMark_h__

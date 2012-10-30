@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-29 00:30:07
+-- Date/time:                    2012-10-30 21:42:13
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `championship_block_j2c` (
   CONSTRAINT `FK_championship_judges_judges` FOREIGN KEY (`cs_judge_id`) REFERENCES `championship_judges_team` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
--- Dumping data for table udf.championship_block_j2c: ~14 rows (approximately)
+-- Dumping data for table udf.championship_block_j2c: ~17 rows (approximately)
 DELETE FROM `championship_block_j2c`;
 /*!40000 ALTER TABLE `championship_block_j2c` DISABLE KEYS */;
 INSERT INTO `championship_block_j2c` (`id`, `block_id`, `cs_judge_id`, `cs_cat_id`) VALUES
@@ -207,7 +207,7 @@ CREATE TABLE IF NOT EXISTS `championship_judges_mark` (
   `judge_id` bigint(20) unsigned NOT NULL,
   `team_id` bigint(20) unsigned NOT NULL,
   `mark` int(10) NOT NULL DEFAULT '-1',
-  `order_num` bigint(20) unsigned DEFAULT '0',
+  `passed` enum('Y','N') DEFAULT 'N',
   PRIMARY KEY (`id`),
   KEY `FK_championship_judges_mark_championship` (`championship_id`),
   KEY `judge_id` (`judge_id`),
@@ -738,7 +738,7 @@ CREATE TABLE IF NOT EXISTS `tour_types` (
 DELETE FROM `tour_types`;
 /*!40000 ALTER TABLE `tour_types` DISABLE KEYS */;
 INSERT INTO `tour_types` (`id`, `name`, `min`, `max`) VALUES
-	(1, 'Final', 1, 9),
+	(1, 'Final', 1, 6),
 	(2, '1/2', 10, 16),
 	(3, '1/4', 17, 30),
 	(4, '1/8', 31, 58),

@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-29 00:30:13
+-- Date/time:                    2012-10-30 21:42:08
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `championship_judges_mark` (
   `judge_id` bigint(20) unsigned NOT NULL,
   `team_id` bigint(20) unsigned NOT NULL,
   `mark` int(10) NOT NULL DEFAULT '-1',
-  `order_num` bigint(20) unsigned DEFAULT '0',
+  `passed` enum('Y','N') DEFAULT 'N',
   PRIMARY KEY (`id`),
   KEY `FK_championship_judges_mark_championship` (`championship_id`),
   KEY `judge_id` (`judge_id`),

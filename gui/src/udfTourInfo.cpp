@@ -174,6 +174,15 @@ void udfTourInfo::FillData()
 		{
 			for(nRow = 2; nRow < nRows; nRow++)
 			{
+				/*
+				select d.id, j1.mark+j2.mark+j3.mark `sum`, j1.mark, j2.mark, j3.mark from championship_team d 
+				-- __________^_______^_______^______________^________^________^_______________________________
+				-- dynamicaly formed
+				inner join championship_judges_mark j1 on j1.team_id=d.id and j1.tour_id=2 and j1.judge_id=55 -- < dynamicaly formed
+				inner join championship_judges_mark j2 on j2.team_id=d.id and j2.tour_id=2 and j2.judge_id=56 -- < dynamicaly formed
+				inner join championship_judges_mark j3 on j3.team_id=d.id and j3.tour_id=2 and j3.judge_id=57 -- < dynamicaly formed
+				order by sum desc
+				*/
 				//Fill judges marks data and set sum of marks on 1st col
 			}
 		}
