@@ -153,7 +153,6 @@ void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 	while(it != blocks.end())
 	{
 		CCsBlocksTable::tDATA& data = it->second;
-		time_t len;
 
 		wxString name = wxString::Format(STR_FORMAT_BLOCK_NAME, data.name, time2str(data.startTime));
 		wxTreeItemId csBlock = m_treeCs->AppendItem(parent, name, -1, -1, new udfTreeItemData(it->first, IT_BLOCK));
@@ -169,14 +168,14 @@ void udfMainFrameBase::RefreshCsBlock(unsigned int id, wxTreeItemId parent)
 	/** Append block categories **/
 	tUIList cats;
 	GetBlockCategories(id, cats);
-	
+
 	m_treeCs->DeleteChildren(parent);
-	
+
 	tUIListIt it = cats.begin();
 	while(it != cats.end())
 	{
 		unsigned int id = *it;
-		
+
 		tUIList	regTeams;
 		GetTeamsInCategory(id, regTeams);
 		wxString catName = wxString::Format(STR_FORMAT_CS_NAME, GetCsCategoryNameById(id), regTeams.size());
@@ -733,7 +732,7 @@ int udfMainFrameBase::ShowCsCategoryManager()
 {
 	Enter();
 	int res = wxID_CANCEL;
-	
+
 	do{
 		wxTreeItemId csId = GetSelectedCs();
 		if(!csId.IsOk())
@@ -741,31 +740,31 @@ int udfMainFrameBase::ShowCsCategoryManager()
 			__debug("Campionship not selected.");
 			break;
 		}
-		
+
 		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(csId);
-		
+
 		res = udfChampionshipCategoriesMngrDlg(this, csItem->GetId()).ShowModal();
 		if(wxID_OK != res)
 		{
 			__debug("Dialog canceled.");
 			break;
 		}
-		
+
 		wxTreeItemId blockId = GetSelectedCsBlock();
 		if(!blockId.IsOk())
 		{
 			__debug("Block isn't selected.");
 			break;
 		}
-		
+
 		udfTreeItemData *blockItem = (udfTreeItemData *)m_treeCs->GetItemData(blockId);
-		
+
 		m_treeCs->DeleteChildren(blockId);
 		RefreshCsBlock(blockItem->GetId(), blockId);
 		m_treeCs->Expand(blockId);
 
 	}while(0);
-	
+
 	Leave();
 	return res;
 }
@@ -774,7 +773,7 @@ int udfMainFrameBase::ShowCsJudgesManager()
 {
 	Enter();
 	int res = wxID_CANCEL;
-	
+
 	do{
 		wxTreeItemId itemId = GetSelectedCs();
 		if(!itemId.IsOk())
@@ -784,7 +783,7 @@ int udfMainFrameBase::ShowCsJudgesManager()
 
 		res = udfChampionshipJudgesTeamMngrDlg(this, csItem->GetId()).ShowModal();
 	}while(0);
-	
+
 	Leave();
 	return res;
 }
@@ -845,13 +844,13 @@ void udfMainFrameBase::BlockSelected()
 		wxTreeItemId csItem = GetSelectedCs();
 		if(!csItem.IsOk())
 			break;
-		
+
 		wxTreeItemId blockItem = GetSelectedCsBlock();
 		if(!blockItem.IsOk())
 			break;
-		
+
 		m_pageBlockInfo->SetCsTreeItem(m_treeCs, csItem, blockItem);
-		
+
 		m_pageCsInfo->Show(false);
 		m_pageBlockInfo->Show(true);
 		m_pageCatInfo->Show(false);
@@ -866,13 +865,13 @@ void udfMainFrameBase::CatSelected()
 		wxTreeItemId blockItem = GetSelectedCsBlock();
 		if(!blockItem.IsOk())
 			break;
-		
+
 		wxTreeItemId catItem = GetSelectedBlockCategory();
 		if(!catItem.IsOk())
 			break;
-		
+
 		m_pageCatInfo->SetCsTreeItem(m_treeCs, blockItem, catItem);
-		
+
 		m_pageCsInfo->Show(false);
 		m_pageBlockInfo->Show(false);
 		m_pageCatInfo->Show(true);
@@ -890,7 +889,7 @@ void udfMainFrameBase::OnAddTour(wxCommandEvent& event)
 			break;
 
 		m_pageTourInfo->SetCsTreeItem(m_treeCs, catItem, id);
-		
+
 		m_pageCsInfo->Show(false);
 		m_pageBlockInfo->Show(false);
 		m_pageCatInfo->Show(false);
@@ -905,13 +904,13 @@ void udfMainFrameBase::TourSelected()
 		wxTreeItemId catItem = GetSelectedBlockCategory();
 		if(!catItem.IsOk())
 			break;
-		
+
 		wxTreeItemId tourItem = GetSelectedCatTour();
 		if(!tourItem.IsOk())
 			break;
-		
+
 		m_pageTourInfo->SetCsTreeItem(m_treeCs, catItem, tourItem);
-		
+
 		m_pageCsInfo->Show(false);
 		m_pageBlockInfo->Show(false);
 		m_pageCatInfo->Show(false);

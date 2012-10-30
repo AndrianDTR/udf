@@ -162,8 +162,12 @@
 		<Unit filename="gui/src/udfAccountInfo.h" />
 		<Unit filename="gui/src/udfAddTeamCategory.cpp" />
 		<Unit filename="gui/src/udfAddTeamCategory.h" />
+		<Unit filename="gui/src/udfBlockInfo.cpp" />
+		<Unit filename="gui/src/udfBlockInfo.h" />
 		<Unit filename="gui/src/udfCategoriesMngrDlg.cpp" />
 		<Unit filename="gui/src/udfCategoriesMngrDlg.h" />
+		<Unit filename="gui/src/udfCategoryInfo.cpp" />
+		<Unit filename="gui/src/udfCategoryInfo.h" />
 		<Unit filename="gui/src/udfChampionshipCategoriesMngrDlg.cpp" />
 		<Unit filename="gui/src/udfChampionshipCategoriesMngrDlg.h" />
 		<Unit filename="gui/src/udfChampionshipJudgesTeamMngrDlg.cpp" />
@@ -178,6 +182,8 @@
 		<Unit filename="gui/src/udfCodeDialog.h" />
 		<Unit filename="gui/src/udfCountriesMngr.cpp" />
 		<Unit filename="gui/src/udfCountriesMngr.h" />
+		<Unit filename="gui/src/udfCsInfo.cpp" />
+		<Unit filename="gui/src/udfCsInfo.h" />
 		<Unit filename="gui/src/udfCsTourReport.cpp" />
 		<Unit filename="gui/src/udfCsTourReport.h" />
 		<Unit filename="gui/src/udfCsTours.cpp" />
@@ -208,6 +214,8 @@
 		<Unit filename="gui/src/udfStartNumberAssignDlg.h" />
 		<Unit filename="gui/src/udfTeamCategoryMngrDlg.cpp" />
 		<Unit filename="gui/src/udfTeamCategoryMngrDlg.h" />
+		<Unit filename="gui/src/udfTourInfo.cpp" />
+		<Unit filename="gui/src/udfTourInfo.h" />
 		<Unit filename="gui/src/udfTrainersMngrDlg.cpp" />
 		<Unit filename="gui/src/udfTrainersMngrDlg.h" />
 		<Unit filename="gui/src/udfUserRolesMgr.cpp" />

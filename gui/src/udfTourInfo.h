@@ -29,6 +29,10 @@ private:
 /** Implementing TourInfo */
 class udfTourInfo : public TourInfo
 {
+protected:
+	typedef std::map<int, unsigned int>				tI2UiMap;
+	typedef std::map<unsigned int, int>				tUi2IMap;
+
 public:
 	/** Constructor */
 	udfTourInfo( wxWindow* parent );
@@ -41,6 +45,11 @@ private:
 	wxTreeItemId			m_parentItem;
 	wxTreeItemId			m_itemId;
 	unsigned int 			m_tourType;
+
+	tUi2IMap				m_id2row;
+	tI2UiMap				m_row2id;
+	tUi2IMap				m_id2col;
+	tI2UiMap				m_col2id;
 
 protected:
 	void			OnCellLeftClick(wxGridEvent& event);

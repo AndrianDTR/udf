@@ -46,7 +46,6 @@ wxGridCellAttr* CTourCellAttrProvider::GetAttr(int row, int col,
     return attr;
 }
 
-
 udfTourInfo::udfTourInfo( wxWindow* parent )
 : TourInfo( parent )
 , m_pCon(NULL)
@@ -54,7 +53,7 @@ udfTourInfo::udfTourInfo( wxWindow* parent )
 , m_pTree(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
+
 	m_gridSuccess->GetTable()->SetAttrProvider(new CTourCellAttrProvider());
 }
 
@@ -83,13 +82,13 @@ void udfTourInfo::CreateNewTour()
 		}
 
 		udfTreeItemData* catItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
-		
+
 		m_gridSuccess->ClearGrid();
 		if(m_gridSuccess->GetNumberRows())
 			m_gridSuccess->DeleteRows(0, m_gridSuccess->GetNumberRows());
 		if(m_gridSuccess->GetNumberCols())
 			m_gridSuccess->DeleteCols(0, m_gridSuccess->GetNumberCols());
-			
+
 		m_gridSuccess->SetDefaultColSize(25);
 		m_gridSuccess->SetDefaultRowSize(25);
 		m_gridSuccess->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
@@ -98,12 +97,12 @@ void udfTourInfo::CreateNewTour()
 		tUIList juds;
 		GetJudgesForCategory(catItem->GetId(), juds);
 		int nColsCount = juds.size() + 2; // Include Pass and Sum col
-		
+
 		tUIList teams;
 		GetTeamsInCategory(catItem->GetId(), teams);
-		
+
 		m_staticTCount->SetLabel(wxString::Format("%ld", teams.size()));
-		
+
 		CTourTypesTable::tDATA data = {0};
 		m_tourType = 0;
 		GetTourTypeByDancersCount(teams.size(), m_tourType);
@@ -111,27 +110,29 @@ void udfTourInfo::CreateNewTour()
 		m_staticType->SetLabel(data.name);
 		m_staticMin->SetLabel(wxString::Format("%d", data.min));
 		m_staticMax->SetLabel(wxString::Format("%d", data.max));
-		
-		m_gridSuccess->AppendCols(nColsCount); 
-		
+
+		m_gridSuccess->AppendCols(nColsCount);
+
 		m_gridSuccess->AppendRows(teams.size());
-				
+
 		m_gridSuccess->SetColLabelValue(0, GetVerticalText("Passes"));
-		
+
 		m_gridSuccess->SetColumnWidth(1, 30);
 		m_gridSuccess->SetColLabelValue(1, GetVerticalText("Sum"));
-		
+
 		int nCol = 2;
 		tUIListIt jud = juds.begin();
 		while(jud != juds.end())
 		{
 			unsigned int jId = *jud;
 			m_gridSuccess->SetColLabelValue(nCol, GetVerticalText(GetCsJudgeNameById(jId)));
-			
+			m_col2id[nCol] = jId;
+			m_id2row[jId] = nCol;
+
 			nCol++;
 			jud++;
 		}
-		
+
 		int nRow = 0;
 		tUIListIt team = teams.begin();
 		while(team != teams.end())
@@ -141,7 +142,9 @@ void udfTourInfo::CreateNewTour()
 			GetTeamStartNumber(tId, startNum);
 			wxString row = wxString::Format(STR_FORMAT_START_NUMBER, startNum);
 			m_gridSuccess->SetRowLabelValue(nRow, row);
-			
+			m_row2id[nRow] = tId;
+			m_id2row[tId] = nRow;
+
 			nRow++;
 			team++;
 		}
@@ -161,7 +164,20 @@ void udfTourInfo::FillData()
 		}
 
 		udfTreeItemData* catItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
-	
+
+		int nCols = m_gridSuccess->GetNumberCols();
+		int nRows = m_gridSuccess->GetNumberRows();
+		int nCol = 0;
+		int nRow = 0;
+
+		for(nCol = 2; nCol < nCols; nCol++)
+		{
+			for(nRow = 2; nRow < nRows; nRow++)
+			{
+				//Fill judges marks data and set sum of marks on 1st col
+			}
+		}
+
 	}while(0);
 	Leave();
 }
@@ -179,7 +195,7 @@ void udfTourInfo::OnCellLeftClick(wxGridEvent& event)
 		else
 			m_gridSuccess->SetCellValue(row, col, _(""));
 	}
-	
+
 	event.Skip();
 }
 
@@ -202,17 +218,17 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 		{
 			break;
 		}
-		
+
 		unsigned int nId = -1;
-		
+
 		if(m_itemId.IsOk())
 		{
 			udfTreeItemData* blockItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
 			nId = blockItem->GetId();
 		}
-		
+
 		udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
-				
+
 		CCsBlocksTable::tDATA blockInfo = {0};
 		blockInfo.id = nId;
 		blockInfo.csId = csItem->GetId();
@@ -220,7 +236,7 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 		string startTime = wxString(m_textStart->GetValue() + _(":00")).ToStdString();
 		blockInfo.startTime = str2time(startTime);
 		m_textPause->GetValue().ToCLong((long*)&blockInfo.pause);
-		
+
 		if(!m_itemId.IsOk())
 		{
 			CCsBlocksTable(m_pCon).AddRow(blockInfo);
@@ -229,7 +245,7 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 		{
 			CCsBlocksTable(m_pCon).UpdateRow(nId, blockInfo);
 		}
-						
+
 		int nRow = 0;
 		for(nRow = 0; nRow < m_gridJudgesCats->GetNumberRows(); ++nRow)
 		{
@@ -238,7 +254,7 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 			{
 				wxString value = m_gridJudgesCats->GetCellValue(nRow, nCol);
 				unsigned int id = -1;
-				
+
 				CCsBlockJ2CTable::tDATA data = {0};
 				data.blockId = blockInfo.id;
 				data.csCatId = m_RowIdMap[nRow];
@@ -256,7 +272,7 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 				}
 			}
 		}
-		
+
 		time_t len;
 		GetBlockLenById(blockInfo.id, len);
 		m_staticLenght->SetLabel(time2str(len));
