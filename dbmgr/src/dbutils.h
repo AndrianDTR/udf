@@ -3,8 +3,22 @@
 
 #include "db.h"
 
+typedef std::list<unsigned char> 				tCList;
+typedef std::list<unsigned char>::iterator 		tCListIt;
+
+typedef struct{
+	unsigned int	id;
+	unsigned int 	startNum;
+	int 			sum;
+	tCList			marksList;
+}tTourMarks;
+
+typedef std::list<tTourMarks> 					tTourMarksList;
+typedef std::list<tTourMarks>::iterator 		tTourMarksIt;
+
 typedef std::list<unsigned int> 				tUIList;
 typedef std::list<unsigned int>::iterator 		tUIListIt;
+typedef std::list<unsigned int>::const_iterator tUIListCIt;
 
 void dbmgr_version();
 
@@ -33,5 +47,7 @@ long 			GetTourTypeByDancersCount(unsigned int nDancers, unsigned int& typeId);
 long GetJudgesForCategory(unsigned int catId, tUIList& judges);
 
 long GetTeamStartNumber(unsigned int teamId, unsigned int& startNum);
+
+long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& marks);
 
 #endif // __udfutils_h__

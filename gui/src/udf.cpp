@@ -3376,11 +3376,31 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	fgSizer25->SetFlexibleDirection( wxBOTH );
 	fgSizer25->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
+	wxBoxSizer* bSizer1291;
+	bSizer1291 = new wxBoxSizer( wxHORIZONTAL );
+	
 	m_staticType = new wxStaticText( this, ID_TYPE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticType->Wrap( -1 );
 	m_staticType->SetFont( wxFont( 20, 70, 90, 92, false, wxEmptyString ) );
 	
-	fgSizer25->Add( m_staticType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer1291->Add( m_staticType, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	
+	bSizer1291->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_staticMinMax = new wxStaticText( this, ID_MINMAX, _("10-20"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticMinMax->Wrap( -1 );
+	m_staticMinMax->SetFont( wxFont( 20, 70, 90, 92, false, wxEmptyString ) );
+	
+	bSizer1291->Add( m_staticMinMax, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_staticText123 = new wxStaticText( this, wxID_ANY, _("members"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText123->Wrap( -1 );
+	m_staticText123->SetFont( wxFont( 20, 70, 90, 92, false, wxEmptyString ) );
+	
+	bSizer1291->Add( m_staticText123, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	fgSizer25->Add( bSizer1291, 1, wxEXPAND, 5 );
 	
 	m_bpRemoveTour = new wxBitmapButton( this, ID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	fgSizer25->Add( m_bpRemoveTour, 0, wxALL, 5 );
@@ -3394,7 +3414,7 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	bSizer132->Add( fgSizer25, 0, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer24;
-	fgSizer24 = new wxFlexGridSizer( 1, 8, 0, 0 );
+	fgSizer24 = new wxFlexGridSizer( 1, 4, 0, 0 );
 	fgSizer24->AddGrowableCol( 1 );
 	fgSizer24->SetFlexibleDirection( wxBOTH );
 	fgSizer24->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
@@ -3406,35 +3426,12 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer24->Add( m_textName, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
-	m_staticText114 = new wxStaticText( this, wxID_ANY, _("Tour members must be in range beetwen"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText114->Wrap( -1 );
-	fgSizer24->Add( m_staticText114, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_staticText121 = new wxStaticText( this, wxID_ANY, _("Limit"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText121->Wrap( -1 );
+	fgSizer24->Add( m_staticText121, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_staticMin = new wxStaticText( this, ID_MIN, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticMin->Wrap( -1 );
-	m_staticMin->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
-	
-	fgSizer24->Add( m_staticMin, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_staticText116 = new wxStaticText( this, wxID_ANY, _("and"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText116->Wrap( -1 );
-	fgSizer24->Add( m_staticText116, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_staticMax = new wxStaticText( this, ID_MAX, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticMax->Wrap( -1 );
-	m_staticMax->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
-	
-	fgSizer24->Add( m_staticMax, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_staticText118 = new wxStaticText( this, wxID_ANY, _("Selected"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText118->Wrap( -1 );
-	fgSizer24->Add( m_staticText118, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_staticTCount = new wxStaticText( this, ID_COUNT, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticTCount->Wrap( -1 );
-	m_staticTCount->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
-	
-	fgSizer24->Add( m_staticTCount, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_textLimit = new wxTextCtrl( this, ID_LIMIT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer24->Add( m_textLimit, 0, wxALL, 5 );
 	
 	bSizer132->Add( fgSizer24, 0, wxEXPAND, 5 );
 	

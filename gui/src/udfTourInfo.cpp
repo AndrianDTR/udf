@@ -101,15 +101,14 @@ void udfTourInfo::CreateNewTour()
 		tUIList teams;
 		GetTeamsInCategory(catItem->GetId(), teams);
 
-		m_staticTCount->SetLabel(wxString::Format("%ld", teams.size()));
+		//m_staticTCount->SetLabel(wxString::Format("%ld", teams.size()));
 
 		CTourTypesTable::tDATA data = {0};
 		m_tourType = 0;
 		GetTourTypeByDancersCount(teams.size(), m_tourType);
 		CTourTypesTable(m_pCon).GetRow(m_tourType, data);
 		m_staticType->SetLabel(data.name);
-		m_staticMin->SetLabel(wxString::Format("%d", data.min));
-		m_staticMax->SetLabel(wxString::Format("%d", data.max));
+		m_staticMinMax->SetLabel(wxString::Format("%d - %d", data.min, data.max));
 
 		m_gridSuccess->AppendCols(nColsCount);
 
@@ -132,22 +131,52 @@ void udfTourInfo::CreateNewTour()
 			nCol++;
 			jud++;
 		}
-
-		int nRow = 0;
-		tUIListIt team = teams.begin();
-		while(team != teams.end())
+				
+		if(!m_itemId.IsOk())
 		{
-			unsigned int tId = *team;
-			unsigned int startNum = 0;
-			GetTeamStartNumber(tId, startNum);
-			wxString row = wxString::Format(STR_FORMAT_START_NUMBER, startNum);
-			m_gridSuccess->SetRowLabelValue(nRow, row);
-			m_row2id[nRow] = tId;
-			m_id2row[tId] = nRow;
-
-			nRow++;
-			team++;
+			__info("tour not selected");
+			break;
 		}
+		
+		udfTreeItemData* tourItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
+		
+		CChampionshipToursTable::tDATA tourInfo = {0};
+		CChampionshipToursTable(m_pCon).GetRow(tourItem->GetId(), tourInfo);
+		m_textLimit->SetValue(wxString::Format(_("%d"), tourInfo.limit));
+		
+		tTourMarksList		marksList;
+		GetTourMarks(tourItem->GetId(), juds, marksList);
+		
+		int nRow = 0;
+		tTourMarksIt row = marksList.begin();
+		while(row != marksList.end())
+		{
+			tTourMarks& data = *row;
+			
+			m_gridSuccess->SetRowLabelValue(nRow, wxString::Format(STR_FORMAT_START_NUMBER, data.startNum));
+			m_col2id[nRow] = data.id;
+			m_id2row[data.id] = nRow;
+			
+			m_gridSuccess->SetCellValue(wxString::Format(_("%d"), data.sum), nRow, 1);
+			
+			nCol = 2;
+			for(tCListIt c = data.marksList.begin(); c != data.marksList.end(); c++, nCol++)
+			{
+				if(*c)
+				{
+					m_gridSuccess->SetCellValue(_("X"), nRow, nCol);
+				}
+			}
+			
+			nRow++;
+			row++;
+		}
+		
+		/*
+		 * 1. from sum on row[limit]
+		 * 2. mark above row with yellow untill sum increase 1 next row must be marked with green and pass flag mus be set
+		 * 3. mark below row with ywllow untill sum decrease 1 next row will be marked with red
+		 */
 	}while(0);
 	Leave();
 }
@@ -163,29 +192,7 @@ void udfTourInfo::FillData()
 			break;
 		}
 
-		udfTreeItemData* catItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
-
-		int nCols = m_gridSuccess->GetNumberCols();
-		int nRows = m_gridSuccess->GetNumberRows();
-		int nCol = 0;
-		int nRow = 0;
-
-		for(nCol = 2; nCol < nCols; nCol++)
-		{
-			for(nRow = 2; nRow < nRows; nRow++)
-			{
-				/*
-				select d.id, j1.mark+j2.mark+j3.mark `sum`, j1.mark, j2.mark, j3.mark from championship_team d 
-				-- __________^_______^_______^______________^________^________^_______________________________
-				-- dynamicaly formed
-				inner join championship_judges_mark j1 on j1.team_id=d.id and j1.tour_id=2 and j1.judge_id=55 -- < dynamicaly formed
-				inner join championship_judges_mark j2 on j2.team_id=d.id and j2.tour_id=2 and j2.judge_id=56 -- < dynamicaly formed
-				inner join championship_judges_mark j3 on j3.team_id=d.id and j3.tour_id=2 and j3.judge_id=57 -- < dynamicaly formed
-				order by sum desc
-				*/
-				//Fill judges marks data and set sum of marks on 1st col
-			}
-		}
+		
 
 	}while(0);
 	Leave();

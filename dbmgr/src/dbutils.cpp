@@ -542,3 +542,97 @@ long GetTeamStartNumber(unsigned int teamId, unsigned int& startNum)
 
 	return res;
 }
+
+long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& marks)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+		std::string			sQuery;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		/*
+		select d.id `id`, d.start_number `sNum`, j1.mark+j2.mark+j3.mark `sum`, j1.mark, j2.mark, j3.mark from championship_team d 
+		-- __________^_______^_______^______________^________^________^_______________________________
+		-- dynamicaly formed
+		inner join championship_judges_mark j1 on j1.team_id=d.id and j1.tour_id=2 and j1.judge_id=55 -- < dynamicaly formed
+		inner join championship_judges_mark j2 on j2.team_id=d.id and j2.tour_id=2 and j2.judge_id=56 -- < dynamicaly formed
+		inner join championship_judges_mark j3 on j3.team_id=d.id and j3.tour_id=2 and j3.judge_id=57 -- < dynamicaly formed
+		order by sum desc
+		*/
+		sQuery = "select d.id `id`, d.start_number `sNum`, ";
+		std::string sum;
+		std::string mark;
+		std::string join;
+		int n = 0;
+		int len = judges.size();
+		
+		for(tUIListCIt jud = judges.begin(); jud != judges.end(); jud++, n++)
+		{
+			sprintf(query, "j%d.mark", n);
+			sum += query;
+			
+			sprintf(query, "j%d.mark `jm%d`", n, n);
+			mark += query;
+			if(n != len-1)
+			{
+				sum += "+";
+				mark += ", ";
+			}
+			
+			unsigned int j = *jud;
+			sprintf(query, " inner join %s j%d on j%d.team_id=d.id and j%d.tour_id=%d and j%d.judge_id=%d "
+				, TABLE_CHAMPIONSHIPJUDGESMARK
+				, n, n, n
+				, tourId
+				, n
+				, j
+				);
+			join += query;
+		}
+		
+		sQuery += sum+" `sum`,";
+		sprintf(query, " from %s d ", TABLE_CHAMPIONSHIPTEAM);
+		sQuery += mark + query;
+		sQuery += join;
+		sQuery += " order by sum desc";
+		
+		qRes = pCon->ExecuteQuery(sQuery);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+		
+		marks.clear();
+		while(qRes->next())
+		{
+			tTourMarks tourMarks = {0};
+			tourMarks.id = qRes->getUInt("id");
+			tourMarks.startNum = qRes->getUInt("sNum");
+			tourMarks.sum = qRes->getInt("sum");
+			tourMarks.marksList.clear();
+			
+			int j = 0;
+			for(j = 0; j < len; ++j)
+			{
+				sprintf(query, "jm%d", j);
+				tourMarks.marksList.push_back(qRes->getInt(query));
+			}
+			marks.push_back(tourMarks);
+		}
+		
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}

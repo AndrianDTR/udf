@@ -1590,27 +1590,25 @@ class TourInfo : public wxPanel
 		{
 			ID_TOURINFO = 1000,
 			ID_TYPE,
+			ID_MINMAX,
 			ID_REMOVE,
 			ID_UPDATE,
 			ID_NAME,
-			ID_MIN,
-			ID_MAX,
-			ID_COUNT,
+			ID_LIMIT,
 			ID_JUDGES,
 		};
 		
 		wxStaticText* m_staticType;
+		
+		wxStaticText* m_staticMinMax;
+		wxStaticText* m_staticText123;
 		wxBitmapButton* m_bpRemoveTour;
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpresults;
 		wxStaticText* m_staticText113;
 		wxTextCtrl* m_textName;
-		wxStaticText* m_staticText114;
-		wxStaticText* m_staticMin;
-		wxStaticText* m_staticText116;
-		wxStaticText* m_staticMax;
-		wxStaticText* m_staticText118;
-		wxStaticText* m_staticTCount;
+		wxStaticText* m_staticText121;
+		wxTextCtrl* m_textLimit;
 		wxGrid* m_gridSuccess;
 		wxStaticText* m_staticJudges;
 		
