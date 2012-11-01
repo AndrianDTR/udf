@@ -1,253 +1,26 @@
 #include "udfJudgeMark.h"
 
-#include "string_def.h"
-
-#include "udfcommon.h"
+#include "db.h"
 
 #include "udfexceptions.h"
 #include "udfuiutils.h"
+#include "string_def.h"
 
-udfJudgeMark::udfJudgeMark( wxWindow* parent, unsigned int nCsId, unsigned int nCsTourId, bool bEditable )
-: JudgeMark( parent )
+udfJudgeMark::udfJudgeMark( wxWindow* parent, unsigned int tourId )
+:JudgeMark( parent )
 , m_pCon(NULL)
-, m_nCsId(nCsId)
-, m_nCsTourId(nCsTourId)
-, m_bEditable(bEditable)
+, m_tourId(tourId)
+, m_catId(0)
 {
+	
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
-	RefreshTeams();
-	RefreshJudges();
-	RefreshMarks();
-	
-	m_bpGood->Disable();
-	m_bpBed->Disable();
-	
-	m_textSearch->SetFocus();
-}
 
-void udfJudgeMark::RefreshTeams()
-{
-	m_Teams.clear();
-	CChampionshipTeamsTable::tDATA filter = {0};
-	filter.championshipId = m_nCsId;
-	CChampionshipTeamsTable(m_pCon).Find(m_Teams, filter);	
-}
-
-void udfJudgeMark::RefreshJudges()
-{
-	m_Judges.clear();
-	m_comboJudge->Clear();
+	unsigned int catId = 0;
 	
-	CChampionshipJudgesTeamTable::tDATA filter = {0};
-	filter.championshipId = m_nCsId;
-	CChampionshipJudgesTeamTable(m_pCon).Find(m_Judges, filter);
+	if(UDF_OK == GetTourCategoryId(tourId, catId))
+		m_catId = catId;
 	
-	CChampionshipJudgesTeamTable::tTableIt it = m_Judges.begin();
-	while(it != m_Judges.end())
-	{
-		CChampionshipJudgesTeamTable::tDATA& data = it->second;
-		int nPos = m_comboJudge->GetCount();
-		
-		m_comboJudge->Insert(GetJudgeNameById(data.judgeId), nPos, (void*)&it->first);
-		it++;
-	}
-	
-	if(m_comboJudge->GetCount())
-	{
-		m_comboJudge->SetSelection(0);
-		RefreshMarks();
-	}
-}
-
-void udfJudgeMark::RefreshMarks()
-{
-	do
-	{
-		m_listNumbers->Clear();
-		m_Marks.clear();
-		m_TeamMarkList.clear();
-		
-		int nItem = m_comboJudge->GetSelection();
-		if(nItem == -1)
-			break;
-		
-		CChampionshipJudgesMarkTable::tDATA filter = {0};
-		filter.championshipId = m_nCsId;
-		filter.tourId = m_nCsTourId;
-		filter.judgeId = *(int*)m_comboJudge->GetClientData(nItem);
-		CChampionshipJudgesMarkTable(m_pCon).Find(m_Marks, filter);
-		
-		CChampionshipJudgesMarkTable::tTableIt mIt = m_Marks.begin();
-		while(mIt != m_Marks.end())
-		{
-			CChampionshipJudgesMarkTable::tDATA data = mIt->second;
-			m_TeamMarkList.insert(std::make_pair(data.teamId, data.nMark));
-			mIt++;
-		}
-		
-		CChampionshipTeamsTable::tTableIt tIt = m_Teams.begin();
-		while(tIt != m_Teams.end())
-		{
-			if(m_checkShowAll->GetValue() 
-			|| m_TeamMarkList.end() == m_TeamMarkList.find(tIt->first))
-			{
-				CChampionshipTeamsTable::tDATA& data = tIt->second;
-				int nPos = m_listNumbers->GetCount();
-				
-				m_listNumbers->Insert(wxString::Format(STR_FORMAT_START_NUMBER, (unsigned long)data.startNumber)
-					, nPos, (void*)&tIt->first);
-			}
-			
-			tIt++;
-		}
-	}while(0);
-}
-
-void udfJudgeMark::OnSelectJudge( wxCommandEvent& event )
-{
-	do
-	{
-		RefreshMarks();
-	}while(0);
-}
-
-void udfJudgeMark::OnSelectNumber( wxCommandEvent& event )
-{
-	do
-	{
-		int nItem = m_listNumbers->GetSelection();
-		if(nItem == -1)
-			break;
-		int nId = *(int*)m_listNumbers->GetClientData(nItem);
-		
-		if(m_bEditable)
-		{
-			m_bpBed->Enable();
-			m_bpGood->Enable();
-		}
-		wxColor clr = GetBackgroundColour();
-		m_panelPlus->SetBackgroundColour(clr);
-		m_panelMinus->SetBackgroundColour(clr);
-		
-		tTeamMarkIt found = m_TeamMarkList.find(nId);
-		if(found == m_TeamMarkList.end())
-			break;
-		
-		m_bpBed->Disable();
-		m_bpGood->Disable();
-		
-		int mark = (int)found->second;
-		if(mark == 0)
-		{
-			m_panelMinus->SetBackgroundColour(wxColour( 255, 0, 0 ));
-		}
-		else if (mark == 1)
-		{
-			m_panelPlus->SetBackgroundColour(wxColour(0, 255, 0 ));
-		}
-	}while(0);
-}
-
-void udfJudgeMark::OnShowAll( wxCommandEvent& event )
-{
-	RefreshMarks();
-}
-
-void udfJudgeMark::OnSearch( wxCommandEvent& event )
-{
-	wxString search = m_textSearch->GetValue().Upper();
-	
-	m_listNumbers->Clear();
-	CChampionshipTeamsTable::tTableIt tIt = m_Teams.begin();
-	while(tIt != m_Teams.end())
-	{
-		if(m_checkShowAll->GetValue() 
-		|| m_TeamMarkList.end() == m_TeamMarkList.find(tIt->first))
-		{
-			CChampionshipTeamsTable::tDATA& data = tIt->second;
-			int nPos = m_listNumbers->GetCount();
-			wxString num = wxString::Format(STR_FORMAT_START_NUMBER, (unsigned long)data.startNumber);
-			if(num.StartsWith(search))
-				m_listNumbers->Insert(num, nPos, (void*)&tIt->first);
-		}
-		
-		tIt++;
-	}
-	
-	if(0 < m_listNumbers->GetCount())
-	{
-		m_listNumbers->SetSelection(0);
-	}
-	else
-	{
-		m_bpBed->Disable();
-		m_bpGood->Disable();
-	}
-	
-	OnSelectNumber(event);
-}
-
-void udfJudgeMark::OnPlus( wxCommandEvent& event )
-{
-	do
-	{
-		int nTeam = m_listNumbers->GetSelection();
-		if(nTeam == -1)
-			break;
-		int nTeamId = *(int*)m_listNumbers->GetClientData(nTeam);
-		
-		int nJudge = m_comboJudge->GetSelection();
-		if(nJudge == -1)
-			break;
-		
-		CChampionshipJudgesMarkTable::tDATA data = {0};
-		data.championshipId = m_nCsId;
-		data.tourId = m_nCsTourId;
-		data.judgeId = *(int*)m_comboJudge->GetClientData(nJudge);
-		data.teamId = nTeamId;
-		
-		// Set mark value
-		data.nMark = 1;
-		CChampionshipJudgesMarkTable(m_pCon).AddRow(data);
-		m_TeamMarkList.insert(std::make_pair(nTeamId, 1));
-		m_bpBed->Disable();
-		m_bpGood->Disable();
-		m_panelPlus->SetBackgroundColour(wxColour( 0, 255, 0 ));
-		m_textSearch->SetValue("");
-		m_textSearch->SetFocus();
-	}while(0);
-}
-
-void udfJudgeMark::OnMinus( wxCommandEvent& event )
-{
-	do
-	{
-		int nTeam = m_listNumbers->GetSelection();
-		if(nTeam == -1)
-			break;
-		int nTeamId = *(int*)m_listNumbers->GetClientData(nTeam);
-		
-		int nJudge = m_comboJudge->GetSelection();
-		if(nJudge == -1)
-			break;
-		
-		CChampionshipJudgesMarkTable::tDATA data = {0};
-		data.championshipId = m_nCsId;
-		data.tourId = m_nCsTourId;
-		data.judgeId = *(int*)m_comboJudge->GetClientData(nJudge);
-		data.teamId = nTeamId;
-		
-		// Set mark value
-		data.nMark = 0;
-		CChampionshipJudgesMarkTable(m_pCon).AddRow(data);
-		m_TeamMarkList.insert(std::make_pair(nTeamId, 0));
-		m_bpBed->Disable();
-		m_bpGood->Disable();
-		m_panelMinus->SetBackgroundColour(wxColour( 255, 0, 0 ));
-		m_textSearch->SetValue("");
-		m_textSearch->SetFocus();
-	}while(0);
+	RefreshGrid();
 }
 
 void udfJudgeMark::OnSave( wxCommandEvent& event )
@@ -260,15 +33,91 @@ void udfJudgeMark::OnDiscard( wxCommandEvent& event )
 	EndModal(wxID_CANCEL);
 }
 
-bool udfJudgeMark::IsTeamMarked(unsigned int nTeamId)
+void udfJudgeMark::OnCellLClick( wxGridEvent& event )
 {
-	CChampionshipTeamsTable::tTableIt it = m_Teams.begin();
-	while(it != m_Teams.end())
+	int row = event.GetRow(),
+		col = event.GetCol();
+
+	wxString value = m_gridMarks->GetCellValue(row, col);
+	if(value.IsEmpty())
+		m_gridMarks->SetCellValue(row, col, _("X"));
+	else
+		m_gridMarks->SetCellValue(row, col, _(""));
+	
+	event.Skip();
+}
+
+void udfJudgeMark::OnKeyUp( wxKeyEvent& event )
+{
+	/*int row = m_gridMarks->GetSelectedRows()[0],
+		col = m_gridMarks->GetSelectedCols()[0];
+
+	switch(event.GetKeyCode())
 	{
-		CChampionshipTeamsTable::tDATA& data = it->second;
-		int nPos = m_listNumbers->GetCount();
-		m_listNumbers->Insert(wxString::Format(STR_FORMAT_START_NUMBER, data.startNumber)
-			, nPos, (void*)&it->first);
-		it++;
+		case 'X':
+			m_gridMarks->SetCellValue(row, col, _("X"));
+			break;
+		
+		case WXK_SPACE:
+			m_gridMarks->SetCellValue(row, col, _(""));
+			break;
 	}
+	*/
+	event.Skip();
+}
+
+void udfJudgeMark::RefreshGrid()
+{
+	Enter();
+	do
+	{
+		m_gridMarks->ClearGrid();
+		if(m_gridMarks->GetNumberRows())
+			m_gridMarks->DeleteRows(0, m_gridMarks->GetNumberRows());
+		if(m_gridMarks->GetNumberCols())
+			m_gridMarks->DeleteCols(0, m_gridMarks->GetNumberCols());
+
+		m_gridMarks->SetDefaultColSize(25);
+		m_gridMarks->SetDefaultRowSize(25);
+		m_gridMarks->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
+		m_gridMarks->SetRowLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
+
+		tUIList juds;
+		GetJudgesForCategory(m_catId, juds);
+		
+		tUIList teams;
+		GetTourTeams(m_catId, m_tourId, teams);
+		
+		m_gridMarks->AppendCols(juds.size());
+		m_gridMarks->AppendRows(teams.size());
+
+		int nCol = 0;
+		tUIListIt jud = juds.begin();
+		while(jud != juds.end())
+		{
+			unsigned int jId = *jud;
+			m_gridMarks->SetColLabelValue(nCol, GetVerticalText(GetCsJudgeNameById(jId)));
+			m_col2id[nCol] = jId;
+			m_id2row[jId] = nCol;
+
+			nCol++;
+			jud++;
+		}
+		
+		int nRow = 0;
+		tUIListIt team = teams.begin();
+		while(team != teams.end())
+		{
+			unsigned int tId = *team;
+			unsigned int startNum = 0;
+			GetTeamStartNumber(tId, startNum);
+			m_gridMarks->SetRowLabelValue(nRow, wxString::Format(STR_FORMAT_START_NUMBER, startNum));
+			m_col2id[nRow] = tId;
+			m_id2row[tId] = nRow;
+
+			nRow++;
+			team++;
+		}
+	}while(0);
+	Leave();
 }

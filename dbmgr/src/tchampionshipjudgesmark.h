@@ -8,7 +8,6 @@ class CChampionshipJudgesMarkTable : public CDbTable
 public:
 	struct tDATA{
 		unsigned int	id;
-		unsigned int	championshipId;
 		unsigned int	judgeId;
 		unsigned int	teamId;
 		unsigned int	tourId;

@@ -543,6 +543,47 @@ long GetTeamStartNumber(unsigned int teamId, unsigned int& startNum)
 	return res;
 }
 
+long GetTourCategoryId(unsigned int tourId, unsigned int& catId)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		// select t1.start_number `start_num` from %s t1 where t1.id=%d
+		sprintf(query, "select cs_cat_id `id` from %s where id=%d"
+			, TABLE_CHAMPIONSHIPTOUR
+			, tourId
+			);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+
+		if(!qRes->next())
+		{
+			res = UDF_E_NOTFOUND;
+			break;
+		}
+		
+		catId = qRes->getUInt("id");
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}
+
 long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& marks)
 {
 	long res = UDF_E_FAIL;
@@ -629,6 +670,174 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 				tourMarks.marksList.push_back(qRes->getInt(query));
 			}
 			marks.push_back(tourMarks);
+		}
+		
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}
+
+bool GetTeamPassTour(unsigned int teamId, unsigned int tourId)
+{
+	bool res = false;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			break;
+		}
+		// select t1.start_number `start_num` from %s t1 where t1.id=%d
+		sprintf(query, "select id from %s where tour_id=%d and team_id=%d"
+			, TABLE_CHAMPIONSHIPTOURPASS
+			, tourId
+			, teamId
+			);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			break;
+		}
+
+		if(!qRes->next())
+		{
+			break;
+		}
+		
+		res = true;
+	}while(0);
+
+	return res;
+}
+
+long SetTeamPassTour(unsigned int teamId, unsigned int tourId, bool pass)
+{
+	long res = false;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		if(pass)
+		{
+			// insert into %s(`tour_id`,`team_id`) values(%d, %d)
+			sprintf(query, "insert into %s(`tour_id`,`team_id`) values(%d, %d)"
+				, TABLE_CHAMPIONSHIPTOURPASS
+				, tourId
+				, teamId
+				);
+		}
+		else
+		{
+			sprintf(query, "delete from %s where tour_id=%d and team_id=%d"
+				, TABLE_CHAMPIONSHIPTOURPASS
+				, tourId
+				, teamId
+				);
+		}
+		
+		res = pCon->Execute(query);
+		
+	}while(0);
+
+	return res;
+}
+
+long GetTourTeams(unsigned int catId, unsigned int tourId, tUIList& teamsList)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		/*
+		 * 1. Get previous tour
+		 * 2. If none return GetCategoryTeams
+		 *    else return list of teams from previous tour that is listed in cs_tour_pass table
+		 */
+		
+		// Get category tours
+		if(0 != tourId)
+		{
+			// Get previous tour in cat
+			// select t.id `id` from championship_tours t inner join (select ct.type_id `tpid` from championship_tours ct where ct.id=3) c on t.cs_cat_id=36 and t.type_id>c.tpid order by t.type_id limit 1
+			sprintf(query, "select t.id `id` from %s t"
+				" inner join (select ct.type_id `tpid` from %s ct"
+				" where ct.id=%d) c on t.cs_cat_id=%d and"
+				" t.type_id>c.tpid order by t.type_id limit 1"
+				, TABLE_CHAMPIONSHIPTOUR
+				, TABLE_CHAMPIONSHIPTOUR
+				, tourId
+				, catId
+				);
+		}
+		else
+		{
+			// Get last tour in cat
+			// select t.id `id` from championship_tours t where t.cs_cat_id=36 order by t.type_id limit 1
+			sprintf(query, "select t.id `id` from %s t where t.cs_cat_id=%d order by t.type_id limit 1"
+				, TABLE_CHAMPIONSHIPTOUR
+				, catId
+				);
+		}
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+		
+		unsigned int prevTour = -1;
+		if(!qRes->next())
+		{
+			res = GetTeamsInCategory(catId, teamsList);
+			break;
+		}
+		
+		prevTour = qRes->getUInt("id");
+				
+		sprintf(query, "select tp.id `id`, tp.team_id `tid` from %s tp where"
+			" tp.tour_id=%d"
+			, TABLE_CHAMPIONSHIPTOURPASS
+			, prevTour
+			);
+		
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+		
+		teamsList.clear();
+		
+		while(qRes->next())
+		{
+			teamsList.push_back(qRes->getUInt("tid"));
 		}
 		
 		res = UDF_OK;

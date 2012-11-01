@@ -1,30 +1,30 @@
-#include "tchampionshipjudgesmark.h"
+#include "tchampionshiptourpass.h"
 
-#define	TABLE	TABLE_CHAMPIONSHIPJUDGESMARK
+#define	TABLE	TABLE_CHAMPIONSHIPTOURPASS
 
-CChampionshipJudgesMarkTable::CChampionshipJudgesMarkTable(CDbConnection* pCon)
+CChampionshipTourPassTable::CChampionshipTourPassTable(CDbConnection* pCon)
 : CDbTable(pCon)
 , m_pConnection(pCon)
 {
 }
 
-CChampionshipJudgesMarkTable::~CChampionshipJudgesMarkTable(void)
+CChampionshipTourPassTable::~CChampionshipTourPassTable(void)
 {
 }
 
-std::string CChampionshipJudgesMarkTable::GetTableName()
+std::string CChampionshipTourPassTable::GetTableName()
 {
 	return TABLE;
 }
 
-long CChampionshipJudgesMarkTable::GetTable(tTableMap& data)
+long CChampionshipTourPassTable::GetTable(tTableMap& data)
 {
 	tDATA filter = {0};
 
 	return Find(data, filter);
 }
 
-std::string CChampionshipJudgesMarkTable::GetFilterString(const tDATA& filter)
+std::string CChampionshipTourPassTable::GetFilterString(const tDATA& filter)
 {
 	char 				query[MAX_QUERY_LEN] = {0};
 	char 				tmp[MAX_QUERY_LEN] = {0};
@@ -35,34 +35,17 @@ std::string CChampionshipJudgesMarkTable::GetFilterString(const tDATA& filter)
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.judgeId)
-	{
-		sprintf(tmp, "%sand `judge_id` like %d ", query, filter.judgeId);
-		strncpy(query, tmp, MAX_QUERY_LEN-1);
-	}
-
 	if (0 != filter.teamId)
 	{
 		sprintf(tmp, "%sand `team_id` like %d ", query, filter.teamId);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
-
-	if (0 != filter.nMark)
-	{
-		sprintf(tmp, "%sand `mark` = %d ", query, filter.nMark);
-		strncpy(query, tmp, MAX_QUERY_LEN-1);
-	}
 	
-	if (0 != filter.passed)
-	{
-		sprintf(tmp, "%sand `passed` = '%c' ", query, filter.passed);
-		strncpy(query, tmp, MAX_QUERY_LEN-1);
-	}
 
 	return string(query);
 }
 
-long CChampionshipJudgesMarkTable::Find(tTableMap& data, const tDATA& filter)
+long CChampionshipTourPassTable::Find(tTableMap& data, const tDATA& filter)
 {
 	long res = UDF_E_FAIL;
 
@@ -93,12 +76,9 @@ long CChampionshipJudgesMarkTable::Find(tTableMap& data, const tDATA& filter)
 		{
 			tDATA el = {0};
 
-			el.id = qRes->getUInt64("id");
-            el.tourId = qRes->getUInt64("tour_id");
-            el.judgeId = qRes->getUInt64("judge_id");
-            el.teamId = qRes->getUInt64("team_id");
-            el.nMark = qRes->getInt("mark");
-			el.passed = qRes->getUInt64("passed");
+			el.id = qRes->getUInt("id");
+			el.tourId = qRes->getUInt("tour_id");
+			el.teamId = qRes->getUInt("team_id");
 
 			data.insert(make_pair(el.id, el));
 		}
@@ -109,13 +89,14 @@ long CChampionshipJudgesMarkTable::Find(tTableMap& data, const tDATA& filter)
 	return res;
 }
 
-long CChampionshipJudgesMarkTable::AddRow(tDATA& rec)
+long CChampionshipTourPassTable::AddRow(tDATA& rec)
 {
 	long res = UDF_E_FAIL;
 
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
 
 		if(! m_pConnection)
 		{
@@ -123,15 +104,11 @@ long CChampionshipJudgesMarkTable::AddRow(tDATA& rec)
 			break;
 		}
 
-        sprintf(query, "insert into %s(`tour_id`, `judge_id`, `team_id`, `mark`, `passed`)"
-			" values(%d, %d, %d, %d, '%c')"
-            , TABLE
-            , rec.tourId
-            , rec.judgeId
-            , rec.teamId
-            , rec.nMark
-			, rec.passed);
-        res = m_pConnection->Execute(query);
+		sprintf(query, "insert into %s(`tour_id`, `team_id`) values(%d, %d)"
+			, TABLE
+			, rec.tourId
+			, rec.teamId);
+		res = m_pConnection->Execute(query);
 
 		rec.id = m_pConnection->GetLastInsertId();
 	}while(0);
@@ -139,7 +116,7 @@ long CChampionshipJudgesMarkTable::AddRow(tDATA& rec)
 	return res;
 }
 
-long CChampionshipJudgesMarkTable::DelRow(unsigned int nId)
+long CChampionshipTourPassTable::DelRow(unsigned int nId)
 {
 	long res = UDF_E_FAIL;
 
@@ -159,7 +136,7 @@ long CChampionshipJudgesMarkTable::DelRow(unsigned int nId)
 	return res;
 }
 
-long CChampionshipJudgesMarkTable::GetRow(unsigned int nId, tDATA& data)
+long CChampionshipTourPassTable::GetRow(unsigned int nId, tDATA& data)
 {
 	long res = UDF_E_FAIL;
 
@@ -181,18 +158,10 @@ long CChampionshipJudgesMarkTable::GetRow(unsigned int nId, tDATA& data)
 			res = UDF_E_EXECUTE_QUERY_FAILED;
 			break;
 		}
-		if(!qRes->next())
-		{
-			res = UDF_E_NOTFOUND;
-			break;
-		}
-		
-		data.id = qRes->getUInt64("id");
-		data.tourId = qRes->getUInt64("tour_id");
-		data.judgeId = qRes->getUInt64("judge_id");
-		data.teamId = qRes->getUInt64("team_id");
-		data.nMark = qRes->getInt("mark");
-		data.passed = qRes->getUInt64("passed");
+		qRes->next();
+		data.id = qRes->getUInt("id");
+		data.tourId = qRes->getUInt("tour_id");
+		data.teamId = qRes->getUInt("team_id");
 
 		res = UDF_OK;
 	}while(0);
@@ -200,7 +169,7 @@ long CChampionshipJudgesMarkTable::GetRow(unsigned int nId, tDATA& data)
 	return res;
 }
 
-long CChampionshipJudgesMarkTable::UpdateRow(unsigned int nId, const tDATA& data)
+long CChampionshipTourPassTable::UpdateRow(unsigned int nId, const tDATA& data)
 {
 	long res = UDF_E_FAIL;
 
@@ -216,27 +185,6 @@ long CChampionshipJudgesMarkTable::UpdateRow(unsigned int nId, const tDATA& data
 			break;
 		}
 
-		if (0 != data.tourId)
-		{
-			sprintf(tmp, "%s `tour_id` = %d,", query, data.tourId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != data.passed)
-		{
-			sprintf(tmp, "%s `passed` = '%c',", query, data.passed);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != data.judgeId)
-		{
-			sprintf(tmp, "%s `judge_id` = %d,", query, data.judgeId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
 		if (0 != data.teamId)
 		{
 			sprintf(tmp, "%s `team_id` = %d,", query, data.teamId);
@@ -244,9 +192,9 @@ long CChampionshipJudgesMarkTable::UpdateRow(unsigned int nId, const tDATA& data
 			useFilter = true;
 		}
 
-		if (0 != data.nMark)
+		if (0 != data.tourId)
 		{
-			sprintf(tmp, "%s `mark` = %d,", query, data.nMark);
+			sprintf(tmp, "%s `tour_id` = %d,", query, data.tourId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}

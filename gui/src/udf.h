@@ -38,8 +38,8 @@
 #include <wx/checkbox.h>
 #include <wx/listctrl.h>
 #include <wx/checklst.h>
-#include <wx/html/htmlwin.h>
 #include <wx/grid.h>
+#include <wx/html/htmlwin.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -956,45 +956,22 @@ class JudgeMark : public wxDialog
 	private:
 	
 	protected:
-		enum
-		{
-			ID_TEAMS_LIST = 1000,
-			ID_SHOW_ALL,
-			ID_SEARCH,
-			ID_PANEL_PLUS,
-			ID_GOOD,
-			ID_PANEL_MINUS,
-			ID_BED,
-		};
-		
-		wxStaticText* m_staticText92;
-		wxComboBox* m_comboJudge;
+		wxStaticText* m_staticText118;
+		wxTextCtrl* m_textCtrl78;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
-		wxListBox* m_listNumbers;
-		wxCheckBox* m_checkShowAll;
-		wxStaticText* m_staticText85;
-		wxTextCtrl* m_textSearch;
-		wxPanel* m_panelPlus;
-		wxBitmapButton* m_bpGood;
-		wxPanel* m_panelMinus;
-		wxBitmapButton* m_bpBed;
-		
+		wxGrid* m_gridMarks;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnSelectJudge( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSelectNumber( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnShowAll( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnPlus( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMinus( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCellLClick( wxGridEvent& event ) { event.Skip(); }
+		virtual void OnKeyUp( wxKeyEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		JudgeMark( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judge marks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 816,356 ), long style = wxDEFAULT_DIALOG_STYLE );
+		JudgeMark( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judge marks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 834,734 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~JudgeMark();
 	
 };
@@ -1591,9 +1568,9 @@ class TourInfo : public wxPanel
 			ID_TOURINFO = 1000,
 			ID_TYPE,
 			ID_MINMAX,
+			ID_ADDNEXT,
 			ID_REMOVE,
 			ID_UPDATE,
-			ID_NAME,
 			ID_LIMIT,
 			ID_JUDGES,
 		};
@@ -1602,17 +1579,18 @@ class TourInfo : public wxPanel
 		
 		wxStaticText* m_staticMinMax;
 		wxStaticText* m_staticText123;
+		wxBitmapButton* m_bpCreateNext;
 		wxBitmapButton* m_bpRemoveTour;
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpresults;
-		wxStaticText* m_staticText113;
-		wxTextCtrl* m_textName;
 		wxStaticText* m_staticText121;
 		wxTextCtrl* m_textLimit;
 		wxGrid* m_gridSuccess;
 		wxStaticText* m_staticJudges;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnAddNext( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnResults( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCellLeftClick( wxGridEvent& event ) { event.Skip(); }

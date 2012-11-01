@@ -22,7 +22,6 @@
 #include "../res/button_left.xpm"
 #include "../res/button_leftall.xpm"
 #include "../res/button_mark.xpm"
-#include "../res/button_minus.xpm"
 #include "../res/button_move_down.xpm"
 #include "../res/button_move_down10.xpm"
 #include "../res/button_move_up.xpm"
@@ -30,7 +29,6 @@
 #include "../res/button_ok.xpm"
 #include "../res/button_other.xpm"
 #include "../res/button_payments.xpm"
-#include "../res/button_plus.xpm"
 #include "../res/button_random.xpm"
 #include "../res/button_report.xpm"
 #include "../res/button_results.xpm"
@@ -2057,90 +2055,57 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	wxBoxSizer* bSizer95;
 	bSizer95 = new wxBoxSizer( wxVERTICAL );
 	
-	wxBoxSizer* bSizer113;
-	bSizer113 = new wxBoxSizer( wxHORIZONTAL );
+	wxFlexGridSizer* fgSizer26;
+	fgSizer26 = new wxFlexGridSizer( 1, 4, 0, 0 );
+	fgSizer26->AddGrowableCol( 1 );
+	fgSizer26->SetFlexibleDirection( wxBOTH );
+	fgSizer26->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText92 = new wxStaticText( this, wxID_ANY, _("Judge"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText92->Wrap( -1 );
-	bSizer113->Add( m_staticText92, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	m_staticText118 = new wxStaticText( this, wxID_ANY, _("Start number"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText118->Wrap( -1 );
+	fgSizer26->Add( m_staticText118, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_comboJudge = new wxComboBox( this, wxID_ANY, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
-	m_comboJudge->SetFont( wxFont( 18, 70, 90, 92, false, wxEmptyString ) );
+	m_textCtrl78 = new wxTextCtrl( this, wxID_ANY, _("1114"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrl78->SetFont( wxFont( 20, 70, 90, 90, false, wxEmptyString ) );
 	
-	bSizer113->Add( m_comboJudge, 1, wxALL|wxEXPAND, 5 );
-	
-	wxBoxSizer* bSizer83;
-	bSizer83 = new wxBoxSizer( wxHORIZONTAL );
+	fgSizer26->Add( m_textCtrl78, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
 	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer83->Add( m_bpSave, 0, wxALL, 5 );
+	fgSizer26->Add( m_bpSave, 0, wxALL, 5 );
 	
 	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer83->Add( m_bpDiscard, 0, wxALL, 5 );
+	fgSizer26->Add( m_bpDiscard, 0, wxALL, 5 );
 	
-	bSizer113->Add( bSizer83, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
-	
-	bSizer95->Add( bSizer113, 0, wxEXPAND, 5 );
+	bSizer95->Add( fgSizer26, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer112;
 	bSizer112 = new wxBoxSizer( wxHORIZONTAL );
 	
-	wxStaticBoxSizer* sbSizer2;
-	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Start numbers") ), wxVERTICAL );
+	m_gridMarks = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER );
 	
-	m_listNumbers = new wxListBox( this, ID_TEAMS_LIST, wxDefaultPosition, wxSize( 250,-1 ), 0, NULL, 0 ); 
-	sbSizer2->Add( m_listNumbers, 1, wxALL|wxEXPAND, 5 );
+	// Grid
+	m_gridMarks->CreateGrid( 0, 0 );
+	m_gridMarks->EnableEditing( false );
+	m_gridMarks->EnableGridLines( true );
+	m_gridMarks->EnableDragGridSize( false );
+	m_gridMarks->SetMargins( 0, 0 );
 	
-	m_checkShowAll = new wxCheckBox( this, ID_SHOW_ALL, _("Show all"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbSizer2->Add( m_checkShowAll, 0, wxALL, 5 );
+	// Columns
+	m_gridMarks->EnableDragColMove( false );
+	m_gridMarks->EnableDragColSize( true );
+	m_gridMarks->SetColLabelSize( 150 );
+	m_gridMarks->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
-	bSizer112->Add( sbSizer2, 0, wxEXPAND|wxALL, 5 );
+	// Rows
+	m_gridMarks->EnableDragRowSize( true );
+	m_gridMarks->SetRowLabelSize( 80 );
+	m_gridMarks->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
-	wxBoxSizer* bSizer98;
-	bSizer98 = new wxBoxSizer( wxVERTICAL );
+	// Label Appearance
 	
-	m_staticText85 = new wxStaticText( this, wxID_ANY, _("Start number"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText85->Wrap( -1 );
-	bSizer98->Add( m_staticText85, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-	
-	m_textSearch = new wxTextCtrl( this, ID_SEARCH, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_PROCESS_ENTER );
-	m_textSearch->SetFont( wxFont( 18, 70, 90, 90, false, wxEmptyString ) );
-	
-	bSizer98->Add( m_textSearch, 0, wxALL|wxEXPAND, 5 );
-	
-	wxBoxSizer* bSizer99;
-	bSizer99 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_panelPlus = new wxPanel( this, ID_PANEL_PLUS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer101;
-	bSizer101 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpGood = new wxBitmapButton( m_panelPlus, ID_GOOD, wxBitmap( button_plus_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer101->Add( m_bpGood, 0, wxALL, 15 );
-	
-	m_panelPlus->SetSizer( bSizer101 );
-	m_panelPlus->Layout();
-	bSizer101->Fit( m_panelPlus );
-	bSizer99->Add( m_panelPlus, 1, wxEXPAND | wxALL, 5 );
-	
-	m_panelMinus = new wxPanel( this, ID_PANEL_MINUS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer102;
-	bSizer102 = new wxBoxSizer( wxVERTICAL );
-	
-	m_bpBed = new wxBitmapButton( m_panelMinus, ID_BED, wxBitmap( button_minus_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer102->Add( m_bpBed, 0, wxALL, 15 );
-	
-	m_panelMinus->SetSizer( bSizer102 );
-	m_panelMinus->Layout();
-	bSizer102->Fit( m_panelMinus );
-	bSizer99->Add( m_panelMinus, 1, wxEXPAND | wxALL, 5 );
-	
-	bSizer98->Add( bSizer99, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
-	
-	
-	bSizer98->Add( 0, 0, 1, wxEXPAND, 5 );
-	
-	bSizer112->Add( bSizer98, 1, wxEXPAND, 5 );
+	// Cell Defaults
+	m_gridMarks->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
+	bSizer112->Add( m_gridMarks, 1, wxALL|wxEXPAND, 5 );
 	
 	bSizer95->Add( bSizer112, 1, wxEXPAND, 5 );
 	
@@ -2150,27 +2115,19 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_comboJudge->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( JudgeMark::OnSelectJudge ), NULL, this );
 	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnSave ), NULL, this );
 	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnDiscard ), NULL, this );
-	m_listNumbers->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( JudgeMark::OnSelectNumber ), NULL, this );
-	m_checkShowAll->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( JudgeMark::OnShowAll ), NULL, this );
-	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( JudgeMark::OnSearch ), NULL, this );
-	m_bpGood->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnPlus ), NULL, this );
-	m_bpBed->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnMinus ), NULL, this );
+	m_gridMarks->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( JudgeMark::OnCellLClick ), NULL, this );
+	m_gridMarks->Connect( wxEVT_KEY_UP, wxKeyEventHandler( JudgeMark::OnKeyUp ), NULL, this );
 }
 
 JudgeMark::~JudgeMark()
 {
 	// Disconnect Events
-	m_comboJudge->Disconnect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( JudgeMark::OnSelectJudge ), NULL, this );
 	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnSave ), NULL, this );
 	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnDiscard ), NULL, this );
-	m_listNumbers->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( JudgeMark::OnSelectNumber ), NULL, this );
-	m_checkShowAll->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( JudgeMark::OnShowAll ), NULL, this );
-	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( JudgeMark::OnSearch ), NULL, this );
-	m_bpGood->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnPlus ), NULL, this );
-	m_bpBed->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnMinus ), NULL, this );
+	m_gridMarks->Disconnect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( JudgeMark::OnCellLClick ), NULL, this );
+	m_gridMarks->Disconnect( wxEVT_KEY_UP, wxKeyEventHandler( JudgeMark::OnKeyUp ), NULL, this );
 	
 }
 
@@ -3371,7 +3328,7 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	bSizer132 = new wxBoxSizer( wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer25;
-	fgSizer25 = new wxFlexGridSizer( 1, 4, 0, 0 );
+	fgSizer25 = new wxFlexGridSizer( 1, 5, 0, 0 );
 	fgSizer25->AddGrowableCol( 0 );
 	fgSizer25->SetFlexibleDirection( wxBOTH );
 	fgSizer25->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
@@ -3388,7 +3345,7 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	
 	bSizer1291->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_staticMinMax = new wxStaticText( this, ID_MINMAX, _("10-20"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticMinMax = new wxStaticText( this, ID_MINMAX, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticMinMax->Wrap( -1 );
 	m_staticMinMax->SetFont( wxFont( 20, 70, 90, 92, false, wxEmptyString ) );
 	
@@ -3402,6 +3359,9 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	
 	fgSizer25->Add( bSizer1291, 1, wxEXPAND, 5 );
 	
+	m_bpCreateNext = new wxBitmapButton( this, ID_ADDNEXT, wxBitmap( button_right_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	fgSizer25->Add( m_bpCreateNext, 0, wxALL, 5 );
+	
 	m_bpRemoveTour = new wxBitmapButton( this, ID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	fgSizer25->Add( m_bpRemoveTour, 0, wxALL, 5 );
 	
@@ -3414,17 +3374,10 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	bSizer132->Add( fgSizer25, 0, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer24;
-	fgSizer24 = new wxFlexGridSizer( 1, 4, 0, 0 );
+	fgSizer24 = new wxFlexGridSizer( 1, 2, 0, 0 );
 	fgSizer24->AddGrowableCol( 1 );
 	fgSizer24->SetFlexibleDirection( wxBOTH );
 	fgSizer24->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_staticText113 = new wxStaticText( this, wxID_ANY, _("Tour name"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText113->Wrap( -1 );
-	fgSizer24->Add( m_staticText113, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer24->Add( m_textName, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
 	m_staticText121 = new wxStaticText( this, wxID_ANY, _("Limit"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText121->Wrap( -1 );
@@ -3475,6 +3428,8 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	this->Layout();
 	
 	// Connect Events
+	m_bpCreateNext->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnAddNext ), NULL, this );
+	m_bpRemoveTour->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnRemove ), NULL, this );
 	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnUpdate ), NULL, this );
 	m_bpresults->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnResults ), NULL, this );
 	m_gridSuccess->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( TourInfo::OnCellLeftClick ), NULL, this );
@@ -3483,6 +3438,8 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 TourInfo::~TourInfo()
 {
 	// Disconnect Events
+	m_bpCreateNext->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnAddNext ), NULL, this );
+	m_bpRemoveTour->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnRemove ), NULL, this );
 	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnUpdate ), NULL, this );
 	m_bpresults->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnResults ), NULL, this );
 	m_gridSuccess->Disconnect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( TourInfo::OnCellLeftClick ), NULL, this );

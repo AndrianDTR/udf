@@ -30,6 +30,7 @@
 #include "tchampionshipteam.h"
 #include "tchampionshipteamcategories.h"
 #include "tchampionshipteamdancers.h"
+#include "tchampionshiptourpass.h"
 #include "tchampionship.h"
 #include "tclubs.h"
 #include "tdancers.h"

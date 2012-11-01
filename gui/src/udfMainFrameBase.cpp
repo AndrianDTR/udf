@@ -686,7 +686,6 @@ void udfMainFrameBase::OnCsTourReport(wxCommandEvent& event)
 			jIt++;
 		}
 
-		mFilter.championshipId = csItem->GetId();
 		mFilter.tourId = tourItem->GetId();
 		CChampionshipJudgesMarkTable(m_pCon).Find(marks, mFilter);
 
@@ -726,7 +725,7 @@ void udfMainFrameBase::OnJudgesMark(wxCommandEvent& event)
 
 		udfTreeItemData *tourItem = (udfTreeItemData *)m_treeCs->GetItemData(itemTourId);
 
-		udfJudgeMark(this, csItem->GetId(), tourItem->GetId(), true).ShowModal();
+		udfJudgeMark(this, tourItem->GetId()).ShowModal();
 	}while(0);
 }
 

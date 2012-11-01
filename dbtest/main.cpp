@@ -418,7 +418,6 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 
 		CChampionshipJudgesMarkTable::tDATA data = {0};
 		data.tourId = 10;
-		data.championshipId = 3;
 		data.judgeId = 2;
 		data.teamId = 2;
 		data.nMark = 15;
@@ -444,9 +443,8 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u, %u, %u, %u, %u, %u\n"
+			printf("%u, %u, %u, %u, %u\n"
 				, it->first
-				, it->second.championshipId
 				, it->second.teamId
 				, it->second.tourId
 				, it->second.judgeId
@@ -456,7 +454,6 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 
 		// Update row
 		data.tourId = 8;
-		data.championshipId = 3;
 		data.judgeId = 5;
 		data.teamId = 3;
 		data.nMark = 5;
@@ -475,9 +472,8 @@ long testTChampionshipJudgesMark(CDbConnection* pCon)
 		it = tmap.begin();
 		while(it != tmap.end())
 		{
-			printf("%u, %u, %u, %u, %u, %u\n"
+			printf("%u, %u, %u, %u, %u\n"
 				, it->first
-				, it->second.championshipId
 				, it->second.teamId
 				, it->second.tourId
 				, it->second.judgeId

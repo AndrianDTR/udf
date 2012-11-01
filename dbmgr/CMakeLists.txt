@@ -28,6 +28,7 @@ set( HEADER_FILES
 	src/tchampionshipteamcategories.h
 	src/tchampionshipteamdancers.h
 	src/tchampionshipteam.h
+	src/tchampionshiptourpass.h
 	src/tchampionshiptype.h
 	src/tcities.h
 	src/tclubs.h
@@ -63,6 +64,7 @@ set( SOURCE_FILES
 	src/tchampionshipteamcategories.cpp
 	src/tchampionshipteamdancers.cpp
 	src/tchampionshipteam.cpp
+	src/tchampionshiptourpass.cpp
 	src/tchampionshiptype.cpp
 	src/tcities.cpp
 	src/tclubs.cpp

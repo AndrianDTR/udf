@@ -48,6 +48,12 @@ long GetJudgesForCategory(unsigned int catId, tUIList& judges);
 
 long GetTeamStartNumber(unsigned int teamId, unsigned int& startNum);
 
+long GetTourTeams(unsigned int catId, unsigned int tourId, tUIList& teamsList);
+
 long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& marks);
+long GetTourCategoryId(unsigned int tourId, unsigned int& catId);
+
+bool GetTeamPassTour(unsigned int teamId, unsigned int tourId);
+long SetTeamPassTour(unsigned int teamId, unsigned int tourId, bool pass);
 
 #endif // __udfutils_h__
