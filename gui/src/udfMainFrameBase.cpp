@@ -201,7 +201,10 @@ void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
 	while(itTour != tours.end())
 	{
 		CChampionshipToursTable::tDATA& data = itTour->second;
-		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, GetTourTypeNameById(data.typeId), data.limit);
+		CTourTypesTable::tDATA typeData = {0};
+		CTourTypesTable(m_pCon).GetRow(data.typeId, typeData);
+
+		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, typeData.name, data.limit);
 		m_treeCs->AppendItem(parent, tourName, -1, -1, new udfTreeItemData(itTour->first, IT_TOUR));
 
 		itTour++;

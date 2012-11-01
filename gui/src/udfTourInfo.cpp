@@ -131,34 +131,34 @@ void udfTourInfo::CreateNewTour()
 			nCol++;
 			jud++;
 		}
-				
+
 		if(!m_itemId.IsOk())
 		{
 			__info("tour not selected");
 			break;
 		}
-		
+
 		udfTreeItemData* tourItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
-		
+
 		CChampionshipToursTable::tDATA tourInfo = {0};
 		CChampionshipToursTable(m_pCon).GetRow(tourItem->GetId(), tourInfo);
 		m_textLimit->SetValue(wxString::Format(_("%d"), tourInfo.limit));
-		
+
 		tTourMarksList		marksList;
 		GetTourMarks(tourItem->GetId(), juds, marksList);
-		
+
 		int nRow = 0;
 		tTourMarksIt row = marksList.begin();
 		while(row != marksList.end())
 		{
 			tTourMarks& data = *row;
-			
+
 			m_gridSuccess->SetRowLabelValue(nRow, wxString::Format(STR_FORMAT_START_NUMBER, data.startNum));
 			m_col2id[nRow] = data.id;
 			m_id2row[data.id] = nRow;
-			
+
 			m_gridSuccess->SetCellValue(wxString::Format(_("%d"), data.sum), nRow, 1);
-			
+
 			nCol = 2;
 			for(tCListIt c = data.marksList.begin(); c != data.marksList.end(); c++, nCol++)
 			{
@@ -167,16 +167,43 @@ void udfTourInfo::CreateNewTour()
 					m_gridSuccess->SetCellValue(_("X"), nRow, nCol);
 				}
 			}
-			
+
 			nRow++;
 			row++;
 		}
-		
+
 		/*
 		 * 1. from sum on row[limit]
 		 * 2. mark above row with yellow untill sum increase 1 next row must be marked with green and pass flag mus be set
 		 * 3. mark below row with ywllow untill sum decrease 1 next row will be marked with red
 		 */
+		int sum = 0;
+		if(tourInfo.limit < m_gridSuccess->GetNumberRows())
+			m_gridSuccess->GetCellValue(tourInfo.limit, 1).ToLong((long*)&sum);
+
+		for(nRow = 0; nRow < m_gridSuccess->GetNumberRows(); ++nRow)
+		{
+			wxGridCellAttr*	attr = new wxGridCellAttr();
+			int cSum = 0;
+			m_gridSuccess->GetCellValue(nRow, 1).ToLong((long*)&cSum);
+
+			if(cSum > sum)
+			{
+				attr->SetBackgroundColour(wxColour(180, 255, 180));
+				m_gridSuccess->SetCellValue(_("X"), nRow, 0);
+			}
+			else if(cSum == sum)
+			{
+				attr->SetBackgroundColour(wxColour(255, 255, 180));
+			}
+			else
+			{
+				attr->SetBackgroundColour(wxColour(255, 180, 180));
+			}
+
+			m_gridSuccess->SetRowAttr(nRow, attr);
+			attr->IncRef();
+		}
 	}while(0);
 	Leave();
 }
@@ -192,7 +219,7 @@ void udfTourInfo::FillData()
 			break;
 		}
 
-		
+
 
 	}while(0);
 	Leave();
