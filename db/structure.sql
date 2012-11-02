@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-0ubuntu0.12.04.1 - (Ubuntu)
 -- Server OS:                    debian-linux-gnu
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-10-30 21:42:08
+-- Date/time:                    2012-11-02 10:42:01
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -127,18 +127,15 @@ CREATE TABLE IF NOT EXISTS `championship_categories` (
 DROP TABLE IF EXISTS `championship_judges_mark`;
 CREATE TABLE IF NOT EXISTS `championship_judges_mark` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `championship_id` bigint(20) unsigned NOT NULL,
   `tour_id` bigint(20) unsigned NOT NULL,
   `judge_id` bigint(20) unsigned NOT NULL,
   `team_id` bigint(20) unsigned NOT NULL,
   `mark` int(10) NOT NULL DEFAULT '-1',
   `passed` enum('Y','N') DEFAULT 'N',
   PRIMARY KEY (`id`),
-  KEY `FK_championship_judges_mark_championship` (`championship_id`),
   KEY `judge_id` (`judge_id`),
   KEY `team_id` (`team_id`),
   KEY `FK_championship_judges_mark_championship_tours` (`tour_id`),
-  CONSTRAINT `FK_championship_judges_mark_championship` FOREIGN KEY (`championship_id`) REFERENCES `championship` (`id`),
   CONSTRAINT `FK_championship_judges_mark_championship_judges_team` FOREIGN KEY (`judge_id`) REFERENCES `championship_judges_team` (`id`),
   CONSTRAINT `FK_championship_judges_mark_championship_team` FOREIGN KEY (`team_id`) REFERENCES `championship_team` (`id`),
   CONSTRAINT `FK_championship_judges_mark_championship_tours` FOREIGN KEY (`tour_id`) REFERENCES `championship_tours` (`id`)
@@ -222,13 +219,29 @@ CREATE TABLE IF NOT EXISTS `championship_tours` (
   `cs_cat_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `type_id` bigint(20) unsigned NOT NULL,
   `limit` int(10) unsigned NOT NULL,
-  `final` enum('Y','N') CHARACTER SET latin1 NOT NULL DEFAULT 'N',
+  `final` enum('Y','N') NOT NULL DEFAULT 'N',
   PRIMARY KEY (`id`),
   KEY `FK_championship_tours_championship_categories` (`cs_cat_id`),
   KEY `FK_championship_tours_tour_types` (`type_id`),
   CONSTRAINT `FK_championship_tours_championship_categories` FOREIGN KEY (`cs_cat_id`) REFERENCES `championship_categories` (`id`),
   CONSTRAINT `FK_championship_tours_type_types` FOREIGN KEY (`type_id`) REFERENCES `tour_types` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table udf.championship_tour_pass
+DROP TABLE IF EXISTS `championship_tour_pass`;
+CREATE TABLE IF NOT EXISTS `championship_tour_pass` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tour_id` bigint(20) unsigned DEFAULT '0',
+  `team_id` bigint(20) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `FK__championship_tours` (`tour_id`),
+  KEY `FK__championship_team` (`team_id`),
+  CONSTRAINT `FK__championship_team` FOREIGN KEY (`team_id`) REFERENCES `championship_team` (`id`),
+  CONSTRAINT `FK__championship_tours` FOREIGN KEY (`tour_id`) REFERENCES `championship_tours` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
