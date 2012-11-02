@@ -49,8 +49,6 @@
     <File Name="src/tjudges.h"/>
     <File Name="src/tjudgescategorieshave.cpp"/>
     <File Name="src/tjudgescategorieshave.h"/>
-    <File Name="src/tjudgescategoriesname.cpp"/>
-    <File Name="src/tjudgescategoriesname.h"/>
     <File Name="src/tliga.cpp"/>
     <File Name="src/tliga.h"/>
     <File Name="src/ttreiners.cpp"/>
@@ -63,6 +61,18 @@
     <File Name="src/tpaymenthistory.h"/>
     <File Name="src/dbtable.cpp"/>
     <File Name="src/db.h"/>
+    <File Name="src/tcsblocks.h"/>
+    <File Name="src/tstaff.cpp"/>
+    <File Name="src/tuserroles.cpp"/>
+    <File Name="src/ttourtypes.h"/>
+    <File Name="src/ttourtypes.cpp"/>
+    <File Name="src/tstaff.h"/>
+    <File Name="src/tuserroles.h"/>
+    <File Name="src/tcsblocks.cpp"/>
+    <File Name="src/tcsblocksj2c.cpp"/>
+    <File Name="src/tcsblocksj2c.h"/>
+    <File Name="src/tchampionshiptourpass.cpp"/>
+    <File Name="src/tchampionshiptourpass.h"/>
   </VirtualDirectory>
   <Settings Type="Static Library">
     <GlobalSettings>
@@ -91,6 +101,12 @@
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
+      
+      
+      
+      
+      
       
       
       
@@ -145,6 +161,12 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
+      
+      
+      
+      
+      
       
       
       

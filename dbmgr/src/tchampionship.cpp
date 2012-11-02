@@ -17,70 +17,66 @@ std::string CChampionshipTable::GetTableName()
 	return TABLE;
 }
 
-long CChampionshipTable::GetTable(tTableMap& data)
-{
-	tDATA filter = {0};
-
-	return Find(data, filter);
-}
-
-std::string CChampionshipTable::GetFilterString(const tDATA& filter)
+std::string CChampionshipTable::GetFilterString(const tDATA* const filter)
 {
 	char 				query[MAX_QUERY_LEN] = {0};
 	char 				tmp[MAX_QUERY_LEN] = {0};
 
-	if (!filter.name.empty())
+	if(!filter)
+		return std::string();
+
+	if (!filter->name.empty())
 	{
-		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter->name.c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.date)
+	if (0 != filter->date)
 	{
-		sprintf(tmp, "%sand `date` like '%%%s%%' ", query, date2str(filter.date).c_str());
+		sprintf(tmp, "%sand `date` like '%%%s%%' ", query, date2str(filter->date).c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.regOpenDate)
+	if (0 != filter->regOpenDate)
 	{
-		sprintf(tmp, "%sand `reg_open` like '%%%s%%' ", query, date2str(filter.regOpenDate).c_str());
+		sprintf(tmp, "%sand `reg_open` like '%%%s%%' ", query, date2str(filter->regOpenDate).c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.regCloseDate)
+	if (0 != filter->regCloseDate)
 	{
-		sprintf(tmp, "%sand `reg_close` like '%%%s%%' ", query, date2str(filter.regCloseDate).c_str());
+		sprintf(tmp, "%sand `reg_close` like '%%%s%%' ", query, date2str(filter->regCloseDate).c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (!filter.additionalInfo.empty())
+	if (!filter->additionalInfo.empty())
 	{
-		sprintf(tmp, "%sand `additional_info` like '%%%s%%' ", query, filter.additionalInfo.c_str());
+		sprintf(tmp, "%sand `additional_info` like '%%%s%%' ", query, filter->additionalInfo.c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (!filter.address.empty())
+	if (!filter->address.empty())
 	{
-		sprintf(tmp, "%sand `address` like '%%%s%%' ", query, filter.address.c_str());
+		sprintf(tmp, "%sand `address` like '%%%s%%' ", query, filter->address.c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.city)
+	if (0 != filter->city)
 	{
-		sprintf(tmp, "%sand `city` like %d ", query, filter.city);
+		sprintf(tmp, "%sand `city` like %d ", query, filter->city);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.type)
+	if (0 != filter->type)
 	{
-		sprintf(tmp, "%sand `type` like %d ", query, filter.type);
+		sprintf(tmp, "%sand `type` like %d ", query, filter->type);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
 	return string(query);
 }
 
-long CChampionshipTable::Find(tTableMap& data, const tDATA& filter)
+long CChampionshipTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 
@@ -161,7 +157,9 @@ long CChampionshipTable::DelRow(unsigned int nId)
 		}
 
 		sprintf(query, "delete from %s where id = %d", TABLE, nId);
+
 		res = m_pConnection->Execute(query);
+
 	}while(0);
 
 	return res;

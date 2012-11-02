@@ -12,23 +12,58 @@ CCategoriesTable::~CCategoriesTable(void)
 {
 }
 
-long CCategoriesTable::GetTable(tTableMap& data)
+std::string CCategoriesTable::GetTableName()
 {
-	tDATA filter = {0};
-
-	return Find(data, filter);
+	return TABLE;
 }
 
-long CCategoriesTable::Find(tTableMap& data, const tDATA& filter)
+std::string CCategoriesTable::GetFilterString(const tDATA* const filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+
+	if (0 != filter->dance)
+	{
+		sprintf(tmp, "%sand `dance` like %d ", query, filter->dance);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->liga)
+	{
+		sprintf(tmp, "%sand `liga` like %d ", query, filter->liga);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->age_category)
+	{
+		sprintf(tmp, "%sand `age_category` like %d ", query, filter->age_category);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->name.empty())
+	{
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter->name.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->shortName.empty())
+	{
+		sprintf(tmp, "%sand `short_name` like '%%%s%%' ", query, filter->shortName.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	return string(query);
+}
+
+long CCategoriesTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 
 		if(! m_pConnection)
 		{
@@ -36,52 +71,9 @@ long CCategoriesTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 
-		if (0 != filter.dance)
-		{
-			sprintf(tmp, "%sand `dance` like %d ", query, filter.dance);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.liga)
-		{
-			sprintf(tmp, "%sand `liga` like %d ", query, filter.liga);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.age_category)
-		{
-			sprintf(tmp, "%sand `age_category` like %d ", query, filter.age_category);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.name.empty())
-		{
-			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.shortName.empty())
-		{
-			sprintf(tmp, "%sand `short_name` like '%%%s%%' ", query, filter.shortName.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;

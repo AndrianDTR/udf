@@ -6,8 +6,8 @@
 class CClubsTable : public CDbTable
 {
 public:
-	typedef struct{
-		unsigned int	id;
+	struct tDATA:public CDbTable::tDATA{
+		tDATA():CDbTable::tDATA(){city = 0; director_bd = 0;};
 		std::string		name;
 		unsigned int	city;
 		std::string		login;
@@ -21,7 +21,7 @@ public:
 		time_t			director_bd;
 		std::string		director_phone;
 		std::string		director_email;
-	} tDATA;
+	};
 
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
@@ -34,12 +34,16 @@ public:
     virtual ~CClubsTable(void);
 
 public:
-    virtual long		GetTable(tTableMap& data);
-    virtual long		Find(tTableMap& data, const tDATA& filter);
-    virtual long		AddRow(tDATA& rec);
-    virtual long		DelRow(unsigned int nId);
-    virtual long		GetRow(unsigned int nId, tDATA& data);
-	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
+    virtual long			Find(tTableMap& data, const tDATA* const filter);
+    virtual long			AddRow(tDATA& rec);
+    virtual long			DelRow(unsigned int nId);
+    virtual long			GetRow(unsigned int nId, tDATA& data);
+	virtual long 			UpdateRow(unsigned int nId, const tDATA& data);
+
+	virtual std::string 	GetTableName();
+
+protected:
+	virtual std::string		GetFilterString(const tDATA* const filter);
 };
 
 #endif //__tClubs_h__

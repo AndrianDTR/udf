@@ -86,7 +86,7 @@ sql::ResultSet* CDbConnection::ExecuteQuery(std::string query)
 	{
 		if(m_pStatement)
 		{
-			DEBUG_PRINTF("EXECUTE QUERY: %s \nResult %d", query.c_str(), res);
+			__debug("EXECUTE QUERY: %s \nResult %d", query.c_str(), res);
 			res = m_pStatement->executeQuery(query);
 		}
 	}
@@ -109,7 +109,7 @@ long CDbConnection::Execute(std::string query)
 	{
 		if(m_pStatement)
 		{
-			DEBUG_PRINTF("EXECUTE: %s \n", query.c_str());
+			__debug("EXECUTE: %s \n", query.c_str());
 			m_pStatement->execute(query);
 		}
 		res = UDF_OK;
@@ -140,7 +140,7 @@ unsigned long long CDbConnection::GetLastInsertId()
 			}
 			qRes->next();
 			res = qRes->getUInt64(1);
-			DEBUG_PRINTF("Get last insert id: %ld", res);
+			__debug("Get last insert id: %ld", res);
 		}
 	}while(0);
 

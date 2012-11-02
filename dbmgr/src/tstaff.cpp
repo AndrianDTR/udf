@@ -12,47 +12,40 @@ CStaffTable::~CStaffTable(void)
 {
 }
 
-long CStaffTable::GetTable(tTableMap& data)
-{
-	tDATA filter = {0};
-
-	return Find(data, filter);
-}
-
-std::string CStaffTable::GetFilterString(const tDATA& filter)
+std::string CStaffTable::GetFilterString(const tDATA* const filter)
 {
 	char 				query[MAX_QUERY_LEN] = {0};
 	char 				tmp[MAX_QUERY_LEN] = {0};
 
 
-	if (0 != filter.roleId)
+	if (0 != filter->roleId)
 	{
-		sprintf(tmp, "%sand `role_id` like %d ", query, filter.roleId);
+		sprintf(tmp, "%sand `role_id` like %d ", query, filter->roleId);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (!filter.name.empty())
+	if (!filter->name.empty())
 	{
-		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter->name.c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (!filter.login.empty())
+	if (!filter->login.empty())
 	{
-		sprintf(tmp, "%sand `login` like '%%%s%%' ", query, filter.login.c_str());
+		sprintf(tmp, "%sand `login` like '%%%s%%' ", query, filter->login.c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (!filter.pass.empty())
+	if (!filter->pass.empty())
 	{
-		sprintf(tmp, "%sand `pass` like '%%%s%%' ", query, filter.pass.c_str());
+		sprintf(tmp, "%sand `pass` like '%%%s%%' ", query, filter->pass.c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
 	return string(query);
 }
 
-long CStaffTable::Find(tTableMap& data, const tDATA& filter)
+long CStaffTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 

@@ -17,34 +17,27 @@ std::string CChampionshipCategoriesTable::GetTableName()
 	return TABLE;
 }
 
-long CChampionshipCategoriesTable::GetTable(tTableMap& data)
-{
-	tDATA filter = {0};
-
-	return Find(data, filter);
-}
-
-std::string CChampionshipCategoriesTable::GetFilterString(const tDATA& filter)
+std::string CChampionshipCategoriesTable::GetFilterString(const tDATA* const filter)
 {
 	char 				query[MAX_QUERY_LEN] = {0};
 	char 				tmp[MAX_QUERY_LEN] = {0};
 
-	if (0 != filter.catId)
+	if (0 != filter->catId)
 	{
-		sprintf(tmp, "%sand `category_id` like %d ", query, filter.catId);
+		sprintf(tmp, "%sand `category_id` like %d ", query, filter->catId);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.championshipId)
+	if (0 != filter->championshipId)
 	{
-		sprintf(tmp, "%sand `championship_id` like %d ", query, filter.championshipId);
+		sprintf(tmp, "%sand `championship_id` like %d ", query, filter->championshipId);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
 	return string(query);
 }
 
-long CChampionshipCategoriesTable::Find(tTableMap& data, const tDATA& filter)
+long CChampionshipCategoriesTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 

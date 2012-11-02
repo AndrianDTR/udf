@@ -21,34 +21,27 @@ std::string CAgeCategoryTable::GetTableName()
 	return TABLE;
 }
 
-long CAgeCategoryTable::GetTable(tTableMap& data)
-{
-	tDATA filter = {0};
-
-	return Find(data, filter);
-}
-
-std::string CAgeCategoryTable::GetFilterString(const tDATA& filter)
+std::string CAgeCategoryTable::GetFilterString(const tDATA* const filter)
 {
 	char 				query[MAX_QUERY_LEN] = {0};
 	char 				tmp[MAX_QUERY_LEN] = {0};
 
-	if (0 != filter.code)
+	if (0 != filter->code)
 	{
-		sprintf(tmp, "%sand `code` like %d ", query, filter.code);
+		sprintf(tmp, "%sand `code` like %d ", query, filter->code);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (!filter.name.empty())
+	if (!filter->name.empty())
 	{
-		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter->name.c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
 	return string(query);
 }
 
-long CAgeCategoryTable::Find(tTableMap& data, const tDATA& filter)
+long CAgeCategoryTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 
@@ -77,7 +70,7 @@ long CAgeCategoryTable::Find(tTableMap& data, const tDATA& filter)
 
 		while( qRes && qRes->next())
 		{
-			tDATA el = {0};
+			tDATA el;
 
 			el.id = qRes->getInt(1);
 			el.code = qRes->getUInt(2);
@@ -99,7 +92,6 @@ long CAgeCategoryTable::AddRow(tDATA& rec)
 	do
 	{
 		char 				query[MAX_QUERY_LEN] = {0};
-		sql::ResultSet*		qRes = NULL;
 
 		if(! m_pConnection)
 		{

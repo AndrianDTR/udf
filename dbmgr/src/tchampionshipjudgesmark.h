@@ -6,14 +6,13 @@
 class CChampionshipJudgesMarkTable : public CDbTable
 {
 public:
-	struct tDATA{
-		unsigned int	id;
-		unsigned int	championshipId;
+	struct tDATA:public CDbTable::tDATA{
+		tDATA():CDbTable::tDATA(){judgeId = 0; teamId = 0; tourId = 0; nMark = 0;};
 		unsigned int	judgeId;
 		unsigned int	teamId;
 		unsigned int	tourId;
 		int				nMark;
-		unsigned int	nOrderNum;
+		char			passed;
 	};
 
 	typedef std::map<unsigned int, tDATA> tTableMap;
@@ -26,13 +25,18 @@ public:
     CChampionshipJudgesMarkTable(CDbConnection* pCon);
     virtual ~CChampionshipJudgesMarkTable(void);
 
+protected:
+	std::string 			GetFilterString(const tDATA* const filter);
+
 public:
-    virtual long		GetTable(tTableMap& data);
-    virtual long		Find(tTableMap& data, const tDATA& filter);
-    virtual long		AddRow(tDATA& rec);
-    virtual long		DelRow(unsigned int nId);
-    virtual long		GetRow(unsigned int nId, tDATA& data);
-	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
+    virtual long			GetTable(tTableMap& data);
+    virtual long			Find(tTableMap& data, const tDATA* const filter);
+    virtual long			AddRow(tDATA& rec);
+    virtual long			DelRow(unsigned int nId);
+    virtual long			GetRow(unsigned int nId, tDATA& data);
+	virtual long 			UpdateRow(unsigned int nId, const tDATA& data);
+
+	virtual std::string 	GetTableName();
 };
 
 #endif //__tChampionshipJudgesMark_h__

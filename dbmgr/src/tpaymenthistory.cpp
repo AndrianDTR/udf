@@ -12,52 +12,45 @@ CPaymentHistoryTable::~CPaymentHistoryTable(void)
 {
 }
 
-long CPaymentHistoryTable::GetTable(tTableMap& data)
-{
-	tDATA filter = {0};
-
-	return Find(data, filter);
-}
-
-std::string CPaymentHistoryTable::GetFilterString(const tDATA& filter)
+std::string CPaymentHistoryTable::GetFilterString(const tDATA* const filter)
 {
 	char 				query[MAX_QUERY_LEN] = {0};
 	char 				tmp[MAX_QUERY_LEN] = {0};
 
-	if (0 != filter.personId)
+	if (0 != filter->personId)
 	{
-		sprintf(tmp, "%sand `person_id` = %d ", query, filter.personId);
+		sprintf(tmp, "%sand `person_id` = %d ", query, filter->personId);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.type)
+	if (0 != filter->type)
 	{
-		sprintf(tmp, "%sand `type` = '%c' ", query, filter.type);
+		sprintf(tmp, "%sand `type` = '%c' ", query, filter->type);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0.0001f < filter.sum || -0.0001f > filter.sum)
+	if (0.0001f < filter->sum || -0.0001f > filter->sum)
 	{
-		sprintf(tmp, "%sand `sum` = %f ", query, filter.sum);
+		sprintf(tmp, "%sand `sum` = %f ", query, filter->sum);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.payDate)
+	if (0 != filter->payDate)
 	{
-		sprintf(tmp, "%sand `pay_date` like '%s' ", query, date2str(filter.payDate).c_str());
+		sprintf(tmp, "%sand `pay_date` like '%s' ", query, date2str(filter->payDate).c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.expDate)
+	if (0 != filter->expDate)
 	{
-		sprintf(tmp, "%sand `exp_date` like '%s' ", query, date2str(filter.expDate).c_str());
+		sprintf(tmp, "%sand `exp_date` like '%s' ", query, date2str(filter->expDate).c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
 	return string(query);
 }
 
-long CPaymentHistoryTable::Find(tTableMap& data, const tDATA& filter)
+long CPaymentHistoryTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 

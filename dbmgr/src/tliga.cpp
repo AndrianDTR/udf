@@ -12,23 +12,40 @@ CLigaTable::~CLigaTable(void)
 {
 }
 
-long CLigaTable::GetTable(tTableMap& data)
+std::string CLigaTable::GetTableName()
 {
-	tDATA filter = {0};
-
-	return Find(data, filter);
+	return TABLE;
 }
 
-long CLigaTable::Find(tTableMap& data, const tDATA& filter)
+std::string CLigaTable::GetFilterString(const tDATA* const filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+
+	if (0 != filter->code)
+	{
+		sprintf(tmp, "%sand `code` like %d ", query, filter->code);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->name.empty())
+	{
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter->name.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	return string(query);
+}
+
+long CLigaTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 
 		if(! m_pConnection)
 		{
@@ -36,31 +53,9 @@ long CLigaTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 
-		if (0 != filter.code)
-		{
-			sprintf(tmp, "%sand `code` like %d ", query, filter.code);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.name.empty())
-		{
-			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
@@ -71,11 +66,11 @@ long CLigaTable::Find(tTableMap& data, const tDATA& filter)
 
 		while( qRes && qRes->next())
 		{
-			tDATA el = {0};
+			tDATA el;
 
-			el.id = qRes->getUInt(1);
-			el.code = qRes->getUInt(2);
-			el.name = qRes->getString(3);
+			el.id = qRes->getUInt("id");
+			el.code = qRes->getUInt("code");
+			el.name = qRes->getString("name");
 
 			data.insert(make_pair(el.id, el));
 		}

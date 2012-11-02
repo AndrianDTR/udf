@@ -23,11 +23,11 @@ public:
     virtual ~CChampionshipCategoriesTable(void);
 
 protected:
-	std::string 			GetFilterString(const tDATA& filter);
+	std::string 			GetFilterString(const tDATA* const filter);
 
 public:
     virtual long			GetTable(tTableMap& data);
-    virtual long			Find(tTableMap& data, const tDATA& filter);
+    virtual long			Find(tTableMap& data, const tDATA* const filter);
     virtual long			AddRow(tDATA& rec);
     virtual long			DelRow(unsigned int nId);
     virtual long			GetRow(unsigned int nId, tDATA& data);

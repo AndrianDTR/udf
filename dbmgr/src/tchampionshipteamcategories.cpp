@@ -12,46 +12,39 @@ CChampionshipTeamCategoriesTable::~CChampionshipTeamCategoriesTable(void)
 {
 }
 
-long CChampionshipTeamCategoriesTable::GetTable(tTableMap& data)
-{
-	tDATA filter = {0};
-
-	return Find(data, filter);
-}
-
-std::string CChampionshipTeamCategoriesTable::GetFilterString(const tDATA& filter)
+std::string CChampionshipTeamCategoriesTable::GetFilterString(const tDATA* const filter)
 {
 	char 				query[MAX_QUERY_LEN] = {0};
 	char 				tmp[MAX_QUERY_LEN] = {0};
 
-	if (0 != filter.teamId)
+	if (0 != filter->teamId)
 	{
-		sprintf(tmp, "%sand `team_id` like %d ", query, filter.teamId);
+		sprintf(tmp, "%sand `team_id` like %d ", query, filter->teamId);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.csCatId)
+	if (0 != filter->csCatId)
 	{
-		sprintf(tmp, "%sand `category_id` like %d ", query, filter.csCatId);
+		sprintf(tmp, "%sand `category_id` like %d ", query, filter->csCatId);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (0 != filter.lenght)
+	if (0 != filter->lenght)
 	{
-		sprintf(tmp, "%sand `lenght` like %s ", query, time2str(filter.lenght).c_str());
+		sprintf(tmp, "%sand `lenght` like %s ", query, time2str(filter->lenght).c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (!filter.compositionName.empty())
+	if (!filter->compositionName.empty())
 	{
-		sprintf(tmp, "%sand `composition_name` like '%%%s%%' ", query, filter.compositionName.c_str());
+		sprintf(tmp, "%sand `composition_name` like '%%%s%%' ", query, filter->compositionName.c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
 	return string(query);
 }
 
-long CChampionshipTeamCategoriesTable::Find(tTableMap& data, const tDATA& filter)
+long CChampionshipTeamCategoriesTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 

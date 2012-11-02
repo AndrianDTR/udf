@@ -12,6 +12,7 @@ public:
 		unsigned int	order;
 		std::string		name;
 		time_t			startTime;
+		int				pause;
 	};
 
 	typedef map<unsigned int, tDATA> tTableMap;
@@ -23,13 +24,13 @@ public:
 
 public:
     virtual long			GetTable(tTableMap& data);
-    virtual long			Find(tTableMap& data, const tDATA& filter);
+    virtual long			Find(tTableMap& data, const tDATA* const filter);
     virtual long			AddRow(tDATA& rec);
     virtual long			DelRow(unsigned int nId);
     virtual long			GetRow(unsigned int nId, tDATA& data);
 	virtual long 			UpdateRow(unsigned int nId, const tDATA& data);
 
-	virtual std::string 	GetFilterString(const tDATA& filter);
+	virtual std::string 	GetFilterString(const tDATA* const filter);
 };
 
 #endif //__tCsBlocks_h__

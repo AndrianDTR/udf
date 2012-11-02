@@ -13,6 +13,7 @@
 #define TABLE_CHAMPIONSHIPJUDGESTEAM			"championship_judges_team"
 #define TABLE_CHAMPIONSHIPTEAM					"championship_team"
 #define TABLE_CHAMPIONSHIPTOUR					"championship_tours"
+#define TABLE_CHAMPIONSHIPTOURPASS				"championship_tour_pass"
 #define TABLE_CHAMPIONSHIPTYPE					"championship_type"
 #define TABLE_CHAMPIONSHIPTEAMCATEGORIES		"championship_team_categories"
 #define TABLE_CHAMPIONSHIPTEAMDANCERS			"championship_team_dancers"
@@ -24,7 +25,6 @@
 #define TABLE_GENDER							"gender"
 #define TABLE_JUDGES							"judges"
 #define TABLE_JUDGESCATEGORIESHAVE				"judges_categories_have"
-#define TABLE_JUDGESCATEGORIESNAME				"judges_categories_name"
 #define TABLE_LIGA								"liga"
 #define TABLE_TRAINERS							"treners"
 #define TABLE_PAYMENTHISTORY					"payment_history"
@@ -32,8 +32,7 @@
 #define TABLE_USERROLES							"user_roles"
 #define TABLE_STAFF								"staff"
 #define TABLE_CHAMPIONSHIPBLOCKS				"championship_blocks"
-#define TABLE_CHAMPIONSHIPBLOCKCATEGORIES		"championship_block_categories"
-#define TABLE_CHAMPIONSHIPBLOCKJUDGES			"championship_block_judges"
+#define TABLE_CHAMPIONSHIPBLOCKJ2C				"championship_block_j2c"
 
 #define MAX_QUERY_LEN							1500
 
@@ -70,8 +69,10 @@ public:
 	typedef std::list<tORDER> tOrder;
 	typedef std::list<tORDER>::iterator tOrderIt;
 
-	typedef struct{
-	} tDATA;
+	struct tDATA{
+		tDATA(){id = 0;};
+		unsigned int id;
+	};
 
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
@@ -87,13 +88,14 @@ public:
 protected:
 	virtual std::string		GetOrderString();
 	virtual std::string		GetFieldList();
-	virtual std::string		GetFilterString(const tDATA& filter) { return "";};
 	virtual std::string		GetQuery(const char* table, const std::string& filter = "");
+
+
+	virtual std::string		GetFilterString(const tDATA* const filter) = 0;
 
 public:
 	virtual long			CreateTable(){ return UDF_OK;};
 	virtual long			DropTable(){ return UDF_OK;};
-	virtual std::string		GetTableName(){ return "";};
 
 	virtual long			Reload(){ return UDF_OK;};
 
@@ -101,6 +103,14 @@ public:
 	virtual void			SetOrderMap(const tOrder& orderMap){m_OrderMap = orderMap;};
 	virtual tOrder&			GetOrderMap(){return m_OrderMap;};
 	virtual void			ClearOrder();
+
+	virtual long			Find(tTableMap& data, const tDATA* const filter) = 0;
+
+	virtual long 			FindId(unsigned int& id, const tDATA* const filter);
+	virtual long			GetTable(tTableMap& data){return Find(data, NULL);};
+
+	virtual std::string		GetTableName() = 0;
+
 };
 
 #endif //__dbtable_h__

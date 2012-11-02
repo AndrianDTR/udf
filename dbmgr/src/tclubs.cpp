@@ -12,23 +12,91 @@ CClubsTable::~CClubsTable(void)
 {
 }
 
-long CClubsTable::GetTable(tTableMap& data)
+std::string CClubsTable::GetTableName()
 {
-	tDATA filter = {0};
-
-	return Find(data, filter);
+	return TABLE;
 }
 
-long CClubsTable::Find(tTableMap& data, const tDATA& filter)
+std::string CClubsTable::GetFilterString(const tDATA* const filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+
+	if(!filter)
+		return "";
+
+	if (0 != filter->city)
+	{
+		sprintf(tmp, "%sand `city` like %d ", query, filter->city);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->email.empty())
+	{
+		sprintf(tmp, "%sand `email` like '%%%s%%' ", query, filter->email.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->contacts.empty())
+	{
+		sprintf(tmp, "%sand `contacts` like '%%%s%%' ", query, filter->contacts.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->web.empty())
+	{
+		sprintf(tmp, "%sand `web` like '%%%s%%' ", query, filter->web.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->additionalInfo.empty())
+	{
+		sprintf(tmp, "%sand `additional_info` like '%%%s%%' ", query, filter->additionalInfo.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->name.empty())
+	{
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter->name.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->director.empty())
+	{
+		sprintf(tmp, "%sand `director_name` like '%%%s%%' ", query, filter->director.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->director_bd)
+	{
+		sprintf(tmp, "%sand `director_bd` like '%%%s%%' ", query, date2str(filter->director_bd).c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->director_phone.empty())
+	{
+		sprintf(tmp, "%sand `director_phone` like '%%%s%%' ", query, filter->director_phone.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->director_email.empty())
+	{
+		sprintf(tmp, "%sand `director_email` like '%%%s%%' ", query, filter->director_email.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	return string(query);
+}
+
+long CClubsTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 
 		if(! m_pConnection)
 		{
@@ -36,87 +104,9 @@ long CClubsTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 
-		if (0 != filter.city)
-		{
-			sprintf(tmp, "%sand `city` like %d ", query, filter.city);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.email.empty())
-		{
-			sprintf(tmp, "%sand `email` like '%%%s%%' ", query, filter.email.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.contacts.empty())
-		{
-			sprintf(tmp, "%sand `contacts` like '%%%s%%' ", query, filter.contacts.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.web.empty())
-		{
-			sprintf(tmp, "%sand `web` like '%%%s%%' ", query, filter.web.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.additionalInfo.empty())
-		{
-			sprintf(tmp, "%sand `additional_info` like '%%%s%%' ", query, filter.additionalInfo.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.name.empty())
-		{
-			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.director.empty())
-		{
-			sprintf(tmp, "%sand `director_name` like '%%%s%%' ", query, filter.director.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.director_bd)
-		{
-			sprintf(tmp, "%sand `director_bd` like '%%%s%%' ", query, date2str(filter.director_bd).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.director_phone.empty())
-		{
-			sprintf(tmp, "%sand `director_phone` like '%%%s%%' ", query, filter.director_phone.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.director_email.empty())
-		{
-			sprintf(tmp, "%sand `director_email` like '%%%s%%' ", query, filter.director_email.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(GetTableName().c_str(), szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
@@ -127,7 +117,7 @@ long CClubsTable::Find(tTableMap& data, const tDATA& filter)
 
 		while( qRes && qRes->next())
 		{
-			tDATA el = {0};
+			tDATA el;
 
 			el.id = qRes->getUInt(1);
 			el.name = qRes->getString(2);

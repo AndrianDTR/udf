@@ -12,23 +12,82 @@ CDancersTable::~CDancersTable(void)
 {
 }
 
-long CDancersTable::GetTable(tTableMap& data)
+std::string CDancersTable::GetTableName()
 {
-	tDATA filter = {0};
-
-	return Find(data, filter);
+	return TABLE;
 }
 
-long CDancersTable::Find(tTableMap& data, const tDATA& filter)
+std::string CDancersTable::GetFilterString(const tDATA* const filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+
+	if (!filter->name.empty())
+	{
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter->name.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->additionalInfo.empty())
+	{
+		sprintf(tmp, "%sand `aditional_info` like '%%%s%%' ", query, filter->additionalInfo.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->clubId)
+	{
+		sprintf(tmp, "%sand `club_id` = %d ", query, filter->clubId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->trainerId)
+	{
+		sprintf(tmp, "%sand `trener_id` = %d ", query, filter->trainerId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->regBook.empty())
+	{
+		sprintf(tmp, "%sand `reg_book_num` like '%%%s%%' ", query, filter->regBook.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->raiting)
+	{
+		sprintf(tmp, "%sand `raiting` = %d ", query, filter->raiting);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->liga)
+	{
+		sprintf(tmp, "%sand `liga` = %d ", query, filter->liga);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->bd)
+	{
+		sprintf(tmp, "%sand `bd` like '%s' ", query, date2str(filter->bd).c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->reg_date)
+	{
+		sprintf(tmp, "%sand `reg_date` like '%s' ", query, date2str(filter->reg_date).c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	return string(query);
+}
+
+long CDancersTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 
 		if(! m_pConnection)
 		{
@@ -36,80 +95,9 @@ long CDancersTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 
-		if (!filter.name.empty())
-		{
-			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.additionalInfo.empty())
-		{
-			sprintf(tmp, "%sand `aditional_info` like '%%%s%%' ", query, filter.additionalInfo.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.clubId)
-		{
-			sprintf(tmp, "%sand `club_id` = %d ", query, filter.clubId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.trainerId)
-		{
-			sprintf(tmp, "%sand `trener_id` = %d ", query, filter.trainerId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.regBook.empty())
-		{
-			sprintf(tmp, "%sand `reg_book_num` like '%%%s%%' ", query, filter.regBook.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.raiting)
-		{
-			sprintf(tmp, "%sand `raiting` = %d ", query, filter.raiting);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.liga)
-		{
-			sprintf(tmp, "%sand `liga` = %d ", query, filter.liga);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.bd)
-		{
-			sprintf(tmp, "%sand `bd` like '%s' ", query, date2str(filter.bd).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.reg_date)
-		{
-			sprintf(tmp, "%sand `reg_date` like '%s' ", query, date2str(filter.reg_date).c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
@@ -120,7 +108,7 @@ long CDancersTable::Find(tTableMap& data, const tDATA& filter)
 
 		while( qRes && qRes->next())
 		{
-			tDATA el = {0};
+			tDATA el;
 
 			el.id = qRes->getUInt(1);
 			el.clubId = qRes->getUInt(2);

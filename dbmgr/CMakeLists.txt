@@ -28,6 +28,7 @@ set( HEADER_FILES
 	src/tchampionshipteamcategories.h
 	src/tchampionshipteamdancers.h
 	src/tchampionshipteam.h
+	src/tchampionshiptourpass.h
 	src/tchampionshiptype.h
 	src/tcities.h
 	src/tclubs.h
@@ -36,16 +37,14 @@ set( HEADER_FILES
 	src/tdancetypes.h
 	src/tgender.h
 	src/tjudgescategorieshave.h
-	src/tjudgescategoriesname.h
 	src/tjudges.h
 	src/tliga.h
 	src/ttreiners.h
 	src/ttourtypes.h
 	src/tuserroles.h
 	src/tpaymenthistory.h
-	src/tcsblockscategories.h
 	src/tcsblocks.h
-	src/tcsblocksjudges.h
+	src/tcsblocksj2c.h
 	src/tstaff.h
 )
 
@@ -65,6 +64,7 @@ set( SOURCE_FILES
 	src/tchampionshipteamcategories.cpp
 	src/tchampionshipteamdancers.cpp
 	src/tchampionshipteam.cpp
+	src/tchampionshiptourpass.cpp
 	src/tchampionshiptype.cpp
 	src/tcities.cpp
 	src/tclubs.cpp
@@ -73,16 +73,14 @@ set( SOURCE_FILES
 	src/tdancetypes.cpp
 	src/tgender.cpp
 	src/tjudgescategorieshave.cpp
-	src/tjudgescategoriesname.cpp
 	src/tjudges.cpp
 	src/tliga.cpp
 	src/ttreiners.cpp
 	src/ttourtypes.cpp
 	src/tuserroles.cpp
 	src/tpaymenthistory.cpp
-	src/tcsblockscategories.cpp
 	src/tcsblocks.cpp
-	src/tcsblocksjudges.cpp
+	src/tcsblocksj2c.cpp
 	src/tstaff.cpp
 )
 

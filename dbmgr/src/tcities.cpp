@@ -12,23 +12,40 @@ CCitiesTable::~CCitiesTable(void)
 {
 }
 
-long CCitiesTable::GetTable(tTableMap& data)
+std::string CCitiesTable::GetTableName()
 {
-	tDATA filter = {0};
-
-	return Find(data, filter);
+	return TABLE;
 }
 
-long CCitiesTable::Find(tTableMap& data, const tDATA& filter)
+std::string CCitiesTable::GetFilterString(const tDATA* const filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+
+	if (0 != filter->countryId)
+	{
+		sprintf(tmp, "%sand `country_id` like %d ", query, filter->countryId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->Name.empty())
+	{
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter->Name.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	return string(query);
+}
+
+long CCitiesTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 
 		if(! m_pConnection)
 		{
@@ -36,31 +53,9 @@ long CCitiesTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 
-		if (0 != filter.countryId)
-		{
-			sprintf(tmp, "%sand `country_id` like %d ", query, filter.countryId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.Name.empty())
-		{
-			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.Name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(GetTableName().c_str(), szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
@@ -71,7 +66,7 @@ long CCitiesTable::Find(tTableMap& data, const tDATA& filter)
 
 		while( qRes && qRes->next())
 		{
-			tDATA el = {0};
+			tDATA el;
 
 			el.id = qRes->getUInt(1);
 			el.countryId = qRes->getUInt(2);

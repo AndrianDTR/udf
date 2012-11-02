@@ -12,23 +12,70 @@ CJudgesTable::~CJudgesTable(void)
 {
 }
 
-long CJudgesTable::GetTable(tTableMap& data)
+std::string CJudgesTable::GetTableName()
 {
-	tDATA filter = {0};
-
-	return Find(data, filter);
+	return TABLE;
 }
 
-long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
+std::string CJudgesTable::GetFilterString(const tDATA* const filter)
+{
+	char 				query[MAX_QUERY_LEN] = {0};
+	char 				tmp[MAX_QUERY_LEN] = {0};
+
+	if (!filter->name.empty())
+	{
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter->name.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->practicer)
+	{
+		sprintf(tmp, "%sand `practicer` = '%c' ", query, filter->practicer);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (0 != filter->cityId)
+	{
+		sprintf(tmp, "%sand `city` = %d ", query, filter->cityId);
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->phone.empty())
+	{
+		sprintf(tmp, "%sand `phone` like '%%%s%%' ", query, filter->phone.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->email.empty())
+	{
+		sprintf(tmp, "%sand `email` like '%%%s%%' ", query, filter->email.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->additionalInfo.empty())
+	{
+		sprintf(tmp, "%sand `aditional_info` like '%%%s%%' ", query, filter->attestationInfo.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	if (!filter->attestationInfo.empty())
+	{
+		sprintf(tmp, "%sand `attestation_info` like '%%%s%%' ", query, filter->attestationInfo.c_str());
+		strncpy(query, tmp, MAX_QUERY_LEN-1);
+	}
+
+	return string(query);
+}
+
+long CJudgesTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 
 	do
 	{
-		char 				query[MAX_QUERY_LEN] = {0};
-		char 				tmp[MAX_QUERY_LEN] = {0};
+		std::string 		szQuery;
+		std::string 		szFilter;
 		sql::ResultSet*		qRes = NULL;
-		bool 				useFilter = false;
 
 		if(! m_pConnection)
 		{
@@ -36,66 +83,9 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 			break;
 		}
 
-		if (!filter.name.empty())
-		{
-			sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.practicer)
-		{
-			sprintf(tmp, "%sand `practicer` = '%c' ", query, filter.practicer);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != filter.cityId)
-		{
-			sprintf(tmp, "%sand `city` = %d ", query, filter.cityId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.phone.empty())
-		{
-			sprintf(tmp, "%sand `phone` like '%%%s%%' ", query, filter.phone.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.email.empty())
-		{
-			sprintf(tmp, "%sand `email` like '%%%s%%' ", query, filter.email.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.additionalInfo.empty())
-		{
-			sprintf(tmp, "%sand `aditional_info` like '%%%s%%' ", query, filter.attestationInfo.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (!filter.attestationInfo.empty())
-		{
-			sprintf(tmp, "%sand `attestation_info` like '%%%s%%' ", query, filter.attestationInfo.c_str());
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if(useFilter)
-		{
-			sprintf(tmp, "select * from %s where 1=1 %s", TABLE, query);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-		}
-		else
-		{
-			sprintf(query, "select * from %s", TABLE);
-		}
-
-		qRes = m_pConnection->ExecuteQuery(query);
+		szFilter = GetFilterString(filter);
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
@@ -106,16 +96,16 @@ long CJudgesTable::Find(tTableMap& data, const tDATA& filter)
 
 		while( qRes && qRes->next())
 		{
-			tDATA el = {0};
+			tDATA el;
 
-			el.id = qRes->getUInt(1);
-			el.name = qRes->getString(2);
-			el.cityId = qRes->getUInt(3);
-			el.practicer = qRes->getString(4)[0];
-			el.attestationInfo = qRes->getString(5);
-			el.phone = qRes->getString(6);
-			el.email = qRes->getString(7);
-			el.additionalInfo = qRes->getString(8);
+			el.id = qRes->getUInt("id");
+			el.name = qRes->getString("name");
+			el.cityId = qRes->getUInt("city_id");
+			el.practicer = qRes->getString("practicer")[0];
+			el.attestationInfo = qRes->getString("attestation_info");
+			el.phone = qRes->getString("phone");
+			el.email = qRes->getString("email");
+			el.additionalInfo = qRes->getString("additional_info");
 
 			data.insert(make_pair(el.id, el));
 		}
@@ -181,6 +171,7 @@ long CJudgesTable::DelRow(unsigned int nId)
 
 long CJudgesTable::GetRow(unsigned int nId, tDATA& data)
 {
+	Enter();
 	long res = UDF_E_FAIL;
 
 	do
@@ -201,19 +192,28 @@ long CJudgesTable::GetRow(unsigned int nId, tDATA& data)
 			res = UDF_E_EXECUTE_QUERY_FAILED;
 			break;
 		}
-		qRes->next();
-		data.id = qRes->getUInt(1);
-		data.name = qRes->getString(2);
-		data.cityId = qRes->getUInt(3);
-		data.practicer = qRes->getString(4)[0];
-		data.attestationInfo = qRes->getString(5);
-		data.phone = qRes->getString(6);
-		data.email = qRes->getString(7);
-		data.additionalInfo = qRes->getString(8);
+
+		if(!qRes->next())
+		{
+			__debug("Not found");
+			res = UDF_E_NOTFOUND;
+			break;
+		}
+
+		__info("Fill data for id: %d", nId);
+		data.id = qRes->getUInt("id");
+		data.name = qRes->getString("name");
+		data.cityId = qRes->getUInt("city");
+		data.practicer = qRes->getString("practicer")[0];
+		data.attestationInfo = qRes->getString("attestation_info");
+		data.phone = qRes->getString("phone");
+		data.email = qRes->getString("email");
+		data.additionalInfo = qRes->getString("additional_info");
 
 		res = UDF_OK;
 	}while(0);
 
+	Leave();
 	return res;
 }
 

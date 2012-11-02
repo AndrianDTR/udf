@@ -6,8 +6,8 @@
 class CJudgesTable : public CDbTable
 {
 public:
-	typedef struct{
-		unsigned int	id;
+	struct tDATA:public CDbTable::tDATA{
+		tDATA():CDbTable::tDATA(){cityId = 0; practicer = udfNO;};
 		std::string		name;
 		unsigned int	cityId;
 		std::string		email;
@@ -15,7 +15,7 @@ public:
 		std::string		additionalInfo;
 		std::string		attestationInfo;
 		char			practicer;
-	} tDATA;
+	};
 
 	typedef map<unsigned int, tDATA> tTableMap;
 	typedef map<unsigned int, tDATA>::iterator tTableIt;
@@ -28,12 +28,17 @@ public:
     virtual ~CJudgesTable(void);
 
 public:
-    virtual long		GetTable(tTableMap& data);
-    virtual long		Find(tTableMap& data, const tDATA& filter);
-    virtual long		AddRow(tDATA& rec);
-    virtual long		DelRow(unsigned int nId);
-    virtual long		GetRow(unsigned int nId, tDATA& data);
-	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
+    virtual long			GetTable(tTableMap& data);
+    virtual long			Find(tTableMap& data, const tDATA* const filter);
+    virtual long			AddRow(tDATA& rec);
+    virtual long			DelRow(unsigned int nId);
+    virtual long			GetRow(unsigned int nId, tDATA& data);
+	virtual long 			UpdateRow(unsigned int nId, const tDATA& data);
+
+	virtual std::string 	GetTableName();
+
+protected:
+	virtual std::string		GetFilterString(const tDATA* const filter);
 };
 
 #endif //__tJedges_h__

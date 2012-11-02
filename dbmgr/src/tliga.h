@@ -6,11 +6,11 @@
 class CLigaTable : public CDbTable
 {
 public:
-	typedef struct{
-		unsigned int	id;
+	struct tDATA:public CDbTable::tDATA{
+		tDATA():CDbTable::tDATA(){code = 0;};
 		unsigned int	code;
 		std::string		name;
-	} tDATA;
+	};
 
 	typedef std::map<unsigned int, tDATA> tTableMap;
 	typedef std::map<unsigned int, tDATA>::iterator tTableIt;
@@ -24,11 +24,16 @@ public:
 
 public:
     virtual long		GetTable(tTableMap& data);
-    virtual long		Find(tTableMap& data, const tDATA& filter);
+    virtual long		Find(tTableMap& data, const tDATA* const filter);
     virtual long		AddRow(tDATA& rec);
     virtual long		DelRow(unsigned int nId);
     virtual long		GetRow(unsigned int nId, tDATA& data);
 	virtual long 		UpdateRow(unsigned int nId, const tDATA& data);
+
+	virtual std::string 	GetTableName();
+
+protected:
+	virtual std::string		GetFilterString(const tDATA* const filter);
 };
 
 #endif //__tLiga_h__

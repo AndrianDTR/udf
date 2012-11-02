@@ -12,34 +12,27 @@ CUserRolesTable::~CUserRolesTable(void)
 {
 }
 
-long CUserRolesTable::GetTable(tTableMap& data)
-{
-	tDATA filter = {0};
-
-	return Find(data, filter);
-}
-
-std::string CUserRolesTable::GetFilterString(const tDATA& filter)
+std::string CUserRolesTable::GetFilterString(const tDATA* const filter)
 {
 	char 				query[MAX_QUERY_LEN] = {0};
 	char 				tmp[MAX_QUERY_LEN] = {0};
 
-	if (!filter.name.empty())
+	if (!filter->name.empty())
 	{
-		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter.name.c_str());
+		sprintf(tmp, "%sand `name` like '%%%s%%' ", query, filter->name.c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
-	if (!filter.url.empty())
+	if (!filter->url.empty())
 	{
-		sprintf(tmp, "%sand `url` like '%%%s%%' ", query, filter.url.c_str());
+		sprintf(tmp, "%sand `url` like '%%%s%%' ", query, filter->url.c_str());
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
 
 	return string(query);
 }
 
-long CUserRolesTable::Find(tTableMap& data, const tDATA& filter)
+long CUserRolesTable::Find(tTableMap& data, const tDATA* const filter)
 {
 	long res = UDF_E_FAIL;
 
