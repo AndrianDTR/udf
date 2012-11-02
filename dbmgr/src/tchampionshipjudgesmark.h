@@ -12,7 +12,6 @@ public:
 		unsigned int	teamId;
 		unsigned int	tourId;
 		int				nMark;
-		char			passed;
 	};
 
 	typedef std::map<unsigned int, tDATA> tTableMap;
@@ -31,6 +30,7 @@ protected:
 public:
     virtual long			GetTable(tTableMap& data);
     virtual long			Find(tTableMap& data, const tDATA& filter);
+    virtual long 			FindId(unsigned int& id, const tDATA& filter);
     virtual long			AddRow(tDATA& rec);
     virtual long			DelRow(unsigned int nId);
     virtual long			GetRow(unsigned int nId, tDATA& data);

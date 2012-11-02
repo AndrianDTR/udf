@@ -79,7 +79,7 @@ void udfTourInfo::CreateNewTour()
 			jud++;
 		}
 		// Finish append cols
-		
+
 		// Start append rows
 		unsigned int nTourId = 0;
 		if(m_itemId.IsOk())
@@ -91,21 +91,21 @@ void udfTourInfo::CreateNewTour()
 
 		tUIList teams;
 		GetTourTeams(catItem->GetId(), nTourId, teams);
-		
+
 		__info("Tour teams: %d", teams.size());
 		if(0 == teams.size())
 		{
 			ShowWarning("There are no any team that pass in previous tour.");
 			break;
 		}
-		
+
 		m_tourType = 0;
 		CTourTypesTable::tDATA typeData = {0};
 		GetTourTypeByDancersCount(teams.size(), m_tourType);
 		CTourTypesTable(m_pCon).GetRow(m_tourType, typeData);
 		m_staticType->SetLabel(typeData.name);
 		m_staticMinMax->SetLabel(wxString::Format("%d - %d", typeData.min, typeData.max));
-		
+
 		m_gridSuccess->AppendRows(teams.size());
 
 		if(0 == nTourId)
@@ -113,7 +113,7 @@ void udfTourInfo::CreateNewTour()
 			__info("This is new tour");
 			break;
 		}
-		
+
 		CChampionshipToursTable::tDATA tourInfo = {0};
 		CChampionshipToursTable(m_pCon).GetRow(nTourId, tourInfo);
 		m_textLimit->SetValue(wxString::Format(_("%d"), tourInfo.limit));
@@ -132,16 +132,32 @@ void udfTourInfo::CreateNewTour()
 			m_id2row[data.id] = nRow;
 
 			m_gridSuccess->SetCellValue(wxString::Format(_("%d"), data.sum), nRow, 1);
+			/*
+			for(nCol = 0; nCol < m_gridSuccess->GetNumberCols(); ++nCol)
+			{
+				unsigned int id = 0;
+				CChampionshipJudgesMarkTable::tDATA data = {0};
+				data.tourId = nTourId;
+				data.teamId = m_row2id[nRow];
+				data.judgeId = m_col2id[nCol];
+				long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
+
+				if(UDF_OK == found)
+				{
+					m_gridSuccess->SetCellValue(_("X"), nRow, nCol+2);
+				}
+			}*/
 
 			nCol = 2;
 			for(tCListIt c = data.marksList.begin(); c != data.marksList.end(); c++, nCol++)
 			{
+				__info("Row: %d, Col: %d, Mark: %d", nRow, nCol, *c);
 				if(*c)
 				{
 					m_gridSuccess->SetCellValue(_("X"), nRow, nCol);
 				}
 			}
-
+			//*/
 			nRow++;
 			row++;
 		}
@@ -168,7 +184,7 @@ void udfTourInfo::CreateNewTour()
 			{
 				if(GetTeamPassTour(m_col2id[nRow], nTourId))
 					m_gridSuccess->SetCellValue(_("X"), nRow, 0);
-					
+
 				attr->SetBackgroundColour(wxColour(255, 255, 180));
 			}
 			else
@@ -240,7 +256,7 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 			__info("One of items is not set");
 			break;
 		}
-		
+
 		unsigned int nId = -1;
 
 		if(m_itemId.IsOk())
@@ -267,34 +283,39 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 		}
 /*
 		int nRow = 0;
-		for(nRow = 0; nRow < m_gridJudgesCats->GetNumberRows(); ++nRow)
+		for(nRow = 0; nRow < m_gridSuccess->GetNumberRows(); ++nRow)
 		{
-			wxString value = m_gridJudgesCats->GetCellValue(nRow, 0);
-			unsigned int id = -1;
+			int nCol = 0;
+			for(nCol = 0; nCol < m_gridSuccess->GetNumberCols(); ++nCol)
+			{
+				wxString value = m_gridSuccess->GetCellValue(nRow, nCol);
+				unsigned int id = -1;
 
-			CChampionshipJudgesMarkTable::tDATA data = {0};
-			data.tourId = blockInfo.id;
-			data.csCatId = m_RowIdMap[nRow];
-			data.csJudgeId = m_ColIdMap[nCol];
-			long found = CCsBlockJ2CTable(m_pCon).FindId(id, data);
-			if(UDF_OK == found && value != _("X"))
-			{
-				__debug("Found! ID: %d. Delete it...", id);
-				CCsBlockJ2CTable(m_pCon).DelRow(id);
+				CChampionshipJudgesMarkTable::tDATA data;
+				data.tourId = tourInfo.id;
+				data.teamId = m_row2id[nRow];
+				data.judgeId = m_col2id[nCol];
+				long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
+				if(UDF_OK == found && value != _("X"))
+				{
+					__debug("Found! ID: %d. Delete it...", id);
+					CChampionshipJudgesMarkTable(m_pCon).DelRow(id);
+				}
+				else if(found == UDF_E_NOTFOUND && value == _("X"))
+				{
+					__debug("NOT Found! Insert it...");
+					CChampionshipJudgesMarkTable(m_pCon).AddRow(data);
+				}
 			}
-			else if(found == UDF_E_NOTFOUND && value == _("X"))
-			{
-				__debug("NOT Found! Insert it...");
-				CCsBlockJ2CTable(m_pCon).AddRow(data);
-			}
+
 		}
-		*/
+		//*/
 		CTourTypesTable::tDATA typeData = {0};
 		CTourTypesTable(m_pCon).GetRow(tourInfo.typeId, typeData);
 		wxString name = wxString::Format(STR_FORMAT_TOUR_NAME, typeData.name, tourInfo.limit);
 		if(m_itemId.IsOk())
 		{
-			
+
 			m_pTree->SetItemText(m_itemId, name);
 		}
 		else
@@ -316,13 +337,13 @@ void udfTourInfo::OnRemove(wxCommandEvent& event)
 			__info("One of items is not set");
 			break;
 		}
-		
+
 		udfTreeItemData* tourItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
 		CChampionshipToursTable(m_pCon).DelRow(tourItem->GetId());
-		
+
 		udfTreeItemData* catItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
 		m_pMainWindow->RefreshCategory(catItem->GetId(), m_parentItem);
-		
+
 	}while(0);
 	Leave();
 }

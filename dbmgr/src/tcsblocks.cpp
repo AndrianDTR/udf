@@ -34,13 +34,13 @@ std::string CCsBlocksTable::GetFilterString(const tDATA& filter)
 		sprintf(tmp, "%sand `order` like %d ", query, filter.order);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
-	
+
 	if (0 != filter.pause)
 	{
 		sprintf(tmp, "%sand `pause` like %d ", query, filter.pause);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
-	
+
 	if (0 != filter.startTime)
 	{
 		sprintf(tmp, "%sand `start_time` like %d ", query, time2str(filter.startTime).c_str());
@@ -252,3 +252,4 @@ long CCsBlocksTable::UpdateRow(unsigned int nId, const tDATA& data)
 
 	return res;
 }
+

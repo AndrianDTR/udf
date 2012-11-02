@@ -12,20 +12,21 @@ udfJudgeMark::udfJudgeMark( wxWindow* parent, unsigned int tourId )
 , m_tourId(tourId)
 , m_catId(0)
 {
-	
+
 	m_pCon = CDbManager::Instance()->GetConnection();
 
 	unsigned int catId = 0;
-	
+
 	if(UDF_OK == GetTourCategoryId(tourId, catId))
 		m_catId = catId;
-	
+
 	RefreshGrid();
 }
 
 void udfJudgeMark::OnSave( wxCommandEvent& event )
 {
-	EndModal(wxID_OK);
+	UpdateMarks();
+	//EndModal(wxID_OK);
 }
 
 void udfJudgeMark::OnDiscard( wxCommandEvent& event )
@@ -43,7 +44,7 @@ void udfJudgeMark::OnCellLClick( wxGridEvent& event )
 		m_gridMarks->SetCellValue(row, col, _("X"));
 	else
 		m_gridMarks->SetCellValue(row, col, _(""));
-	
+
 	event.Skip();
 }
 
@@ -57,7 +58,7 @@ void udfJudgeMark::OnKeyUp( wxKeyEvent& event )
 		case 'X':
 			m_gridMarks->SetCellValue(row, col, _("X"));
 			break;
-		
+
 		case WXK_SPACE:
 			m_gridMarks->SetCellValue(row, col, _(""));
 			break;
@@ -84,10 +85,10 @@ void udfJudgeMark::RefreshGrid()
 
 		tUIList juds;
 		GetJudgesForCategory(m_catId, juds);
-		
+
 		tUIList teams;
 		GetTourTeams(m_catId, m_tourId, teams);
-		
+
 		m_gridMarks->AppendCols(juds.size());
 		m_gridMarks->AppendRows(teams.size());
 
@@ -98,12 +99,12 @@ void udfJudgeMark::RefreshGrid()
 			unsigned int jId = *jud;
 			m_gridMarks->SetColLabelValue(nCol, GetVerticalText(GetCsJudgeNameById(jId)));
 			m_col2id[nCol] = jId;
-			m_id2row[jId] = nCol;
+			m_id2col[jId] = nCol;
 
 			nCol++;
 			jud++;
 		}
-		
+
 		int nRow = 0;
 		tUIListIt team = teams.begin();
 		while(team != teams.end())
@@ -112,12 +113,66 @@ void udfJudgeMark::RefreshGrid()
 			unsigned int startNum = 0;
 			GetTeamStartNumber(tId, startNum);
 			m_gridMarks->SetRowLabelValue(nRow, wxString::Format(STR_FORMAT_START_NUMBER, startNum));
-			m_col2id[nRow] = tId;
+			m_row2id[nRow] = tId;
 			m_id2row[tId] = nRow;
 
 			nRow++;
 			team++;
 		}
+
+		for(nRow = 0; nRow < m_gridMarks->GetNumberRows(); ++nRow)
+		{
+			for(nCol = 0; nCol < m_gridMarks->GetNumberCols(); ++nCol)
+			{
+				unsigned int id = 0;
+				CChampionshipJudgesMarkTable::tDATA data = {0};
+				data.tourId = m_tourId;
+				data.teamId = m_row2id[nRow];
+				data.judgeId = m_col2id[nCol];
+				long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
+
+				if(UDF_OK == found)
+				{
+					m_gridMarks->SetCellValue(_("X"), nRow, nCol);
+				}
+			}
+		}
+
 	}while(0);
+	Leave();
+}
+
+void udfJudgeMark::UpdateMarks()
+{
+	Enter();
+	int nRow = 0;
+	for(nRow = 0; nRow < m_gridMarks->GetNumberRows(); ++nRow)
+	{
+		int nCol = 0;
+		for(nCol = 0; nCol < m_gridMarks->GetNumberCols(); ++nCol)
+		{
+			wxString value = m_gridMarks->GetCellValue(nRow, nCol);
+			unsigned int id = -1;
+
+			CChampionshipJudgesMarkTable::tDATA data = {0};
+			data.tourId = m_tourId;
+			data.teamId = m_row2id[nRow];
+			data.judgeId = m_col2id[nCol];
+			long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
+
+			__info("Row: %d, Col: %d, tourId: %d, teamId: %d, FOUND: %d == %d", nRow, nCol, data.tourId, data.teamId, found, UDF_E_NOTFOUND);
+			if(UDF_OK == found && value != _("X"))
+			{
+				__info("Found! ID: %d. Delete it...", id);
+				CChampionshipJudgesMarkTable(m_pCon).DelRow(id);
+			}
+			else if(found == UDF_E_NOTFOUND && value == _("X"))
+			{
+				__info("NOT Found! Insert it...");
+				data.nMark = 1;
+				CChampionshipJudgesMarkTable(m_pCon).AddRow(data);
+			}
+		}
+	}
 	Leave();
 }

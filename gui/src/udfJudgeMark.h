@@ -17,7 +17,7 @@ class udfJudgeMark : public JudgeMark
 protected:
 	typedef std::map<int, unsigned int>				tI2UiMap;
 	typedef std::map<unsigned int, int>				tUi2IMap;
-	
+
 private:
 	CDbConnection*				m_pCon;
 	unsigned int 				m_tourId;
@@ -27,7 +27,7 @@ private:
 	tI2UiMap					m_row2id;
 	tUi2IMap					m_id2col;
 	tI2UiMap					m_col2id;
-	
+
 protected:
 	// Handlers for JudgeMark events.
 	void OnSave( wxCommandEvent& event );
@@ -38,8 +38,9 @@ public:
 	/** Constructor */
 	udfJudgeMark( wxWindow* parent, unsigned int tourId );
 	//// end generated class members
-	
+
 	void				RefreshGrid();
+	void				UpdateMarks();
 };
 
 #endif // __udfJudgeMark__

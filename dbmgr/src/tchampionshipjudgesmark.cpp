@@ -52,12 +52,6 @@ std::string CChampionshipJudgesMarkTable::GetFilterString(const tDATA& filter)
 		sprintf(tmp, "%sand `mark` = %d ", query, filter.nMark);
 		strncpy(query, tmp, MAX_QUERY_LEN-1);
 	}
-	
-	if (0 != filter.passed)
-	{
-		sprintf(tmp, "%sand `passed` = '%c' ", query, filter.passed);
-		strncpy(query, tmp, MAX_QUERY_LEN-1);
-	}
 
 	return string(query);
 }
@@ -98,7 +92,6 @@ long CChampionshipJudgesMarkTable::Find(tTableMap& data, const tDATA& filter)
             el.judgeId = qRes->getUInt64("judge_id");
             el.teamId = qRes->getUInt64("team_id");
             el.nMark = qRes->getInt("mark");
-			el.passed = qRes->getUInt64("passed");
 
 			data.insert(make_pair(el.id, el));
 		}
@@ -123,14 +116,14 @@ long CChampionshipJudgesMarkTable::AddRow(tDATA& rec)
 			break;
 		}
 
-        sprintf(query, "insert into %s(`tour_id`, `judge_id`, `team_id`, `mark`, `passed`)"
-			" values(%d, %d, %d, %d, '%c')"
+        sprintf(query, "insert into %s(`tour_id`, `judge_id`, `team_id`, `mark`)"
+			" values(%d, %d, %d, %d)"
             , TABLE
             , rec.tourId
             , rec.judgeId
             , rec.teamId
             , rec.nMark
-			, rec.passed);
+			);
         res = m_pConnection->Execute(query);
 
 		rec.id = m_pConnection->GetLastInsertId();
@@ -186,13 +179,12 @@ long CChampionshipJudgesMarkTable::GetRow(unsigned int nId, tDATA& data)
 			res = UDF_E_NOTFOUND;
 			break;
 		}
-		
+
 		data.id = qRes->getUInt64("id");
 		data.tourId = qRes->getUInt64("tour_id");
 		data.judgeId = qRes->getUInt64("judge_id");
 		data.teamId = qRes->getUInt64("team_id");
 		data.nMark = qRes->getInt("mark");
-		data.passed = qRes->getUInt64("passed");
 
 		res = UDF_OK;
 	}while(0);
@@ -219,13 +211,6 @@ long CChampionshipJudgesMarkTable::UpdateRow(unsigned int nId, const tDATA& data
 		if (0 != data.tourId)
 		{
 			sprintf(tmp, "%s `tour_id` = %d,", query, data.tourId);
-			strncpy(query, tmp, MAX_QUERY_LEN-1);
-			useFilter = true;
-		}
-
-		if (0 != data.passed)
-		{
-			sprintf(tmp, "%s `passed` = '%c',", query, data.passed);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
@@ -258,6 +243,46 @@ long CChampionshipJudgesMarkTable::UpdateRow(unsigned int nId, const tDATA& data
 			res = m_pConnection->Execute(query);
 		}
 
+	}while(0);
+
+	return res;
+}
+
+
+long CChampionshipJudgesMarkTable::FindId(unsigned int& id, const tDATA& filter)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		std::string 		szQuery;
+		std::string 		szFilter;
+		sql::ResultSet*		qRes = NULL;
+
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+
+		szFilter = GetFilterString(filter) + " limit 1";
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+
+		if(!qRes->next())
+		{
+			res = UDF_E_NOTFOUND;
+			break;
+		}
+
+		id = qRes->getUInt("id");
+
+		res = UDF_OK;
 	}while(0);
 
 	return res;
