@@ -210,3 +210,42 @@ long CChampionshipTourPassTable::UpdateRow(unsigned int nId, const tDATA& data)
 
 	return res;
 }
+
+long CChampionshipTourPassTable::FindId(unsigned int& id, const tDATA& filter)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		std::string 		szQuery;
+		std::string 		szFilter;
+		sql::ResultSet*		qRes = NULL;
+
+		if(! m_pConnection)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+
+		szFilter = GetFilterString(filter) + " limit 1";
+		szQuery = GetQuery(TABLE, szFilter);
+		qRes = m_pConnection->ExecuteQuery(szQuery);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+
+		if(!qRes->next())
+		{
+			res = UDF_E_NOTFOUND;
+			break;
+		}
+			
+		id = qRes->getUInt("id");
+
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}

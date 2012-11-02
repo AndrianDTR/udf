@@ -53,6 +53,8 @@ long GetTourTeams(unsigned int catId, unsigned int tourId, tUIList& teamsList);
 long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& marks);
 long GetTourCategoryId(unsigned int tourId, unsigned int& catId);
 
+long GetPrevTourId(unsigned int tourId, unsigned int& prevTourId);
+
 bool GetTeamPassTour(unsigned int teamId, unsigned int tourId);
 long SetTeamPassTour(unsigned int teamId, unsigned int tourId, bool pass);
 

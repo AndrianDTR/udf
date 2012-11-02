@@ -558,7 +558,7 @@ long GetTourCategoryId(unsigned int tourId, unsigned int& catId)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		// select t1.start_number `start_num` from %s t1 where t1.id=%d
+		
 		sprintf(query, "select cs_cat_id `id` from %s where id=%d"
 			, TABLE_CHAMPIONSHIPTOUR
 			, tourId
@@ -602,12 +602,12 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 		}
 		
 		/*
-		select d.id `id`, d.start_number `sNum`, j1.mark+j2.mark+j3.mark `sum`, j1.mark, j2.mark, j3.mark from championship_team d 
-		-- __________^_______^_______^______________^________^________^_______________________________
+		select d.id `id`, d.start_number `sNum`, IFNULL(j1.mark,0)+IFNULL(j2.mark,0)+IFNULL(j3.mark,0) `sum`, IFNULL(j1.mark,0), IFNULL(j2.mark,0), IFNULL(j3.mark,0) from championship_team d 
+		-- ______________________________________^_________________^_________________^________________________^__________________^__________________^_________________________________________
 		-- dynamicaly formed
-		inner join championship_judges_mark j1 on j1.team_id=d.id and j1.tour_id=2 and j1.judge_id=55 -- < dynamicaly formed
-		inner join championship_judges_mark j2 on j2.team_id=d.id and j2.tour_id=2 and j2.judge_id=56 -- < dynamicaly formed
-		inner join championship_judges_mark j3 on j3.team_id=d.id and j3.tour_id=2 and j3.judge_id=57 -- < dynamicaly formed
+		left join (select cjm1.team_id `team_id`, cjm1.mark `mark` from championship_judges_mark cjm1 where cjm1.tour_id=8 and cjm1.judge_id=55) j1 on j1.team_id=d.id 
+		left join (select cjm2.team_id `team_id`, cjm2.mark `mark` from championship_judges_mark cjm2 where cjm2.tour_id=8 and cjm2.judge_id=56) j2 on j2.team_id=d.id 
+		left join (select cjm3.team_id `team_id`, cjm3.mark `mark` from championship_judges_mark cjm3 where cjm3.tour_id=8 and cjm3.judge_id=57) j3 on j3.team_id=d.id 
 		order by sum desc
 		*/
 		sQuery = "select d.id `id`, d.start_number `sNum`, ";
@@ -619,24 +619,27 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 		
 		for(tUIListCIt jud = judges.begin(); jud != judges.end(); jud++, n++)
 		{
-			sprintf(query, "j%d.mark", n);
+			sprintf(query, "ifnull(j%d.mark, 0)", n);
 			sum += query;
 			
-			sprintf(query, "j%d.mark `jm%d`", n, n);
+			sprintf(query, "ifnull(j%d.mark, 0) `jm%d`", n, n);
 			mark += query;
 			if(n != len-1)
 			{
-				sum += "+";
+				sum += " + ";
 				mark += ", ";
 			}
 			
 			unsigned int j = *jud;
-			sprintf(query, " inner join %s j%d on j%d.team_id=d.id and j%d.tour_id=%d and j%d.judge_id=%d "
+			sprintf(query, " left join (select cjm%d.team_id `team_id`, cjm%d.mark `mark` from %s cjm%d "
+				"where cjm%d.tour_id=%d and cjm%d.judge_id=%d) j%d on j%d.team_id=d.id  "
+				, n, n
 				, TABLE_CHAMPIONSHIPJUDGESMARK
-				, n, n, n
+				, n, n
 				, tourId
 				, n
 				, j
+				, n, n
 				);
 			join += query;
 		}
@@ -645,7 +648,27 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 		sprintf(query, " from %s d ", TABLE_CHAMPIONSHIPTEAM);
 		sQuery += mark + query;
 		sQuery += join;
-		sQuery += " order by sum desc";
+		sprintf(query, " inner join (select ctc.team_id `team_id` "
+			"from %s ctc inner join %s cst"
+			" on ctc.category_id=cst.cs_cat_id and cst.id=%d) a"
+			" on d.id=a.team_id "
+			, TABLE_CHAMPIONSHIPTEAMCATEGORIES
+			, TABLE_CHAMPIONSHIPTOUR
+			, tourId
+			);
+		sQuery += query;
+		
+		unsigned int prevTourId = 0;
+		if(UDF_OK == GetPrevTourId(tourId, prevTourId))
+		{
+			sprintf(query, "inner join %s tp on tp.team_id = d.id and tp.tour_id=%d "
+			, TABLE_CHAMPIONSHIPTOURPASS
+			, prevTourId
+			);
+		
+			sQuery += query;
+		}
+		sQuery += "order by sum desc, sNum, id ";
 		
 		qRes = pCon->ExecuteQuery(sQuery);
 		if(!qRes)
@@ -779,19 +802,19 @@ long GetTourTeams(unsigned int catId, unsigned int tourId, tUIList& teamsList)
 		 *    else return list of teams from previous tour that is listed in cs_tour_pass table
 		 */
 		
+		__info("Tour: %d", tourId);
 		// Get category tours
 		if(0 != tourId)
 		{
 			// Get previous tour in cat
 			// select t.id `id` from championship_tours t inner join (select ct.type_id `tpid` from championship_tours ct where ct.id=3) c on t.cs_cat_id=36 and t.type_id>c.tpid order by t.type_id limit 1
 			sprintf(query, "select t.id `id` from %s t"
-				" inner join (select ct.type_id `tpid` from %s ct"
-				" where ct.id=%d) c on t.cs_cat_id=%d and"
+				" inner join (select ct.type_id `tpid`, ct.cs_cat_id `cat` from %s ct"
+				" where ct.id=%d) c on t.cs_cat_id=c.cat and"
 				" t.type_id>c.tpid order by t.type_id limit 1"
 				, TABLE_CHAMPIONSHIPTOUR
 				, TABLE_CHAMPIONSHIPTOUR
 				, tourId
-				, catId
 				);
 		}
 		else
@@ -819,6 +842,7 @@ long GetTourTeams(unsigned int catId, unsigned int tourId, tUIList& teamsList)
 		}
 		
 		prevTour = qRes->getUInt("id");
+		__info("Prev Tour: %d", prevTour);
 				
 		sprintf(query, "select tp.id `id`, tp.team_id `tid` from %s tp where"
 			" tp.tour_id=%d"
@@ -839,6 +863,52 @@ long GetTourTeams(unsigned int catId, unsigned int tourId, tUIList& teamsList)
 		{
 			teamsList.push_back(qRes->getUInt("tid"));
 		}
+		
+		res = UDF_OK;
+	}while(0);
+
+	return res;
+}
+
+long GetPrevTourId(unsigned int tourId, unsigned int& prevTourId)
+{
+	long res = UDF_E_FAIL;
+
+	do
+	{
+		CDbConnection*		pCon = GetGlobalDbConnection();
+		char 				query[MAX_QUERY_LEN] = {0};
+		sql::ResultSet*		qRes = NULL;
+
+		if(! pCon)
+		{
+			res = UDF_E_NOCONNECTION;
+			break;
+		}
+		
+		sprintf(query, "select t.id `id` from %s t"
+			" inner join (select ct.type_id `tpid`, ct.cs_cat_id `cat` from %s ct"
+			" where ct.id=%d) c on t.cs_cat_id=c.cat and"
+			" t.type_id>c.tpid order by t.type_id limit 1"
+			, TABLE_CHAMPIONSHIPTOUR
+			, TABLE_CHAMPIONSHIPTOUR
+			, tourId
+			);
+
+		qRes = pCon->ExecuteQuery(query);
+		if(!qRes)
+		{
+			res = UDF_E_EXECUTE_QUERY_FAILED;
+			break;
+		}
+		
+		if(!qRes->next())
+		{
+			res = UDF_E_NOTFOUND;
+			break;
+		}
+		
+		prevTourId = qRes->getUInt("id");
 		
 		res = UDF_OK;
 	}while(0);

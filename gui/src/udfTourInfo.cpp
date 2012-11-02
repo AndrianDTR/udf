@@ -73,7 +73,7 @@ void udfTourInfo::CreateNewTour()
 			unsigned int jId = *jud;
 			m_gridSuccess->SetColLabelValue(nCol, GetVerticalText(GetCsJudgeNameById(jId)));
 			m_col2id[nCol] = jId;
-			m_id2row[jId] = nCol;
+			m_id2col[jId] = nCol;
 
 			nCol++;
 			jud++;
@@ -126,27 +126,13 @@ void udfTourInfo::CreateNewTour()
 		while(row != marksList.end())
 		{
 			tTourMarks& data = *row;
-
+			
 			m_gridSuccess->SetRowLabelValue(nRow, wxString::Format(STR_FORMAT_START_NUMBER, data.startNum));
-			m_col2id[nRow] = data.id;
+			m_row2id[nRow] = data.id;
 			m_id2row[data.id] = nRow;
-
+			
+			__info("Row: %d, Col: %d", nRow, m_gridSuccess->GetNumberCols());
 			m_gridSuccess->SetCellValue(wxString::Format(_("%d"), data.sum), nRow, 1);
-			/*
-			for(nCol = 0; nCol < m_gridSuccess->GetNumberCols(); ++nCol)
-			{
-				unsigned int id = 0;
-				CChampionshipJudgesMarkTable::tDATA data = {0};
-				data.tourId = nTourId;
-				data.teamId = m_row2id[nRow];
-				data.judgeId = m_col2id[nCol];
-				long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
-
-				if(UDF_OK == found)
-				{
-					m_gridSuccess->SetCellValue(_("X"), nRow, nCol+2);
-				}
-			}*/
 
 			nCol = 2;
 			for(tCListIt c = data.marksList.begin(); c != data.marksList.end(); c++, nCol++)
@@ -157,7 +143,7 @@ void udfTourInfo::CreateNewTour()
 					m_gridSuccess->SetCellValue(_("X"), nRow, nCol);
 				}
 			}
-			//*/
+			
 			nRow++;
 			row++;
 		}
@@ -174,27 +160,26 @@ void udfTourInfo::CreateNewTour()
 
 			if(cSum > sum)
 			{
-				attr->SetBackgroundColour(wxColour(180, 255, 180));
-				if(!GetTeamPassTour(m_col2id[nRow], nTourId))
-					m_gridSuccess->SetCellValue(_(""), nRow, 0);
-				else
+				attr->SetBackgroundColour(wxColour(200, 255, 200));
+				if(GetTeamPassTour(m_row2id[nRow], nTourId))
 					m_gridSuccess->SetCellValue(_("X"), nRow, 0);
 			}
 			else if(cSum == sum)
 			{
-				if(GetTeamPassTour(m_col2id[nRow], nTourId))
+				if(GetTeamPassTour(m_row2id[nRow], nTourId))
 					m_gridSuccess->SetCellValue(_("X"), nRow, 0);
 
-				attr->SetBackgroundColour(wxColour(255, 255, 180));
+				attr->SetBackgroundColour(wxColour(255, 255, 200));
 			}
 			else
 			{
-				attr->SetBackgroundColour(wxColour(255, 180, 180));
+				attr->SetBackgroundColour(wxColour(255, 230, 200));
 			}
 
 			m_gridSuccess->SetRowAttr(nRow, attr);
 			attr->IncRef();
 		}
+		//*/
 	}while(0);
 	Leave();
 }
@@ -281,33 +266,27 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 		{
 			CChampionshipToursTable(m_pCon).UpdateRow(nId, tourInfo);
 		}
-/*
+
 		int nRow = 0;
 		for(nRow = 0; nRow < m_gridSuccess->GetNumberRows(); ++nRow)
 		{
-			int nCol = 0;
-			for(nCol = 0; nCol < m_gridSuccess->GetNumberCols(); ++nCol)
+			wxString value = m_gridSuccess->GetCellValue(nRow, 0);
+			unsigned int id = -1;
+
+			CChampionshipTourPassTable::tDATA data;
+			data.tourId = tourInfo.id;
+			data.teamId = m_row2id[nRow];
+			long found = CChampionshipTourPassTable(m_pCon).FindId(id, data);
+			if(UDF_OK == found && value != _("X"))
 			{
-				wxString value = m_gridSuccess->GetCellValue(nRow, nCol);
-				unsigned int id = -1;
-
-				CChampionshipJudgesMarkTable::tDATA data;
-				data.tourId = tourInfo.id;
-				data.teamId = m_row2id[nRow];
-				data.judgeId = m_col2id[nCol];
-				long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
-				if(UDF_OK == found && value != _("X"))
-				{
-					__debug("Found! ID: %d. Delete it...", id);
-					CChampionshipJudgesMarkTable(m_pCon).DelRow(id);
-				}
-				else if(found == UDF_E_NOTFOUND && value == _("X"))
-				{
-					__debug("NOT Found! Insert it...");
-					CChampionshipJudgesMarkTable(m_pCon).AddRow(data);
-				}
+				__debug("Found! ID: %d. Delete it...", id);
+				CChampionshipTourPassTable(m_pCon).DelRow(id);
 			}
-
+			else if(found == UDF_E_NOTFOUND && value == _("X"))
+			{
+				__debug("NOT Found! Insert it...");
+				CChampionshipTourPassTable(m_pCon).AddRow(data);
+			}
 		}
 		//*/
 		CTourTypesTable::tDATA typeData = {0};
@@ -315,7 +294,6 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 		wxString name = wxString::Format(STR_FORMAT_TOUR_NAME, typeData.name, tourInfo.limit);
 		if(m_itemId.IsOk())
 		{
-
 			m_pTree->SetItemText(m_itemId, name);
 		}
 		else
@@ -347,3 +325,35 @@ void udfTourInfo::OnRemove(wxCommandEvent& event)
 	}while(0);
 	Leave();
 }
+
+void udfTourInfo::OnAddNext(wxCommandEvent& event)
+{
+	if(m_pMainWindow)
+		m_pMainWindow->OnAddTour(event);
+	event.Skip();
+}
+
+void udfTourInfo::OnMarkGreen(wxCommandEvent& event)
+{
+	int nRow = 0;
+	for(nRow = 0; nRow < m_gridSuccess->GetNumberRows(); ++nRow)
+	{
+		if(m_gridSuccess->GetCellBackgroundColour(nRow, 0) == wxColour(200, 255, 200))
+		{
+			m_gridSuccess->SetCellValue(_("X"), nRow, 0);
+		}
+	}
+}
+
+void udfTourInfo::OnMarkYellow(wxCommandEvent& event)
+{
+	int nRow = 0;
+	for(nRow = 0; nRow < m_gridSuccess->GetNumberRows(); ++nRow)
+	{
+		if(m_gridSuccess->GetCellBackgroundColour(nRow, 0) == wxColour(255, 255, 200))
+		{
+			m_gridSuccess->SetCellValue(_("X"), nRow, 0);
+		}
+	}
+}
+

@@ -4,7 +4,6 @@
 #include "udfCategoriesMngrDlg.h"
 #include "udfJudgesMngr.h"
 #include "udfChampionshipJudgesTeamMngrDlg.h"
-#include "udfStartNumberAssignDlg.h"
 #include "udfChampionshipTypeMngr.h"
 #include "udfDancersTeamMngr.h"
 #include "udfCodeDialog.h"
@@ -523,34 +522,6 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 	return res;
 }
 
-void udfMainFrameBase::OnDancersTeams(wxCommandEvent& event)
-{
-
-}
-
-void udfMainFrameBase::OnStartNumberAssign( wxCommandEvent& event )
-{
-	do{
-		wxTreeItemId itemId = GetSelectedCs();
-		if(!itemId.IsOk())
-			break;
-
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemId);
-
-		udfStartNumberAssignDlg(this, csItem->GetId()).ShowModal();
-	}while(0);
-}
-
-void udfMainFrameBase::OnJudgeMngr( wxCommandEvent& event )
-{
-	ShowCsJudgesManager();
-}
-
-void udfMainFrameBase::OnSendInvitation( wxCommandEvent& event )
-{
-	// TODO: Implement OnSendInvitation
-}
-
 void udfMainFrameBase::OnCitiesMngr(wxCommandEvent& event)
 {
 	udfCitiesMngr	dlg(this);
@@ -588,61 +559,6 @@ void udfMainFrameBase::OnMenuChampionshipTypes(wxCommandEvent& event)
 	udfChampionshipTypeMngr dlg(this);
 	dlg.ShowModal();
 	m_pageCsInfo->RefreshTypes();
-}
-
-void udfMainFrameBase::OnRemoveTour(wxCommandEvent& event)
-{
-	do
-	{
-		wxTreeItemId itemTourId = GetSelectedCatTour();
-		if(!itemTourId.IsOk())
-			break;
-
-		udfTreeItemData *tourItem = (udfTreeItemData *)m_treeCs->GetItemData(itemTourId);
-
-		if(UDF_OK != CChampionshipToursTable(m_pCon).DelRow(tourItem->GetId()))
-		{
-			ShowWarning(STR_ERR_DEL_CHAMPIONSHIP_TOUR_FAILED);
-			break;
-		}
-
-		m_treeCs->Delete(itemTourId);
-	}while(0);
-}
-
-void udfMainFrameBase::EditTourInfo()
-{
-	do
-	{
-		wxTreeItemId itemTourId = GetSelectedCatTour();
-		if(!itemTourId.IsOk())
-			break;
-
-		udfTreeItemData *tourItem = (udfTreeItemData *)m_treeCs->GetItemData(itemTourId);
-		if(tourItem->GetType() != IT_TOUR)
-			break;
-
-		CChampionshipToursTable::tDATA data = {0};
-		CChampionshipToursTable(m_pCon).GetRow(tourItem->GetId(), data);
-
-		udfCsTours dlg(this, data.typeId, data.limit);
-
-		if(wxID_OK != dlg.ShowModal())
-			break;
-
-		data.typeId = dlg.GetTypeId();
-		data.limit = dlg.GetLimit();
-
-		if(UDF_OK != CChampionshipToursTable(m_pCon).UpdateRow(tourItem->GetId(), data))
-		{
-			ShowWarning(STR_ERR_UPD_CHAMPIONSHIP_TOUR_FAILED);
-			break;
-		}
-
-		m_treeCs->DeleteChildren(itemTourId);
-		RefreshCategory(tourItem->GetId(), itemTourId);
-
-	}while(0);
 }
 
 void udfMainFrameBase::OnCsTourReport(wxCommandEvent& event)
@@ -710,24 +626,6 @@ void udfMainFrameBase::OnCsTourReport(wxCommandEvent& event)
 	}while(0);
 }
 
-void udfMainFrameBase::OnJudgesMark(wxCommandEvent& event)
-{
-	do{
-		wxTreeItemId itemCsId = GetSelectedCs();
-		if(!itemCsId.IsOk())
-			break;
-
-		udfTreeItemData *csItem = (udfTreeItemData *)m_treeCs->GetItemData(itemCsId);
-
-		wxTreeItemId itemTourId = GetSelectedCatTour();
-		if(!itemTourId.IsOk())
-			break;
-
-		udfTreeItemData *tourItem = (udfTreeItemData *)m_treeCs->GetItemData(itemTourId);
-
-		udfJudgeMark(this, tourItem->GetId()).ShowModal();
-	}while(0);
-}
 
 /************************************************************************/
 int udfMainFrameBase::ShowCsCategoryManager()
@@ -918,4 +816,11 @@ void udfMainFrameBase::TourSelected()
 		m_pageCatInfo->Show(false);
 		m_pageTourInfo->Show(true);
 	}while(0);
+}
+
+/****************************************************************/
+
+void udfMainFrameBase::OnJudgeMngr( wxCommandEvent& event )
+{
+	ShowCsJudgesManager();
 }

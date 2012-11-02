@@ -37,8 +37,6 @@
 #include "../res/button_save.xpm"
 #include "../res/button_startnumber.xpm"
 #include "../res/button_tour_add.xpm"
-#include "../res/button_tour_edit.xpm"
-#include "../res/button_tour_remove.xpm"
 #include "../res/button_update2.xpm"
 #include "../res/button_user.xpm"
 #include "../res/icon-database.xpm"
@@ -3020,24 +3018,14 @@ CsInfo::CsInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSiz
 	m_bpTourAdd = new wxBitmapButton( this, ID_TOUR_ADD, wxBitmap( button_tour_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer7->Add( m_bpTourAdd, 0, wxALL, 5 );
 	
-	bSizer13->Add( bSizer7, 0, wxALIGN_RIGHT, 5 );
-	
-	wxBoxSizer* bSizer71;
-	bSizer71 = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_bpTourEdit = new wxBitmapButton( this, ID_TOUR_EDIT, wxBitmap( button_tour_edit_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer71->Add( m_bpTourEdit, 0, wxALL, 5 );
-	
-	m_bpTourRemove = new wxBitmapButton( this, ID_TOUR_REMOVE, wxBitmap( button_tour_remove_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer71->Add( m_bpTourRemove, 0, wxALL, 5 );
-	
-	m_bpJudgesMark = new wxBitmapButton( this, ID_TOUR_JUIDGES_MARKS, wxBitmap( button_mark_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer71->Add( m_bpJudgesMark, 0, wxALL, 5 );
-	
 	m_bpTourReport = new wxBitmapButton( this, ID_TOUR_REPORT, wxBitmap( button_results_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-	bSizer71->Add( m_bpTourReport, 0, wxALL, 5 );
+	m_bpTourReport->Enable( false );
 	
-	bSizer13->Add( bSizer71, 0, wxALIGN_RIGHT, 5 );
+	m_bpTourReport->Enable( false );
+	
+	bSizer7->Add( m_bpTourReport, 0, wxALL, 5 );
+	
+	bSizer13->Add( bSizer7, 0, wxALIGN_RIGHT, 5 );
 	
 	wxFlexGridSizer* fgSizer1;
 	fgSizer1 = new wxFlexGridSizer( 6, 2, 0, 0 );
@@ -3122,9 +3110,6 @@ CsInfo::CsInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSiz
 	m_bpDancersTeams->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnDancersTeams ), NULL, this );
 	m_bpStartNumberMngr->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnStartNumberAssign ), NULL, this );
 	m_bpTourAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnAddBlock ), NULL, this );
-	m_bpTourEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnTourEdit ), NULL, this );
-	m_bpTourRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnRemoveTour ), NULL, this );
-	m_bpJudgesMark->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnJudgesMark ), NULL, this );
 	m_bpTourReport->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnCsTourReport ), NULL, this );
 }
 
@@ -3140,9 +3125,6 @@ CsInfo::~CsInfo()
 	m_bpDancersTeams->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnDancersTeams ), NULL, this );
 	m_bpStartNumberMngr->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnStartNumberAssign ), NULL, this );
 	m_bpTourAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnAddBlock ), NULL, this );
-	m_bpTourEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnTourEdit ), NULL, this );
-	m_bpTourRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnRemoveTour ), NULL, this );
-	m_bpJudgesMark->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnJudgesMark ), NULL, this );
 	m_bpTourReport->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CsInfo::OnCsTourReport ), NULL, this );
 	
 }
@@ -3374,17 +3356,23 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	bSizer132->Add( fgSizer25, 0, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer24;
-	fgSizer24 = new wxFlexGridSizer( 1, 2, 0, 0 );
-	fgSizer24->AddGrowableCol( 1 );
+	fgSizer24 = new wxFlexGridSizer( 1, 4, 0, 0 );
+	fgSizer24->AddGrowableCol( 3 );
 	fgSizer24->SetFlexibleDirection( wxBOTH );
 	fgSizer24->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_buttonMarkGreen = new wxButton( this, wxID_ANY, _("Mark green"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer24->Add( m_buttonMarkGreen, 0, wxALL, 5 );
+	
+	m_buttonMarkYellow = new wxButton( this, ID_YELLOW, _("Mark yellow"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer24->Add( m_buttonMarkYellow, 0, wxALL, 5 );
 	
 	m_staticText121 = new wxStaticText( this, wxID_ANY, _("Limit"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText121->Wrap( -1 );
 	fgSizer24->Add( m_staticText121, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textLimit = new wxTextCtrl( this, ID_LIMIT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer24->Add( m_textLimit, 0, wxALL, 5 );
+	fgSizer24->Add( m_textLimit, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	bSizer132->Add( fgSizer24, 0, wxEXPAND, 5 );
 	
@@ -3432,6 +3420,8 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	m_bpRemoveTour->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnRemove ), NULL, this );
 	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnUpdate ), NULL, this );
 	m_bpresults->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnResults ), NULL, this );
+	m_buttonMarkGreen->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnMarkGreen ), NULL, this );
+	m_buttonMarkYellow->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnMarkYellow ), NULL, this );
 	m_gridSuccess->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( TourInfo::OnCellLeftClick ), NULL, this );
 }
 
@@ -3442,6 +3432,8 @@ TourInfo::~TourInfo()
 	m_bpRemoveTour->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnRemove ), NULL, this );
 	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnUpdate ), NULL, this );
 	m_bpresults->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnResults ), NULL, this );
+	m_buttonMarkGreen->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnMarkGreen ), NULL, this );
+	m_buttonMarkYellow->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnMarkYellow ), NULL, this );
 	m_gridSuccess->Disconnect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( TourInfo::OnCellLeftClick ), NULL, this );
 	
 }

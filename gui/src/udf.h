@@ -1401,9 +1401,6 @@ class CsInfo : public wxPanel
 			ID_TEAMS,
 			wxID_CHAMPIONSHIP_STARTNUMBERMNGR,
 			ID_TOUR_ADD,
-			ID_TOUR_EDIT,
-			ID_TOUR_REMOVE,
-			ID_TOUR_JUIDGES_MARKS,
 			ID_TOUR_REPORT,
 			ID_NAME,
 			ID_TYPE,
@@ -1424,9 +1421,6 @@ class CsInfo : public wxPanel
 		wxBitmapButton* m_bpDancersTeams;
 		wxBitmapButton* m_bpStartNumberMngr;
 		wxBitmapButton* m_bpTourAdd;
-		wxBitmapButton* m_bpTourEdit;
-		wxBitmapButton* m_bpTourRemove;
-		wxBitmapButton* m_bpJudgesMark;
 		wxBitmapButton* m_bpTourReport;
 		wxStaticText* m_staticText4;
 		wxTextCtrl* m_textChName;
@@ -1455,9 +1449,6 @@ class CsInfo : public wxPanel
 		virtual void OnDancersTeams( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnStartNumberAssign( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddBlock( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnTourEdit( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemoveTour( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnJudgesMark( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCsTourReport( wxCommandEvent& event ) { event.Skip(); }
 		
 	
@@ -1571,6 +1562,7 @@ class TourInfo : public wxPanel
 			ID_ADDNEXT,
 			ID_REMOVE,
 			ID_UPDATE,
+			ID_YELLOW,
 			ID_LIMIT,
 			ID_JUDGES,
 		};
@@ -1583,6 +1575,8 @@ class TourInfo : public wxPanel
 		wxBitmapButton* m_bpRemoveTour;
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpresults;
+		wxButton* m_buttonMarkGreen;
+		wxButton* m_buttonMarkYellow;
 		wxStaticText* m_staticText121;
 		wxTextCtrl* m_textLimit;
 		wxGrid* m_gridSuccess;
@@ -1593,6 +1587,8 @@ class TourInfo : public wxPanel
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnResults( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMarkGreen( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMarkYellow( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCellLeftClick( wxGridEvent& event ) { event.Skip(); }
 		
 	

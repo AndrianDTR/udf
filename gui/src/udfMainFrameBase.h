@@ -52,7 +52,6 @@ protected:
 	void OnAddChampionsip( wxCommandEvent& event );
 	void OnStartNumberAssign( wxCommandEvent& event );
 	void OnJudgeMngr( wxCommandEvent& event );
-	void OnSendInvitation( wxCommandEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 	void OnAboutDlg( wxCommandEvent& event );
@@ -68,12 +67,7 @@ protected:
 	void OnSearch( wxCommandEvent& event );
 	void OnCsSelect(wxTreeEvent& event);
 	
-	void OnRemoveTour( wxCommandEvent& event );
 	void OnCsTourReport( wxCommandEvent& event );
-	void OnJudgesMark( wxCommandEvent& event );
-	void OnEditTour(wxTreeEvent& event) {EditTourInfo();};
-	void OnTourEdit(wxCommandEvent& event) {EditTourInfo();};
-	void EditTourInfo();
 	
 	void CsSelected();
 	void BlockSelected();

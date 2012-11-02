@@ -1,6 +1,7 @@
 #include "udfCsInfo.h"
 #include "udfMainFrameBase.h"
 #include "udfChampionshipTypeMngr.h"
+#include "udfStartNumberAssignDlg.h"
 #include "udfCitiesMngr.h"
 #include "udfDancersTeamMngr.h"
 
@@ -342,7 +343,17 @@ void udfCsInfo::OnDancersTeams( wxCommandEvent& event )
 
 void udfCsInfo::OnStartNumberAssign( wxCommandEvent& event )
 {
-// TODO: Implement OnStartNumberAssign
+	do{
+		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk()|| !m_itemId.IsOk())
+		{
+			__info("One of item is not set");
+			break;
+		}
+
+		udfTreeItemData *csItem = (udfTreeItemData *)m_pTree->GetItemData(m_itemId);
+
+		udfStartNumberAssignDlg(this, csItem->GetId()).ShowModal();
+	}while(0);
 }
 
 void udfCsInfo::OnAddBlock( wxCommandEvent& event )

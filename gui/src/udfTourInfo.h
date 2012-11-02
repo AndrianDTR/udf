@@ -43,6 +43,9 @@ protected:
 	void			OnUpdate(wxCommandEvent& event);
 	void			OnResults(wxCommandEvent& event);
 	void			OnRemove(wxCommandEvent& event);
+	void			OnAddNext(wxCommandEvent& event);
+	void			OnMarkGreen(wxCommandEvent& event);
+	void			OnMarkYellow(wxCommandEvent& event);
 
 protected:
 	void			CreateNewTour();

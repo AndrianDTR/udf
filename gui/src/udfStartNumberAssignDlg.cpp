@@ -7,7 +7,7 @@ udfStartNumberAssignDlg::udfStartNumberAssignDlg( wxWindow* parent, unsigned int
 : StartNumberAssignDlg( parent )
 , m_pCon(NULL)
 , m_nCsId(nCsId)
-, m_nLastAssign(0)
+, m_nLastAssign(1)
 , m_pTable(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
@@ -83,7 +83,7 @@ void udfStartNumberAssignDlg::OnRandomFind( wxCommandEvent& event )
 	
 	do
 	{
-		startNum = rand()%99999;
+		startNum = rand()%9999;
 		
 		m_Filter.startNumber = startNum;
 		
