@@ -318,8 +318,6 @@ class MainFrameBase : public wxFrame
 			ID_MENU_MNGR_ChTYPES_MNGR,
 			ID_MENU_MNGR_CITIES,
 			ID_MENU_MNGR_COUNTRIES,
-			ID_MENU_TOOLS_SYUNC,
-			ID_MENU_TOOLS_OPTIONS,
 			ID_ABOUT,
 			ID_SEARCH,
 			wxID_CHAMPIONSIP_ADD,
@@ -329,10 +327,10 @@ class MainFrameBase : public wxFrame
 		
 		wxMenuBar* m_menuBar;
 		wxMenu* m_menuFile;
-		wxMenu* m_menu8;
-		wxMenu* m_menu2;
-		wxMenu* m_menu5;
-		wxMenu* m_menu51;
+		wxMenu* m_menuCs;
+		wxMenu* m_menuManage;
+		wxMenu* m_menuTools;
+		wxMenu* m_menuHelp;
 		wxSplitterWindow* m_splitter2;
 		wxPanel* m_panel1;
 		wxStaticText* m_championshipSearchText;
@@ -915,17 +913,20 @@ class StartNumberAssignDlg : public wxDialog
 			ID_TEAMS_LIST = 1000,
 			ID_SEARCH,
 			ID_NUMBER,
-			wxID_RANDOM,
-			wxID_NEXT,
-			wxID_ASSIGN,
+			ID_ALLRANDOM,
+			ID_ALLNEXT,
+			ID_NEXTRANDOM,
+			ID_ASSIGN,
 		};
 		
 		wxListBox* m_listTeams;
 		wxStaticText* m_staticText85;
 		wxTextCtrl* m_textSearch;
 		wxTextCtrl* m_textNumber;
-		wxBitmapButton* m_bpRandomNumber;
-		wxBitmapButton* m_bpNextNumber;
+		wxBitmapButton* m_bpAllRandom;
+		wxBitmapButton* m_bpAllNext;
+		wxBitmapButton* m_bpFindRandom;
+		wxBitmapButton* m_bpFindNext;
 		wxBitmapButton* m_bpAssign;
 		
 		wxBitmapButton* m_bpSave;
@@ -934,8 +935,10 @@ class StartNumberAssignDlg : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSelectTeam( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRandomFind( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNextFind( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAllAssignRandom( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAllAssignIncrease( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnFindRandom( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnFindNext( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAssign( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
@@ -943,7 +946,7 @@ class StartNumberAssignDlg : public wxDialog
 	
 	public:
 		
-		StartNumberAssignDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 816,356 ), long style = wxDEFAULT_DIALOG_STYLE );
+		StartNumberAssignDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Start number assign"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 816,356 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~StartNumberAssignDlg();
 	
 };
@@ -956,13 +959,21 @@ class JudgeMark : public wxDialog
 	private:
 	
 	protected:
+		enum
+		{
+			ID_STARTNUM = 1000,
+			ID_GRIDMARKS,
+		};
+		
 		wxStaticText* m_staticText118;
-		wxTextCtrl* m_textCtrl78;
+		wxTextCtrl* m_textStartNum;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
+		wxTextCtrl* m_textJudges;
 		wxGrid* m_gridMarks;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCellLClick( wxGridEvent& event ) { event.Skip(); }
@@ -973,6 +984,39 @@ class JudgeMark : public wxDialog
 		
 		JudgeMark( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Judge marks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 834,734 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~JudgeMark();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class FinalMarks
+///////////////////////////////////////////////////////////////////////////////
+class FinalMarks : public wxDialog 
+{
+	private:
+	
+	protected:
+		enum
+		{
+			ID_GRIDMARKS = 1000,
+		};
+		
+		wxStaticText* m_staticText118;
+		
+		wxBitmapButton* m_bpSave;
+		wxBitmapButton* m_bpDiscard;
+		wxTextCtrl* m_textJudges;
+		wxGrid* m_gridMarks;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnKeyUp( wxKeyEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		FinalMarks( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Final marks"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 834,734 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~FinalMarks();
 	
 };
 
@@ -1495,6 +1539,8 @@ class BlockInfo : public wxPanel
 		wxStaticText* m_staticLenght;
 		wxStaticText* m_staticText119;
 		wxStaticText* m_staticDescription;
+		wxStaticText* m_staticText117;
+		wxTextCtrl* m_textJudges;
 		wxGrid* m_gridJudgesCats;
 		
 		// Virtual event handlers, overide them in your derived class
@@ -1506,6 +1552,7 @@ class BlockInfo : public wxPanel
 		virtual void OnPauseKillFocuss( wxFocusEvent& event ) { event.Skip(); }
 		virtual void OnCellChange( wxGridEvent& event ) { event.Skip(); }
 		virtual void OnCellLeftClick( wxGridEvent& event ) { event.Skip(); }
+		virtual void OnLabelClick( wxGridEvent& event ) { event.Skip(); }
 		
 	
 	public:

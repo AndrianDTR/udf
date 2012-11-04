@@ -49,7 +49,7 @@ protected:
 
 protected:
 	void			CreateNewTour();
-	void			FillData();
+	void			CalculatePlaces();
 
 public:
 	bool			Show(bool show = true);

@@ -78,7 +78,7 @@ STR_DEFINITION(STR_WARN_REGOPEN_GREATTHEN_REGCLOSE, "Championship reg open date 
 STR_DEFINITION(STR_WARN_PAY_GREATTHEN_EXP, "Pay date is greater then expire date.");
 STR_DEFINITION(STR_WARN_REMOVE_ALL_TEAM_DANCERS, "If you change the club. All team dencers will be removed. \n\nRemove them all?");
 
-STR_DEFINITION(STR_WARNING_CS_ALREADY_HAS_FINAL, "Selected championship already has final tour.");
+STR_DEFINITION(STR_WARNING_CAT_ALREADY_HAS_FINAL, "Selected category already has the final tour.");
 
 STR_DEFINITION(STR_FORMAT_SUM, "%.02f");
 STR_DEFINITION(STR_FORMAT_DATE, "%Y-%B-%d");

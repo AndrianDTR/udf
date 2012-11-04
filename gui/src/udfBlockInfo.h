@@ -26,6 +26,7 @@ protected:
 	void OnJudgesTemManager( wxCommandEvent& event );
 	void OnCellChange( wxGridEvent& event );
 	void OnCellLeftClick( wxGridEvent& event );
+	void OnLabelClick( wxGridEvent& event );
 	void OnRemove( wxCommandEvent& event );
 	
 public:

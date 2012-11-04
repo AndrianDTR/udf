@@ -7,30 +7,22 @@ udfStartNumberAssignDlg::udfStartNumberAssignDlg( wxWindow* parent, unsigned int
 : StartNumberAssignDlg( parent )
 , m_pCon(NULL)
 , m_nCsId(nCsId)
-, m_nLastAssign(1)
-, m_pTable(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	m_pTable = new CChampionshipTeamsTable(m_pCon);
-		
+			
 	RefreshList();
-	
-	m_Filter.clubId = 0;
-	m_Filter.startNumber = 0;
-	m_Filter.name = "";
-	m_Filter.championshipId = nCsId;
 	
 	srand(time(NULL));
 	
-	m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, m_nLastAssign));
 	m_textSearch->SetFocus();
 }
 
 void udfStartNumberAssignDlg::RefreshList()
 {
-	CChampionshipTeamsTable::tDATA filter = {0};
+	CChampionshipTeamsTable::tDATA 	filter = {0};
 	filter.championshipId = m_nCsId;
-	m_pTable->Find(m_CsTeams, filter);
+	
+	CChampionshipTeamsTable(m_pCon).Find(m_CsTeams, filter);
 	
 	m_listTeams->Clear();
 	
@@ -75,7 +67,7 @@ void udfStartNumberAssignDlg::OnSelectTeam( wxCommandEvent& event )
 {
 
 }
-
+/*
 void udfStartNumberAssignDlg::OnRandomFind( wxCommandEvent& event )
 {
 	unsigned long startNum = m_nLastAssign;
@@ -113,19 +105,14 @@ unsigned long udfStartNumberAssignDlg::FindNextNum(unsigned long num)
 	
 	return startNum;
 }
-
+*/
 void udfStartNumberAssignDlg::OnAssign( wxCommandEvent& event )
 {
 	do{
-		unsigned long startNum = m_nLastAssign;
-		if(!m_textNumber->GetValue().ToULong(&startNum))
+		unsigned long startNum = 1;
+	/*	if(!m_textNumber->GetValue().ToULong(&startNum))
 			break;
 			
-		if(startNum == m_nLastAssign)
-		{
-			startNum = FindNextNum(startNum);
-		}
-		
 		int nPos = m_listTeams->GetSelection();
 			
 		if(-1 == nPos)
@@ -133,28 +120,38 @@ void udfStartNumberAssignDlg::OnAssign( wxCommandEvent& event )
 
 		int nId = *(int*)m_listTeams->GetClientData(nPos);
 		CChampionshipTeamsTable::tDATA data = {0};
-		m_pTable->GetRow(nId, data);
 		
 		if (0 == data.startNumber)
 		{
 			data.startNumber = startNum;
-			m_nLastAssign = startNum;
 			m_pTable->UpdateRow(nId, data);
 			m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, startNum));
 		}
 		else
 		{
-			m_nLastAssign = data.startNumber;
 			m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, (unsigned long)data.startNumber));
 		}
 		
 		m_textSearch->SetValue("");
 		m_textSearch->SetFocus();
+		 * */
 	}while(0);
 }
 
 void udfStartNumberAssignDlg::OnSave( wxCommandEvent& event )
 {
+	CChampionshipTeamsTable::tTableIt it = m_CsTeams.begin();
+	while(it != m_CsTeams.end())
+	{
+		CChampionshipTeamsTable::tDATA	newData = {0};
+		CChampionshipTeamsTable::tDATA& data = it->second;
+		
+		newData.startNumber = data.startNumber;
+		
+		CChampionshipTeamsTable(m_pCon).UpdateRow(data.id, newData);
+		
+		it++;
+	}
 	EndModal(wxID_OK);
 }
 
@@ -162,3 +159,57 @@ void udfStartNumberAssignDlg::OnDiscard( wxCommandEvent& event )
 {
 	EndModal(wxID_CANCEL);
 }
+
+void udfStartNumberAssignDlg::OnAllAssignIncrease(wxCommandEvent& event)
+{
+	unsigned int nStartNum = 1;
+	CChampionshipTeamsTable::tTableIt it = m_CsTeams.begin();
+	while(it != m_CsTeams.end())
+	{
+		CChampionshipTeamsTable::tDATA& data = it->second;
+		data.startNumber = nStartNum;
+		
+		m_StNumMap[nStartNum] = data.id;
+		
+		nStartNum++;
+		it++;
+	}
+}
+
+void udfStartNumberAssignDlg::OnAllAssignRandom(wxCommandEvent& event)
+{
+	unsigned int nStartNum = 1;
+	CChampionshipTeamsTable::tTableIt it = m_CsTeams.begin();
+	while(it != m_CsTeams.end())
+	{
+		CChampionshipTeamsTable::tDATA& data = it->second;
+		
+		do
+		{
+			nStartNum = rand()%9999;
+		}while(m_StNumMap.end() != m_StNumMap.find(nStartNum));
+		
+		data.startNumber = nStartNum;
+		
+		it++;
+	}
+}
+
+void udfStartNumberAssignDlg::OnFindNext(wxCommandEvent& event)
+{
+	unsigned int nStartNum = m_StNumMap.rbegin()->second;
+		
+	m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, nStartNum));
+}
+
+void udfStartNumberAssignDlg::OnFindRandom(wxCommandEvent& event)
+{
+	unsigned int nStartNum = 1;
+	do
+	{
+		nStartNum = rand()%9999;
+	}while(m_StNumMap.end() != m_StNumMap.find(nStartNum));
+	
+	m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, nStartNum));
+}
+

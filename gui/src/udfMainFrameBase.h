@@ -45,10 +45,13 @@ protected:
 	// Handlers for MainFrameBase events.
 	void OnCloseFrame( wxCloseEvent& event );
 	void OnExitClick( wxCommandEvent& event );
+	
 	void OnMenuCategoryManage( wxCommandEvent& event );
 	void OnMenuClubManage( wxCommandEvent& event );
 	void OnMenuJudgeManage( wxCommandEvent& event );
 	void OnMenuChampionshipTypes( wxCommandEvent& event );
+	void OnMenuOptions( wxCommandEvent& event );
+	
 	void OnAddChampionsip( wxCommandEvent& event );
 	void OnStartNumberAssign( wxCommandEvent& event );
 	void OnJudgeMngr( wxCommandEvent& event );

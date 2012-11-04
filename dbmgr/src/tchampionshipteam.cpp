@@ -196,21 +196,21 @@ long CChampionshipTeamsTable::UpdateRow(unsigned int nId, const tDATA& data)
 			break;
 		}
 
-		if (data.clubId != -1)
+		if (0 != data.clubId)
 		{
 			sprintf(tmp, "%s `club_id` = %d,", query, data.clubId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 
-		if (data.championshipId != -1)
+		if (0 != data.championshipId)
 		{
 			sprintf(tmp, "%s `championship_id` = %d,", query, data.championshipId);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 
-		if (data.startNumber != -1)
+		if (0 != data.startNumber)
 		{
 			sprintf(tmp, "%s `start_number` = %d,", query, data.startNumber);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);

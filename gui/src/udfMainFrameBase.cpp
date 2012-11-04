@@ -12,6 +12,7 @@
 #include "udfCsTours.h"
 #include "udfJudgeMark.h"
 #include "udfCsTourReport.h"
+#include "udfSettings.h"
 
 #include "udfCsInfo.h"
 #include "udfBlockInfo.h"
@@ -522,45 +523,6 @@ int udfMainFrameBase::ShowLiguesMngrDlg()
 	return res;
 }
 
-void udfMainFrameBase::OnCitiesMngr(wxCommandEvent& event)
-{
-	udfCitiesMngr	dlg(this);
-	dlg.ShowModal();
-	m_pageCsInfo->RefreshCities();
-}
-
-void udfMainFrameBase::OnCountriesMngr(wxCommandEvent& event)
-{
-	udfCountriesMngr	dlg(this);
-	dlg.ShowModal();
-	m_pageCsInfo->RefreshCities();
-}
-
-void udfMainFrameBase::OnMenuCategoryManage( wxCommandEvent& event )
-{
-	udfCategoriesMngrDlg dlg(this);
-	dlg.ShowModal();
-}
-
-void udfMainFrameBase::OnMenuClubManage( wxCommandEvent& event )
-{
-	udfClubsMngrDlg dlg(this);
-	dlg.ShowModal();
-}
-
-void udfMainFrameBase::OnMenuJudgeManage( wxCommandEvent& event )
-{
-	udfJudgesMngr dlg(this);
-	dlg.ShowModal();
-}
-
-void udfMainFrameBase::OnMenuChampionshipTypes(wxCommandEvent& event)
-{
-	udfChampionshipTypeMngr dlg(this);
-	dlg.ShowModal();
-	m_pageCsInfo->RefreshTypes();
-}
-
 void udfMainFrameBase::OnCsTourReport(wxCommandEvent& event)
 {
 	do{
@@ -626,6 +588,53 @@ void udfMainFrameBase::OnCsTourReport(wxCommandEvent& event)
 	}while(0);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Menu handlers
+//////////////////////////////////////////////////////////////////////////
+void udfMainFrameBase::OnCitiesMngr(wxCommandEvent& event)
+{
+	udfCitiesMngr	dlg(this);
+	dlg.ShowModal();
+	m_pageCsInfo->RefreshCities();
+}
+
+void udfMainFrameBase::OnCountriesMngr(wxCommandEvent& event)
+{
+	udfCountriesMngr	dlg(this);
+	dlg.ShowModal();
+	m_pageCsInfo->RefreshCities();
+}
+
+void udfMainFrameBase::OnMenuCategoryManage( wxCommandEvent& event )
+{
+	udfCategoriesMngrDlg dlg(this);
+	dlg.ShowModal();
+}
+
+void udfMainFrameBase::OnMenuClubManage( wxCommandEvent& event )
+{
+	udfClubsMngrDlg dlg(this);
+	dlg.ShowModal();
+}
+
+void udfMainFrameBase::OnMenuJudgeManage( wxCommandEvent& event )
+{
+	udfJudgesMngr dlg(this);
+	dlg.ShowModal();
+}
+
+void udfMainFrameBase::OnMenuChampionshipTypes(wxCommandEvent& event)
+{
+	udfChampionshipTypeMngr dlg(this);
+	dlg.ShowModal();
+	m_pageCsInfo->RefreshTypes();
+}
+
+void udfMainFrameBase::OnMenuOptions(wxCommandEvent& event)
+{
+	udfSettings dlg(this);
+	dlg.ShowModal();
+}
 
 /************************************************************************/
 int udfMainFrameBase::ShowCsCategoryManager()
@@ -824,3 +833,4 @@ void udfMainFrameBase::OnJudgeMngr( wxCommandEvent& event )
 {
 	ShowCsJudgesManager();
 }
+

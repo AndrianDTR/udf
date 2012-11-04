@@ -25,6 +25,7 @@ set( HEADER_FILES
 	src/udfCsTourReport.h
 	src/udfReportPreview.h
 	src/udfJudgeMark.h
+	src/udfFinalMarks.h
 	src/udfCategoriesMngrDlg.h
 	src/udfChampionshipCategoriesMngrDlg.h
 	src/udfChampionshipTypeMngr.h
@@ -47,6 +48,7 @@ set( HEADER_FILES
 	src/udfBlockInfo.h
 	src/udfCategoryInfo.h
 	src/udfTourInfo.h
+	src/udfSettings.cpp
 )
 
 set( SOURCE_FILES 
@@ -63,6 +65,7 @@ set( SOURCE_FILES
 	src/udfCsTourReport.cpp
 	src/udfReportPreview.cpp
 	src/udfJudgeMark.cpp
+	src/udfFinalMarks.cpp
 	src/udfChampionshipCategoriesMngrDlg.cpp
 	src/udfChampionshipTypeMngr.cpp
 	src/udfChampionshipJudgesTeamMngrDlg.cpp
@@ -84,6 +87,7 @@ set( SOURCE_FILES
 	src/udfBlockInfo.cpp
 	src/udfCategoryInfo.cpp
 	src/udfTourInfo.cpp
+	src/udfSettings.cpp
 )
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined

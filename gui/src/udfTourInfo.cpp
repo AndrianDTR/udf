@@ -1,6 +1,7 @@
 #include "udfTourInfo.h"
 #include "udfMainFrameBase.h"
 #include "udfJudgeMark.h"
+#include "udfFinalMarks.h"
 
 #include "db.h"
 
@@ -23,7 +24,6 @@ bool udfTourInfo::Show(bool show)
 	if(show)
 	{
 		CreateNewTour();
-		FillData();
 	}
 
 	Leave();
@@ -43,44 +43,6 @@ void udfTourInfo::CreateNewTour()
 
 		udfTreeItemData* catItem = (udfTreeItemData*)m_pTree->GetItemData(m_parentItem);
 
-		m_gridSuccess->ClearGrid();
-		if(m_gridSuccess->GetNumberRows())
-			m_gridSuccess->DeleteRows(0, m_gridSuccess->GetNumberRows());
-		if(m_gridSuccess->GetNumberCols())
-			m_gridSuccess->DeleteCols(0, m_gridSuccess->GetNumberCols());
-
-		m_gridSuccess->SetDefaultColSize(25);
-		m_gridSuccess->SetDefaultRowSize(25);
-		m_gridSuccess->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
-		m_gridSuccess->SetRowLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
-
-		//Start append cols
-		tUIList juds;
-		GetJudgesForCategory(catItem->GetId(), juds);
-		int nColsCount = juds.size() + 2; // Include Pass and Sum col
-
-		m_gridSuccess->AppendCols(nColsCount);
-
-		m_gridSuccess->SetColLabelValue(0, GetVerticalText("Passes"));
-
-		m_gridSuccess->SetColumnWidth(1, 30);
-		m_gridSuccess->SetColLabelValue(1, GetVerticalText("Sum"));
-
-		int nCol = 2;
-		tUIListIt jud = juds.begin();
-		while(jud != juds.end())
-		{
-			unsigned int jId = *jud;
-			m_gridSuccess->SetColLabelValue(nCol, GetVerticalText(GetCsJudgeNameById(jId)));
-			m_col2id[nCol] = jId;
-			m_id2col[jId] = nCol;
-
-			nCol++;
-			jud++;
-		}
-		// Finish append cols
-
-		// Start append rows
 		unsigned int nTourId = 0;
 		if(m_itemId.IsOk())
 		{
@@ -98,13 +60,64 @@ void udfTourInfo::CreateNewTour()
 			ShowWarning("There are no any team that pass in previous tour.");
 			break;
 		}
-
+		
 		m_tourType = 0;
 		CTourTypesTable::tDATA typeData = {0};
 		GetTourTypeByDancersCount(teams.size(), m_tourType);
 		CTourTypesTable(m_pCon).GetRow(m_tourType, typeData);
 		m_staticType->SetLabel(typeData.name);
 		m_staticMinMax->SetLabel(wxString::Format("%d - %d", typeData.min, typeData.max));
+		
+		m_gridSuccess->ClearGrid();
+		if(m_gridSuccess->GetNumberRows())
+			m_gridSuccess->DeleteRows(0, m_gridSuccess->GetNumberRows());
+		if(m_gridSuccess->GetNumberCols())
+			m_gridSuccess->DeleteCols(0, m_gridSuccess->GetNumberCols());
+
+		m_gridSuccess->SetDefaultColSize(25);
+		m_gridSuccess->SetDefaultRowSize(25);
+		m_gridSuccess->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
+		m_gridSuccess->SetRowLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
+
+		int extraCols = 2;
+		if(m_tourType == 1)
+			extraCols = 1;
+			
+		//Start append cols
+		tUIList juds;
+		GetJudgesForCategory(catItem->GetId(), juds);
+		int nColsCount = juds.size() + extraCols; // Include Pass and Sum col
+
+		m_gridSuccess->AppendCols(nColsCount);
+
+		if(m_tourType == 1)
+		{
+			m_gridSuccess->SetColLabelValue(0, GetVerticalText("Place"));
+		}
+		else
+		{
+			m_gridSuccess->SetColLabelValue(0, GetVerticalText("Pass"));
+		
+			m_gridSuccess->SetColMinimalWidth(1, 30);
+			m_gridSuccess->SetColLabelValue(1, GetVerticalText("Sum"));
+		}
+
+		int nCol = extraCols;
+		tUIListIt jud = juds.begin();
+		while(jud != juds.end())
+		{
+			unsigned int jId = *jud;
+			m_gridSuccess->SetColLabelValue(nCol, GetVerticalText(GetCsJudgeNameById(jId)));
+			m_col2id[nCol] = jId;
+			m_id2col[jId] = nCol;
+
+			nCol++;
+			jud++;
+		}
+		// Finish append cols
+
+		// Start append rows
+		
 
 		m_gridSuccess->AppendRows(teams.size());
 
@@ -131,23 +144,34 @@ void udfTourInfo::CreateNewTour()
 			m_row2id[nRow] = data.id;
 			m_id2row[data.id] = nRow;
 			
-			__info("Row: %d, Col: %d", nRow, m_gridSuccess->GetNumberCols());
+			__info("Row: %d, Rows: %d, Cols: %d", nRow, m_gridSuccess->GetNumberRows(), m_gridSuccess->GetNumberCols());
 			m_gridSuccess->SetCellValue(wxString::Format(_("%d"), data.sum), nRow, 1);
-
-			nCol = 2;
+			
+			nCol = extraCols;
 			for(tCListIt c = data.marksList.begin(); c != data.marksList.end(); c++, nCol++)
 			{
 				__info("Row: %d, Col: %d, Mark: %d", nRow, nCol, *c);
 				if(*c)
 				{
 					m_gridSuccess->SetCellValue(_("X"), nRow, nCol);
+					if(m_tourType == 1)
+					{
+						m_gridSuccess->SetCellValue(wxString::Format(_("%d"), *c), nRow, nCol);
+					}
 				}
 			}
 			
 			nRow++;
 			row++;
 		}
-
+		
+		//Final tour Do not calculate sum
+		if(m_tourType == 1)
+		{
+			CalculatePlaces();
+			break;
+		}
+		
 		int sum = 0;
 		if(tourInfo.limit < m_gridSuccess->GetNumberRows())
 			m_gridSuccess->GetCellValue(tourInfo.limit, 1).ToLong((long*)&sum);
@@ -179,40 +203,42 @@ void udfTourInfo::CreateNewTour()
 			m_gridSuccess->SetRowAttr(nRow, attr);
 			attr->IncRef();
 		}
-		//*/
 	}while(0);
 	Leave();
 }
 
-void udfTourInfo::FillData()
+void udfTourInfo::CalculatePlaces()
 {
 	Enter();
 	do
 	{
-		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk())
-		{
-			__info("One of items is not set");
-			break;
-		}
-
+		__info("Calculate a place by skating rules.");
 	}while(0);
 	Leave();
 }
 
 void udfTourInfo::OnCellLeftClick(wxGridEvent& event)
 {
-	int row = event.GetRow(),
-		col = event.GetCol();
-
-	if(col == 0)
+	do
 	{
-		wxString value = m_gridSuccess->GetCellValue(row, col);
-		if(value.IsEmpty())
-			m_gridSuccess->SetCellValue(row, col, _("X"));
-		else
-			m_gridSuccess->SetCellValue(row, col, _(""));
-	}
+		int row = event.GetRow(),
+			col = event.GetCol();
 
+		// Final tour
+		if(m_tourType == 1)
+		{
+			break;
+		}
+		
+		if(col == 0)
+		{
+			wxString value = m_gridSuccess->GetCellValue(row, col);
+			if(value.IsEmpty())
+				m_gridSuccess->SetCellValue(row, col, _("X"));
+			else
+				m_gridSuccess->SetCellValue(row, col, _(""));
+		}
+	}while(0);
 	event.Skip();
 }
 
@@ -227,7 +253,15 @@ void udfTourInfo::OnResults(wxCommandEvent& event)
 		}
 
 		udfTreeItemData* tourItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
-		udfJudgeMark(this, tourItem->GetId()).ShowModal();
+		
+		if(m_tourType == 1)
+		{
+			udfFinalMarks(this, tourItem->GetId()).ShowModal();
+		}
+		else
+		{
+			udfJudgeMark(this, tourItem->GetId()).ShowModal();
+		}
 	}while(0);
 }
 
@@ -328,9 +362,23 @@ void udfTourInfo::OnRemove(wxCommandEvent& event)
 
 void udfTourInfo::OnAddNext(wxCommandEvent& event)
 {
-	if(m_pMainWindow)
-		m_pMainWindow->OnAddTour(event);
+	Enter();
+	do
+	{
+		if(m_tourType == 1)
+		{
+			ShowWarning(STR_WARNING_CAT_ALREADY_HAS_FINAL);
+			break;
+		}
+			
+		if(m_pMainWindow)
+			m_pMainWindow->OnAddTour(event);
+		
+	}while(0);
+	
 	event.Skip();
+	
+	Leave();
 }
 
 void udfTourInfo::OnMarkGreen(wxCommandEvent& event)

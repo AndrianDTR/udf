@@ -173,6 +173,7 @@ void udfBlockInfo::OnCellChange( wxGridEvent& event )
 	if(!value.IsEmpty() && value != _(" "))
 		m_gridJudgesCats->SetCellValue(row, col, _("X"));
 
+	m_staticDescription->SetLabel(GetCsCategoryNameById(m_RowIdMap[row]));
 	event.Skip();
 }
 
@@ -187,6 +188,20 @@ void udfBlockInfo::OnCellLeftClick( wxGridEvent& event )
 	else
 		m_gridJudgesCats->SetCellValue(row, col, _(""));
 	
+	m_staticDescription->SetLabel(GetCsCategoryNameById(m_RowIdMap[row]));
+	event.Skip();
+}
+
+void udfBlockInfo::OnLabelClick(wxGridEvent& event)
+{
+	do{
+		int row = event.GetRow();
+		
+		if(-1 == row)
+			break;
+			
+		m_staticDescription->SetLabel(GetCsCategoryNameById(m_RowIdMap[row]));
+	}while(0);
 	event.Skip();
 }
 
@@ -278,17 +293,25 @@ void udfBlockInfo::CreateNewBlock()
 		m_gridJudgesCats->AppendCols(juds.size());
 		m_gridJudgesCats->AppendRows(cats.size());
 
+		wxString jDescr;
 		CChampionshipJudgesTeamTable::tTableIt jIt = juds.begin();
 		nCol = 0;
 		while(jIt != juds.end())
 		{
 			CChampionshipJudgesTeamTable::tDATA& data = jIt->second;
-			m_gridJudgesCats->SetColLabelValue(nCol, GetVerticalText(GetJudgeNameById(data.judgeId)));
+			
+			wxString letter = m_gridJudgesCats->GetColLabelValue(nCol);
+			wxString judge = GetJudgeNameById(data.judgeId);
+			
+			
+			jDescr += wxString::Format(STR_FORMAT_REPORT_JUDGE_SHORTCUT, letter[0], judge);
+			
 			m_ColIdMap[nCol] = jIt->first;
 			m_IdColMap[jIt->first] = nCol;
 			nCol++;
 			jIt++;
 		}
+		m_textJudges->SetValue(jDescr);
 
 		CChampionshipCategoriesTable::tTableIt cIt = cats.begin();
 		nRow = 0;

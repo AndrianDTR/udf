@@ -1,4 +1,4 @@
-#include "udfJudgeMark.h"
+#include "udfFinalMarks.h"
 
 #include "db.h"
 
@@ -6,13 +6,12 @@
 #include "udfuiutils.h"
 #include "string_def.h"
 
-udfJudgeMark::udfJudgeMark( wxWindow* parent, unsigned int tourId )
-:JudgeMark( parent )
+udfFinalMarks::udfFinalMarks( wxWindow* parent, unsigned int tourId )
+: FinalMarks( parent )
 , m_pCon(NULL)
 , m_tourId(tourId)
 , m_catId(0)
 {
-
 	m_pCon = CDbManager::Instance()->GetConnection();
 
 	unsigned int catId = 0;
@@ -23,18 +22,21 @@ udfJudgeMark::udfJudgeMark( wxWindow* parent, unsigned int tourId )
 	RefreshGrid();
 }
 
-void udfJudgeMark::OnSave( wxCommandEvent& event )
+void udfFinalMarks::OnSave( wxCommandEvent& event )
 {
-	UpdateMarks();
-	//EndModal(wxID_OK);
+	if(Validate())
+	{
+		UpdateMarks();
+		//EndModal(wxID_OK);
+	}
 }
 
-void udfJudgeMark::OnDiscard( wxCommandEvent& event )
+void udfFinalMarks::OnDiscard( wxCommandEvent& event )
 {
 	EndModal(wxID_CANCEL);
 }
 
-void udfJudgeMark::OnCellLClick( wxGridEvent& event )
+void udfFinalMarks::OnCellLClick( wxGridEvent& event )
 {
 	int row = event.GetRow(),
 		col = event.GetCol();
@@ -48,7 +50,7 @@ void udfJudgeMark::OnCellLClick( wxGridEvent& event )
 	event.Skip();
 }
 
-void udfJudgeMark::OnKeyUp( wxKeyEvent& event )
+void udfFinalMarks::OnKeyUp( wxKeyEvent& event )
 {
 	/*int row = m_gridMarks->GetSelectedRows()[0],
 		col = m_gridMarks->GetSelectedCols()[0];
@@ -67,7 +69,8 @@ void udfJudgeMark::OnKeyUp( wxKeyEvent& event )
 	event.Skip();
 }
 
-void udfJudgeMark::RefreshGrid()
+
+void udfFinalMarks::RefreshGrid()
 {
 	Enter();
 	do
@@ -81,8 +84,13 @@ void udfJudgeMark::RefreshGrid()
 		if(m_gridMarks->GetNumberCols())
 			m_gridMarks->DeleteCols(0, m_gridMarks->GetNumberCols());
 
-		m_gridMarks->SetDefaultColSize(25);
-		m_gridMarks->SetDefaultRowSize(25);
+		m_gridMarks->SetDefaultColSize(60);
+		m_gridMarks->SetDefaultRowSize(60);
+		wxFont font = m_gridMarks->GetDefaultCellFont();
+		font.SetPointSize(25);
+		font.SetWeight(wxFONTWEIGHT_BOLD);
+		m_gridMarks->SetDefaultCellFont(font);
+		
 		m_gridMarks->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
 		m_gridMarks->SetRowLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
 
@@ -94,7 +102,7 @@ void udfJudgeMark::RefreshGrid()
 
 		m_gridMarks->AppendCols(juds.size());
 		m_gridMarks->AppendRows(teams.size());
-		
+
 		wxString jDescr;
 		tUIListIt jud = juds.begin();
 		while(jud != juds.end())
@@ -112,7 +120,7 @@ void udfJudgeMark::RefreshGrid()
 			jud++;
 		}
 		m_textJudges->SetValue(jDescr);
-		
+
 		tUIListIt team = teams.begin();
 		while(team != teams.end())
 		{
@@ -137,10 +145,11 @@ void udfJudgeMark::RefreshGrid()
 				data.teamId = m_row2id[nRow];
 				data.judgeId = m_col2id[nCol];
 				long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
-
+				
 				if(UDF_OK == found)
 				{
-					m_gridMarks->SetCellValue(_("X"), nRow, nCol);
+					CChampionshipJudgesMarkTable(m_pCon).GetRow(id, data);
+					m_gridMarks->SetCellValue(wxString::Format(_("%d"), data.nMark), nRow, nCol);
 				}
 			}
 		}
@@ -149,7 +158,25 @@ void udfJudgeMark::RefreshGrid()
 	Leave();
 }
 
-void udfJudgeMark::UpdateMarks()
+bool udfFinalMarks::Validate()
+{
+	Enter();
+	
+	bool res = false;
+	do
+	{
+		if(0)
+			break;
+		
+		res = true;
+	}while(0);
+	
+	Leave();
+	
+	return res;
+}
+
+void udfFinalMarks::UpdateMarks()
 {
 	Enter();
 	int nRow = 0;
@@ -158,25 +185,26 @@ void udfJudgeMark::UpdateMarks()
 		int nCol = 0;
 		for(nCol = 0; nCol < m_gridMarks->GetNumberCols(); ++nCol)
 		{
-			wxString value = m_gridMarks->GetCellValue(nRow, nCol);
 			unsigned int id = -1;
 
 			CChampionshipJudgesMarkTable::tDATA data = {0};
 			data.tourId = m_tourId;
 			data.teamId = m_row2id[nRow];
 			data.judgeId = m_col2id[nCol];
+						
+			m_gridMarks->GetCellValue(nRow, nCol).ToULong((unsigned long *)&data.nMark);
+			
 			long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
 
 			__info("Row: %d, Col: %d, tourId: %d, teamId: %d, FOUND: %d == %d", nRow, nCol, data.tourId, data.teamId, found, UDF_E_NOTFOUND);
-			if(UDF_OK == found && value != _("X"))
+			if(UDF_OK == found)
 			{
-				__info("Found! ID: %d. Delete it...", id);
-				CChampionshipJudgesMarkTable(m_pCon).DelRow(id);
+				__info("Found! ID: %d. Update it...", id);
+				CChampionshipJudgesMarkTable(m_pCon).UpdateRow(id, data);
 			}
-			else if(found == UDF_E_NOTFOUND && value == _("X"))
+			else if(found == UDF_E_NOTFOUND)
 			{
 				__info("NOT Found! Insert it...");
-				data.nMark = 1;
 				CChampionshipJudgesMarkTable(m_pCon).AddRow(data);
 			}
 		}
@@ -184,17 +212,3 @@ void udfJudgeMark::UpdateMarks()
 	Leave();
 }
 
-void udfJudgeMark::OnSearch(wxCommandEvent& event)
-{
-	Enter();
-	wxString text = m_textStartNum->GetValue();
-	int nRow = 0;
-	for(nRow = 0; nRow < m_gridMarks->GetNumberRows(); ++nRow)
-	{
-		
-		if(!m_gridMarks->GetRowLabelValue(nRow).StartsWith(text))
-			m_gridMarks->HideRow(nRow);
-		
-	}
-	Leave();
-}
