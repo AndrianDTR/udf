@@ -20,7 +20,6 @@ class udfSettings : public Settings
 private:
 	CDbConnection*				m_pCon;
 	CTourTypesTable::tTableMap	m_tourTypeInfo;
-	wxConfig*					m_pConf;
 
 protected:
 	// Handlers for Settings events.

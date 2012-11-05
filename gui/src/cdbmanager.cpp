@@ -1,25 +1,21 @@
-#include "connection_data.h"
-
 #include "cdbmanager.h"
 
-#include "stdio.h"
-
-#include "tagecategory.h"
+#include "wx/config.h"
+#include "udfsettingsbase.h"
 
 CDbManager* CDbManager::ms_instance = 0;
 
 CDbManager::CDbManager()
 {
-	long res = UDF_E_FAIL;
-	do
-	{
-		m_pCon = new CDbConnection();
-		res = m_pCon->Open(szUrl, szUser, szPass, szSchema);
-		if(UDF_OK != res)
-			break;
-		
-	}while(0);
-	
+	wxConfig* pConf = udfSettingsBase::Instance()->GetConfig();
+
+	wxString url = pConf->Read("host", "localhost:3306");
+	wxString user = pConf->Read("user", "andrian");
+	wxString pass = pConf->Read("pass", "testpass");
+	wxString schema = pConf->Read("db", "udf");
+
+	m_pCon = new CDbConnection();
+	m_pCon->Open( url.ToStdString(), user.ToStdString(), pass.ToStdString(), schema.ToStdString() );
 }
 
 CDbManager::~CDbManager()

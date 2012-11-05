@@ -48,7 +48,8 @@ set( HEADER_FILES
 	src/udfBlockInfo.h
 	src/udfCategoryInfo.h
 	src/udfTourInfo.h
-	src/udfSettings.cpp
+	src/udfSettings.h
+	src/udfsettingsbase.h
 )
 
 set( SOURCE_FILES 
@@ -88,6 +89,7 @@ set( SOURCE_FILES
 	src/udfCategoryInfo.cpp
 	src/udfTourInfo.cpp
 	src/udfSettings.cpp
+	src/udfsettingsbase.cpp
 )
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined

@@ -4,34 +4,31 @@
 #include "udfuiutils.h"
 #include "string_def.h"
 
-
+#include "udfsettingsbase.h"
 
 udfSettings::udfSettings( wxWindow* parent )
 : Settings( parent )
 , m_pCon(NULL)
-, m_pConf(NULL)
 {
+
 	m_pCon = CDbManager::Instance()->GetConnection();
-	m_pConf = new wxConfig("udf");
 
 	Refresh();
 }
 
 udfSettings::~udfSettings()
 {
-	if(m_pConf)
-	{
-		delete m_pConf;
-		m_pConf = NULL;
-	}
+
 }
 
 void udfSettings::OnSave( wxCommandEvent& event )
 {
-	m_pConf->Write("host", m_textServer->GetValue());
-	m_pConf->Write("db",  m_textDatabase->GetValue());
-	m_pConf->Write("user", m_textUser->GetValue());
-	m_pConf->Write("pass", m_textPass->GetValue());
+	wxConfig* pConf = udfSettingsBase::Instance()->GetConfig();
+
+	pConf->Write("host", m_textServer->GetValue());
+	pConf->Write("db",  m_textDatabase->GetValue());
+	pConf->Write("user", m_textUser->GetValue());
+	pConf->Write("pass", m_textPass->GetValue());
 
 	CTourTypesTable::tDATA tourData = {0};
 	CTourTypesTable table(m_pCon);
@@ -81,52 +78,44 @@ void udfSettings::OnDiscard( wxCommandEvent& event )
 
 void udfSettings::Refresh()
 {
-	do
-	{
-		/*
-		 * 1. Read connection data
-		 * 2. Read tour type data
-		 */
-		if(!m_pConf)
-			break;
+	wxConfig* pConf = udfSettingsBase::Instance()->GetConfig();
 
-		m_textServer->SetValue(m_pConf->Read("host", "localhost:3306"));
-		m_textDatabase->SetValue(m_pConf->Read("db", "udf"));
-		m_textUser->SetValue(m_pConf->Read("user", "andrian"));
-		m_textPass->SetValue(m_pConf->Read("pass", "testpass"));
+	m_textServer->SetValue(pConf->Read("host", "localhost:3306"));
+	m_textDatabase->SetValue(pConf->Read("db", "udf"));
+	m_textUser->SetValue(pConf->Read("user", "andrian"));
+	m_textPass->SetValue(pConf->Read("pass", "testpass"));
 
-		CTourTypesTable::tDATA tourData = {0};
-		CTourTypesTable table(m_pCon);
+	CTourTypesTable::tDATA tourData = {0};
+	CTourTypesTable table(m_pCon);
 
-		table.GetRow(1, tourData);
-		m_textMaxFinal->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMinFinal->SetValue(wxString::Format(_("%d"), tourData.min));
-		__info("Final: id=%d, min=%d, max=%d", tourData.id, tourData.min, tourData.max);
+	table.GetRow(1, tourData);
+	m_textMaxFinal->SetValue(wxString::Format(_("%d"), tourData.max));
+	m_textMinFinal->SetValue(wxString::Format(_("%d"), tourData.min));
+	__info("Final: id=%d, min=%d, max=%d", tourData.id, tourData.min, tourData.max);
 
-		table.GetRow(2, tourData);
-		m_textMax12->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin12->SetValue(wxString::Format(_("%d"), tourData.min));
+	table.GetRow(2, tourData);
+	m_textMax12->SetValue(wxString::Format(_("%d"), tourData.max));
+	m_textMin12->SetValue(wxString::Format(_("%d"), tourData.min));
 
-		table.GetRow(3, tourData);
-		m_textMax14->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin14->SetValue(wxString::Format(_("%d"), tourData.min));
+	table.GetRow(3, tourData);
+	m_textMax14->SetValue(wxString::Format(_("%d"), tourData.max));
+	m_textMin14->SetValue(wxString::Format(_("%d"), tourData.min));
 
-		table.GetRow(4, tourData);
-		m_textMax18->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin18->SetValue(wxString::Format(_("%d"), tourData.min));
+	table.GetRow(4, tourData);
+	m_textMax18->SetValue(wxString::Format(_("%d"), tourData.max));
+	m_textMin18->SetValue(wxString::Format(_("%d"), tourData.min));
 
-		table.GetRow(5, tourData);
-		m_textMax116->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin116->SetValue(wxString::Format(_("%d"), tourData.min));
+	table.GetRow(5, tourData);
+	m_textMax116->SetValue(wxString::Format(_("%d"), tourData.max));
+	m_textMin116->SetValue(wxString::Format(_("%d"), tourData.min));
 
-		table.GetRow(6, tourData);
-		m_textMax132->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin132->SetValue(wxString::Format(_("%d"), tourData.min));
+	table.GetRow(6, tourData);
+	m_textMax132->SetValue(wxString::Format(_("%d"), tourData.max));
+	m_textMin132->SetValue(wxString::Format(_("%d"), tourData.min));
 
-		table.GetRow(7, tourData);
-		m_textMax164->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin164->SetValue(wxString::Format(_("%d"), tourData.min));
+	table.GetRow(7, tourData);
+	m_textMax164->SetValue(wxString::Format(_("%d"), tourData.max));
+	m_textMin164->SetValue(wxString::Format(_("%d"), tourData.min));
 
-	}while(0);
 }
 
