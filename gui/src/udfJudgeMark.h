@@ -27,6 +27,10 @@ private:
 	tI2UiMap					m_row2id;
 	tUi2IMap					m_id2col;
 	tI2UiMap					m_col2id;
+	
+	unsigned int 				m_row;
+	unsigned int 				m_col;
+	
 
 protected:
 	// Handlers for JudgeMark events.
@@ -34,6 +38,7 @@ protected:
 	void OnDiscard( wxCommandEvent& event );
 	void OnCellLClick( wxGridEvent& event );
 	void OnKeyUp( wxKeyEvent& event );
+	void OnCellChange(wxGridEvent& event);
 	void OnSearch( wxCommandEvent& event );
 	
 public:

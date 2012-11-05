@@ -977,6 +977,7 @@ class JudgeMark : public wxDialog
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCellLClick( wxGridEvent& event ) { event.Skip(); }
+		virtual void OnCellChange( wxGridEvent& event ) { event.Skip(); }
 		virtual void OnKeyUp( wxKeyEvent& event ) { event.Skip(); }
 		
 	
@@ -1330,8 +1331,19 @@ class Settings : public wxDialog
 		{
 			ID_SETTINGS = 1000,
 			ID_M_TEXTMINFINAL,
-			ID_M_TEXTMIN164,
-			ID_M_TEXTMAX164,
+			ID_MIN12,
+			ID_MIN14,
+			ID_MIN18,
+			ID_MIN116,
+			ID_MIN132,
+			ID_MIN164,
+			ID_MAXFINAL,
+			ID_MAX12,
+			ID_MAX14,
+			ID_MAX18,
+			ID_MAX116,
+			ID_MAX132,
+			ID_MAX164,
 		};
 		
 		wxNotebook* m_notebook1;
@@ -1344,7 +1356,7 @@ class Settings : public wxDialog
 		wxTextCtrl* m_textUser;
 		wxStaticText* m_staticText100;
 		wxTextCtrl* m_textPass;
-		wxStaticText* m_staticTestResult;
+		wxTextCtrl* m_textTest;
 		
 		wxButton* m_buttonTest;
 		wxPanel* m_panel5;
@@ -1377,13 +1389,14 @@ class Settings : public wxDialog
 		wxBitmapButton* m_bpDiscard;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnTest( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		Settings( wxWindow* parent, wxWindowID id = ID_SETTINGS, const wxString& title = _("Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 704,267 ), long style = wxCAPTION|wxCLOSE_BOX );
+		Settings( wxWindow* parent, wxWindowID id = ID_SETTINGS, const wxString& title = _("Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 710,309 ), long style = wxCAPTION|wxCLOSE_BOX );
 		~Settings();
 	
 };

@@ -110,5 +110,8 @@ void udfCategoryInfo::OnAddTour(wxCommandEvent& event)
 
 void udfCategoryInfo::OnStartNumberMngr(wxCommandEvent& event)
 {
+	if(m_pMainWindow)
+		m_pMainWindow->ShowStartNumberAssign();
+	event.Skip();
 }
 

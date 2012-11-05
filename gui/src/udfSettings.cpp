@@ -30,42 +30,58 @@ void udfSettings::OnSave( wxCommandEvent& event )
 	pConf->Write("user", m_textUser->GetValue());
 	pConf->Write("pass", m_textPass->GetValue());
 
+	unsigned long min = 0;
+	unsigned long max = 0;
+	
 	CTourTypesTable::tDATA tourData = {0};
 	CTourTypesTable table(m_pCon);
 
-	table.GetRow(1, tourData);
-	m_textMaxFinal->GetValue().ToULong((unsigned long*)&tourData.max);
-	m_textMinFinal->GetValue().ToULong((unsigned long*)&tourData.min);
+	m_textMaxFinal->GetValue().ToULong(&max);
+	m_textMinFinal->GetValue().ToULong(&min);
+	tourData.max = max;
+	tourData.min = min;
 	table.UpdateRow(1, tourData);
 
 	table.GetRow(2, tourData);
-	m_textMax12->GetValue().ToULong((unsigned long*)&tourData.max);
-	m_textMin12->GetValue().ToULong((unsigned long*)&tourData.min);
+	m_textMax12->GetValue().ToULong(&max);
+	m_textMin12->GetValue().ToULong(&min);
+	tourData.max = max;
+	tourData.min = min;
 	table.UpdateRow(2, tourData);
 
 	table.GetRow(3, tourData);
-	m_textMax14->GetValue().ToULong((unsigned long*)&tourData.max);
-	m_textMin14->GetValue().ToULong((unsigned long*)&tourData.min);
+	m_textMax14->GetValue().ToULong(&max);
+	m_textMin14->GetValue().ToULong(&min);
+	tourData.max = max;
+	tourData.min = min;
 	table.UpdateRow(3, tourData);
 
 	table.GetRow(4, tourData);
-	m_textMax18->GetValue().ToULong((unsigned long*)&tourData.max);
-	m_textMin18->GetValue().ToULong((unsigned long*)&tourData.min);
+	m_textMax18->GetValue().ToULong(&max);
+	m_textMin18->GetValue().ToULong(&min);
+	tourData.max = max;
+	tourData.min = min;
 	table.UpdateRow(4, tourData);
 
 	table.GetRow(5, tourData);
-	m_textMax116->GetValue().ToULong((unsigned long*)&tourData.max);
-	m_textMin116->GetValue().ToULong((unsigned long*)&tourData.min);
+	m_textMax116->GetValue().ToULong(&max);
+	m_textMin116->GetValue().ToULong(&min);
+	tourData.max = max;
+	tourData.min = min;
 	table.UpdateRow(5, tourData);
 
 	table.GetRow(6, tourData);
-	m_textMax132->GetValue().ToULong((unsigned long*)&tourData.max);
-	m_textMin132->GetValue().ToULong((unsigned long*)&tourData.min);
+	m_textMax132->GetValue().ToULong(&max);
+	m_textMin132->GetValue().ToULong(&min);
+	tourData.max = max;
+	tourData.min = min;
 	table.UpdateRow(6, tourData);
 
 	table.GetRow(7, tourData);
-	m_textMax164->GetValue().ToULong((unsigned long*)&tourData.max);
-	m_textMin164->GetValue().ToULong((unsigned long*)&tourData.min);
+	m_textMax164->GetValue().ToULong(&max);
+	m_textMin164->GetValue().ToULong(&min);
+	tourData.max = max;
+	tourData.min = min;
 	table.UpdateRow(7, tourData);
 
 	EndModal(wxID_OK);
@@ -116,6 +132,41 @@ void udfSettings::Refresh()
 	table.GetRow(7, tourData);
 	m_textMax164->SetValue(wxString::Format(_("%d"), tourData.max));
 	m_textMin164->SetValue(wxString::Format(_("%d"), tourData.min));
+	
+	CDbManager* pDb = CDbManager::Instance();
+	if(pDb)
+	{
+		pDb->Release();
+		pDb = CDbManager::Instance();
+	}
 
 }
 
+void udfSettings::OnTest(wxCommandEvent& event)
+{
+	m_textTest->SetValue(_("Connecting..."));
+	
+	wxConfig* pConf = udfSettingsBase::Instance()->GetConfig();
+
+	wxString url = pConf->Read("host", "localhost:3306");
+	wxString user = pConf->Read("user", "andrian");
+	wxString pass = pConf->Read("pass", "testpass");
+	wxString schema = pConf->Read("db", "udf");
+
+	CDbConnection* pCon = new CDbConnection();
+	pCon->Open( url.ToStdString(), user.ToStdString(), pass.ToStdString(), schema.ToStdString() );
+	
+	CTourTypesTable::tTableMap data;
+	long res = CTourTypesTable(pCon).GetTable(data);
+	int sz = data.size();
+	__info("TEST Res = %ld, sz = %d", res, sz);
+	
+	if(UDF_OK == res && sz)
+	{
+		m_textTest->SetValue(_("Connected successfully."));
+	}
+	else
+	{
+		m_textTest->SetValue(_("Connection failed."));
+	}
+}

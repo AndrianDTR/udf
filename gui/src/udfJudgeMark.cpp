@@ -21,6 +21,8 @@ udfJudgeMark::udfJudgeMark( wxWindow* parent, unsigned int tourId )
 		m_catId = catId;
 
 	RefreshGrid();
+	
+	m_row = m_col = -1;
 }
 
 void udfJudgeMark::OnSave( wxCommandEvent& event )
@@ -45,25 +47,6 @@ void udfJudgeMark::OnCellLClick( wxGridEvent& event )
 	else
 		m_gridMarks->SetCellValue(row, col, _(""));
 
-	event.Skip();
-}
-
-void udfJudgeMark::OnKeyUp( wxKeyEvent& event )
-{
-	/*int row = m_gridMarks->GetSelectedRows()[0],
-		col = m_gridMarks->GetSelectedCols()[0];
-
-	switch(event.GetKeyCode())
-	{
-		case 'X':
-			m_gridMarks->SetCellValue(row, col, _("X"));
-			break;
-
-		case WXK_SPACE:
-			m_gridMarks->SetCellValue(row, col, _(""));
-			break;
-	}
-	*/
 	event.Skip();
 }
 
@@ -194,7 +177,41 @@ void udfJudgeMark::OnSearch(wxCommandEvent& event)
 		
 		if(!m_gridMarks->GetRowLabelValue(nRow).StartsWith(text))
 			m_gridMarks->HideRow(nRow);
+		else
+			m_gridMarks->ShowRow(nRow);
 		
 	}
 	Leave();
 }
+
+void udfJudgeMark::OnCellChange(wxGridEvent& event)
+{
+	m_row = event.GetRow();
+	m_col = event.GetCol();
+	__info("Row = %d, Col = %d, KEy = %d", m_row, m_col, 0);
+}
+
+void udfJudgeMark::OnKeyUp( wxKeyEvent& event )
+{
+	do
+	{
+		__info("Row = %d, Col = %d, KEy = %d", m_row, m_col, event.GetKeyCode());
+
+		if( -1 == m_row || -1 == m_col)
+			break;
+			
+		switch(event.GetKeyCode())
+		{
+			case 88:
+				m_gridMarks->SetCellValue(m_row, m_col, _("X"));
+				break;
+
+			case WXK_SPACE:
+				m_gridMarks->SetCellValue(m_row, m_col, _(""));
+				break;
+		}
+		
+	}while(0);
+	
+}
+

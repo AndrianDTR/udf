@@ -2137,6 +2137,7 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnSave ), NULL, this );
 	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnDiscard ), NULL, this );
 	m_gridMarks->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( JudgeMark::OnCellLClick ), NULL, this );
+	m_gridMarks->Connect( wxEVT_GRID_SELECT_CELL, wxGridEventHandler( JudgeMark::OnCellChange ), NULL, this );
 	m_gridMarks->Connect( wxEVT_KEY_UP, wxKeyEventHandler( JudgeMark::OnKeyUp ), NULL, this );
 }
 
@@ -2147,6 +2148,7 @@ JudgeMark::~JudgeMark()
 	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnSave ), NULL, this );
 	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnDiscard ), NULL, this );
 	m_gridMarks->Disconnect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( JudgeMark::OnCellLClick ), NULL, this );
+	m_gridMarks->Disconnect( wxEVT_GRID_SELECT_CELL, wxGridEventHandler( JudgeMark::OnCellChange ), NULL, this );
 	m_gridMarks->Disconnect( wxEVT_KEY_UP, wxKeyEventHandler( JudgeMark::OnKeyUp ), NULL, this );
 	
 }
@@ -2853,6 +2855,7 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	
 	wxFlexGridSizer* fgSizer21;
 	fgSizer21 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer21->AddGrowableCol( 1 );
 	fgSizer21->SetFlexibleDirection( wxBOTH );
 	fgSizer21->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
@@ -2863,7 +2866,7 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_textServer = new wxTextCtrl( m_panel4, wxID_ANY, _("localhost"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_textServer->SetMinSize( wxSize( 150,-1 ) );
 	
-	fgSizer21->Add( m_textServer, 0, wxALL, 5 );
+	fgSizer21->Add( m_textServer, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText98 = new wxStaticText( m_panel4, wxID_ANY, _("Database"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText98->Wrap( -1 );
@@ -2872,7 +2875,7 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_textDatabase = new wxTextCtrl( m_panel4, wxID_ANY, _("udf"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_textDatabase->SetMinSize( wxSize( 150,-1 ) );
 	
-	fgSizer21->Add( m_textDatabase, 0, wxALL, 5 );
+	fgSizer21->Add( m_textDatabase, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText99 = new wxStaticText( m_panel4, wxID_ANY, _("User name"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText99->Wrap( -1 );
@@ -2881,7 +2884,7 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_textUser = new wxTextCtrl( m_panel4, wxID_ANY, _("andrian"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_textUser->SetMinSize( wxSize( 150,-1 ) );
 	
-	fgSizer21->Add( m_textUser, 0, wxALL, 5 );
+	fgSizer21->Add( m_textUser, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText100 = new wxStaticText( m_panel4, wxID_ANY, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText100->Wrap( -1 );
@@ -2890,16 +2893,18 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_textPass = new wxTextCtrl( m_panel4, wxID_ANY, _("testpass"), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
 	m_textPass->SetMinSize( wxSize( 150,-1 ) );
 	
-	fgSizer21->Add( m_textPass, 0, wxALL, 5 );
+	fgSizer21->Add( m_textPass, 0, wxALL|wxEXPAND, 5 );
 	
-	bSizer117->Add( fgSizer21, 0, wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer117->Add( fgSizer21, 1, wxALIGN_CENTER_VERTICAL, 5 );
 	
 	wxBoxSizer* bSizer119;
 	bSizer119 = new wxBoxSizer( wxVERTICAL );
 	
-	m_staticTestResult = new wxStaticText( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticTestResult->Wrap( -1 );
-	bSizer119->Add( m_staticTestResult, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	m_textTest = new wxTextCtrl( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER );
+	m_textTest->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	m_textTest->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME ) );
+	
+	bSizer119->Add( m_textTest, 0, wxALL|wxEXPAND, 5 );
 	
 	
 	bSizer119->Add( 0, 0, 1, wxEXPAND, 5 );
@@ -2907,12 +2912,12 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_buttonTest = new wxButton( m_panel4, wxID_ANY, _("Test connection"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer119->Add( m_buttonTest, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
-	bSizer117->Add( bSizer119, 1, wxEXPAND, 5 );
+	bSizer117->Add( bSizer119, 1, wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_panel4->SetSizer( bSizer117 );
 	m_panel4->Layout();
 	bSizer117->Fit( m_panel4 );
-	m_notebook1->AddPage( m_panel4, _("Connection"), true );
+	m_notebook1->AddPage( m_panel4, _("Connection"), false );
 	m_panel5 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer118;
 	bSizer118 = new wxBoxSizer( wxHORIZONTAL );
@@ -2960,47 +2965,47 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_textMinFinal = new wxTextCtrl( m_panel5, ID_M_TEXTMINFINAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMinFinal, 0, wxALL, 5 );
 	
-	m_textMin12 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMin12 = new wxTextCtrl( m_panel5, ID_MIN12, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMin12, 0, wxALL, 5 );
 	
-	m_textMin14 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMin14 = new wxTextCtrl( m_panel5, ID_MIN14, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMin14, 0, wxALL, 5 );
 	
-	m_textMin18 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMin18 = new wxTextCtrl( m_panel5, ID_MIN18, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMin18, 0, wxALL, 5 );
 	
-	m_textMin116 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMin116 = new wxTextCtrl( m_panel5, ID_MIN116, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMin116, 0, wxALL, 5 );
 	
-	m_textMin132 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMin132 = new wxTextCtrl( m_panel5, ID_MIN132, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMin132, 0, wxALL, 5 );
 	
-	m_textMin164 = new wxTextCtrl( m_panel5, ID_M_TEXTMIN164, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMin164 = new wxTextCtrl( m_panel5, ID_MIN164, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMin164, 0, wxALL, 5 );
 	
 	m_staticText96 = new wxStaticText( m_panel5, wxID_ANY, _("max"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText96->Wrap( -1 );
 	fgSizer19->Add( m_staticText96, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textMaxFinal = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMaxFinal = new wxTextCtrl( m_panel5, ID_MAXFINAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMaxFinal, 0, wxALL, 5 );
 	
-	m_textMax12 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMax12 = new wxTextCtrl( m_panel5, ID_MAX12, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMax12, 0, wxALL, 5 );
 	
-	m_textMax14 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMax14 = new wxTextCtrl( m_panel5, ID_MAX14, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMax14, 0, wxALL, 5 );
 	
-	m_textMax18 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMax18 = new wxTextCtrl( m_panel5, ID_MAX18, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMax18, 0, wxALL, 5 );
 	
-	m_textMax116 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMax116 = new wxTextCtrl( m_panel5, ID_MAX116, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMax116, 0, wxALL, 5 );
 	
-	m_textMax132 = new wxTextCtrl( m_panel5, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMax132 = new wxTextCtrl( m_panel5, ID_MAX132, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMax132, 0, wxALL, 5 );
 	
-	m_textMax164 = new wxTextCtrl( m_panel5, ID_M_TEXTMAX164, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textMax164 = new wxTextCtrl( m_panel5, ID_MAX164, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer19->Add( m_textMax164, 0, wxALL, 5 );
 	
 	bSizer118->Add( fgSizer19, 1, wxALIGN_CENTER_VERTICAL, 5 );
@@ -3008,8 +3013,10 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_panel5->SetSizer( bSizer118 );
 	m_panel5->Layout();
 	bSizer118->Fit( m_panel5 );
-	m_notebook1->AddPage( m_panel5, _("Tours data"), false );
+	m_notebook1->AddPage( m_panel5, _("Tours data"), true );
 	m_panel6 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panel6->Hide();
+	
 	m_notebook1->AddPage( m_panel6, _("Other"), false );
 	
 	bSizer115->Add( m_notebook1, 1, wxEXPAND | wxALL, 5 );
@@ -3031,6 +3038,7 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	m_buttonTest->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Settings::OnTest ), NULL, this );
 	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Settings::OnSave ), NULL, this );
 	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Settings::OnDiscard ), NULL, this );
 }
@@ -3038,6 +3046,7 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 Settings::~Settings()
 {
 	// Disconnect Events
+	m_buttonTest->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Settings::OnTest ), NULL, this );
 	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Settings::OnSave ), NULL, this );
 	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Settings::OnDiscard ), NULL, this );
 	
@@ -3441,7 +3450,7 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	wxBoxSizer* bSizer1291;
 	bSizer1291 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticType = new wxStaticText( this, ID_TYPE, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), 0 );
+	m_staticType = new wxStaticText( this, ID_TYPE, wxEmptyString, wxDefaultPosition, wxSize( 100,-1 ), wxALIGN_CENTRE );
 	m_staticType->Wrap( -1 );
 	m_staticType->SetFont( wxFont( 20, 70, 90, 92, false, wxEmptyString ) );
 	
@@ -3450,7 +3459,7 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	
 	bSizer1291->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_staticMinMax = new wxStaticText( this, ID_MINMAX, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
+	m_staticMinMax = new wxStaticText( this, ID_MINMAX, wxEmptyString, wxDefaultPosition, wxSize( 170,-1 ), wxALIGN_RIGHT );
 	m_staticMinMax->Wrap( -1 );
 	m_staticMinMax->SetFont( wxFont( 20, 70, 90, 92, false, wxEmptyString ) );
 	

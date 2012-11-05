@@ -32,7 +32,10 @@ void udfStartNumberAssignDlg::RefreshList()
 		CChampionshipTeamsTable::tDATA& data = it->second;
 		int nPos = m_listTeams->GetCount();
 		m_listTeams->Insert(data.name, nPos, (void*)&it->first);
-
+		
+		if(data.startNumber)
+			m_StNumMap[data.startNumber] = data.id;
+			
 		it++;
 	}
 }
@@ -65,38 +68,53 @@ void udfStartNumberAssignDlg::OnSearch( wxCommandEvent& event )
 
 void udfStartNumberAssignDlg::OnSelectTeam( wxCommandEvent& event )
 {
-
+	do
+	{
+		int nPos = m_listTeams->GetSelection();
+		if(-1 == nPos)
+		{
+			break;
+		}
+		
+		int nId = *(int*)m_listTeams->GetClientData(nPos);
+		
+		CChampionshipTeamsTable::tTableIt it = m_CsTeams.find(nId);
+		if(it != m_CsTeams.end())
+		{
+			CChampionshipTeamsTable::tDATA& data = it->second;
+			m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, data.startNumber));
+		}
+	}while(0);
 }
 
 void udfStartNumberAssignDlg::OnAssign( wxCommandEvent& event )
 {
-	do{
+	do
+	{
 		unsigned long startNum = 1;
-	/*	if(!m_textNumber->GetValue().ToULong(&startNum))
-			break;
+		m_textNumber->GetValue().ToULong((unsigned long*)&startNum);
 
 		int nPos = m_listTeams->GetSelection();
-
 		if(-1 == nPos)
+		{
 			break;
-
+		}
+		
 		int nId = *(int*)m_listTeams->GetClientData(nPos);
-		CChampionshipTeamsTable::tDATA data = {0};
-
-		if (0 == data.startNumber)
+	
+		if(m_StNumMap.end() != m_StNumMap.find(startNum))
 		{
+			ShowWarning(_("This number already assigned. Please choose another one."));
+			break;
+		}
+		
+		CChampionshipTeamsTable::tTableIt it = m_CsTeams.find(nId);
+		if(it != m_CsTeams.end())
+		{
+			CChampionshipTeamsTable::tDATA& data = it->second;
 			data.startNumber = startNum;
-			m_pTable->UpdateRow(nId, data);
-			m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, startNum));
+			m_StNumMap[startNum] = nId;
 		}
-		else
-		{
-			m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, (unsigned long)data.startNumber));
-		}
-
-		m_textSearch->SetValue("");
-		m_textSearch->SetFocus();
-		 * */
 	}while(0);
 }
 
@@ -159,9 +177,13 @@ void udfStartNumberAssignDlg::OnAllAssignRandom(wxCommandEvent& event)
 
 void udfStartNumberAssignDlg::OnFindNext(wxCommandEvent& event)
 {
-	unsigned int nStartNum = m_StNumMap.rbegin()->second;
-
-	m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, nStartNum));
+	unsigned int startNum = 0;
+	m_textNumber->GetValue().ToULong((unsigned long*)&startNum);
+	do
+	{
+		startNum++;
+	}while(m_StNumMap.end() != m_StNumMap.find(startNum));
+	m_textNumber->SetValue(wxString::Format(STR_FORMAT_START_NUMBER, startNum));
 }
 
 void udfStartNumberAssignDlg::OnFindRandom(wxCommandEvent& event)

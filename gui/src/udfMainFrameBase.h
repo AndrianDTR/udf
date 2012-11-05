@@ -105,11 +105,11 @@ public:
 	udfMainFrameBase( wxWindow* parent );
 
 public:
-	int ShowDanceTypesMngrDlg();
-	int ShowLiguesMngrDlg();
-	int ShowAgeCatsMngrDlg();
-	int ShowCsCategoryManager();
-	int ShowCsJudgesManager();
+	int				ShowDanceTypesMngrDlg();
+	int				ShowLiguesMngrDlg();
+	int				ShowAgeCatsMngrDlg();
+	int				ShowCsCategoryManager();
+	int				ShowCsJudgesManager();
 	
 	wxTreeItemId	GetSelectedCs();
 	wxTreeItemId	GetSelectedCsBlock();
@@ -123,6 +123,8 @@ public:
 	
 	void 			OnAddBlock( wxCommandEvent& event );
 	void 			OnAddTour( wxCommandEvent& event );
+	
+	void			ShowStartNumberAssign();
 	
 };
 

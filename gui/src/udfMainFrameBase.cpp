@@ -13,6 +13,7 @@
 #include "udfJudgeMark.h"
 #include "udfCsTourReport.h"
 #include "udfSettings.h"
+#include "udfStartNumberAssignDlg.h"
 
 #include "udfCsInfo.h"
 #include "udfBlockInfo.h"
@@ -834,3 +835,16 @@ void udfMainFrameBase::OnJudgeMngr( wxCommandEvent& event )
 	ShowCsJudgesManager();
 }
 
+void udfMainFrameBase::ShowStartNumberAssign()
+{
+	do
+	{
+		wxTreeItemId csItem = GetSelectedCs();
+		
+		if(!csItem.IsOk())
+			break;
+		
+		udfTreeItemData *cs = (udfTreeItemData *)m_treeCs->GetItemData(csItem);
+		udfStartNumberAssignDlg(this, cs->GetId()).ShowModal();
+	}while(0);
+}

@@ -25,6 +25,8 @@ protected:
 	// Handlers for Settings events.
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
+	void OnTest( wxCommandEvent& event );
+	
 public:
 	/** Constructor */
 	udfSettings( wxWindow* parent );

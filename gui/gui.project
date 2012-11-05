@@ -86,6 +86,8 @@
     <File Name="src/udfJudgeCategories.cpp"/>
     <File Name="src/udfFinalMarks.cpp"/>
     <File Name="src/udfFinalMarks.h"/>
+    <File Name="src/udfsettingsbase.h"/>
+    <File Name="src/udfsettingsbase.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>
@@ -105,6 +107,12 @@
     <File Name="res/button_tour_remove.png"/>
     <File Name="res/button_move_up.png"/>
     <File Name="res/button_tour_add.png"/>
+    <File Name="res/button_find_next.png"/>
+    <File Name="res/button_find_random.png"/>
+    <File Name="res/button_delete.png"/>
+    <File Name="res/button_assign_followed.png"/>
+    <File Name="res/button_assign_random.png"/>
+    <File Name="res/button_assign.png"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -125,6 +133,7 @@
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(WorkspacePath)/build/bin" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/build/bin" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       ]]>
@@ -173,6 +182,7 @@ $(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppc
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       

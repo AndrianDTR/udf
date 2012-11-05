@@ -192,14 +192,14 @@ long CTourTypesTable::UpdateRow(unsigned int nId, const tDATA& data)
 
 		if (0 != data.min)
 		{
-			sprintf(tmp, "%s `min` = '%d',", query, data.min);
+			sprintf(tmp, "%s `min` = %d,", query, data.min);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
 		
 		if (0 != data.max)
 		{
-			sprintf(tmp, "%s `max` = '%d',", query, data.max);
+			sprintf(tmp, "%s `max` = %d,", query, data.max);
 			strncpy(query, tmp, MAX_QUERY_LEN-1);
 			useFilter = true;
 		}
