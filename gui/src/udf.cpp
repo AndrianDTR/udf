@@ -2137,7 +2137,7 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnSave ), NULL, this );
 	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnDiscard ), NULL, this );
 	m_gridMarks->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( JudgeMark::OnCellLClick ), NULL, this );
-	m_gridMarks->Connect( wxEVT_GRID_SELECT_CELL, wxGridEventHandler( JudgeMark::OnCellChange ), NULL, this );
+	m_gridMarks->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( JudgeMark::OnKeyDown ), NULL, this );
 	m_gridMarks->Connect( wxEVT_KEY_UP, wxKeyEventHandler( JudgeMark::OnKeyUp ), NULL, this );
 }
 
@@ -2148,7 +2148,7 @@ JudgeMark::~JudgeMark()
 	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnSave ), NULL, this );
 	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnDiscard ), NULL, this );
 	m_gridMarks->Disconnect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( JudgeMark::OnCellLClick ), NULL, this );
-	m_gridMarks->Disconnect( wxEVT_GRID_SELECT_CELL, wxGridEventHandler( JudgeMark::OnCellChange ), NULL, this );
+	m_gridMarks->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler( JudgeMark::OnKeyDown ), NULL, this );
 	m_gridMarks->Disconnect( wxEVT_KEY_UP, wxKeyEventHandler( JudgeMark::OnKeyUp ), NULL, this );
 	
 }
@@ -2193,7 +2193,7 @@ FinalMarks::FinalMarks( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	// Grid
 	m_gridMarks->CreateGrid( 9, 9 );
-	m_gridMarks->EnableEditing( true );
+	m_gridMarks->EnableEditing( false );
 	m_gridMarks->EnableGridLines( true );
 	m_gridMarks->EnableDragGridSize( false );
 	m_gridMarks->SetMargins( 0, 0 );
@@ -2229,6 +2229,7 @@ FinalMarks::FinalMarks( wxWindow* parent, wxWindowID id, const wxString& title, 
 	// Connect Events
 	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FinalMarks::OnSave ), NULL, this );
 	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FinalMarks::OnDiscard ), NULL, this );
+	m_gridMarks->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( FinalMarks::OnKeyDown ), NULL, this );
 	m_gridMarks->Connect( wxEVT_KEY_UP, wxKeyEventHandler( FinalMarks::OnKeyUp ), NULL, this );
 }
 
@@ -2237,6 +2238,7 @@ FinalMarks::~FinalMarks()
 	// Disconnect Events
 	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FinalMarks::OnSave ), NULL, this );
 	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FinalMarks::OnDiscard ), NULL, this );
+	m_gridMarks->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler( FinalMarks::OnKeyDown ), NULL, this );
 	m_gridMarks->Disconnect( wxEVT_KEY_UP, wxKeyEventHandler( FinalMarks::OnKeyUp ), NULL, this );
 	
 }

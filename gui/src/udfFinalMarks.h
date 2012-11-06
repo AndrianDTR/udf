@@ -34,6 +34,8 @@ protected:
 	void OnDiscard( wxCommandEvent& event );
 	void OnCellLClick( wxGridEvent& event );
 	void OnKeyUp( wxKeyEvent& event );
+	void OnKeyDown( wxKeyEvent& event );
+
 public:
 	/** Constructor */
 	udfFinalMarks( wxWindow* parent, unsigned int tourId );

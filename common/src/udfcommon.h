@@ -19,11 +19,17 @@ using namespace std;
 		printf(__VA_ARGS__); \
 		printf("\n\n"); \
 	}
+	#define	__msg(...)	\
+	{	\
+		printf(__VA_ARGS__); \
+		printf("\n\n"); \
+	}
 	#define Enter(); printf("Function %s enter...\n", __FUNCTION__);
 	#define Leave(); printf("Function %s leave.\n", __FUNCTION__);
 #else
 	#define	__debug( ... )
 	#define	__info( ... )
+	#define	__msg( ... )
 	#define Enter();
 	#define Leave();
 #endif //_DEBUG

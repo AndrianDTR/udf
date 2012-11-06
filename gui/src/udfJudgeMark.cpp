@@ -184,34 +184,36 @@ void udfJudgeMark::OnSearch(wxCommandEvent& event)
 	Leave();
 }
 
-void udfJudgeMark::OnCellChange(wxGridEvent& event)
-{
-	m_row = event.GetRow();
-	m_col = event.GetCol();
-	__info("Row = %d, Col = %d, KEy = %d", m_row, m_col, 0);
-}
-
 void udfJudgeMark::OnKeyUp( wxKeyEvent& event )
 {
 	do
 	{
-		__info("Row = %d, Col = %d, KEy = %d", m_row, m_col, event.GetKeyCode());
-
-		if( -1 == m_row || -1 == m_col)
+		int col = m_gridMarks->GetGridCursorCol();
+		int row = m_gridMarks->GetGridCursorRow();
+		
+		if( -1 == row || -1 == col)
 			break;
-			
+		
 		switch(event.GetKeyCode())
 		{
-			case 88:
-				m_gridMarks->SetCellValue(m_row, m_col, _("X"));
+			case 'X':
+				m_gridMarks->SetCellValue(row, col, _("X"));
+				m_gridMarks->MoveCursorDown(false);
 				break;
 
 			case WXK_SPACE:
-				m_gridMarks->SetCellValue(m_row, m_col, _(""));
+				m_gridMarks->SetCellValue(row, col, _(""));
+				m_gridMarks->MoveCursorDown(false);
 				break;
 		}
 		
 	}while(0);
-	
 }
 
+void udfJudgeMark::OnKeyDown( wxKeyEvent& event )
+{
+	if(WXK_SPACE != event.GetKeyCode())
+	{
+		event.Skip();
+	}
+}

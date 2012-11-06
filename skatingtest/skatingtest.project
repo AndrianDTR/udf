@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeLite_Project Name="dbtest" InternalType="Console">
+<CodeLite_Project Name="skatingtest" InternalType="Console">
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00010001N0005Debug000000000000]]>
@@ -8,8 +8,13 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
-    <File Name="main.cpp"/>
+    <File Name="src/main.cpp"/>
   </VirtualDirectory>
+  <Dependencies Name="Release"/>
+  <Dependencies Name="Debug">
+    <Project Name="common"/>
+    <Project Name="skating"/>
+  </Dependencies>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="" C_Options="">
@@ -23,20 +28,18 @@
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
         <IncludePath Value="."/>
+        <IncludePath Value="../skating/src"/>
+        <IncludePath Value="../common/src"/>
+        <Preprocessor Value="_DEBUG"/>
       </Compiler>
-      <Linker Options="" Required="yes"/>
+      <Linker Options="-g " Required="yes">
+        <LibraryPath Value="../build/lib"/>
+        <Library Value="skating"/>
+      </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(WorkspacePath)/build/bin" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../build/bin/$(ProjectName)" IntermediateDirectory="../build/tmp" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../build/bin" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
-        <![CDATA[
-      
-      
-      
-      
-      
-      
-      
-      ]]>
+        <![CDATA[]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -59,6 +62,7 @@
         <CustomPreBuild/>
       </AdditionalRules>
       <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
         <ClangCmpFlags/>
         <ClangPP/>
         <SearchPaths/>
@@ -73,14 +77,6 @@
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
-      
-      
-      
-      
-      
-      
-      
-      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -104,12 +100,11 @@
         <CustomPreBuild/>
       </AdditionalRules>
       <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
         <ClangCmpFlags/>
         <ClangPP/>
         <SearchPaths/>
       </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="Release"/>
-  <Dependencies Name="Debug"/>
 </CodeLite_Project>

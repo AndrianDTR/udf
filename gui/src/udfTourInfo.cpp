@@ -2,6 +2,7 @@
 #include "udfMainFrameBase.h"
 #include "udfJudgeMark.h"
 #include "udfFinalMarks.h"
+#include "udfskatingrules.h"
 
 #include "db.h"
 
@@ -213,6 +214,42 @@ void udfTourInfo::CalculatePlaces()
 	do
 	{
 		__info("Calculate a place by skating rules.");
+		
+		int teams = m_gridSuccess->GetNumberRows();
+		// first collumn is reserved for place
+		int juds = m_gridSuccess->GetNumberCols() - 1;
+		
+		int** marks = new int*[teams];
+		int t, j;
+		for(t = 0; t < teams; t++)
+		{
+			marks[t] = new int[juds];
+			for(j = 0; j < juds; j++)
+			{
+				unsigned long mark = 0;
+				m_gridSuccess->GetCellValue(t, j+1).ToULong(&mark);
+				marks[t][j] = mark;
+			}
+		}
+		int nTeams = 0;
+		int** Results = NULL;
+		udfSkatingRules math(teams, juds, marks);
+		math.GetMarks(nTeams, Results);
+		
+		if(marks)
+		{
+			for(t = 0; t < teams; t++)
+			{
+				if(marks[t])
+				{
+					delete [] marks[t];
+					marks[t] = NULL;
+				}
+			}
+			delete [] marks;
+			marks = NULL;
+		}
+		
 	}while(0);
 	Leave();
 }
@@ -322,7 +359,7 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 				CChampionshipTourPassTable(m_pCon).AddRow(data);
 			}
 		}
-		//*/
+		
 		CTourTypesTable::tDATA typeData = {0};
 		CTourTypesTable(m_pCon).GetRow(tourInfo.typeId, typeData);
 		wxString name = wxString::Format(STR_FORMAT_TOUR_NAME, typeData.name, tourInfo.limit);
@@ -334,7 +371,7 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 		{
 			m_pTree->AppendItem(m_parentItem, name, -1, -1, new udfTreeItemData(tourInfo.id, IT_TOUR));
 		}
-		//*/
+		
 	}while(0);
 	Leave();
 }

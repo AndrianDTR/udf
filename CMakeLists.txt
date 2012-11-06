@@ -94,5 +94,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${UDF_BINARY_DIR}/bin")
 # Setup gucef modules
 add_subdirectory( common )
 add_subdirectory( dbmgr )
+add_subdirectory( skating )
+add_subdirectory( skatingtest )
 add_subdirectory( gui )
 add_subdirectory( dbtest )

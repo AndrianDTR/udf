@@ -16896,7 +16896,7 @@
                                 <property name="cols">0</property>
                                 <property name="column_sizes"></property>
                                 <property name="context_help"></property>
-                                <property name="context_menu">1</property>
+                                <property name="context_menu">0</property>
                                 <property name="drag_col_move">0</property>
                                 <property name="drag_col_size">1</property>
                                 <property name="drag_grid_size">0</property>
@@ -16969,8 +16969,8 @@
                                 <event name="OnGridLabelRightDClick"></event>
                                 <event name="OnGridRangeSelect"></event>
                                 <event name="OnGridRowSize"></event>
-                                <event name="OnGridSelectCell">OnCellChange</event>
-                                <event name="OnKeyDown"></event>
+                                <event name="OnGridSelectCell"></event>
+                                <event name="OnKeyDown">OnKeyDown</event>
                                 <event name="OnKeyUp">OnKeyUp</event>
                                 <event name="OnKillFocus"></event>
                                 <event name="OnLeaveWindow"></event>
@@ -16996,7 +16996,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="0">
+        <object class="Dialog" expanded="1">
             <property name="bg"></property>
             <property name="center">wxBOTH</property>
             <property name="context_help"></property>
@@ -17361,7 +17361,7 @@
                                 <property name="drag_col_size">1</property>
                                 <property name="drag_grid_size">0</property>
                                 <property name="drag_row_size">1</property>
-                                <property name="editing">1</property>
+                                <property name="editing">0</property>
                                 <property name="enabled">1</property>
                                 <property name="fg"></property>
                                 <property name="font">,90,92,25,70,0</property>
@@ -17430,7 +17430,7 @@
                                 <event name="OnGridRangeSelect"></event>
                                 <event name="OnGridRowSize"></event>
                                 <event name="OnGridSelectCell"></event>
-                                <event name="OnKeyDown"></event>
+                                <event name="OnKeyDown">OnKeyDown</event>
                                 <event name="OnKeyUp">OnKeyUp</event>
                                 <event name="OnKillFocus"></event>
                                 <event name="OnLeaveWindow"></event>

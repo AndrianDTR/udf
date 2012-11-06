@@ -89,8 +89,6 @@
     <File Name="src/udfsettingsbase.h"/>
     <File Name="src/udfsettingsbase.cpp"/>
   </VirtualDirectory>
-  <Dependencies Name="Debug"/>
-  <Dependencies Name="Release"/>
   <VirtualDirectory Name="res">
     <File Name="res/button_money.png"/>
     <File Name="res/button_move_up10.png"/>
@@ -133,6 +131,7 @@
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(WorkspacePath)/build/bin" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/build/bin" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       
@@ -203,6 +202,7 @@ $(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppc
       
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -233,4 +233,6 @@ $(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppc
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Release"/>
+  <Dependencies Name="Debug"/>
 </CodeLite_Project>

@@ -977,7 +977,7 @@ class JudgeMark : public wxDialog
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCellLClick( wxGridEvent& event ) { event.Skip(); }
-		virtual void OnCellChange( wxGridEvent& event ) { event.Skip(); }
+		virtual void OnKeyDown( wxKeyEvent& event ) { event.Skip(); }
 		virtual void OnKeyUp( wxKeyEvent& event ) { event.Skip(); }
 		
 	
@@ -1011,6 +1011,7 @@ class FinalMarks : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnKeyDown( wxKeyEvent& event ) { event.Skip(); }
 		virtual void OnKeyUp( wxKeyEvent& event ) { event.Skip(); }
 		
 	

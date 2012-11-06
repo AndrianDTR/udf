@@ -27,7 +27,7 @@ void udfFinalMarks::OnSave( wxCommandEvent& event )
 	if(Validate())
 	{
 		UpdateMarks();
-		//EndModal(wxID_OK);
+		EndModal(wxID_OK);
 	}
 }
 
@@ -49,26 +49,6 @@ void udfFinalMarks::OnCellLClick( wxGridEvent& event )
 
 	event.Skip();
 }
-
-void udfFinalMarks::OnKeyUp( wxKeyEvent& event )
-{
-	/*int row = m_gridMarks->GetSelectedRows()[0],
-		col = m_gridMarks->GetSelectedCols()[0];
-
-	switch(event.GetKeyCode())
-	{
-		case 'X':
-			m_gridMarks->SetCellValue(row, col, _("X"));
-			break;
-
-		case WXK_SPACE:
-			m_gridMarks->SetCellValue(row, col, _(""));
-			break;
-	}
-	*/
-	event.Skip();
-}
-
 
 void udfFinalMarks::RefreshGrid()
 {
@@ -162,15 +142,37 @@ bool udfFinalMarks::Validate()
 {
 	Enter();
 	
-	bool res = false;
+	bool res = true;
 	do
 	{
-		if(0)
-			break;
-		
-		res = true;
+		int col = 0;
+		for(col = 0; col < m_gridMarks->GetNumberCols(); ++col)
+		{
+			int row = 0;
+			for(row = 0; row < m_gridMarks->GetNumberRows(); ++row)
+			{
+				wxString m1 = m_gridMarks->GetCellValue(row, col);
+				int mark = row + 1;
+				for(mark = row + 1; mark < m_gridMarks->GetNumberRows(); ++mark)
+				{
+					wxString m2 = m_gridMarks->GetCellValue(mark, col);
+					
+					if(m1[0] == m2[0])
+					{
+						__info("INVALID");
+						m_gridMarks->SetCellBackgroundColour(mark, col, wxColour(255,0,0));
+						
+						res = false;
+					}
+				}
+			}
+		}
 	}while(0);
 	
+	if(res == false)
+	{
+		m_gridMarks->Refresh();
+	}
 	Leave();
 	
 	return res;
@@ -212,3 +214,72 @@ void udfFinalMarks::UpdateMarks()
 	Leave();
 }
 
+void udfFinalMarks::OnKeyUp( wxKeyEvent& event )
+{
+	do
+	{
+		int col = m_gridMarks->GetGridCursorCol();
+		int row = m_gridMarks->GetGridCursorRow();
+		
+		if( -1 == row || -1 == col)
+			break;
+		
+		int key = event.GetKeyCode();
+		switch(key)
+		{
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				m_gridMarks->SetCellValue(row, col, wxString::Format(_("%c"), key));
+				
+				int nRow = 0;
+				bool ok = true;
+				for(nRow = 0; nRow < m_gridMarks->GetNumberRows(); nRow++)
+				{
+					if(row == nRow)
+						continue;
+					
+					wxString m1 = wxString::Format(_("%d"), m_gridMarks->GetNumberRows());
+					wxString m2 = m_gridMarks->GetCellValue(nRow, col);
+					__info("col=%d row%d=%c row%d=%c", col, row, key, nRow, m2[0]);
+					
+					if(m1[0] < key || m2[0] == key )
+					{
+						__info("INVALID");
+						m_gridMarks->SetCellBackgroundColour(row, col, wxColour(255,0,0));
+						
+						ok = false;
+						break;
+					}
+					else
+					{
+						m_gridMarks->SetCellBackgroundColour(row, col, m_gridMarks->GetDefaultCellBackgroundColour());
+					}
+					m_gridMarks->Refresh();
+				}
+				
+				if(ok)
+					m_gridMarks->MoveCursorDown(false);
+					
+				break;
+		}
+		
+	}while(0);
+}
+
+void udfFinalMarks::OnKeyDown( wxKeyEvent& event )
+{
+	int key = event.GetKeyCode();
+	if(WXK_SPACE != key
+	|| WXK_RETURN != key
+	|| WXK_NUMPAD_ENTER != key)
+	{
+		event.Skip();
+	}
+}

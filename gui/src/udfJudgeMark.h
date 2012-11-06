@@ -38,7 +38,7 @@ protected:
 	void OnDiscard( wxCommandEvent& event );
 	void OnCellLClick( wxGridEvent& event );
 	void OnKeyUp( wxKeyEvent& event );
-	void OnCellChange(wxGridEvent& event);
+	void OnKeyDown( wxKeyEvent& event );
 	void OnSearch( wxCommandEvent& event );
 	
 public:

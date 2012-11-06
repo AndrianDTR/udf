@@ -106,8 +106,8 @@ set( MODULE_NAME "gui" )
 
 # Set module link properties
 add_executable( ${MODULE_NAME} ${HEADER_FILES} ${SOURCE_FILES} )
-add_dependencies( ${MODULE_NAME} dbmgr wx_widgets)
-target_link_libraries( ${MODULE_NAME} dbmgr )
+add_dependencies( ${MODULE_NAME} dbmgr wx_widgets udfskating)
+target_link_libraries( ${MODULE_NAME} dbmgr udfskating )
 set_target_properties( ${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS "GUI_BUILD_MODULE" )
 
 if(UDF_DEBUG STREQUAL yes)
@@ -118,6 +118,7 @@ endif()
 include_directories(
 	${UDF_SOURCE_DIR}/common/src 
 	${UDF_SOURCE_DIR}/dbmgr/src 
+	${UDF_SOURCE_DIR}/skating/src 
 	${MYSQL_INCLUDE_DIR}
 	${BOOST_INCLUDE_DIR}
 	src
