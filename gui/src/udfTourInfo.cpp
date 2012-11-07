@@ -214,7 +214,7 @@ void udfTourInfo::CalculatePlaces()
 	do
 	{
 		__info("Calculate a place by skating rules.");
-		
+		/*
 		int teams = m_gridSuccess->GetNumberRows();
 		// first collumn is reserved for place
 		int juds = m_gridSuccess->GetNumberCols() - 1;
@@ -249,6 +249,7 @@ void udfTourInfo::CalculatePlaces()
 			delete [] marks;
 			marks = NULL;
 		}
+		//*/
 		
 	}while(0);
 	Leave();
