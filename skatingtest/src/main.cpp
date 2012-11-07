@@ -82,27 +82,41 @@ int main(int argc, char **argv)
 	for(; t < teams; t++)
 	{
 		marks[t] = new int[juds];
-		 j = 0;
+		j = 0;
 		for(; j < juds; j++)
 		{
-			marks[t][j] = rand()%teams + 1;
+			marks[t][j] = -1;
 		}
 	}
+	
+	
+	
 	for(j = 0; j < juds; j++)
 	{
-		for(t = 0; t < teams; t++)
+		int a[10];
+		int i=0, k=0, n=0, flag=-1;
+		while(i < teams)
 		{
-			int m = 0;
-			for(m = 0; m < t; m++)
+			n = rand() % teams + 1;
+			for(t = 0; t < teams; t++)
 			{
-				while(marks[t][j] == marks[m][j])
+				if(n == marks[t][j])
 				{
-					marks[t][j] = rand()%teams + 1;
+					flag = 0;
+					break;
+				}
+				else
+				{
+					flag = 1;
 				}
 			}
+			if(flag == 1)
+			{
+				marks[i][j] = n;
+				i++;
+			} 
 		}
-		
-	}  
+	}
 	
 	printMarks(teams, juds, marks);
 	
@@ -114,6 +128,6 @@ int main(int argc, char **argv)
 	rules.GetMarks(nTeams, &ppRes);
 	if(ppRes)
 		printPlaces(teams, ppRes);
-		
+
 	return 0;
 }
