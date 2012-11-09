@@ -11,6 +11,13 @@ private:
 	int** 	m_ppnMarks;
 	int** 	m_ppnResults;
 	
+	/*
+	 * Precalculate tables
+	 */
+	int** 	m_ppnPlacesCount;
+	int** 	m_ppnPlacesRange;
+	int** 	m_ppnPlacesSums;
+		
 public:
 	udfSkatingRules(int teams, int judges, int** marks);
 	virtual ~udfSkatingRules();

@@ -289,6 +289,7 @@ bool udfSkatingRules::Rule5()
 	bool res = true;
 	do
 	{
+		// All OK But modify algorithm to use pre calculated tables.
 		int t, j, p;
 		int jMost = m_nJudges / 2 + 1;
 
@@ -337,22 +338,46 @@ bool udfSkatingRules::Rule5()
 
 		for(p = 0; p < m_nTeams; p++)
 		{
+			int similar = 0;
 			for(t = 0; t < m_nTeams; t++)
 			{
 				if(m_ppnResults[t][p] >= jMost)
 				{
+					__msg("Similar +1");
+					similar++;
 					tbl[t][p] = m_ppnResults[t][p];
-					tbl[t][m_nTeams] = p+1;
-
-					for(j=p; j<m_nTeams; j++)
+					
+					for(j = p; j < m_nTeams; j++)
 					{
 						m_ppnResults[t][j] = 0;
 					}
-					break;
 				}
 			}
-		}
+			__msg("Similar = %d", similar);
+			if(similar == 1)
+			{
+				for(t = 0; t < m_nTeams; t++)
+				{
+					if(m_ppnResults[t][p] >= jMost)
+					{
+						tbl[t][p] = m_ppnResults[t][p];
+						tbl[t][m_nTeams] = p+1;
 
+						for(j = p; j < m_nTeams; j++)
+						{
+							m_ppnResults[t][j] = 0;
+						}
+						break;
+					}
+				}
+			}
+			else
+			{
+				res = false;
+			}
+				
+		}
+		
 		printPlaces(m_nTeams, tbl);
 		FreeMarkTable(m_ppnResults);
 		m_ppnResults = tbl;
@@ -405,12 +430,54 @@ bool udfSkatingRules::Rule6()
 	bool res = true;
 	do
 	{
+		int t;
+		int p;
+		int j;
 		int jMost = m_nJudges / 2 + 1;
 
-		__msg("Rule 6");
-
-		//res = true;
+		__msg("Rule 6 ...");
+		
+		for(p = 0; p < m_nTeams; p++)
+		{
+			int* ndx = new int[m_nTeams];
+			int ndxCount = -1;
+			for(t = 0; t < m_nTeams; t++)
+			{
+				ndx[t] = 0;
+			}
+			
+			for(t = 0; t < m_nTeams; t++)
+			{
+				if(m_ppnResults[t][p] >= jMost)
+				{
+					if(!ndx[m_ppnResults[t][p]])
+					{
+						ndx[m_ppnResults[t][p]] = t;
+						ndxCount++;
+					}
+					else
+					{
+						res = false;
+					}
+				}
+			}
+			
+			for(t = 0; t < m_nTeams; t++)
+			{
+				if(ndxCount && ndx[t])
+				{
+					m_ppnResults[ndx[t]][p+ndxCount] = m_ppnResults[ndx[t]][p];
+					m_ppnResults[ndx[t]][p] = 0;
+					ndxCount--;
+				}
+			}
+			
+			delete [] ndx;
+		}
+		__msg("Rule 6 results");
+		printPlaces(m_nTeams, m_ppnResults);
 	}while(0);
+
 	Leave();
 	return res;
 }
@@ -419,7 +486,7 @@ bool udfSkatingRules::Rule6()
  * Применяется в случае, когда 2 или более пар имеют необходимое большинство
  * голосов судей для присвоения очередного результата за танец, причем оно у
  * всех этих пар равное. В этом случае необходим анализ компонентов,
- * составляющих это большинство. ечь идет о суммировании оценок, из которых
+ * составляющих это большинство. Речь идет о суммировании оценок, из которых
  * сложились равные количества в колонках оценок "1-_" у рассматриваемых пар
  * (не путать с общей суммой всех судейских оценок). Полученные суммы
  * записывают в круглых скобках около соответствующих количеств оценок(внизу
@@ -508,9 +575,45 @@ bool udfSkatingRules::Rule7()
 	{
 		int jMost = m_nJudges / 2 + 1;
 
-		__msg("Rule 6");
+		int t;
+		int p;
+		int j;
+		
+		for(p = 0; p < m_nTeams; p++)
+		{
+			int* sum = new int[m_nTeams];
+			int sumCount = -1;
+			for(t = 0; t < m_nTeams; t++)
+			{
+				sum[t] = 0;
+			}
+			
+			for(t = 0; t < m_nTeams; t++)
+			{
+				if(m_ppnResults[t][p] >= jMost)
+				{
+					for(j = 0; j < m_nJudges; j++)
+					{
+						if(m_ppnMarks[t][j] <= p)
+							sum[t]++;
+					}
+					sumCount++;
+				}
+			}
+			/*
+			for(t = 0; t < m_nTeams; t++)
+			{
+				if(sumCount && sum[t])
+				{
+					m_ppnResults[ndx[t]][p+ndxCount] = m_ppnResults[ndx[t]][p];
+					m_ppnResults[ndx[t]][p] = 0;
+					ndxCount--;
+				}
+			}
+			*/
+			delete [] sum;
+		}
 
-		//res = true;
 	}while(0);
 	Leave();
 	return res;
