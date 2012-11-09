@@ -70,8 +70,8 @@ void printPlaces(int teams, int** marks)
 
 int main(int argc, char **argv)
 {
-	int teams = 6;
-	int juds = 5;
+	const int teams = 6;
+	const int juds = 5;
 	
 	srand(time(0));
 	
@@ -88,9 +88,7 @@ int main(int argc, char **argv)
 			marks[t][j] = -1;
 		}
 	}
-	
-	
-	
+		
 	for(j = 0; j < juds; j++)
 	{
 		int a[10];
@@ -117,6 +115,26 @@ int main(int argc, char **argv)
 			} 
 		}
 	}
+	
+	int m[teams][juds] = 
+	{
+		{3,3,3,2,3},
+		{6,6,6,6,5},
+		{2,2,5,4,1},
+		{4,4,2,3,4},
+		{1,5,1,1,2},
+		{5,1,4,5,6}
+	};
+	
+	/********** COPY ************/
+	for(t = 0; t < teams; t++)
+	{
+		for(j = 0; j < juds; j++)
+		{
+			marks[t][j] = m[t][j];
+		}
+	}
+	/******** END COPY **********/
 	
 	printMarks(teams, juds, marks);
 	

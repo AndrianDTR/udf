@@ -1,5 +1,10 @@
 #include "udfskatingrules.h"
 
+#include "stdio.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+
 #include "udfcommon.h"
 
 udfSkatingRules::udfSkatingRules(int teams, int judges, int** marks)
@@ -49,21 +54,51 @@ udfSkatingRules::~udfSkatingRules()
 		m_ppnMarks = 0;
 	}
 
-	if(m_ppnResults)
+	FreeMarkTable(m_ppnResults);
+}
+
+int** udfSkatingRules::CreateMarkTable()
+{
+	int r = 0;
+	int c = 0;
+
+	int** tbl = new int*[m_nTeams];
+	for(r = 0; r < m_nTeams; r++)
 	{
-		int t = 0;
-		for(t = 0; t < m_nTeams; t++)
+		const int rc = m_nTeams + 1;
+
+		tbl[r] = new int[rc];
+
+		for(c = 0; c < rc; c++)
 		{
-			if(m_ppnResults)
+			tbl[r][c] = 0;
+		}
+	}
+
+	return tbl;
+}
+
+void udfSkatingRules::FreeMarkTable(int**& tbl)
+{
+	do
+	{
+		if(!tbl)
+			break;
+
+		int r = 0;
+		for(r = 0; r < m_nTeams; r++)
+		{
+			if(tbl[r])
 			{
-				delete [] m_ppnResults[t];
-				m_ppnResults[t] = 0;
+				delete [] tbl[r];
+				tbl[r] = 0;
 			}
 		}
-		delete [] m_ppnResults;
-		m_ppnResults = 0;
-	}
+		delete [] tbl;
+		tbl = 0;
+	}while(0);
 }
+
 
 bool udfSkatingRules::GetMarks(int& nTeams, int*** marks)
 {
@@ -113,6 +148,41 @@ bool udfSkatingRules::GetMarks(int& nTeams, int*** marks)
 
 	Leave();
 	return res;
+}
+
+void udfSkatingRules::printPlaces(int teams, int** marks)
+{
+	int t,j;
+	char formath[200] = {0};
+	char formatb[200] = {0};
+	char tmp[100] = {0};
+
+	strcpy(formath, "team");
+	strcpy(formatb, "%%d");
+	for(j = 0; j <= teams; j++)
+	{
+		if(j==0)
+			sprintf(tmp, "\t%d ", j+1);
+		else if(j == teams)
+			sprintf(tmp, "\tPlace ", 1, j+1);
+		else
+			sprintf(tmp, "\t%d-%d ", 1, j+1);
+		strcat(formath, tmp);
+	}
+
+	printf(formath);
+	for(t = 0; t < teams; t++)
+	{
+		printf("\n%d", t+1);
+		for(j = 0; j < teams+1; j++)
+		{
+			if(marks[t][j])
+				printf("\t%d ", marks[t][j]);
+			else
+				printf("\t- ");
+		}
+	}
+	printf("\n\n");
 }
 
 /*******************************************************************************
@@ -243,18 +313,50 @@ bool udfSkatingRules::Rule5()
 			}
 		}
 
+		int** tbl = CreateMarkTable();
+		__msg("Count of places:");
+		printPlaces(m_nTeams, m_ppnResults);
+
 		for(t = 0; t < m_nTeams; t++)
 		{
 			for(p = 0; p < m_nTeams; p++)
 			{
-				if(m_ppnResults[t][p] >= jMost)
-					m_ppnResults[t][m_nTeams] = p+1;
-				else
+				if(m_ppnResults[t][p])
 				{
-					res = false;
+					for(j = 0; j <= p; j++)
+						tbl[t][p] += m_ppnResults[t][j];
 				}
 			}
 		}
+
+		__msg("Sum of places between 1 and X:");
+		printPlaces(m_nTeams, tbl);
+		FreeMarkTable(m_ppnResults);
+		m_ppnResults = tbl;
+		tbl = CreateMarkTable();
+
+		for(p = 0; p < m_nTeams; p++)
+		{
+			for(t = 0; t < m_nTeams; t++)
+			{
+				if(m_ppnResults[t][p] >= jMost)
+				{
+					tbl[t][p] = m_ppnResults[t][p];
+					tbl[t][m_nTeams] = p+1;
+
+					for(j=p; j<m_nTeams; j++)
+					{
+						m_ppnResults[t][j] = 0;
+					}
+					break;
+				}
+			}
+		}
+
+		printPlaces(m_nTeams, tbl);
+		FreeMarkTable(m_ppnResults);
+		m_ppnResults = tbl;
+
 	}while(0);
 
 	Leave();
@@ -284,8 +386,8 @@ bool udfSkatingRules::Rule5()
  * получает результат 2 в танце, а пара №32 - третий. Аналогично распределяются
  * пятый и четвертый результат между парами №42 и №52 . Еще один пример (Г) к
  * правилу 6, для самостоятельного разбора. Учтите только, что в этом примере
- * выступление пар оценивали 7 судей и, поэтому, необходимое большинство голосов
- * судей должно быть не менее 4-х.
+ * выступление пар оценивали 7 судей и, поэтому, необходимое большинство
+ * голосов судей должно быть не менее 4-х.
  *
  * Пример Г
  * № 	A 	B 	C 	D 	E 	F 	G 	1 	1-2 	1-3 	1-4 	1-5 	1-6 	Рез
@@ -647,8 +749,8 @@ bool udfSkatingRules::Rule10()
  * оценивались 7-ю судьями, необходимое большинство =18).
 
 Пример применения правила 11:
-  	Самба 	  	Ча-ча-ча 	  	Румба 	  	Джайв
-№ 	A 	B 	C 	D 	E 	Рез 	  	A 	B 	C 	D 	E 	Рез 	  	A 	B 	C 	D 	E 	Рез 	  	A 	B 	C 	D 	E 	Рез
+		Самба 	  						Ча-ча-ча 				  	Румба 	 			 		Джайв
+№ 	A 	B 	C 	D 	E 	Рез   	A 	B 	C 	D 	E 	Рез 	A 	B 	C 	D 	E 	Рез 	A 	B 	C 	D 	E 	Рез
 71 	2 	6 	4 	4 	5 	6 	  	6 	6 	6 	6 	6 	6 	  	1 	4 	4 	5 	4 	5 	  	5 	4 	3 	3 	6 	5
 72 	3 	5 	2 	1 	1 	1 	  	4 	3 	2 	2 	1 	1 	  	5 	1 	5 	2 	2 	2 	  	1 	6 	2 	6 	2 	2
 73 	5 	2 	5 	2 	2 	2 	  	2 	2 	1 	3 	5 	2 	  	2 	5 	2 	1 	1 	1 	  	2 	5 	1 	5 	1 	1

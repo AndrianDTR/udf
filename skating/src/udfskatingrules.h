@@ -29,6 +29,11 @@ protected:
 	virtual bool Rule9();
 	virtual bool Rule10();
 	virtual bool Rule11();
+	
+	int**		CreateMarkTable();
+	void		FreeMarkTable(int**& tbl);
+	
+	void printPlaces(int teams, int** marks);
 };
 
 #endif // __udfSkatingRules_h__
