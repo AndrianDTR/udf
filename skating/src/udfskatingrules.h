@@ -10,14 +10,14 @@ private:
 	int 	m_nJudges;
 	int** 	m_ppnMarks;
 	int** 	m_ppnResults;
-	
+
 	/*
 	 * Precalculate tables
 	 */
 	int** 	m_ppnPlacesCount;
 	int** 	m_ppnPlacesRange;
 	int** 	m_ppnPlacesSums;
-		
+
 public:
 	udfSkatingRules(int teams, int judges, int** marks);
 	virtual ~udfSkatingRules();
@@ -36,11 +36,15 @@ protected:
 	virtual bool Rule9();
 	virtual bool Rule10();
 	virtual bool Rule11();
-	
+
 	int**		CreateMarkTable();
 	void		FreeMarkTable(int**& tbl);
-	
-	void printPlaces(int teams, int** marks);
+
+	void 		printTable(int teams, int** marks);
+
+	int**		CalculatePlacesCount(int** marksTbl);
+	int**		CalculatePlacesRange(int** countTbl);
+	int**		CalculatePlacesSum(int** rangesTbl);
 };
 
 #endif // __udfSkatingRules_h__

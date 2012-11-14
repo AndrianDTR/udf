@@ -4,9 +4,17 @@
 	<Project>
 		<Option title="udf" />
 		<Option makefile_is_custom="1" />
-		<Option execution_dir="/home/TOROKI-WIND/andrian.yablonskyy/Projects/udf/build" />
+		<Option execution_dir="build" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<MakeCommands>
+			<Build command="$make -j4 -f $makefile $target" />
+			<CompileFile command="$make -f $makefile $file" />
+			<Clean command="$make -f $makefile clean$target" />
+			<DistClean command="$make -f $makefile distclean$target" />
+			<AskRebuildNeeded command="$make -q -f $makefile $target" />
+			<SilentBuild command="$make -s -f $makefile $target" />
+		</MakeCommands>
 		<Build>
 			<Target title="all">
 				<Option output="build/bin/gui" prefix_auto="1" extension_auto="1" />
@@ -68,6 +76,8 @@
 		<Unit filename="dbmgr/src/tchampionshipteamdancers.h" />
 		<Unit filename="dbmgr/src/tchampionshiptour.cpp" />
 		<Unit filename="dbmgr/src/tchampionshiptour.h" />
+		<Unit filename="dbmgr/src/tchampionshiptourpass.cpp" />
+		<Unit filename="dbmgr/src/tchampionshiptourpass.h" />
 		<Unit filename="dbmgr/src/tchampionshiptype.cpp" />
 		<Unit filename="dbmgr/src/tchampionshiptype.h" />
 		<Unit filename="dbmgr/src/tcities.cpp" />
@@ -80,6 +90,8 @@
 		<Unit filename="dbmgr/src/tcsblocks.h" />
 		<Unit filename="dbmgr/src/tcsblockscategories.cpp" />
 		<Unit filename="dbmgr/src/tcsblockscategories.h" />
+		<Unit filename="dbmgr/src/tcsblocksj2c.cpp" />
+		<Unit filename="dbmgr/src/tcsblocksj2c.h" />
 		<Unit filename="dbmgr/src/tcsblocksjudges.cpp" />
 		<Unit filename="dbmgr/src/tcsblocksjudges.h" />
 		<Unit filename="dbmgr/src/tdancers.cpp" />
@@ -194,6 +206,10 @@
 		<Unit filename="gui/src/udfDancersTeamMngr.h" />
 		<Unit filename="gui/src/udfDirectorInfo.cpp" />
 		<Unit filename="gui/src/udfDirectorInfo.h" />
+		<Unit filename="gui/src/udfFinalMarks.cpp" />
+		<Unit filename="gui/src/udfFinalMarks.h" />
+		<Unit filename="gui/src/udfJudgeCategories.cpp" />
+		<Unit filename="gui/src/udfJudgeCategories.h" />
 		<Unit filename="gui/src/udfJudgeMark.cpp" />
 		<Unit filename="gui/src/udfJudgeMark.h" />
 		<Unit filename="gui/src/udfJudgesMngr.cpp" />
@@ -224,8 +240,15 @@
 		<Unit filename="gui/src/udfcategoriesdata.h" />
 		<Unit filename="gui/src/udfexceptions.cpp" />
 		<Unit filename="gui/src/udfexceptions.h" />
+		<Unit filename="gui/src/udfsettingsbase.cpp" />
+		<Unit filename="gui/src/udfsettingsbase.h" />
+		<Unit filename="gui/src/udftimectrl.cpp" />
+		<Unit filename="gui/src/udftimectrl.h" />
 		<Unit filename="gui/src/udfuiutils.cpp" />
 		<Unit filename="gui/src/udfuiutils.h" />
+		<Unit filename="skating/src/udfskatingrules.cpp" />
+		<Unit filename="skating/src/udfskatingrules.h" />
+		<Unit filename="skatingtest/src/main.cpp" />
 		<Extensions>
 			<code_completion>
 				<search_path add="/home/andrian/Projects/udf/gui/res" />

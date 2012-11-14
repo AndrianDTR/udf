@@ -15,7 +15,9 @@
 
 #include "cdbmanager.h"
 #include "dbutils.h"
+#include "udfexceptions.h"
 
+#include "udfSettings.h"
 #include "locale.h"
 // initialize the application
 IMPLEMENT_APP(MainApp);
@@ -27,23 +29,36 @@ IMPLEMENT_APP(MainApp);
 bool MainApp::OnInit()
 {
 	bool res = false;
-	do{
-		setlocale(LC_ALL, "C");
-		try
+	setlocale(LC_ALL, "C");
+	try
+	{
+		CDbManager* pDbMgr = NULL;
+		do
 		{
-			CDbConnection* pCon = CDbManager::Instance()->GetConnection();
-			SetGlobalDbConnection(pCon);
+			pDbMgr = CDbManager::Instance();
+			// Connection OK
+			if(pDbMgr->IsOk())
+			{
+				break;
+			}
+
+			//Cancel pressed
+			if(UDF_OK != udfSettings(NULL).ShowModal())
+			{
+				break;
+			}
 		}
-		catch(...)
-		{
-			wxMessageBox(_("ERROR. Open MySQL connection fail. Program will be closed."), _("Error"),wxOK|wxCENTRE|wxICON_STOP);
-			break;
-		}
+		while(1);
 
 		SetTopWindow( new udfMainFrameBase( NULL ) );
 		GetTopWindow()->Show();
 		res = true;
-	}while(0);
+	}
+	catch(...)
+	{
+		ShowWarning(_("Unhandled error has been happened. Program will be closed."));
+	}
+
 	// true = enter the main loop
 	return res;
 }

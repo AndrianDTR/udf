@@ -23,6 +23,7 @@ CDbConnection::~CDbConnection(void)
 
 long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPass, std::string szSchema)
 {
+	Enter();
 	long res = UDF_E_FAIL;
 
 	do
@@ -35,6 +36,7 @@ long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPa
 		if(!pDriver)
 		{
 			res = UDF_E_INIT_DRIVER;
+			__msg("No driver");
 			break;
 		}
 
@@ -42,6 +44,7 @@ long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPa
 		if(!pCon)
 		{
 			res = UDF_E_CONNECTION;
+			__msg("No connect");
 			break;
 		}
 
@@ -51,6 +54,7 @@ long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPa
 		if(!pStmt)
 		{
 			res = UDF_E_CREATE_STATEMENT;
+			__msg("No statement");
 			break;
 		}
 
@@ -59,6 +63,7 @@ long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPa
 		res = UDF_OK;
 	}while(0);
 
+	Leave();
 	return res;
 }
 

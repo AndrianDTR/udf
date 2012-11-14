@@ -5,17 +5,21 @@
 #include "dbconnection.h"
 #include "wx/string.h"
 
-class CDbManager {
-	
-	CDbConnection* m_pCon;
-		
-	static CDbManager* ms_instance;
+class CDbManager
+{
+	bool				m_ok;
+	CDbConnection* 		m_pCon;
+
+	static CDbManager* 	ms_instance;
 
 public:
 	static CDbManager* Instance();
 	static void Release();
-	
-	CDbConnection* GetConnection(){return m_pCon;}
+
+	CDbConnection* 	GetConnection(){return m_pCon;}
+
+	bool			Open(std::string host, std::string db, std::string user, std::string pass );
+	bool			IsOk();
 
 private:
 	CDbManager();
