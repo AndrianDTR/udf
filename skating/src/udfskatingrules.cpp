@@ -59,7 +59,7 @@ udfSkatingRules::~udfSkatingRules()
 
 int** udfSkatingRules::CreateMarkTable()
 {
-	Enter();
+	//Enter();
 
 	int r = 0;
 	int c = 0;
@@ -77,13 +77,13 @@ int** udfSkatingRules::CreateMarkTable()
 		}
 	}
 
-	Leave();
+	//Leave();
 	return tbl;
 }
 
 void udfSkatingRules::FreeMarkTable(int**& tbl)
 {
-	Enter();
+	//Enter();
 	do
 	{
 		if(!tbl)
@@ -102,7 +102,7 @@ void udfSkatingRules::FreeMarkTable(int**& tbl)
 		tbl = 0;
 	}while(0);
 
-	Leave();
+	//Leave();
 }
 
 int** udfSkatingRules::CalculatePlacesCount(int** marksTbl)
@@ -151,15 +151,35 @@ int** udfSkatingRules::CalculatePlacesRange(int** countTbl)
 		}
 	}
 
+	printTable(m_nTeams, res);
+
 	Leave();
 	return res;
 }
 
-int** udfSkatingRules::CalculatePlacesSum(int** rangesTbl)
+int** udfSkatingRules::CalculatePlacesSum(int** marksTbl)
 {
 	Enter();
 
 	int** res = CreateMarkTable();
+	int** countTbl = CalculatePlacesCount(marksTbl);
+	int p, t, j;
+
+	for(t = 0; countTbl && t < m_nTeams; t++)
+	{
+		for(p = 0; countTbl[t] && p < m_nTeams; p++)
+		{
+			if(countTbl[t][p])
+			{
+				countTbl[t][p] *= p+1;
+
+				for(j = 0; j <= p; j++)
+					res[t][p] += countTbl[t][j];
+			}
+		}
+	}
+
+	printTable(m_nTeams, res);
 
 	Leave();
 	return res;
@@ -360,28 +380,24 @@ bool udfSkatingRules::Rule5()
 
 		__msg("most judges = %d", jMost);
 
-		int** cntTbl = CalculatePlacesCount(m_ppnMarks);
 
 		__msg("Count of places:");
-		printTable(m_nTeams, cntTbl);
-
-		int** sumTbl = CalculatePlacesRange(cntTbl);
+		int** cntTbl = CalculatePlacesCount(m_ppnMarks);
 
 		__msg("Sum of places between 1 and X:");
-		printTable(m_nTeams, sumTbl);
+		int** sumTbl = CalculatePlacesRange(cntTbl);
 
 		FreeMarkTable(m_ppnResults);
 		m_ppnResults = CreateMarkTable();
 
 		for(p = 0; p < m_nTeams; p++)
 		{
-			int similar = 0;
+			int mostCnt = 0;
 			for(t = 0; t < m_nTeams; t++)
 			{
 				if(sumTbl[t][p] >= jMost)
 				{
-					__msg("Similar +1");
-					similar++;
+					mostCnt++;
 					m_ppnResults[t][p] = sumTbl[t][p];
 
 					for(j = p; j < m_nTeams; j++)
@@ -390,15 +406,14 @@ bool udfSkatingRules::Rule5()
 					}
 				}
 			}
-			__msg("Similar = %d", similar);
-			if(similar == 1)
+
+			if(mostCnt == 1)
 			{
 				for(t = 0; t < m_nTeams; t++)
 				{
-					if(sumTbl[t][p] >= jMost)
+					if(m_ppnResults[t][p] >= jMost)
 					{
-						m_ppnResults[t][p] = sumTbl[t][p];
-						m_ppnResults[t][m_nTeams] = p+1;
+						m_ppnResults[t][m_nTeams] = p + 1;
 
 						for(j = p; j < m_nTeams; j++)
 						{
@@ -410,9 +425,9 @@ bool udfSkatingRules::Rule5()
 			}
 			else
 			{
+				__msg("Places can't be calculated. Call next rule.");
 				res = false;
 			}
-
 		}
 
 		printTable(m_nTeams, m_ppnResults);
@@ -472,8 +487,6 @@ bool udfSkatingRules::Rule6()
 		int j;
 		int jMost = m_nJudges / 2 + 1;
 
-		__msg("Rule 6 ...");
-
 		for(p = 0; p < m_nTeams; p++)
 		{
 			int* ndx = new int[m_nTeams];
@@ -494,6 +507,7 @@ bool udfSkatingRules::Rule6()
 					}
 					else
 					{
+						__msg("Column #%d contains similar data, call next rule to calculate.", p+1);
 						res = false;
 					}
 				}
@@ -511,6 +525,7 @@ bool udfSkatingRules::Rule6()
 
 			delete [] ndx;
 		}
+
 		__msg("Rule 6 results");
 		printTable(m_nTeams, m_ppnResults);
 	}while(0);
@@ -616,40 +631,63 @@ bool udfSkatingRules::Rule7()
 		int p;
 		int j;
 
+		__msg("Sum of places:");
+		int** sumTbl = CalculatePlacesSum(m_ppnMarks);
+
+		/*
+		1.	Sort table by column 1-X by ascending sum and from left to right
+		2.  Assign higher place for team where sum is minimal next team - next place
+		*/
+		int shift = 0;
+
 		for(p = 0; p < m_nTeams; p++)
 		{
-			int* sum = new int[m_nTeams];
-			int sumCount = -1;
-			for(t = 0; t < m_nTeams; t++)
-			{
-				sum[t] = 0;
-			}
+			iiMap sMap;
+			int   max = 0;
 
 			for(t = 0; t < m_nTeams; t++)
 			{
-				if(m_ppnResults[t][p] >= jMost)
+				if(m_ppnResults[t][p] >= jMost && sumTbl[t][p])
 				{
-					for(j = 0; j < m_nJudges; j++)
+					int sameSumCnt = 0;
+					for(j = 0; j < m_nTeams; j++)
 					{
-						if(m_ppnMarks[t][j] <= p)
-							sum[t]++;
+						if(t != j && sumTbl[t][p] == sumTbl[j][p])
+							sameSumCnt++;
 					}
-					sumCount++;
+
+					if(0 == sameSumCnt)
+					{
+						sMap[sumTbl[t][p]] = t;
+						max = max > sumTbl[t][p] ? max : sumTbl[t][p];
+					}
+					else
+					{
+						__msg("Use 7B rule");
+					}
 				}
 			}
-			/*
-			for(t = 0; t < m_nTeams; t++)
+
+			int cnt = sMap.size();
+			for(j = 0; sMap.size() > 1 && j <= max; j++)
 			{
-				if(sumCount && sum[t])
+				iiIt it = sMap.find(j);
+				if(it != sMap.end())
 				{
-					m_ppnResults[ndx[t]][p+ndxCount] = m_ppnResults[ndx[t]][p];
-					m_ppnResults[ndx[t]][p] = 0;
-					ndxCount--;
+					t = it->second;
+					if(!m_ppnResults[t][m_nTeams])
+					{
+						m_ppnResults[t][m_nTeams] = p + 1 + shift;
+
+						if(--cnt)
+							shift++;
+					}
 				}
 			}
-			*/
-			delete [] sum;
 		}
+
+		FreeMarkTable(sumTbl);
+		printTable(m_nTeams, m_ppnResults);
 
 	}while(0);
 	Leave();

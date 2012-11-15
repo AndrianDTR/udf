@@ -30,6 +30,7 @@ set( ALL_FILES ${HEADER_FILES} ${SOURCE_FILES} ${PLATFORM_HEADER_FILES} ${PLATFO
 # Set module name
 set( MODULE_NAME "skatingtest" )
 
+
 if(UDF_DEBUG STREQUAL yes)
 	ADD_DEFINITIONS(-D_DEBUG=1)
 endif()

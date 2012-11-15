@@ -12,7 +12,7 @@ void printMarks(int teams, int juds, int** marks)
 	char formath[200] = {0};
 	char formatb[200] = {0};
 	char tmp[100] = {0};
-	
+
 	strcpy(formath, "team");
 	strcpy(formatb, "%%d");
 	for(j = 0; j < juds; j++)
@@ -20,7 +20,7 @@ void printMarks(int teams, int juds, int** marks)
 		sprintf(tmp, "\tJ%d ", j+1);
 		strcat(formath, tmp);
 	}
-	
+
 	printf(formath);
 	for(t = 0; t < teams; t++)
 	{
@@ -39,7 +39,7 @@ void printPlaces(int teams, int** marks)
 	char formath[200] = {0};
 	char formatb[200] = {0};
 	char tmp[100] = {0};
-	
+
 	strcpy(formath, "team");
 	strcpy(formatb, "%%d");
 	for(j = 0; j <= teams; j++)
@@ -52,7 +52,7 @@ void printPlaces(int teams, int** marks)
 			sprintf(tmp, "\t%d-%d ", 1, j+1);
 		strcat(formath, tmp);
 	}
-	
+
 	printf(formath);
 	for(t = 0; t < teams; t++)
 	{
@@ -71,14 +71,14 @@ void printPlaces(int teams, int** marks)
 int main(int argc, char **argv)
 {
 	const int teams = 6;
-	const int juds = 5;
-	
+	const int juds = 7;
+
 	srand(time(0));
-	
+
 	int** marks = new int*[teams];
 	int t = 0;
 	int j = 0;
-	
+
 	for(; t < teams; t++)
 	{
 		marks[t] = new int[juds];
@@ -88,10 +88,9 @@ int main(int argc, char **argv)
 			marks[t][j] = -1;
 		}
 	}
-		
+
 	for(j = 0; j < juds; j++)
 	{
-		int a[10];
 		int i=0, k=0, n=0, flag=-1;
 		while(i < teams)
 		{
@@ -112,11 +111,11 @@ int main(int argc, char **argv)
 			{
 				marks[i][j] = n;
 				i++;
-			} 
+			}
 		}
 	}
-	
-	int m[teams][juds] = 
+
+	int m[teams][juds] =
 	{
 		/*
 		{1,1,1,4,4},
@@ -134,15 +133,22 @@ int main(int argc, char **argv)
 		{5,4,3,3,5},
 		{6,6,6,6,6}
 		*/
+		/*
 		{4,6,6,6,6},
 		{5,5,1,1,1},
 		{6,1,3,3,4},
 		{1,4,2,2,5},
 		{2,2,5,5,2},
 		{3,3,4,4,3}
-		
+		*/
+		{5,3,5,4,6,5,2},
+		{3,1,4,3,5,1,1},
+		{1,4,2,2,2,3,4},
+		{2,2,3,1,4,2,3},
+		{4,5,1,5,1,4,6},
+		{6,6,6,6,3,6,5}
 	};
-	
+
 	/********** COPY ************/
 	for(t = 0; t < teams; t++)
 	{
@@ -152,14 +158,14 @@ int main(int argc, char **argv)
 		}
 	}
 	/******** END COPY **********/
-	
+
 	printMarks(teams, juds, marks);
-	
+
 	udfSkatingRules rules(teams, juds, marks);
-	
+
 	int nTeams;
 	int **ppRes = 0;
-		
+
 	rules.GetMarks(nTeams, &ppRes);
 	if(ppRes)
 		printPlaces(teams, ppRes);

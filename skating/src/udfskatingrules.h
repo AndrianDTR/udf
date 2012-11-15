@@ -1,7 +1,12 @@
 #ifndef __udfSkatingRules_h__
 #define __udfSkatingRules_h__
 
+#include "map"
+
 using namespace std;
+
+typedef map<int,int>			iiMap;
+typedef map<int,int>::iterator	iiIt;
 
 class udfSkatingRules
 {
@@ -44,7 +49,7 @@ protected:
 
 	int**		CalculatePlacesCount(int** marksTbl);
 	int**		CalculatePlacesRange(int** countTbl);
-	int**		CalculatePlacesSum(int** rangesTbl);
+	int**		CalculatePlacesSum(int** marksTbl);
 };
 
 #endif // __udfSkatingRules_h__
