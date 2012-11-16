@@ -39,8 +39,8 @@ udfSkatingRules::udfSkatingRules(int teams, int judges, int** marks)
 
 udfSkatingRules::~udfSkatingRules()
 {
-	FreeMarkTable(m_ppnMarks);
-	FreeMarkTable(m_ppnResults);
+	//FreeMarkTable(m_ppnMarks);
+	//FreeMarkTable(m_ppnResults);
 }
 
 int** udfSkatingRules::CreateMarkTable()
@@ -104,7 +104,7 @@ int** udfSkatingRules::CalculatePlacesCount(int** marksTbl)
 		{
 			for(j = 0; marksTbl[t] && j < m_nJudges; j++)
 			{
-				if(marksTbl[t][j] && marksTbl[t][j] == p+1)
+				if(marksTbl[t][j] == p+1)
 				{
 					res[t][p]++;
 				}
@@ -164,7 +164,7 @@ int** udfSkatingRules::CalculatePlacesSum(int** marksTbl)
 			}
 		}
 	}
-	
+
 	FreeMarkTable(countTbl);
 	printTable(m_nTeams, res);
 
@@ -477,10 +477,6 @@ bool udfSkatingRules::Rule6()
 		for(p = 0; p < m_nTeams; p++)
 		{
 			iiMap ndx;
-			for(t = 0; t < m_nTeams; t++)
-			{
-				ndx[t] = 0;
-			}
 
 			for(t = 0; t < m_nTeams; t++)
 			{
@@ -497,14 +493,16 @@ bool udfSkatingRules::Rule6()
 					}
 				}
 			}
-			
+
 			int ndxCount = ndx.size();
-			for(t = 0; t < m_nTeams; t++)
+			iiIt si = ndx.begin();
+			for(; res && si != ndx.end(); si++)
 			{
-				if(ndxCount && ndx[t])
+				t = si->second;
+				if(ndxCount)
 				{
-					m_ppnResults[ndx[t]][p+ndxCount] = m_ppnResults[ndx[t]][p];
-					m_ppnResults[ndx[t]][p] = 0;
+					m_ppnResults[t][p+ndxCount] = m_ppnResults[t][p];
+					m_ppnResults[t][p] = 0;
 					ndxCount--;
 				}
 			}
@@ -621,72 +619,138 @@ bool udfSkatingRules::Rule7()
 
 		__msg("Count of places:");
 		int** cntTbl = CalculatePlacesCount(m_ppnMarks);
-		
+
 		__msg("Range of places:");
 		int** rngTbl = CalculatePlacesRange(cntTbl);
-		
+
 		__msg("m_ppnResults:");
 		printTable(m_nTeams, m_ppnResults);
-		
+
 		for(p = 0; p < m_nTeams; p++)
 		{
-			iiMap sMap;
-			int   max = 0;
-			iiMap scMap;
-			
+			iiMap	sMap;
+			int		ruleB = 0;
+			iiMap	scMap;
+
 			for(t = 0; t < m_nTeams; t++)
 			{
 				scMap.clear();
 				if(m_ppnResults[t][p] >= jMost && sumTbl[t][p])
 				{
+					scMap[t] = sumTbl[t][p];
 					for(j = 0; j < m_nTeams; j++)
 					{
 						if(t != j && sumTbl[t][p] == sumTbl[j][p])
-							scMap[t] = sumTbl[t][p];
+							scMap[j] = sumTbl[j][p];
 					}
 
-					if(!scMap.size())
+					if(1 == scMap.size())
 					{
 						sMap[sumTbl[t][p]] = t;
-						max = max > sumTbl[t][p] ? max : sumTbl[t][p];
 					}
 					else
 					{
-						__msg("Use 7B rule");
-						/*
-						for(j = p+1; j < m_nTeams; j++)
-						{
-							if(m_ppnResults[t][j] >= jMost)
-						}
-						//sMap[rngTbl[t][p]] = t;
-						//max = max > rngTbl[t][p] ? max : rngTbl[t][p];
-						//*/
+						sMap = Rule7B(p, scMap, sumTbl, rngTbl);
+						ruleB = p;
+						break;
 					}
 				}
 			}
 
 			int cnt = sMap.size();
-			for(j = 0; sMap.size() > 1 && j <= max; j++)
-			{
-				iiIt it = sMap.find(j);
-				if(it != sMap.end())
-				{
-					t = it->second;
-					if(!m_ppnResults[t][m_nTeams])
-					{
-						m_ppnResults[t][m_nTeams] = p + 1 + shift;
+			__msg("Place..... %d, cnt = %d, ruleB = %d", p+1, cnt, ruleB);
 
-						if(--cnt)
-							shift++;
+			iiIt si = sMap.begin();
+			for(; si != sMap.end(); si++)
+			{
+				t = si->second;
+				__msg("Found sMap[%d] = %d", si->first, t+1);
+				if(!m_ppnResults[t][m_nTeams])
+				{
+					__msg("Set team %d place %d, p=%d, shift=%d", t, si->first, p+1, shift);
+					m_ppnResults[t][m_nTeams] = p + 1 + shift - ruleB;
+
+					if(--cnt)
+						shift++;
+				}
+			}
+
+			if(ruleB)
+				p += sMap.size();
+		}
+
+		FreeMarkTable(sumTbl);
+		printTable(m_nTeams, m_ppnResults);
+
+	}while(0);
+	Leave();
+	return res;
+}
+
+iiMap udfSkatingRules::Rule7B(int place, iiMap tList, int** sumTable, int** rngTable)
+{
+	iiMap res;
+	Enter();
+
+	int t, p, j, k, n;
+	p = place+1;
+	if(p < m_nTeams)
+	{
+		bool sameMarks = false;
+		iiMap ndx;
+
+		j = 1;
+		iiIt itTeam = tList.begin();
+		for(; itTeam != tList.end(); itTeam++)
+		{
+			t = itTeam->first;
+			if(!ndx[rngTable[t][p]])
+			{
+				ndx[rngTable[t][p]] = t;
+			}
+			else
+			{
+				iiMap	sMap;
+				iiMap	scMap;
+
+				for(t = 0; t < m_nTeams; t++)
+				{
+					scMap.clear();
+					if(sumTable[t][p])
+					{
+						scMap[t] = sumTable[t][p];
+						for(j = 0; j < m_nTeams; j++)
+						{
+							if(t != j && sumTable[t][p] == sumTable[j][p])
+								scMap[j] = sumTable[j][p];
+						}
+
+						if(1 == scMap.size())
+						{
+							sMap[sumTable[t][p]] = t;
+						}
+						else
+						{
+							sameMarks = true;
+							break;
+						}
 					}
 				}
 			}
 		}
 
-		FreeMarkTable(sumTbl);
-		printTable(m_nTeams, m_ppnResults);
-		
-	}while(0);
+		if(sameMarks)
+			ndx = Rule7B(p, tList, sumTable, rngTable);
+
+		iiRit ndxIt = ndx.rbegin();
+		j = 0;
+		for(; ndxIt != ndx.rend(); ndxIt++)
+		{
+			//__msg("Res[%d] = %d", j, t+1);
+			res[p + j++] = ndxIt->second;
+		}
+	}
+
 	Leave();
 	return res;
 }

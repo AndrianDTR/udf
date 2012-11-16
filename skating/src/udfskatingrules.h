@@ -5,8 +5,9 @@
 
 using namespace std;
 
-typedef map<int,int>			iiMap;
-typedef map<int,int>::iterator	iiIt;
+typedef map<int,int>				iiMap;
+typedef map<int,int>::iterator			iiIt;
+typedef map<int,int>::reverse_iterator	iiRit;
 
 class udfSkatingRules
 {
@@ -37,6 +38,7 @@ protected:
 	virtual bool Rule5();
 	virtual bool Rule6();
 	virtual bool Rule7();
+	iiMap		 Rule7B(int place, iiMap tList, int** sumTable, int** rngTable);
 	virtual bool Rule8();
 	virtual bool Rule9();
 	virtual bool Rule10();
