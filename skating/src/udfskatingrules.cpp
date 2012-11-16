@@ -14,8 +14,12 @@ udfSkatingRules::udfSkatingRules(int teams, int judges, int** marks)
 , m_ppnResults(0)
 {
 	int t = 0;
+
+	m_jMost = m_nJudges / 2 + 1;
+
 	m_ppnMarks = new int*[teams];
 	m_ppnResults = new int*[teams];
+
 	for(t = 0; t < teams; t++)
 	{
 		int j = 0;
@@ -39,8 +43,8 @@ udfSkatingRules::udfSkatingRules(int teams, int judges, int** marks)
 
 udfSkatingRules::~udfSkatingRules()
 {
-	//FreeMarkTable(m_ppnMarks);
-	//FreeMarkTable(m_ppnResults);
+	FreeMarkTable(m_ppnMarks);
+	FreeMarkTable(m_ppnResults);
 }
 
 int** udfSkatingRules::CreateMarkTable()
@@ -129,11 +133,8 @@ int** udfSkatingRules::CalculatePlacesRange(int** countTbl)
 	{
 		for(p = 0; countTbl[t] && p < m_nTeams; p++)
 		{
-			if(countTbl[t][p])
-			{
-				for(j = 0; j <= p; j++)
-					res[t][p] += countTbl[t][j];
-			}
+			for(j = 0; j <= p; j++)
+				res[t][p] += countTbl[t][j];
 		}
 	}
 
@@ -179,6 +180,29 @@ bool udfSkatingRules::GetMarks(int& nTeams, int*** marks)
 
 	do
 	{
+		/*
+		int t;
+
+		while(m_nTeams > m_PlacesMap.size())
+		{
+
+			for(t = 0; t < m_nTeams; t++)
+			{
+				do
+				{
+					if(Rule5(t))
+						break;
+					if(Rule6(t))
+						break;
+					if(Rule7(t))
+						break;
+
+					res = false;
+				}while(0);
+			}
+		}
+		break;
+		//*/
 		if(Rule1())
 			break;
 
@@ -302,16 +326,16 @@ bool udfSkatingRules::Rule3()
 	return false;
 }
 
-/*******************************************************************************
+/******************************************************************************
  * В финале судьи не имеют права ни в одном из танцев поставить двум или более
  * парам одинаковую оценку.
- ******************************************************************************/
+ *****************************************************************************/
 bool udfSkatingRules::Rule4()
 {
 	return false;
 }
 
-/*******************************************************************************
+/******************************************************************************
  * Победителем в отдельном танце становится пара, которая получает оценку "1"
  * у большинства судей (не менее 3-х судей из 5-ти, 4-х из 6-ти или 7-ми, 5-ти
  * из 8-ми или 9-ти судей). 2-е место присуждается паре, которая получит 2-е и
@@ -354,7 +378,7 @@ bool udfSkatingRules::Rule4()
  * 51 	5 	1 	4 	5 	5 	1 	1 		1 		2 		5 		- 		5
  * 61 	6 	6 	6 	6 	6 	- 	- 		- 		- 		- 		5 		6
  *
- ******************** 5 **********************************************************/
+ *****************************************************************************/
 bool udfSkatingRules::Rule5()
 {
 	Enter();
@@ -469,10 +493,7 @@ bool udfSkatingRules::Rule6()
 	bool res = true;
 	do
 	{
-		int t;
-		int p;
-		int j;
-		int jMost = m_nJudges / 2 + 1;
+		int t, p, j;
 
 		for(p = 0; p < m_nTeams; p++)
 		{
@@ -480,7 +501,7 @@ bool udfSkatingRules::Rule6()
 
 			for(t = 0; t < m_nTeams; t++)
 			{
-				if(m_ppnResults[t][p] >= jMost)
+				if(m_ppnResults[t][p] >= m_jMost)
 				{
 					if(!ndx[m_ppnResults[t][p]])
 					{

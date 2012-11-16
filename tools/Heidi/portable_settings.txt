@@ -29,7 +29,7 @@ ColsVisible_MainForm.ListStatus<|||>1<|||>0,1,2,3
 ColsVisible_MainForm.ListTables<|||>1<|||>0,1,2,3,4,5,6,18
 ColsVisible_MainForm.ListVariables<|||>1<|||>0,1
 ColWidths_connform.ListSessions<|||>1<|||>163,50,50,10
-ColWidths_frmTableEditor.listColumns<|||>1<|||>38,150,141,90,60,65,50,108,130,128,100,100
+ColWidths_frmTableEditor.listColumns<|||>1<|||>54,150,141,90,60,65,50,108,130,128,100,100
 ColWidths_frmTableEditor.listForeignKeys<|||>1<|||>40,99,142,80,80,80
 ColWidths_frmTableEditor.treeIndexes<|||>1<|||>341,100,80
 ColWidths_MainForm.ListCommandStats<|||>1<|||>120,100,100,100,215
@@ -116,18 +116,18 @@ ToolBarQueryLeft<|||>3<|||>494
 ToolBarQueryTop<|||>3<|||>2
 WrapLongLines<|||>3<|||>0
 Servers\udf\Compressed<|||>3<|||>0
-Servers\udf\ConnectCount<|||>3<|||>43
+Servers\udf\ConnectCount<|||>3<|||>44
 Servers\udf\Databases<|||>1<|||>udf
 Servers\udf\Host<|||>1<|||>127.0.0.1
-Servers\udf\LastConnect<|||>1<|||>2012-10-21 22:06:28
+Servers\udf\LastConnect<|||>1<|||>2012-11-15 15:08:13
 Servers\udf\lastUsedDB<|||>1<|||>udf
 Servers\udf\LoginPrompt<|||>3<|||>0
 Servers\udf\NetType<|||>3<|||>0
 Servers\udf\Password<|||>1<|||>7B6C7A7B77687A7A7
 Servers\udf\Port<|||>1<|||>3306
 Servers\udf\RefusedCount<|||>3<|||>10
-Servers\udf\ServerVersion<|||>3<|||>50163
-Servers\udf\ServerVersionFull<|||>1<|||>5.1.63-0ubuntu0.10.04.1 - (Ubuntu)
+Servers\udf\ServerVersion<|||>3<|||>50166
+Servers\udf\ServerVersionFull<|||>1<|||>5.1.66-0ubuntu0.10.04.1 - (Ubuntu)
 Servers\udf\SessionCreated<|||>1<|||>2012-07-05 01:13:05
 Servers\udf\SSHtunnelHost<|||>1<|||>
 Servers\udf\SSHtunnelHostPort<|||>3<|||>22

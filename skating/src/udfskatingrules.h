@@ -5,7 +5,7 @@
 
 using namespace std;
 
-typedef map<int,int>				iiMap;
+typedef map<int,int>					iiMap;
 typedef map<int,int>::iterator			iiIt;
 typedef map<int,int>::reverse_iterator	iiRit;
 
@@ -16,13 +16,9 @@ private:
 	int 	m_nJudges;
 	int** 	m_ppnMarks;
 	int** 	m_ppnResults;
+	iiMap	m_PlacesMap;
 
-	/*
-	 * Precalculate tables
-	 */
-	int** 	m_ppnPlacesCount;
-	int** 	m_ppnPlacesRange;
-	int** 	m_ppnPlacesSums;
+	int 	m_jMost;
 
 public:
 	udfSkatingRules(int teams, int judges, int** marks);
