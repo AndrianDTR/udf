@@ -180,26 +180,20 @@ bool udfSkatingRules::GetMarks(int& nTeams, int*** marks)
 
 	do
 	{
-		/*
-		int t;
-
-		while(m_nTeams > m_PlacesMap.size())
+		
+		while(res && m_nTeams > m_PlacesMap.size())
 		{
-
-			for(t = 0; t < m_nTeams; t++)
+			do
 			{
-				do
-				{
-					if(Rule5(t))
-						break;
-					if(Rule6(t))
-						break;
-					if(Rule7(t))
-						break;
+				if(Rule5())
+					break;
+				if(Rule6())
+					break;
+				if(Rule7())
+					break;
 
-					res = false;
-				}while(0);
-			}
+				res = false;
+			}while(0);
 		}
 		break;
 		//*/
@@ -255,12 +249,10 @@ void udfSkatingRules::printTable(int teams, int** marks)
 
 	strcpy(formath, "team");
 	strcpy(formatb, "%%d");
-	for(j = 0; j <= teams; j++)
+	for(j = 0; j < teams; j++)
 	{
 		if(j==0)
 			sprintf(tmp, "\t%d ", j+1);
-		else if(j == teams)
-			sprintf(tmp, "\tPlace ", 1, j+1);
 		else
 			sprintf(tmp, "\t%d-%d ", 1, j+1);
 		strcat(formath, tmp);
@@ -270,7 +262,7 @@ void udfSkatingRules::printTable(int teams, int** marks)
 	for(t = 0; t < teams; t++)
 	{
 		printf("\n%d", t+1);
-		for(j = 0; j < teams+1; j++)
+		for(j = 0; j < teams; j++)
 		{
 			if(marks[t][j])
 				printf("\t%d ", marks[t][j]);
@@ -278,7 +270,13 @@ void udfSkatingRules::printTable(int teams, int** marks)
 				printf("\t- ");
 		}
 	}
-	printf("\n\n");
+	printf("\n\n----------------------------------------\n");
+	printf("Place\t=\tTeam\n");
+	for(t = 0; t < m_PlacesMap.size(); t++)
+	{
+		printf("%d\t=\t%d\n", t+1, m_PlacesMap[t]+1);
+	}
+	printf("\n\n----------------------------------------\n\n");
 }
 
 /*******************************************************************************
@@ -385,65 +383,51 @@ bool udfSkatingRules::Rule5()
 	bool res = true;
 	do
 	{
-		// All OK But modify algorithm to use pre calculated tables.
 		int t, j, p;
-		int jMost = m_nJudges / 2 + 1;
-
-		__msg("most judges = %d", jMost);
-
-
-		__msg("Count of places:");
+		
 		int** cntTbl = CalculatePlacesCount(m_ppnMarks);
-
-		__msg("Sum of places between 1 and X:");
-		int** sumTbl = CalculatePlacesRange(cntTbl);
-
-		FreeMarkTable(m_ppnResults);
-		m_ppnResults = CreateMarkTable();
+		int** rngTbl = CalculatePlacesRange(cntTbl);
 
 		for(p = 0; p < m_nTeams; p++)
 		{
 			int mostCnt = 0;
 			for(t = 0; t < m_nTeams; t++)
 			{
-				if(sumTbl[t][p] >= jMost)
+				if(rngTbl[t][p] >= m_jMost)
 				{
 					mostCnt++;
-					m_ppnResults[t][p] = sumTbl[t][p];
-
-					for(j = p; j < m_nTeams; j++)
-					{
-						sumTbl[t][j] = 0;
-					}
 				}
 			}
-
+			
 			if(mostCnt == 1)
 			{
 				for(t = 0; t < m_nTeams; t++)
 				{
-					if(m_ppnResults[t][p] >= jMost)
+					if(rngTbl[t][p] >= m_jMost)
 					{
-						m_ppnResults[t][m_nTeams] = p + 1;
+						m_PlacesMap[m_PlacesMap.size()] = t;
 
-						for(j = p; j < m_nTeams; j++)
+						for(j = 0; j < m_nTeams; j++)
 						{
-							sumTbl[t][j] = 0;
+							if(j != p)
+								rngTbl[t][j] = 0;
 						}
+
 						break;
 					}
 				}
 			}
-			else
+			else if(mostCnt > 1)
 			{
-				__msg("Places can't be calculated. Call next rule.");
+				__msg("Place can't be calculated. Call next rule.");
 				res = false;
+				break;
 			}
 		}
 
-		printTable(m_nTeams, m_ppnResults);
+		printTable(m_nTeams, rngTbl);
 		FreeMarkTable(cntTbl);
-		FreeMarkTable(sumTbl);
+		m_ppnResults = rngTbl;
 
 	}while(0);
 
@@ -494,37 +478,44 @@ bool udfSkatingRules::Rule6()
 	do
 	{
 		int t, p, j;
-
+		
 		for(p = 0; p < m_nTeams; p++)
 		{
 			iiMap ndx;
-
+			int sameValue = 0;
 			for(t = 0; t < m_nTeams; t++)
 			{
 				if(m_ppnResults[t][p] >= m_jMost)
 				{
 					if(!ndx[m_ppnResults[t][p]])
 					{
-						ndx[m_ppnResults[t][p]] = t;
+						ndx[m_ppnResults[t][p]] = t+1;
 					}
 					else
 					{
-						__msg("Column #%d contains similar data, call next rule to calculate.", p+1);
-						res = false;
+						sameValue++;
 					}
 				}
 			}
-
-			int ndxCount = ndx.size();
-			iiIt si = ndx.begin();
-			for(; res && si != ndx.end(); si++)
+			
+			if(sameValue)
 			{
-				t = si->second;
-				if(ndxCount)
+				__msg("Column #%d contains similar data, call next rule to calculate.", p+1);
+				res = false;
+				break;
+			}
+
+			int cnt = ndx.size();
+			iiRit it = ndx.rbegin();
+			for(; cnt > 1 && it != ndx.rend(); it++)
+			{
+				t = it->second-1;
+				
+				m_PlacesMap[m_PlacesMap.size()] = t;
+				for(j = 0; j < m_nTeams; j++)
 				{
-					m_ppnResults[t][p+ndxCount] = m_ppnResults[t][p];
-					m_ppnResults[t][p] = 0;
-					ndxCount--;
+					if(j != p)
+						m_ppnResults[t][j] = 0;
 				}
 			}
 		}
@@ -628,24 +619,13 @@ bool udfSkatingRules::Rule7()
 	bool res = true;
 	do
 	{
-		int jMost = m_nJudges / 2 + 1;
-
-		int t;
-		int p;
-		int j;
+		int t, p, j;
 		int shift = 0;
 
 		__msg("Sum of places:");
 		int** sumTbl = CalculatePlacesSum(m_ppnMarks);
 
-		__msg("Count of places:");
-		int** cntTbl = CalculatePlacesCount(m_ppnMarks);
-
-		__msg("Range of places:");
-		int** rngTbl = CalculatePlacesRange(cntTbl);
-
-		__msg("m_ppnResults:");
-		printTable(m_nTeams, m_ppnResults);
+		int** rngTbl = m_ppnResults;
 
 		for(p = 0; p < m_nTeams; p++)
 		{
@@ -702,7 +682,8 @@ bool udfSkatingRules::Rule7()
 
 		FreeMarkTable(sumTbl);
 		printTable(m_nTeams, m_ppnResults);
-
+		//*/
+		res = false;
 	}while(0);
 	Leave();
 	return res;
