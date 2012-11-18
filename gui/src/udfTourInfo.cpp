@@ -145,7 +145,7 @@ void udfTourInfo::CreateNewTour()
 			m_row2id[nRow] = data.id;
 			m_id2row[data.id] = nRow;
 			
-			__info("Row: %d, Rows: %d, Cols: %d", nRow, m_gridSuccess->GetNumberRows(), m_gridSuccess->GetNumberCols());
+			__info("Row: %d, Rows: %d, Cols: %d, listSize: %d", nRow, m_gridSuccess->GetNumberRows(), m_gridSuccess->GetNumberCols(), marksList.size());
 			m_gridSuccess->SetCellValue(wxString::Format(_("%d"), data.sum), nRow, 1);
 			
 			nCol = extraCols;
@@ -214,7 +214,6 @@ void udfTourInfo::CalculatePlaces()
 	do
 	{
 		__info("Calculate a place by skating rules.");
-		/*
 		int teams = m_gridSuccess->GetNumberRows();
 		// first collumn is reserved for place
 		int juds = m_gridSuccess->GetNumberCols() - 1;
@@ -231,10 +230,21 @@ void udfTourInfo::CalculatePlaces()
 				marks[t][j] = mark;
 			}
 		}
-		int nTeams = 0;
-		int** Results = NULL;
-		udfSkatingRules math(teams, juds, marks);
-		math.GetMarks(nTeams, Results);
+		iiMap results;
+		udfSkatingRules skating(teams, juds, marks);
+		skating.GetMarks(results);
+		
+		iiIt	place = results.begin();
+		for(; place != results.end(); place++)
+		{
+			wxString rating;
+			float rate = place->second / 10.0f;
+			if(place->second % 10)
+				rating = wxString::Format(_("%.1f"), rate);
+			else
+				rating = wxString::Format(_("%.0f"), rate);
+			m_gridSuccess->SetCellValue(place->first, 0, rating);
+		}
 		
 		if(marks)
 		{

@@ -256,21 +256,26 @@ void udfMainFrameBase::OnCsSelect(wxTreeEvent& event)
 void udfMainFrameBase::OnSearch(wxCommandEvent& event)
 {
 	wxString search = m_textSearch->GetValue().Upper();
-	CChampionshipTable::tTableIt it;
+	m_treeCs->CollapseAll();
 
-	m_treeCs->DeleteChildren(m_root);
-
-	for(it = m_Championships.begin(); it != m_Championships.end(); it++)
+	wxTreeItemIdValue cookie;
+	wxTreeItemId it = m_treeCs->GetFirstChild(m_root, cookie);
+	
+	while(it.IsOk())
 	{
-		CChampionshipTable::tDATA& data = it->second;
-		wxString name(data.name);
-
+		wxString name = m_treeCs->GetItemText(it);
+		
 		if(name.Upper().Contains(search))
 		{
-			wxTreeItemId csItem = m_treeCs->AppendItem(m_root, data.name, -1, -1, new udfTreeItemData(it->first, IT_CS));
-
-			RefreshCs(it->first, csItem);
+			__msg("Found %s contains %s", name.Upper().ToStdString().c_str(), search.ToStdString().c_str());
+			
+			m_treeCs->SetFocusedItem(it);
+			m_treeCs->Expand(it);
+			m_treeCs->EnsureVisible(it);
+			break;
 		}
+		
+		it = m_treeCs->GetNextSibling(it);
 	}
 }
 

@@ -194,19 +194,19 @@ void udfFinalMarks::UpdateMarks()
 			data.teamId = m_row2id[nRow];
 			data.judgeId = m_col2id[nCol];
 						
-			m_gridMarks->GetCellValue(nRow, nCol).ToULong((unsigned long *)&data.nMark);
-			
 			long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
 
 			__info("Row: %d, Col: %d, tourId: %d, teamId: %d, FOUND: %d == %d", nRow, nCol, data.tourId, data.teamId, found, UDF_E_NOTFOUND);
 			if(UDF_OK == found)
 			{
 				__info("Found! ID: %d. Update it...", id);
+				m_gridMarks->GetCellValue(nRow, nCol).ToULong((unsigned long *)&data.nMark);
 				CChampionshipJudgesMarkTable(m_pCon).UpdateRow(id, data);
 			}
 			else if(found == UDF_E_NOTFOUND)
 			{
 				__info("NOT Found! Insert it...");
+				m_gridMarks->GetCellValue(nRow, nCol).ToULong((unsigned long *)&data.nMark);
 				CChampionshipJudgesMarkTable(m_pCon).AddRow(data);
 			}
 		}
