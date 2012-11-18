@@ -37,6 +37,8 @@ private:
 	tI2UiMap				m_row2id;
 	tUi2IMap				m_id2col;
 	tI2UiMap				m_col2id;
+	
+	int						m_fntSize;
 
 protected:
 	void			OnCellLeftClick(wxGridEvent& event);
@@ -46,6 +48,7 @@ protected:
 	void			OnAddNext(wxCommandEvent& event);
 	void			OnMarkGreen(wxCommandEvent& event);
 	void			OnMarkYellow(wxCommandEvent& event);
+	void			OnScaleChange(wxSpinEvent& event);
 
 protected:
 	void			CreateNewTour();

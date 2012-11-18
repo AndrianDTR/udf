@@ -12,7 +12,7 @@
 # Configuration for module: gucefGUI
 
 set( HEADER_FILES 
-	src/udftimectrl.h
+	src/udfuicommon.h
 	src/string_def.h
 	src/udfexceptions.h
 	src/cdbmanager.h
@@ -53,7 +53,6 @@ set( HEADER_FILES
 )
 
 set( SOURCE_FILES 
-	src/udftimectrl.cpp
 	src/udfexceptions.cpp
 	src/cdbmanager.cpp
 	src/udfuiutils.cpp

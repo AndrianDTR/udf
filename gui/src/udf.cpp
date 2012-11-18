@@ -2067,7 +2067,7 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	bSizer95 = new wxBoxSizer( wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer26;
-	fgSizer26 = new wxFlexGridSizer( 1, 4, 0, 0 );
+	fgSizer26 = new wxFlexGridSizer( 1, 6, 0, 0 );
 	fgSizer26->AddGrowableCol( 1 );
 	fgSizer26->SetFlexibleDirection( wxBOTH );
 	fgSizer26->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
@@ -2081,6 +2081,13 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	
 	fgSizer26->Add( m_textStartNum, 0, wxALL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 	
+	m_staticText117 = new wxStaticText( this, wxID_ANY, _("Scale"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText117->Wrap( -1 );
+	fgSizer26->Add( m_staticText117, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_spinScale = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 100 );
+	fgSizer26->Add( m_spinScale, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
 	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	fgSizer26->Add( m_bpSave, 0, wxALL, 5 );
 	
@@ -2093,8 +2100,6 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	bSizer112 = new wxBoxSizer( wxVERTICAL );
 	
 	m_textJudges = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER );
-	m_textJudges->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME ) );
-	
 	bSizer112->Add( m_textJudges, 0, wxALL|wxEXPAND, 5 );
 	
 	m_gridMarks = new wxGrid( this, ID_GRIDMARKS, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER );
@@ -2134,6 +2139,7 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	
 	// Connect Events
 	m_textStartNum->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( JudgeMark::OnSearch ), NULL, this );
+	m_spinScale->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( JudgeMark::OnScaleChange ), NULL, this );
 	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnSave ), NULL, this );
 	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnDiscard ), NULL, this );
 	m_gridMarks->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( JudgeMark::OnCellLClick ), NULL, this );
@@ -2145,6 +2151,7 @@ JudgeMark::~JudgeMark()
 {
 	// Disconnect Events
 	m_textStartNum->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( JudgeMark::OnSearch ), NULL, this );
+	m_spinScale->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( JudgeMark::OnScaleChange ), NULL, this );
 	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnSave ), NULL, this );
 	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( JudgeMark::OnDiscard ), NULL, this );
 	m_gridMarks->Disconnect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( JudgeMark::OnCellLClick ), NULL, this );
@@ -2161,7 +2168,7 @@ FinalMarks::FinalMarks( wxWindow* parent, wxWindowID id, const wxString& title, 
 	bSizer95 = new wxBoxSizer( wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer26;
-	fgSizer26 = new wxFlexGridSizer( 1, 4, 0, 0 );
+	fgSizer26 = new wxFlexGridSizer( 1, 6, 0, 0 );
 	fgSizer26->AddGrowableCol( 1 );
 	fgSizer26->SetFlexibleDirection( wxBOTH );
 	fgSizer26->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
@@ -2172,6 +2179,13 @@ FinalMarks::FinalMarks( wxWindow* parent, wxWindowID id, const wxString& title, 
 	
 	
 	fgSizer26->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_staticText1181 = new wxStaticText( this, wxID_ANY, _("Scale"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1181->Wrap( -1 );
+	fgSizer26->Add( m_staticText1181, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_spinScale = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 100 );
+	fgSizer26->Add( m_spinScale, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	fgSizer26->Add( m_bpSave, 0, wxALL, 5 );
@@ -2185,8 +2199,6 @@ FinalMarks::FinalMarks( wxWindow* parent, wxWindowID id, const wxString& title, 
 	bSizer112 = new wxBoxSizer( wxVERTICAL );
 	
 	m_textJudges = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER );
-	m_textJudges->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME ) );
-	
 	bSizer112->Add( m_textJudges, 0, wxALL|wxEXPAND, 5 );
 	
 	m_gridMarks = new wxGrid( this, ID_GRIDMARKS, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER );
@@ -2227,6 +2239,7 @@ FinalMarks::FinalMarks( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	m_spinScale->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( FinalMarks::OnScaleChange ), NULL, this );
 	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FinalMarks::OnSave ), NULL, this );
 	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FinalMarks::OnDiscard ), NULL, this );
 	m_gridMarks->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( FinalMarks::OnKeyDown ), NULL, this );
@@ -2236,6 +2249,7 @@ FinalMarks::FinalMarks( wxWindow* parent, wxWindowID id, const wxString& title, 
 FinalMarks::~FinalMarks()
 {
 	// Disconnect Events
+	m_spinScale->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( FinalMarks::OnScaleChange ), NULL, this );
 	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FinalMarks::OnSave ), NULL, this );
 	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( FinalMarks::OnDiscard ), NULL, this );
 	m_gridMarks->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler( FinalMarks::OnKeyDown ), NULL, this );
@@ -3258,6 +3272,13 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	wxBoxSizer* bSizer126;
 	bSizer126 = new wxBoxSizer( wxHORIZONTAL );
 	
+	m_staticText120 = new wxStaticText( this, wxID_ANY, _("Scale"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText120->Wrap( -1 );
+	bSizer126->Add( m_staticText120, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_spinScale = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 100 );
+	bSizer126->Add( m_spinScale, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
 	m_bpRemove = new wxBitmapButton( this, ID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer126->Add( m_bpRemove, 0, wxALL, 5 );
 	
@@ -3377,6 +3398,7 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	this->Layout();
 	
 	// Connect Events
+	m_spinScale->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( BlockInfo::OnScaleChange ), NULL, this );
 	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnRemove ), NULL, this );
 	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnUpdateBlock ), NULL, this );
 	m_bpCsCategories->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnBlockCategories ), NULL, this );
@@ -3391,6 +3413,7 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 BlockInfo::~BlockInfo()
 {
 	// Disconnect Events
+	m_spinScale->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( BlockInfo::OnScaleChange ), NULL, this );
 	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnRemove ), NULL, this );
 	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnUpdateBlock ), NULL, this );
 	m_bpCsCategories->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnBlockCategories ), NULL, this );
@@ -3444,7 +3467,7 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	bSizer132 = new wxBoxSizer( wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer25;
-	fgSizer25 = new wxFlexGridSizer( 1, 5, 0, 0 );
+	fgSizer25 = new wxFlexGridSizer( 1, 7, 0, 0 );
 	fgSizer25->AddGrowableCol( 0 );
 	fgSizer25->SetFlexibleDirection( wxBOTH );
 	fgSizer25->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
@@ -3474,6 +3497,13 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	bSizer1291->Add( m_staticText123, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	fgSizer25->Add( bSizer1291, 1, wxEXPAND, 5 );
+	
+	m_staticText119 = new wxStaticText( this, wxID_ANY, _("Scale"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText119->Wrap( -1 );
+	fgSizer25->Add( m_staticText119, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_spinScale = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 100 );
+	fgSizer25->Add( m_spinScale, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_bpCreateNext = new wxBitmapButton( this, ID_ADDNEXT, wxBitmap( button_right_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	fgSizer25->Add( m_bpCreateNext, 0, wxALL, 5 );
@@ -3550,6 +3580,7 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	this->Layout();
 	
 	// Connect Events
+	m_spinScale->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( TourInfo::OnScaleChange ), NULL, this );
 	m_bpCreateNext->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnAddNext ), NULL, this );
 	m_bpRemoveTour->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnRemove ), NULL, this );
 	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnUpdate ), NULL, this );
@@ -3562,6 +3593,7 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 TourInfo::~TourInfo()
 {
 	// Disconnect Events
+	m_spinScale->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( TourInfo::OnScaleChange ), NULL, this );
 	m_bpCreateNext->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnAddNext ), NULL, this );
 	m_bpRemoveTour->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnRemove ), NULL, this );
 	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( TourInfo::OnUpdate ), NULL, this );

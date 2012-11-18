@@ -29,6 +29,10 @@ IMPLEMENT_APP(MainApp);
 bool MainApp::OnInit()
 {
 	bool res = false;
+	
+	SetVendorName(wxT("andrian yablonskyy"));
+    SetAppName(wxT("udf"));
+	
 	setlocale(LC_ALL, "C");
 	try
 	{

@@ -118,6 +118,7 @@
       
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -184,6 +185,7 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
       
       
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -213,6 +215,6 @@ $(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
       </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="Release"/>
   <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
 </CodeLite_Project>

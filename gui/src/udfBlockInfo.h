@@ -28,6 +28,7 @@ protected:
 	void OnCellLeftClick( wxGridEvent& event );
 	void OnLabelClick( wxGridEvent& event );
 	void OnRemove( wxCommandEvent& event );
+	void OnScaleChange(wxSpinEvent& event);
 	
 public:
 	/** Constructor */
@@ -42,6 +43,7 @@ protected:
 	tUi2IMap				m_IdColMap;
 	
 private:
+	int						m_fntSize;
 	CDbConnection*			m_pCon;
 	udfMainFrameBase*		m_pMainWindow;
 	wxTreeCtrl*				m_pTree;

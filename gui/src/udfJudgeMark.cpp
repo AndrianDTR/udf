@@ -2,6 +2,9 @@
 
 #include "db.h"
 
+#include "udfsettingsbase.h"
+
+#include "udfuicommon.h"
 #include "udfexceptions.h"
 #include "udfuiutils.h"
 #include "string_def.h"
@@ -17,6 +20,10 @@ udfJudgeMark::udfJudgeMark( wxWindow* parent, unsigned int tourId )
 
 	unsigned int catId = 0;
 
+	int scale = udfSettingsBase::Instance()->GetJudgeMarksScale();
+	m_spinScale->SetValue(scale);
+	m_fntSize = m_gridMarks->GetDefaultCellFont().GetPointSize();
+	
 	if(UDF_OK == GetTourCategoryId(tourId, catId))
 		m_catId = catId;
 
@@ -64,8 +71,12 @@ void udfJudgeMark::RefreshGrid()
 		if(m_gridMarks->GetNumberCols())
 			m_gridMarks->DeleteCols(0, m_gridMarks->GetNumberCols());
 
-		m_gridMarks->SetDefaultColSize(25);
-		m_gridMarks->SetDefaultRowSize(25);
+		int scale = m_spinScale->GetValue();
+		m_gridMarks->SetDefaultColSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+		m_gridMarks->SetDefaultRowSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+		wxFont fnt = m_gridMarks->GetDefaultCellFont();
+		fnt.SetPointSize(m_fntSize * scale / 100);
+		m_gridMarks->SetDefaultCellFont(fnt);
 		m_gridMarks->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
 		m_gridMarks->SetRowLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
 
@@ -216,4 +227,16 @@ void udfJudgeMark::OnKeyDown( wxKeyEvent& event )
 	{
 		event.Skip();
 	}
+}
+
+void udfJudgeMark::OnScaleChange(wxSpinEvent& event)
+{
+	int scale = m_spinScale->GetValue();
+	m_gridMarks->SetDefaultColSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+	m_gridMarks->SetDefaultRowSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+	wxFont fnt = m_gridMarks->GetDefaultCellFont();
+	fnt.SetPointSize(m_fntSize * scale / 100);
+	m_gridMarks->SetDefaultCellFont(fnt);
+	m_gridMarks->ForceRefresh();
+	udfSettingsBase::Instance()->SetJudgeMarksScale(scale);
 }

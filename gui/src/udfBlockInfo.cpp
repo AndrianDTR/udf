@@ -1,8 +1,10 @@
 #include "udfBlockInfo.h"
 #include "udfMainFrameBase.h"
+#include "udfsettingsbase.h"
 
 #include "db.h"
 
+#include "udfuicommon.h"
 #include "udfexceptions.h"
 #include "udfuiutils.h"
 #include "string_def.h"
@@ -16,6 +18,10 @@ udfBlockInfo::udfBlockInfo( wxWindow* parent )
 , m_pTree(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
+	
+	int scale = udfSettingsBase::Instance()->GetBlockInfoScale();
+	m_spinScale->SetValue(scale);
+	m_fntSize = m_gridJudgesCats->GetDefaultCellFont().GetPointSize();
 }
 
 bool udfBlockInfo::Show(bool show)
@@ -285,8 +291,9 @@ void udfBlockInfo::CreateNewBlock()
 		if(m_gridJudgesCats->GetNumberCols())
 			m_gridJudgesCats->DeleteCols(0, m_gridJudgesCats->GetNumberCols());
 		
-		m_gridJudgesCats->SetDefaultColSize(25);
-		m_gridJudgesCats->SetDefaultRowSize(25);
+		int scale = m_spinScale->GetValue();
+		m_gridJudgesCats->SetDefaultColSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+		m_gridJudgesCats->SetDefaultRowSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
 		m_gridJudgesCats->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
 		m_gridJudgesCats->SetRowLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
 
@@ -397,4 +404,16 @@ void udfBlockInfo::FillData()
 	}while(0);
 	
 	Leave();
+}
+
+void udfBlockInfo::OnScaleChange(wxSpinEvent& event)
+{
+	int scale = m_spinScale->GetValue();
+	m_gridJudgesCats->SetDefaultColSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+	m_gridJudgesCats->SetDefaultRowSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+	wxFont fnt = m_gridJudgesCats->GetDefaultCellFont();
+	fnt.SetPointSize(m_fntSize * scale / 100);
+	m_gridJudgesCats->SetDefaultCellFont(fnt);
+	m_gridJudgesCats->ForceRefresh();
+	udfSettingsBase::Instance()->SetBlockInfoScale(scale);
 }

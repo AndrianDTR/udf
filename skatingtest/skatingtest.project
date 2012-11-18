@@ -10,11 +10,6 @@
   <VirtualDirectory Name="src">
     <File Name="src/main.cpp"/>
   </VirtualDirectory>
-  <Dependencies Name="Release"/>
-  <Dependencies Name="Debug">
-    <Project Name="common"/>
-    <Project Name="skating"/>
-  </Dependencies>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="" C_Options="">
@@ -39,7 +34,8 @@
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../build/bin/$(ProjectName)" IntermediateDirectory="../build/tmp" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../build/bin" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
-        <![CDATA[]]>
+        <![CDATA[
+      ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -78,6 +74,7 @@
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
       
+      
       ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -108,4 +105,9 @@
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug">
+    <Project Name="common"/>
+    <Project Name="skating"/>
+  </Dependencies>
+  <Dependencies Name="Release"/>
 </CodeLite_Project>

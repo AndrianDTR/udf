@@ -38,6 +38,7 @@
 #include <wx/checkbox.h>
 #include <wx/listctrl.h>
 #include <wx/checklst.h>
+#include <wx/spinctrl.h>
 #include <wx/grid.h>
 #include <wx/html/htmlwin.h>
 
@@ -967,6 +968,8 @@ class JudgeMark : public wxDialog
 		
 		wxStaticText* m_staticText118;
 		wxTextCtrl* m_textStartNum;
+		wxStaticText* m_staticText117;
+		wxSpinCtrl* m_spinScale;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
 		wxTextCtrl* m_textJudges;
@@ -974,6 +977,7 @@ class JudgeMark : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnScaleChange( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCellLClick( wxGridEvent& event ) { event.Skip(); }
@@ -1003,12 +1007,15 @@ class FinalMarks : public wxDialog
 		
 		wxStaticText* m_staticText118;
 		
+		wxStaticText* m_staticText1181;
+		wxSpinCtrl* m_spinScale;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
 		wxTextCtrl* m_textJudges;
 		wxGrid* m_gridMarks;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnScaleChange( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnKeyDown( wxKeyEvent& event ) { event.Skip(); }
@@ -1539,6 +1546,8 @@ class BlockInfo : public wxPanel
 			ID_M_GRIDJUDGESCATS,
 		};
 		
+		wxStaticText* m_staticText120;
+		wxSpinCtrl* m_spinScale;
 		wxBitmapButton* m_bpRemove;
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpCsCategories;
@@ -1558,6 +1567,7 @@ class BlockInfo : public wxPanel
 		wxGrid* m_gridJudgesCats;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnScaleChange( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdateBlock( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnBlockCategories( wxCommandEvent& event ) { event.Skip(); }
@@ -1632,6 +1642,8 @@ class TourInfo : public wxPanel
 		
 		wxStaticText* m_staticMinMax;
 		wxStaticText* m_staticText123;
+		wxStaticText* m_staticText119;
+		wxSpinCtrl* m_spinScale;
 		wxBitmapButton* m_bpCreateNext;
 		wxBitmapButton* m_bpRemoveTour;
 		wxBitmapButton* m_bpUpdate;
@@ -1644,6 +1656,7 @@ class TourInfo : public wxPanel
 		wxStaticText* m_staticJudges;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnScaleChange( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnAddNext( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }

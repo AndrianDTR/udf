@@ -27,12 +27,14 @@
   
   
   
+  
+  
   ]]>
   </Environment>
   <Project Name="dbmgr" Path="dbmgr/dbmgr.project" Active="No"/>
-  <Project Name="gui" Path="gui/gui.project" Active="Yes"/>
   <Project Name="skating" Path="skating/skating.project" Active="No"/>
   <Project Name="skatingtest" Path="skatingtest/skatingtest.project" Active="No"/>
+  <Project Name="gui" Path="gui/gui.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Project Name="udf" ConfigName="Debug"/>
@@ -42,9 +44,9 @@
       <Project Name="dbtest" ConfigName="Debug"/>
       <Project Name="dbmgr" ConfigName="Debug"/>
       <Project Name="gui" ConfigName="Debug"/>
-      <Project Name="gui" ConfigName="Debug"/>
       <Project Name="skating" ConfigName="Debug"/>
       <Project Name="skatingtest" ConfigName="Debug"/>
+      <Project Name="gui" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="udf" ConfigName="Release"/>
@@ -54,9 +56,9 @@
       <Project Name="dbtest" ConfigName="Release"/>
       <Project Name="dbmgr" ConfigName="Release"/>
       <Project Name="gui" ConfigName="Release"/>
-      <Project Name="gui" ConfigName="Release"/>
       <Project Name="skating" ConfigName="Release"/>
       <Project Name="skatingtest" ConfigName="Release"/>
+      <Project Name="gui" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

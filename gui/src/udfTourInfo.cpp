@@ -4,7 +4,10 @@
 #include "udfFinalMarks.h"
 #include "udfskatingrules.h"
 
+#include "udfuicommon.h"
 #include "db.h"
+
+#include "udfsettingsbase.h"
 
 #include "udfexceptions.h"
 #include "udfuiutils.h"
@@ -17,6 +20,10 @@ udfTourInfo::udfTourInfo( wxWindow* parent )
 , m_pTree(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
+	
+	int scale = udfSettingsBase::Instance()->GetTourInfoScale();
+	m_spinScale->SetValue(scale);
+	m_fntSize = m_gridSuccess->GetDefaultCellFont().GetPointSize();
 }
 
 bool udfTourInfo::Show(bool show)
@@ -73,8 +80,12 @@ void udfTourInfo::CreateNewTour()
 		if(m_gridSuccess->GetNumberCols())
 			m_gridSuccess->DeleteCols(0, m_gridSuccess->GetNumberCols());
 
-		m_gridSuccess->SetDefaultColSize(25);
-		m_gridSuccess->SetDefaultRowSize(25);
+		int scale = m_spinScale->GetValue();
+		m_gridSuccess->SetDefaultColSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+		m_gridSuccess->SetDefaultRowSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+		wxFont fnt = m_gridSuccess->GetDefaultCellFont();
+		fnt.SetPointSize(m_fntSize * scale / 100);
+		m_gridSuccess->SetDefaultCellFont(fnt);
 		m_gridSuccess->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
 		m_gridSuccess->SetRowLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
 
@@ -469,3 +480,14 @@ void udfTourInfo::OnMarkYellow(wxCommandEvent& event)
 	}
 }
 
+void udfTourInfo::OnScaleChange(wxSpinEvent& event)
+{
+	int scale = m_spinScale->GetValue();
+	m_gridSuccess->SetDefaultColSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+	m_gridSuccess->SetDefaultRowSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+	wxFont fnt = m_gridSuccess->GetDefaultCellFont();
+	fnt.SetPointSize(m_fntSize * scale / 100);
+	m_gridSuccess->SetDefaultCellFont(fnt);
+	m_gridSuccess->ForceRefresh();
+	udfSettingsBase::Instance()->SetTourInfoScale(scale);
+}

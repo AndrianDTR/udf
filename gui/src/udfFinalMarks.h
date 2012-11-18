@@ -27,6 +27,8 @@ private:
 	tI2UiMap					m_row2id;
 	tUi2IMap					m_id2col;
 	tI2UiMap					m_col2id;
+	
+	int							m_fntSize;
 
 protected:
 	// Handlers for FinalMarks events.
@@ -35,6 +37,7 @@ protected:
 	void OnCellLClick( wxGridEvent& event );
 	void OnKeyUp( wxKeyEvent& event );
 	void OnKeyDown( wxKeyEvent& event );
+	void OnScaleChange(wxSpinEvent& event);
 
 public:
 	/** Constructor */

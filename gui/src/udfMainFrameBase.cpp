@@ -15,6 +15,7 @@
 #include "udfSettings.h"
 #include "udfStartNumberAssignDlg.h"
 
+#include "udfsettingsbase.h"
 #include "udfCsInfo.h"
 #include "udfBlockInfo.h"
 #include "udfCategoryInfo.h"
@@ -64,13 +65,20 @@ udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 	RefreshList();
 }
 
+udfMainFrameBase::~udfMainFrameBase()
+{
+	
+}
+
 void udfMainFrameBase::OnCloseFrame( wxCloseEvent& event )
 {
+	udfSettingsBase::Instance()->WriteConfig();
 	Destroy();
 }
 
 void udfMainFrameBase::OnExitClick( wxCommandEvent& event )
 {
+	udfSettingsBase::Instance()->WriteConfig();
 	Destroy();
 }
 

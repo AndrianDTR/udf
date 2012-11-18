@@ -20,13 +20,14 @@ udfSettings::~udfSettings()
 
 void udfSettings::OnSave( wxCommandEvent& event )
 {
-	wxConfig* pConf = udfSettingsBase::Instance()->GetConfig();
+	udfSettingsBase* pConf = udfSettingsBase::Instance();
 
-	pConf->Write("host", m_textServer->GetValue());
-	pConf->Write("db",  m_textDatabase->GetValue());
-	pConf->Write("user", m_textUser->GetValue());
-	pConf->Write("pass", m_textPass->GetValue());
-
+	pConf->SetHost(m_textServer->GetValue());
+	pConf->SetSchema(m_textDatabase->GetValue());
+	pConf->SetUser(m_textUser->GetValue());
+	pConf->SetPass(m_textPass->GetValue());
+	pConf->WriteConfig();
+	
 	CDbManager::Instance()->Release();
 	CDbManager::Instance();
 
@@ -96,12 +97,12 @@ void udfSettings::Refresh()
 {
 	do
 	{
-		wxConfig* pConf = udfSettingsBase::Instance()->GetConfig();
+		udfSettingsBase* pConf = udfSettingsBase::Instance();
 
-		m_textServer->SetValue(pConf->Read("host", "localhost:3306"));
-		m_textDatabase->SetValue(pConf->Read("db", "udf"));
-		m_textUser->SetValue(pConf->Read("user", "andrian"));
-		m_textPass->SetValue(pConf->Read("pass", "testpass"));
+		m_textServer->SetValue(pConf->GetHost());
+		m_textDatabase->SetValue(pConf->GetSchema());
+		m_textUser->SetValue(pConf->GetUser());
+		m_textPass->SetValue(pConf->GetPass());
 
 		if(NULL == GetParent())
 			break;
@@ -144,15 +145,12 @@ void udfSettings::OnTest(wxCommandEvent& event)
 {
 	m_textTest->SetValue(_("Connecting..."));
 
-	wxConfig* pConf = udfSettingsBase::Instance()->GetConfig();
-
-	wxString url = pConf->Read("host", "localhost:3306");
-	wxString user = pConf->Read("user", "andrian");
-	wxString pass = pConf->Read("pass", "testpass");
-	wxString schema = pConf->Read("db", "udf");
-
 	CDbConnection* pCon = new CDbConnection();
-	pCon->Open( url.ToStdString(), user.ToStdString(), pass.ToStdString(), schema.ToStdString() );
+	pCon->Open( m_textServer->GetValue().ToStdString()
+		, m_textUser->GetValue().ToStdString()
+		, m_textPass->GetValue().ToStdString()
+		, m_textDatabase->GetValue().ToStdString()
+	);
 
 	CTourTypesTable::tTableMap data;
 	long res = CTourTypesTable(pCon).GetTable(data);

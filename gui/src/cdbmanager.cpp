@@ -10,14 +10,13 @@ CDbManager::CDbManager()
 : m_pCon(NULL)
 , m_ok(false)
 {
-	wxConfig* pConf = udfSettingsBase::Instance()->GetConfig();
+	udfSettingsBase* pConf = udfSettingsBase::Instance();
 
-	wxString url = pConf->Read("host", "localhost:3306");
-	wxString user = pConf->Read("user", "andrian");
-	wxString pass = pConf->Read("pass", "testpass");
-	wxString schema = pConf->Read("db", "udf");
-
-	Open(url.ToStdString(), schema.ToStdString(), user.ToStdString(), pass.ToStdString());
+	Open( pConf->GetHost().ToStdString()
+		, pConf->GetSchema().ToStdString()
+		, pConf->GetUser().ToStdString()
+		, pConf->GetPass().ToStdString()
+	);
 }
 
 CDbManager::~CDbManager()

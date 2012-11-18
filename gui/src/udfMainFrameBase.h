@@ -103,6 +103,7 @@ protected:
 public:
 	/** Constructor */
 	udfMainFrameBase( wxWindow* parent );
+	virtual ~udfMainFrameBase();
 
 public:
 	int				ShowDanceTypesMngrDlg();

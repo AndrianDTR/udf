@@ -31,6 +31,8 @@ private:
 	unsigned int 				m_row;
 	unsigned int 				m_col;
 	
+	int							m_fntSize;
+	
 
 protected:
 	// Handlers for JudgeMark events.
@@ -40,6 +42,7 @@ protected:
 	void OnKeyUp( wxKeyEvent& event );
 	void OnKeyDown( wxKeyEvent& event );
 	void OnSearch( wxCommandEvent& event );
+	void OnScaleChange(wxSpinEvent& event);
 	
 public:
 	/** Constructor */
