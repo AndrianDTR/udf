@@ -57,7 +57,7 @@ void udfFinalMarks::RefreshGrid()
 	{
 		int nCol = 0;
 		int nRow = 0;
-		
+
 		m_gridMarks->ClearGrid();
 		if(m_gridMarks->GetNumberRows())
 			m_gridMarks->DeleteRows(0, m_gridMarks->GetNumberRows());
@@ -70,7 +70,7 @@ void udfFinalMarks::RefreshGrid()
 		font.SetPointSize(25);
 		font.SetWeight(wxFONTWEIGHT_BOLD);
 		m_gridMarks->SetDefaultCellFont(font);
-		
+
 		m_gridMarks->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
 		m_gridMarks->SetRowLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
 
@@ -90,9 +90,9 @@ void udfFinalMarks::RefreshGrid()
 			unsigned int jId = *jud;
 			wxString letter = m_gridMarks->GetColLabelValue(nCol);
 			wxString judge = GetCsJudgeNameById(jId);
-			
+
 			jDescr += wxString::Format(STR_FORMAT_REPORT_JUDGE_SHORTCUT, letter[0], judge);
-			
+
 			m_col2id[nCol] = jId;
 			m_id2col[jId] = nCol;
 
@@ -125,7 +125,7 @@ void udfFinalMarks::RefreshGrid()
 				data.teamId = m_row2id[nRow];
 				data.judgeId = m_col2id[nCol];
 				long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
-				
+
 				if(UDF_OK == found)
 				{
 					CChampionshipJudgesMarkTable(m_pCon).GetRow(id, data);
@@ -141,7 +141,7 @@ void udfFinalMarks::RefreshGrid()
 bool udfFinalMarks::Validate()
 {
 	Enter();
-	
+
 	bool res = true;
 	do
 	{
@@ -156,25 +156,25 @@ bool udfFinalMarks::Validate()
 				for(mark = row + 1; mark < m_gridMarks->GetNumberRows(); ++mark)
 				{
 					wxString m2 = m_gridMarks->GetCellValue(mark, col);
-					
+
 					if(m1[0] == m2[0])
 					{
 						__info("INVALID");
 						m_gridMarks->SetCellBackgroundColour(mark, col, wxColour(255,0,0));
-						
+
 						res = false;
 					}
 				}
 			}
 		}
 	}while(0);
-	
+
 	if(res == false)
 	{
 		m_gridMarks->Refresh();
 	}
 	Leave();
-	
+
 	return res;
 }
 
@@ -193,7 +193,7 @@ void udfFinalMarks::UpdateMarks()
 			data.tourId = m_tourId;
 			data.teamId = m_row2id[nRow];
 			data.judgeId = m_col2id[nCol];
-						
+
 			long found = CChampionshipJudgesMarkTable(m_pCon).FindId(id, data);
 
 			__info("Row: %d, Col: %d, tourId: %d, teamId: %d, FOUND: %d == %d", nRow, nCol, data.tourId, data.teamId, found, UDF_E_NOTFOUND);
@@ -220,10 +220,10 @@ void udfFinalMarks::OnKeyUp( wxKeyEvent& event )
 	{
 		int col = m_gridMarks->GetGridCursorCol();
 		int row = m_gridMarks->GetGridCursorRow();
-		
+
 		if( -1 == row || -1 == col)
 			break;
-		
+
 		int key = event.GetKeyCode();
 		switch(key)
 		{
@@ -237,23 +237,21 @@ void udfFinalMarks::OnKeyUp( wxKeyEvent& event )
 			case '8':
 			case '9':
 				m_gridMarks->SetCellValue(row, col, wxString::Format(_("%c"), key));
-				
+
 				int nRow = 0;
 				bool ok = true;
 				for(nRow = 0; nRow < m_gridMarks->GetNumberRows(); nRow++)
 				{
 					if(row == nRow)
 						continue;
-					
+
 					wxString m1 = wxString::Format(_("%d"), m_gridMarks->GetNumberRows());
 					wxString m2 = m_gridMarks->GetCellValue(nRow, col);
-					__info("col=%d row%d=%c row%d=%c", col, row, key, nRow, m2[0]);
-					
+
 					if(m1[0] < key || m2[0] == key )
 					{
-						__info("INVALID");
 						m_gridMarks->SetCellBackgroundColour(row, col, wxColour(255,0,0));
-						
+
 						ok = false;
 						break;
 					}
@@ -263,13 +261,13 @@ void udfFinalMarks::OnKeyUp( wxKeyEvent& event )
 					}
 					m_gridMarks->Refresh();
 				}
-				
+
 				if(ok)
 					m_gridMarks->MoveCursorDown(false);
-					
+
 				break;
 		}
-		
+
 	}while(0);
 }
 

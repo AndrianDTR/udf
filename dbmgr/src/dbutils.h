@@ -50,7 +50,7 @@ long GetTeamStartNumber(unsigned int teamId, unsigned int& startNum);
 
 long GetTourTeams(unsigned int catId, unsigned int tourId, tUIList& teamsList);
 
-long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& marks);
+long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& marks, bool final = false);
 long GetTourCategoryId(unsigned int tourId, unsigned int& catId);
 
 long GetPrevTourId(unsigned int tourId, unsigned int& prevTourId);

@@ -109,19 +109,19 @@ long GetBlockLenById(unsigned int nId, time_t& len)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-				
+
 		//Calculate summary registereg teams(time) + pause*(len(teams)-1)
 		/*
 		select sec_to_time(tlen.len+tpause.len) total from (
-		select sum(tt.TT) len from (select t1.name, sum(time_to_sec(t2.lenght)) as TT 
-		from championship_team t1 inner join (select b1.championship_id csId, b2.cs_cat_id catId 
-		from championship_blocks b1 inner join championship_block_j2c b2 on b1.id=b2.block_id and b1.id=2 group by b2.cs_cat_id) bc 
+		select sum(tt.TT) len from (select t1.name, sum(time_to_sec(t2.lenght)) as TT
+		from championship_team t1 inner join (select b1.championship_id csId, b2.cs_cat_id catId
+		from championship_blocks b1 inner join championship_block_j2c b2 on b1.id=b2.block_id and b1.id=2 group by b2.cs_cat_id) bc
 		inner join championship_team_categories t2 on t1.id=t2.team_id and t1.championship_id=bc.csId and t2.category_id=bc.catId group by t1.name) tt) tlen,
-		(select (count(t1.id)-1)*t.pause `len` from championship_team t1 inner join ( select t2.team_id tid, bc.pause `pause` 
-		from (select b1.championship_id `csId`, b2.cs_cat_id `catId`, b1.pause `pause` from championship_blocks b1 inner join championship_block_j2c b2 
+		(select (count(t1.id)-1)*t.pause `len` from championship_team t1 inner join ( select t2.team_id tid, bc.pause `pause`
+		from (select b1.championship_id `csId`, b2.cs_cat_id `catId`, b1.pause `pause` from championship_blocks b1 inner join championship_block_j2c b2
 		on b1.id=b2.block_id and b1.id=1 group by catId) bc inner join championship_team_categories t2 on bc.catId=t2.category_id) t on t1.id=t.tid) tpause
 		*/
-		
+
 		sprintf(query, "select sec_to_time(tlen.len+tpause.len) total from ("
 			" select sum(tt.TT) len from (select t1.name, sum(time_to_sec(t2.lenght)) as TT "
 			" from %s t1 inner join (select b1.championship_id csId,"
@@ -160,7 +160,7 @@ long GetBlockLenById(unsigned int nId, time_t& len)
 		{
 			res = UDF_E_NOTFOUND;
 		}
-		
+
 		len = str2time(qRes->getString("total"));
 		res = UDF_OK;
 	}while(0);
@@ -201,7 +201,7 @@ long JudgeHaveCategory(unsigned int judId, unsigned int catId, unsigned int& row
 			res = UDF_E_NOTFOUND;
 			break;
 		}
-		
+
 		rowId = qRes->getUInt("id");
 		res = UDF_OK;
 	}while(0);
@@ -244,7 +244,7 @@ long JudgeHaveCsCategory(unsigned int judId, unsigned int csId)
 			res = UDF_E_NOTFOUND;
 			break;
 		}
-		
+
 		res = UDF_OK;
 	}while(0);
 
@@ -268,7 +268,7 @@ long GetTeamsInCategory(unsigned int nId, tUIList& teamsList)
 		}
 		// select t1.id `id` from championship_team t1 inner join championship_team_categories t2 on t1.id=t2.team_id and t2.category_id=27
 		sprintf(query, "select t1.id `id` from %s t1 inner join"
-			" %s t2 on t1.id=t2.team_id and t2.category_id=%d"
+			" %s t2 on t1.id=t2.team_id and t2.category_id=%d order by t1.start_number "
 			, TABLE_CHAMPIONSHIPTEAM
 			, TABLE_CHAMPIONSHIPTEAMCATEGORIES
 			, nId
@@ -280,13 +280,13 @@ long GetTeamsInCategory(unsigned int nId, tUIList& teamsList)
 			res = UDF_E_EXECUTE_QUERY_FAILED;
 			break;
 		}
-		
+
 		teamsList.clear();
 		while(qRes->next())
 		{
 			teamsList.push_back(qRes->getUInt("id"));
 		}
-		
+
 		res = UDF_OK;
 	}while(0);
 
@@ -308,8 +308,8 @@ long IsCategoryUsedOnCsById(unsigned int nId, unsigned int blockId)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		/* select t1.cs_cat_id from championship_block_j2c t1 inner join 
-		(select  tb.id `id` from championship_blocks tb, (select championship_id `csid` from championship_blocks where id=1) bt where tb.championship_id=bt.csid and tb.id<>1) t2 
+		/* select t1.cs_cat_id from championship_block_j2c t1 inner join
+		(select  tb.id `id` from championship_blocks tb, (select championship_id `csid` from championship_blocks where id=1) bt where tb.championship_id=bt.csid and tb.id<>1) t2
 		on t1.block_id=t2.id and t1.cs_cat_id=26
 		//*/
 		sprintf(query, "select t1.cs_cat_id from %s t1 inner join"
@@ -336,7 +336,7 @@ long IsCategoryUsedOnCsById(unsigned int nId, unsigned int blockId)
 			res = UDF_E_NOTFOUND;
 			break;
 		}
-		
+
 		res = UDF_OK;
 	}while(0);
 
@@ -376,7 +376,7 @@ long GetBlockCategories(unsigned int nId, tUIList& cats)
 		{
 			cats.push_back(qRes->getUInt("id"));
 		}
-		
+
 		res = UDF_OK;
 	}while(0);
 
@@ -413,7 +413,7 @@ std::string GetTourTypeNameById(unsigned int nId)
 		{
 			break;
 		}
-		
+
 		res = qRes->getString("name");
 	}while(0);
 
@@ -454,7 +454,7 @@ long GetTourTypeByDancersCount(unsigned int nDancers, unsigned int& typeId)
 			res = UDF_E_NOTFOUND;
 			break;
 		}
-		
+
 		typeId = qRes->getUInt("id");
 		res = UDF_OK;
 	}while(0);
@@ -489,13 +489,13 @@ long GetJudgesForCategory(unsigned int catId, tUIList& judges)
 			res = UDF_E_EXECUTE_QUERY_FAILED;
 			break;
 		}
-		
+
 		judges.clear();
 		while(qRes->next())
 		{
 			judges.push_back(qRes->getUInt("id"));
 		}
-		
+
 		res = UDF_OK;
 	}while(0);
 
@@ -535,7 +535,7 @@ long GetTeamStartNumber(unsigned int teamId, unsigned int& startNum)
 			res = UDF_E_NOTFOUND;
 			break;
 		}
-		
+
 		startNum = qRes->getUInt("start_num");
 		res = UDF_OK;
 	}while(0);
@@ -558,7 +558,7 @@ long GetTourCategoryId(unsigned int tourId, unsigned int& catId)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		
+
 		sprintf(query, "select cs_cat_id `id` from %s where id=%d"
 			, TABLE_CHAMPIONSHIPTOUR
 			, tourId
@@ -576,7 +576,7 @@ long GetTourCategoryId(unsigned int tourId, unsigned int& catId)
 			res = UDF_E_NOTFOUND;
 			break;
 		}
-		
+
 		catId = qRes->getUInt("id");
 		res = UDF_OK;
 	}while(0);
@@ -584,7 +584,7 @@ long GetTourCategoryId(unsigned int tourId, unsigned int& catId)
 	return res;
 }
 
-long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& marks)
+long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& marks, bool final /*= false*/)
 {
 	long res = UDF_E_FAIL;
 
@@ -600,14 +600,14 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		
+
 		/*
-		select d.id `id`, d.start_number `sNum`, IFNULL(j1.mark,0)+IFNULL(j2.mark,0)+IFNULL(j3.mark,0) `sum`, IFNULL(j1.mark,0), IFNULL(j2.mark,0), IFNULL(j3.mark,0) from championship_team d 
+		select d.id `id`, d.start_number `sNum`, IFNULL(j1.mark,0)+IFNULL(j2.mark,0)+IFNULL(j3.mark,0) `sum`, IFNULL(j1.mark,0), IFNULL(j2.mark,0), IFNULL(j3.mark,0) from championship_team d
 		-- ______________________________________^_________________^_________________^________________________^__________________^__________________^_________________________________________
 		-- dynamicaly formed
-		left join (select cjm1.team_id `team_id`, cjm1.mark `mark` from championship_judges_mark cjm1 where cjm1.tour_id=8 and cjm1.judge_id=55) j1 on j1.team_id=d.id 
-		left join (select cjm2.team_id `team_id`, cjm2.mark `mark` from championship_judges_mark cjm2 where cjm2.tour_id=8 and cjm2.judge_id=56) j2 on j2.team_id=d.id 
-		left join (select cjm3.team_id `team_id`, cjm3.mark `mark` from championship_judges_mark cjm3 where cjm3.tour_id=8 and cjm3.judge_id=57) j3 on j3.team_id=d.id 
+		left join (select cjm1.team_id `team_id`, cjm1.mark `mark` from championship_judges_mark cjm1 where cjm1.tour_id=8 and cjm1.judge_id=55) j1 on j1.team_id=d.id
+		left join (select cjm2.team_id `team_id`, cjm2.mark `mark` from championship_judges_mark cjm2 where cjm2.tour_id=8 and cjm2.judge_id=56) j2 on j2.team_id=d.id
+		left join (select cjm3.team_id `team_id`, cjm3.mark `mark` from championship_judges_mark cjm3 where cjm3.tour_id=8 and cjm3.judge_id=57) j3 on j3.team_id=d.id
 		order by sum desc
 		*/
 		sQuery = "select d.id `id`, d.start_number `sNum`, ";
@@ -616,12 +616,12 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 		std::string join;
 		int n = 0;
 		int len = judges.size();
-		
+
 		for(tUIListCIt jud = judges.begin(); jud != judges.end(); jud++, n++)
 		{
 			sprintf(query, "ifnull(j%d.mark, 0)", n);
 			sum += query;
-			
+
 			sprintf(query, "ifnull(j%d.mark, 0) `jm%d`", n, n);
 			mark += query;
 			if(n != len-1)
@@ -629,7 +629,7 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 				sum += " + ";
 				mark += ", ";
 			}
-			
+
 			unsigned int j = *jud;
 			sprintf(query, " left join (select cjm%d.team_id `team_id`, cjm%d.mark `mark` from %s cjm%d "
 				"where cjm%d.tour_id=%d and cjm%d.judge_id=%d) j%d on j%d.team_id=d.id  "
@@ -643,7 +643,7 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 				);
 			join += query;
 		}
-		
+
 		sQuery += sum+" `sum`,";
 		sprintf(query, " from %s d ", TABLE_CHAMPIONSHIPTEAM);
 		sQuery += mark + query;
@@ -657,7 +657,7 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 			, tourId
 			);
 		sQuery += query;
-		
+
 		unsigned int prevTourId = 0;
 		if(UDF_OK == GetPrevTourId(tourId, prevTourId))
 		{
@@ -665,18 +665,21 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 			, TABLE_CHAMPIONSHIPTOURPASS
 			, prevTourId
 			);
-		
+
 			sQuery += query;
 		}
-		sQuery += "order by sum desc, sNum, id ";
-		
+		if(!final)
+			sQuery += "order by sum desc, sNum, id ";
+		else
+			sQuery += "order by sNum, id ";
+
 		qRes = pCon->ExecuteQuery(sQuery);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
 			break;
 		}
-		
+
 		marks.clear();
 		while(qRes->next())
 		{
@@ -685,7 +688,7 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 			tourMarks.startNum = qRes->getUInt("sNum");
 			tourMarks.sum = qRes->getInt("sum");
 			tourMarks.marksList.clear();
-			
+
 			int j = 0;
 			for(j = 0; j < len; ++j)
 			{
@@ -694,7 +697,7 @@ long GetTourMarks(unsigned int tourId, const tUIList& judges, tTourMarksList& ma
 			}
 			marks.push_back(tourMarks);
 		}
-		
+
 		res = UDF_OK;
 	}while(0);
 
@@ -732,7 +735,7 @@ bool GetTeamPassTour(unsigned int teamId, unsigned int tourId)
 		{
 			break;
 		}
-		
+
 		res = true;
 	}while(0);
 
@@ -754,7 +757,7 @@ long SetTeamPassTour(unsigned int teamId, unsigned int tourId, bool pass)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		
+
 		if(pass)
 		{
 			// insert into %s(`tour_id`,`team_id`) values(%d, %d)
@@ -772,9 +775,9 @@ long SetTeamPassTour(unsigned int teamId, unsigned int tourId, bool pass)
 				, teamId
 				);
 		}
-		
+
 		res = pCon->Execute(query);
-		
+
 	}while(0);
 
 	return res;
@@ -795,14 +798,13 @@ long GetTourTeams(unsigned int catId, unsigned int tourId, tUIList& teamsList)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		
+
 		/*
 		 * 1. Get previous tour
 		 * 2. If none return GetCategoryTeams
 		 *    else return list of teams from previous tour that is listed in cs_tour_pass table
 		 */
-		
-		__info("Tour: %d", tourId);
+
 		// Get category tours
 		if(0 != tourId)
 		{
@@ -833,37 +835,37 @@ long GetTourTeams(unsigned int catId, unsigned int tourId, tUIList& teamsList)
 			res = UDF_E_EXECUTE_QUERY_FAILED;
 			break;
 		}
-		
+
 		unsigned int prevTour = -1;
 		if(!qRes->next())
 		{
 			res = GetTeamsInCategory(catId, teamsList);
 			break;
 		}
-		
+
 		prevTour = qRes->getUInt("id");
-		__info("Prev Tour: %d", prevTour);
-				
+
+		__info("Add sorting by start numbers");
 		sprintf(query, "select tp.id `id`, tp.team_id `tid` from %s tp where"
 			" tp.tour_id=%d"
 			, TABLE_CHAMPIONSHIPTOURPASS
 			, prevTour
 			);
-		
+
 		qRes = pCon->ExecuteQuery(query);
 		if(!qRes)
 		{
 			res = UDF_E_EXECUTE_QUERY_FAILED;
 			break;
 		}
-		
+
 		teamsList.clear();
-		
+
 		while(qRes->next())
 		{
 			teamsList.push_back(qRes->getUInt("tid"));
 		}
-		
+
 		res = UDF_OK;
 	}while(0);
 
@@ -885,7 +887,7 @@ long GetPrevTourId(unsigned int tourId, unsigned int& prevTourId)
 			res = UDF_E_NOCONNECTION;
 			break;
 		}
-		
+
 		sprintf(query, "select t.id `id` from %s t"
 			" inner join (select ct.type_id `tpid`, ct.cs_cat_id `cat` from %s ct"
 			" where ct.id=%d) c on t.cs_cat_id=c.cat and"
@@ -901,15 +903,15 @@ long GetPrevTourId(unsigned int tourId, unsigned int& prevTourId)
 			res = UDF_E_EXECUTE_QUERY_FAILED;
 			break;
 		}
-		
+
 		if(!qRes->next())
 		{
 			res = UDF_E_NOTFOUND;
 			break;
 		}
-		
+
 		prevTourId = qRes->getUInt("id");
-		
+
 		res = UDF_OK;
 	}while(0);
 

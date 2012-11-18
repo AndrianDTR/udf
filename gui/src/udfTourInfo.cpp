@@ -50,25 +50,23 @@ void udfTourInfo::CreateNewTour()
 			udfTreeItemData* tourItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
 			nTourId = tourItem->GetId();
 		}
-		__info("Tour id: %d", nTourId);
 
 		tUIList teams;
 		GetTourTeams(catItem->GetId(), nTourId, teams);
 
-		__info("Tour teams: %d", teams.size());
 		if(0 == teams.size())
 		{
 			ShowWarning("There are no any team that pass in previous tour.");
 			break;
 		}
-		
+
 		m_tourType = 0;
 		CTourTypesTable::tDATA typeData = {0};
 		GetTourTypeByDancersCount(teams.size(), m_tourType);
 		CTourTypesTable(m_pCon).GetRow(m_tourType, typeData);
 		m_staticType->SetLabel(typeData.name);
 		m_staticMinMax->SetLabel(wxString::Format("%d - %d", typeData.min, typeData.max));
-		
+
 		m_gridSuccess->ClearGrid();
 		if(m_gridSuccess->GetNumberRows())
 			m_gridSuccess->DeleteRows(0, m_gridSuccess->GetNumberRows());
@@ -83,7 +81,7 @@ void udfTourInfo::CreateNewTour()
 		int extraCols = 2;
 		if(m_tourType == 1)
 			extraCols = 1;
-			
+
 		//Start append cols
 		tUIList juds;
 		GetJudgesForCategory(catItem->GetId(), juds);
@@ -98,7 +96,7 @@ void udfTourInfo::CreateNewTour()
 		else
 		{
 			m_gridSuccess->SetColLabelValue(0, GetVerticalText("Pass"));
-		
+
 			m_gridSuccess->SetColMinimalWidth(1, 30);
 			m_gridSuccess->SetColLabelValue(1, GetVerticalText("Sum"));
 		}
@@ -118,13 +116,11 @@ void udfTourInfo::CreateNewTour()
 		// Finish append cols
 
 		// Start append rows
-		
-
 		m_gridSuccess->AppendRows(teams.size());
 
 		if(0 == nTourId)
 		{
-			__info("This is new tour");
+			__msg("This is new tour");
 			break;
 		}
 
@@ -133,25 +129,26 @@ void udfTourInfo::CreateNewTour()
 		m_textLimit->SetValue(wxString::Format(_("%d"), tourInfo.limit));
 
 		tTourMarksList		marksList;
-		GetTourMarks(nTourId, juds, marksList);
+		GetTourMarks(nTourId, juds, marksList, m_tourType == 1);
 
 		int nRow = 0;
 		tTourMarksIt row = marksList.begin();
 		while(row != marksList.end())
 		{
 			tTourMarks& data = *row;
-			
+
 			m_gridSuccess->SetRowLabelValue(nRow, wxString::Format(STR_FORMAT_START_NUMBER, data.startNum));
 			m_row2id[nRow] = data.id;
 			m_id2row[data.id] = nRow;
-			
-			__info("Row: %d, Rows: %d, Cols: %d, listSize: %d", nRow, m_gridSuccess->GetNumberRows(), m_gridSuccess->GetNumberCols(), marksList.size());
-			m_gridSuccess->SetCellValue(wxString::Format(_("%d"), data.sum), nRow, 1);
-			
+
+			if(m_tourType > 1)
+			{
+				m_gridSuccess->SetCellValue(wxString::Format(_("%d"), data.sum), nRow, 1);
+			}
+
 			nCol = extraCols;
 			for(tCListIt c = data.marksList.begin(); c != data.marksList.end(); c++, nCol++)
 			{
-				__info("Row: %d, Col: %d, Mark: %d", nRow, nCol, *c);
 				if(*c)
 				{
 					m_gridSuccess->SetCellValue(_("X"), nRow, nCol);
@@ -161,35 +158,38 @@ void udfTourInfo::CreateNewTour()
 					}
 				}
 			}
-			
+
 			nRow++;
 			row++;
 		}
-		
+
 		//Final tour Do not calculate sum
 		if(m_tourType == 1)
 		{
 			CalculatePlaces();
 			break;
 		}
-		
+
 		int sum = 0;
 		if(tourInfo.limit < m_gridSuccess->GetNumberRows())
-			m_gridSuccess->GetCellValue(tourInfo.limit, 1).ToLong((long*)&sum);
+		{
+			m_gridSuccess->GetCellValue(tourInfo.limit-1, 1).ToLong((long*)&sum);
+		}
 
+		int eSum = sum;
 		for(nRow = 0; nRow < m_gridSuccess->GetNumberRows(); ++nRow)
 		{
 			wxGridCellAttr*	attr = new wxGridCellAttr();
 			int cSum = 0;
 			m_gridSuccess->GetCellValue(nRow, 1).ToLong((long*)&cSum);
 
-			if(cSum > sum)
+			if(cSum > eSum)
 			{
 				attr->SetBackgroundColour(wxColour(200, 255, 200));
 				if(GetTeamPassTour(m_row2id[nRow], nTourId))
 					m_gridSuccess->SetCellValue(_("X"), nRow, 0);
 			}
-			else if(cSum == sum)
+			else if(cSum == eSum)
 			{
 				if(GetTeamPassTour(m_row2id[nRow], nTourId))
 					m_gridSuccess->SetCellValue(_("X"), nRow, 0);
@@ -217,23 +217,35 @@ void udfTourInfo::CalculatePlaces()
 		int teams = m_gridSuccess->GetNumberRows();
 		// first collumn is reserved for place
 		int juds = m_gridSuccess->GetNumberCols() - 1;
-		
+
 		int** marks = new int*[teams];
 		int t, j;
-		for(t = 0; t < teams; t++)
+		bool fill = true;
+		for(t = 0; fill && t < teams; t++)
 		{
 			marks[t] = new int[juds];
-			for(j = 0; j < juds; j++)
+			for(j = 0; fill && j < juds; j++)
 			{
 				unsigned long mark = 0;
-				m_gridSuccess->GetCellValue(t, j+1).ToULong(&mark);
+				wxString szMark = m_gridSuccess->GetCellValue(t, j+1);
+				if(szMark.IsEmpty())
+				{
+					fill = false;
+					break;
+				}
+				szMark.ToULong(&mark);
 				marks[t][j] = mark;
 			}
+		}
+		if(!fill)
+		{
+			__msg("One of mark is not set.");
+			break;
 		}
 		iiMap results;
 		udfSkatingRules skating(teams, juds, marks);
 		skating.GetMarks(results);
-		
+
 		iiIt	place = results.begin();
 		for(; place != results.end(); place++)
 		{
@@ -245,7 +257,7 @@ void udfTourInfo::CalculatePlaces()
 				rating = wxString::Format(_("%.0f"), rate);
 			m_gridSuccess->SetCellValue(place->first, 0, rating);
 		}
-		
+
 		if(marks)
 		{
 			for(t = 0; t < teams; t++)
@@ -260,7 +272,7 @@ void udfTourInfo::CalculatePlaces()
 			marks = NULL;
 		}
 		//*/
-		
+
 	}while(0);
 	Leave();
 }
@@ -277,7 +289,7 @@ void udfTourInfo::OnCellLeftClick(wxGridEvent& event)
 		{
 			break;
 		}
-		
+
 		if(col == 0)
 		{
 			wxString value = m_gridSuccess->GetCellValue(row, col);
@@ -301,7 +313,7 @@ void udfTourInfo::OnResults(wxCommandEvent& event)
 		}
 
 		udfTreeItemData* tourItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
-		
+
 		if(m_tourType == 1)
 		{
 			udfFinalMarks(this, tourItem->GetId()).ShowModal();
@@ -310,6 +322,8 @@ void udfTourInfo::OnResults(wxCommandEvent& event)
 		{
 			udfJudgeMark(this, tourItem->GetId()).ShowModal();
 		}
+
+		CreateNewTour();
 	}while(0);
 }
 
@@ -370,7 +384,7 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 				CChampionshipTourPassTable(m_pCon).AddRow(data);
 			}
 		}
-		
+
 		CTourTypesTable::tDATA typeData = {0};
 		CTourTypesTable(m_pCon).GetRow(tourInfo.typeId, typeData);
 		wxString name = wxString::Format(STR_FORMAT_TOUR_NAME, typeData.name, tourInfo.limit);
@@ -380,9 +394,11 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 		}
 		else
 		{
-			m_pTree->AppendItem(m_parentItem, name, -1, -1, new udfTreeItemData(tourInfo.id, IT_TOUR));
+			wxTreeItemId newTour = m_pTree->AppendItem(m_parentItem, name, -1, -1, new udfTreeItemData(tourInfo.id, IT_TOUR));
+			m_pTree->SelectItem(newTour);
 		}
-		
+
+		CreateNewTour();
 	}while(0);
 	Leave();
 }
@@ -394,7 +410,7 @@ void udfTourInfo::OnRemove(wxCommandEvent& event)
 	{
 		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
 		{
-			__info("One of items is not set");
+			__msg("One of items is not set");
 			break;
 		}
 
@@ -418,14 +434,14 @@ void udfTourInfo::OnAddNext(wxCommandEvent& event)
 			ShowWarning(STR_WARNING_CAT_ALREADY_HAS_FINAL);
 			break;
 		}
-			
+
 		if(m_pMainWindow)
 			m_pMainWindow->OnAddTour(event);
-		
+
 	}while(0);
-	
+
 	event.Skip();
-	
+
 	Leave();
 }
 
