@@ -2,12 +2,20 @@
 #define __udfSkatingRules_h__
 
 #include "map"
+#include "list"
 
 using namespace std;
 
-typedef map<int,int>					iiMap;
-typedef map<int,int>::iterator			iiIt;
-typedef map<int,int>::reverse_iterator	iiRit;
+typedef list<int>							iList;
+typedef list<int>::iterator					iListIt;
+
+typedef map<int,int>						iiMap;
+typedef map<int,int>::iterator				iiIt;
+typedef map<int,int>::reverse_iterator		iiRit;
+
+typedef map<int, float,int>					ifMap;
+typedef map<int, float>::iterator			ifIt;
+typedef map<int, float>::reverse_iterator	ifRit;
 
 class udfSkatingRules
 {
@@ -19,12 +27,13 @@ private:
 	iiMap	m_PlacesMap;
 
 	int 	m_jMost;
+	int 	m_multiplier;
 
 public:
 	udfSkatingRules(int teams, int judges, int** marks);
 	virtual ~udfSkatingRules();
 
-	bool	GetMarks(int& nTeams, int*** marks);
+	bool	GetMarks(ifMap& marks);
 
 protected:
 	virtual bool Rule1();
@@ -34,7 +43,7 @@ protected:
 	virtual bool Rule5();
 	virtual bool Rule6();
 	virtual bool Rule7();
-	iiMap		 Rule7B(int place, iiMap tList, int** sumTable, int** rngTable);
+	iiMap		 Rule7B(int place, iList tList, int** sumTable, int** rngTable);
 	virtual bool Rule8();
 	virtual bool Rule9();
 	virtual bool Rule10();
