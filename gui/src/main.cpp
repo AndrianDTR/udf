@@ -45,7 +45,7 @@ bool MainApp::OnInit()
 			{
 				break;
 			}
-
+			
 			//Cancel pressed
 			if(UDF_OK != udfSettings(NULL).ShowModal())
 			{

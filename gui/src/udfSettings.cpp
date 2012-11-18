@@ -10,6 +10,8 @@ udfSettings::udfSettings( wxWindow* parent )
 : Settings( parent )
 , m_pCon(NULL)
 {
+	m_pCon = CDbManager::Instance()->GetConnection();
+	
 	Refresh();
 }
 
@@ -104,8 +106,15 @@ void udfSettings::Refresh()
 		m_textUser->SetValue(pConf->GetUser());
 		m_textPass->SetValue(pConf->GetPass());
 
-		if(NULL == GetParent())
+		if(!m_pCon)
+		{
+			m_panel5->Hide();
 			break;
+		}
+		else
+		{
+			m_panel5->Show();
+		}
 
 		CTourTypesTable::tDATA tourData = {0};
 		CTourTypesTable table(m_pCon);
@@ -113,8 +122,7 @@ void udfSettings::Refresh()
 		table.GetRow(1, tourData);
 		m_textMaxFinal->SetValue(wxString::Format(_("%d"), tourData.max));
 		m_textMinFinal->SetValue(wxString::Format(_("%d"), tourData.min));
-		__info("Final: id=%d, min=%d, max=%d", tourData.id, tourData.min, tourData.max);
-
+		
 		table.GetRow(2, tourData);
 		m_textMax12->SetValue(wxString::Format(_("%d"), tourData.max));
 		m_textMin12->SetValue(wxString::Format(_("%d"), tourData.min));
@@ -154,10 +162,8 @@ void udfSettings::OnTest(wxCommandEvent& event)
 
 	CTourTypesTable::tTableMap data;
 	long res = CTourTypesTable(pCon).GetTable(data);
-	int sz = data.size();
-	__info("TEST Res = %ld, sz = %d", res, sz);
-
-	if(UDF_OK == res && sz)
+	
+	if(UDF_OK == res && data.size())
 	{
 		m_textTest->SetValue(_("Connected successfully."));
 	}

@@ -31,7 +31,7 @@ long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPa
 		sql::Driver* 		pDriver = NULL;
 		sql::Connection* 	pCon = NULL;
 		sql::Statement*		pStmt = NULL;
-
+		
 		pDriver = get_driver_instance();
 		if(!pDriver)
 		{
@@ -39,7 +39,7 @@ long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPa
 			__msg("No driver");
 			break;
 		}
-
+		
 		pCon = pDriver->connect(szUrl, szUser, szPass);
 		if(!pCon)
 		{
@@ -47,8 +47,17 @@ long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPa
 			__msg("No connect");
 			break;
 		}
-
-		pCon->setSchema(szSchema);
+		
+		try
+		{
+			pCon->setSchema(szSchema);
+		}
+		catch(...)
+		{
+			__msg("Set schema failed.");
+			res = UDF_E_NOSCHEMA;
+			break;
+		}
 
 		pStmt = pCon->createStatement();
 		if(!pStmt)
@@ -57,7 +66,7 @@ long CDbConnection::Open(std::string szUrl, std::string szUser, std::string szPa
 			__msg("No statement");
 			break;
 		}
-
+		
 		m_pConnection = pCon;
 		m_pStatement = pStmt;
 		res = UDF_OK;

@@ -2933,7 +2933,7 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_panel4->SetSizer( bSizer117 );
 	m_panel4->Layout();
 	bSizer117->Fit( m_panel4 );
-	m_notebook1->AddPage( m_panel4, _("Connection"), false );
+	m_notebook1->AddPage( m_panel4, _("Connection"), true );
 	m_panel5 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer118;
 	bSizer118 = new wxBoxSizer( wxHORIZONTAL );
@@ -3029,7 +3029,7 @@ Settings::Settings( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_panel5->SetSizer( bSizer118 );
 	m_panel5->Layout();
 	bSizer118->Fit( m_panel5 );
-	m_notebook1->AddPage( m_panel5, _("Tours data"), true );
+	m_notebook1->AddPage( m_panel5, _("Tours data"), false );
 	m_panel6 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_panel6->Hide();
 	
@@ -3358,7 +3358,6 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	
 	m_textJudges = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER );
 	m_textJudges->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
-	m_textJudges->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME ) );
 	
 	fgSizer22->Add( m_textJudges, 0, wxALL|wxEXPAND, 5 );
 	
@@ -3367,7 +3366,7 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	m_gridJudgesCats = new wxGrid( this, ID_M_GRIDJUDGESCATS, wxDefaultPosition, wxDefaultSize, wxRAISED_BORDER|wxVSCROLL );
 	
 	// Grid
-	m_gridJudgesCats->CreateGrid( 0, 0 );
+	m_gridJudgesCats->CreateGrid( 10, 10 );
 	m_gridJudgesCats->EnableEditing( true );
 	m_gridJudgesCats->EnableGridLines( true );
 	m_gridJudgesCats->EnableDragGridSize( false );

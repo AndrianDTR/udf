@@ -60,8 +60,6 @@ void udfSettingsBase::ReadConfig()
 
 void udfSettingsBase::WriteConfig()
 {
-	__msg("WRITE CONFIG");
-	
 	m_pCfg->Write("host", m_szHost);
 	m_pCfg->Write("user", m_szUser);
 	m_pCfg->Write("pass", m_szPass);

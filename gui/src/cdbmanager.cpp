@@ -11,7 +11,7 @@ CDbManager::CDbManager()
 , m_ok(false)
 {
 	udfSettingsBase* pConf = udfSettingsBase::Instance();
-
+	
 	Open( pConf->GetHost().ToStdString()
 		, pConf->GetSchema().ToStdString()
 		, pConf->GetUser().ToStdString()

@@ -17,6 +17,7 @@ void FillErrorMap()
 	
 	RegErrMsg(UDF_E_INIT_DRIVER, "MySQL initialize driver instance failed.");
 	RegErrMsg(UDF_E_CONNECTION, "MySQL connection failed.");
+	RegErrMsg(UDF_E_NOSCHEMA, "MySQL set schema failed.");
 	RegErrMsg(UDF_E_CREATE_STATEMENT, "MySQL create statement failed.");
 	RegErrMsg(UDF_E_NOCONNECTION, "MySQL connection not opened.");
 	RegErrMsg(UDF_E_NOMEMORY, "No enougth memory.");
