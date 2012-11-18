@@ -70,8 +70,8 @@ void printPlaces(int teams, int** marks)
 
 int main(int argc, char **argv)
 {
-	const int teams = 6;
-	const int juds = 5;
+	const int teams = 9;
+	const int juds = 32;
 
 	srand(time(0));
 
@@ -169,16 +169,40 @@ int main(int argc, char **argv)
 		{1, 2, 2, 6, 5, 4, 1}, // 2		4		-		-		-		-		1
 		//*/
 
+		/*
 		{4, 3, 5, 3, 2}, //	- 	1 		3(8) 	4(12) 	5(17) 	5(17) 	3,5
 		{3, 2, 2, 4, 1}, //	1 	3(5) 	- 		 -		-		-		2
 		{2, 1, 1, 5, 4}, //	2 	3(4) 	- 		-		-		-		1
 		{5, 4, 3, 2, 3}, //	- 	1 		3(8)	4(12) 	5(17) 	5(17) 	3,5
 		{1, 5, 4, 1, 6}, //	2 	2 		2 		3 		-		-		5
 		{6, 6, 6, 6, 5}  //	- 	- 		- 		- 		1 		5 		6
+		//*/
+		
+		/*
+		{4, 4, 6, 2, 4}  // 4
+		{1, 1, 1, 1, 6}  // 1
+		{5, 3, 5, 4, 5}  // 5
+		{2, 6, 2, 3, 1}  // 2
+		{3, 2, 3, 5, 2}  // 3
+		{6, 5, 4, 6, 3}  // 6
+		//*/
+		
+		/*
+		team	J1 	J2 	J3 	J4 	J5 	J6 	J7 	J8 	J9 	J10 	J11 	J12 	J13 	J14 	J15 	Place
+		1		1 	9 	5 	4 	8 	7 	2 	1 	2 	7 		7 		2 		3 		8 		8 		6
+		2		3 	4 	3 	6 	4 	1 	6 	6 	4 	8 		1 		8 		6 		3 		1 		1.5
+		3		7 	2 	4 	8 	1 	2 	7 	8 	8 	6 		3 		4 		8 		7 		2 		8
+		4		4 	6 	6 	3 	2 	3 	9 	2 	7 	1 		8 		9 		2 		4 		3 		1.5
+		5		2 	8 	7 	5 	7 	5 	5 	3 	6 	5 		9 		6 		9 		6 		7 		7
+		6		5 	7 	2 	1 	6 	9 	1 	4 	9 	2 		4 		3 		5 		5 		4 		4
+		7		9 	1 	9 	9 	3 	4 	4 	9 	1 	4 		6 		7 		1 		2 		6 		3
+		8		6 	5 	8 	2 	5 	6 	3 	5 	3 	3 		5 		5 		7 		1 		5 		5
+		9		8 	3 	1 	7 	9 	8 	8 	7 	5 	9 		2 		1 		4 		9 		9 		9
+		//*/
 	};
 
 	/********** COPY ************/
-	//*
+	/*
 	for(t = 0; t < teams; t++)
 	{
 		for(j = 0; j < juds; j++)
@@ -192,10 +216,20 @@ int main(int argc, char **argv)
 
 	udfSkatingRules rules(teams, juds, marks);
 
-	ifMap ppRes;
+	iiMap ppRes;
 	rules.GetMarks(ppRes);
-	//if(ppRes)
-	//	printPlaces(teams, ppRes);
+	
+	printf("\n\n====================================");
+	printf("\nTeam\t=\tPlace");
+	iiIt place = ppRes.begin();
+	for(; place != ppRes.end(); place++)
+	{
+		if(place->second % 10)
+			printf("\n%d\t=\t%.1f", place->first+1, place->second/10.0);
+		else
+			printf("\n%d\t=\t%.0f", place->first+1, place->second/10.0);
+	}
+	printf("\n====================================\n");
 
 	return 0;
 }

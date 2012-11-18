@@ -33,7 +33,7 @@ public:
 	udfSkatingRules(int teams, int judges, int** marks);
 	virtual ~udfSkatingRules();
 
-	bool	GetMarks(ifMap& marks);
+	bool	GetMarks(iiMap& marks);
 
 protected:
 	virtual bool Rule1();

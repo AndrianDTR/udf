@@ -170,7 +170,7 @@ int** udfSkatingRules::CalculatePlacesSum(int** marksTbl)
 	return res;
 }
 
-bool udfSkatingRules::GetMarks(ifMap& placesMap)
+bool udfSkatingRules::GetMarks(iiMap& placesMap)
 {
 	Enter();
 	bool res = true;
@@ -204,7 +204,7 @@ bool udfSkatingRules::GetMarks(ifMap& placesMap)
 	if(res)
 	{
 		placesMap.clear();
-		/*
+		
 		while(m_multiplier != 1)
 		{
 			m_multiplier--;
@@ -223,6 +223,8 @@ bool udfSkatingRules::GetMarks(ifMap& placesMap)
 					cnt++;
 				}
 			}
+			sum /= cnt;
+			
 			place = m_PlacesMap.begin();
 			for(; place != m_PlacesMap.end(); place++)
 			{
@@ -230,16 +232,16 @@ bool udfSkatingRules::GetMarks(ifMap& placesMap)
 				if( place->second >= 100 && m == m_multiplier)
 				{
 					int t = place->second % 100;
-					placesMap[t] = sum;
+					placesMap[t] = (sum + 1)*10;
 				}
 			}
 		}
-		//*/	
+		
 		iiIt place = m_PlacesMap.begin();
 		for(; place != m_PlacesMap.end(); place++)
 		{
-			//if(place->second < 100)
-				placesMap[10/*place->second*/] = 1.0f;//place->first/1.0f;
+			if(place->second < 100)
+				placesMap[place->second] = (place->first+1)*10;
 		}
 	}
 	

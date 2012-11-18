@@ -26,12 +26,13 @@
   
   
   
+  
   ]]>
   </Environment>
   <Project Name="dbmgr" Path="dbmgr/dbmgr.project" Active="No"/>
-  <Project Name="gui" Path="gui/gui.project" Active="No"/>
+  <Project Name="gui" Path="gui/gui.project" Active="Yes"/>
   <Project Name="skating" Path="skating/skating.project" Active="No"/>
-  <Project Name="skatingtest" Path="skatingtest/skatingtest.project" Active="Yes"/>
+  <Project Name="skatingtest" Path="skatingtest/skatingtest.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Project Name="udf" ConfigName="Debug"/>
