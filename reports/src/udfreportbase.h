@@ -9,6 +9,9 @@ public:
 	udfReportBase();
 	virtual ~udfReportBase();
 
+public:
+	void Test();
+
 };
 
 #endif // __udfReportBase_h__
