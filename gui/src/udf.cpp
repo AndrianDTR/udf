@@ -742,6 +742,17 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_menuItem91 = new wxMenuItem( m_menuManage, ID_MENU_MNGR_COUNTRIES, wxString( _("Countries") ) , wxEmptyString, wxITEM_NORMAL );
 	m_menuManage->Append( m_menuItem91 );
 	
+	wxMenuItem* m_separator5;
+	m_separator5 = m_menuManage->AppendSeparator();
+	
+	wxMenuItem* m_menuUserManager;
+	m_menuUserManager = new wxMenuItem( m_menuManage, ID_STAFF, wxString( _("Staff") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuManage->Append( m_menuUserManager );
+	
+	wxMenuItem* m_menuStaffRoles;
+	m_menuStaffRoles = new wxMenuItem( m_menuManage, ID_ROLES, wxString( _("Staff roles") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuManage->Append( m_menuStaffRoles );
+	
 	m_menuBar->Append( m_menuManage, _("Manage") ); 
 	
 	m_menuTools = new wxMenu();
@@ -835,7 +846,9 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	this->Connect( m_menuItem201->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuChampionshipTypes ) );
 	this->Connect( m_menuItem10->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnCitiesMngr ) );
 	this->Connect( m_menuItem91->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnCountriesMngr ) );
-	this->Connect( m_menuItemSync->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenySync ) );
+	this->Connect( m_menuUserManager->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuStaff ) );
+	this->Connect( m_menuStaffRoles->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuStaffRoles ) );
+	this->Connect( m_menuItemSync->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuSync ) );
 	this->Connect( m_menuItemOpts->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuOptions ) );
 	this->Connect( m_menuItem61->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnAboutDlg ) );
 	m_textSearch->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( MainFrameBase::OnSearch ), NULL, this );
@@ -858,7 +871,9 @@ MainFrameBase::~MainFrameBase()
 	this->Disconnect( ID_MENU_MNGR_ChTYPES_MNGR, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuChampionshipTypes ) );
 	this->Disconnect( ID_MENU_MNGR_CITIES, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnCitiesMngr ) );
 	this->Disconnect( ID_MENU_MNGR_COUNTRIES, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnCountriesMngr ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenySync ) );
+	this->Disconnect( ID_STAFF, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuStaff ) );
+	this->Disconnect( ID_ROLES, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuStaffRoles ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuSync ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnMenuOptions ) );
 	this->Disconnect( ID_ABOUT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::OnAboutDlg ) );
 	m_textSearch->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( MainFrameBase::OnSearch ), NULL, this );
@@ -1516,31 +1531,31 @@ UserRolesMgr::UserRolesMgr( wxWindow* parent, wxWindowID id, const wxString& tit
 	bSizer124->Add( m_staticText103, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textRole = new wxTextCtrl( this, ID_M_TEXTROLE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer124->Add( m_textRole, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer124->Add( m_textRole, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_staticText104 = new wxStaticText( this, wxID_ANY, _("Url"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText104->Wrap( -1 );
 	bSizer124->Add( m_staticText104, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textUrl = new wxTextCtrl( this, ID_M_TEXTURL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer124->Add( m_textUrl, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	bSizer124->Add( m_textUrl, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_bpAdd = new wxBitmapButton( this, ID_M_BPADD, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpAdd = new wxBitmapButton( this, ID_M_BPADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer124->Add( m_bpAdd, 0, wxALL, 5 );
 	
-	m_bpUpdate = new wxBitmapButton( this, ID_M_BPUPDATE, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpUpdate = new wxBitmapButton( this, ID_M_BPUPDATE, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer124->Add( m_bpUpdate, 0, wxALL, 5 );
 	
-	m_bpRemove = new wxBitmapButton( this, ID_M_BPREMOVE, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpRemove = new wxBitmapButton( this, ID_M_BPREMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer124->Add( m_bpRemove, 0, wxALL, 5 );
 	
-	m_bpSave = new wxBitmapButton( this, wxID_OK, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer124->Add( m_bpSave, 0, wxALL, 5 );
 	
-	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpDiscard = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer124->Add( m_bpDiscard, 0, wxALL, 5 );
 	
-	bSizer123->Add( bSizer124, 0, wxALIGN_RIGHT, 5 );
+	bSizer123->Add( bSizer124, 0, wxALIGN_RIGHT|wxEXPAND, 5 );
 	
 	m_listRoles = new wxListCtrl( this, ID_M_LISTROLES, wxDefaultPosition, wxDefaultSize, wxLC_HRULES|wxLC_REPORT|wxLC_VRULES|wxSUNKEN_BORDER );
 	bSizer123->Add( m_listRoles, 1, wxALL|wxEXPAND, 5 );
@@ -3086,6 +3101,9 @@ Staff::Staff( wxWindow* parent, wxWindowID id, const wxString& title, const wxPo
 	m_bpDelete = new wxBitmapButton( this, ID_M_BPDELETE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer121->Add( m_bpDelete, 0, wxALL, 5 );
 	
+	m_bpPrintAccInfo = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_other_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer121->Add( m_bpPrintAccInfo, 0, wxALL, 5 );
+	
 	m_bpSave = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer121->Add( m_bpSave, 0, wxALL, 5 );
 	
@@ -3093,6 +3111,64 @@ Staff::Staff( wxWindow* parent, wxWindowID id, const wxString& title, const wxPo
 	bSizer121->Add( m_bpDiscard, 0, wxALL, 5 );
 	
 	m_bSizerMain->Add( bSizer121, 0, wxALIGN_RIGHT, 5 );
+	
+	wxBoxSizer* bSizer125;
+	bSizer125 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxStaticBoxSizer* sbSizer17;
+	sbSizer17 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Staff") ), wxVERTICAL );
+	
+	m_listStaff = new wxListBox( this, ID_STAFF, wxDefaultPosition, wxSize( 300,-1 ), 0, NULL, wxLB_HSCROLL|wxLB_SORT ); 
+	sbSizer17->Add( m_listStaff, 1, wxALL|wxEXPAND, 5 );
+	
+	bSizer125->Add( sbSizer17, 0, wxALL|wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer28;
+	fgSizer28 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer28->AddGrowableCol( 1 );
+	fgSizer28->SetFlexibleDirection( wxBOTH );
+	fgSizer28->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText121 = new wxStaticText( this, wxID_ANY, _("Name"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText121->Wrap( -1 );
+	fgSizer28->Add( m_staticText121, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textName = new wxTextCtrl( this, ID_NAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer28->Add( m_textName, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText122 = new wxStaticText( this, wxID_ANY, _("Role"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText122->Wrap( -1 );
+	fgSizer28->Add( m_staticText122, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_comboRole = new wxComboBox( this, ID_ROLE, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN ); 
+	fgSizer28->Add( m_comboRole, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText127 = new wxStaticText( this, wxID_ANY, _("Judge"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText127->Wrap( -1 );
+	fgSizer28->Add( m_staticText127, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_comboJudge = new wxComboBox( this, ID_JUDGE, _("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
+	m_comboJudge->Enable( false );
+	
+	fgSizer28->Add( m_comboJudge, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText125 = new wxStaticText( this, wxID_ANY, _("Login"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText125->Wrap( -1 );
+	fgSizer28->Add( m_staticText125, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textLogin = new wxTextCtrl( this, ID_LOGIN, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer28->Add( m_textLogin, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText126 = new wxStaticText( this, wxID_ANY, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText126->Wrap( -1 );
+	fgSizer28->Add( m_staticText126, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_textPass = new wxTextCtrl( this, ID_PASS, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer28->Add( m_textPass, 0, wxALL|wxEXPAND, 5 );
+	
+	bSizer125->Add( fgSizer28, 1, wxEXPAND, 5 );
+	
+	m_bSizerMain->Add( bSizer125, 1, wxEXPAND, 5 );
 	
 	this->SetSizer( m_bSizerMain );
 	this->Layout();
@@ -3105,6 +3181,7 @@ Staff::Staff( wxWindow* parent, wxWindowID id, const wxString& title, const wxPo
 	m_bpDelete->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnRemove ), NULL, this );
 	m_bpSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnSave ), NULL, this );
 	m_bpDiscard->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnDiscard ), NULL, this );
+	m_listStaff->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( Staff::OnSelectWorker ), NULL, this );
 }
 
 Staff::~Staff()
@@ -3115,6 +3192,7 @@ Staff::~Staff()
 	m_bpDelete->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnRemove ), NULL, this );
 	m_bpSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnSave ), NULL, this );
 	m_bpDiscard->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Staff::OnDiscard ), NULL, this );
+	m_listStaff->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( Staff::OnSelectWorker ), NULL, this );
 	
 }
 

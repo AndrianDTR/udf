@@ -319,6 +319,8 @@ class MainFrameBase : public wxFrame
 			ID_MENU_MNGR_ChTYPES_MNGR,
 			ID_MENU_MNGR_CITIES,
 			ID_MENU_MNGR_COUNTRIES,
+			ID_STAFF,
+			ID_ROLES,
 			ID_ABOUT,
 			ID_SEARCH,
 			wxID_CHAMPIONSIP_ADD,
@@ -353,7 +355,9 @@ class MainFrameBase : public wxFrame
 		virtual void OnMenuChampionshipTypes( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCitiesMngr( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCountriesMngr( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMenySync( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuStaff( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuStaffRoles( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMenuSync( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMenuOptions( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutDlg( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSearch( wxCommandEvent& event ) { event.Skip(); }
@@ -711,7 +715,7 @@ class UserRolesMgr : public wxDialog
 	
 	public:
 		
-		UserRolesMgr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("User roles"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 617,460 ), long style = wxCAPTION|wxCLOSE_BOX|wxSYSTEM_MENU );
+		UserRolesMgr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("User roles"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 781,451 ), long style = wxCAPTION|wxCLOSE_BOX|wxSYSTEM_MENU );
 		~UserRolesMgr();
 	
 };
@@ -1422,14 +1426,31 @@ class Staff : public wxDialog
 			ID_STAFF = 1000,
 			ID_M_BPUPDATE,
 			ID_M_BPDELETE,
+			ID_NAME,
+			ID_ROLE,
+			ID_JUDGE,
+			ID_LOGIN,
+			ID_PASS,
 		};
 		
 		wxBoxSizer* m_bSizerMain;
 		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpDelete;
+		wxBitmapButton* m_bpPrintAccInfo;
 		wxBitmapButton* m_bpSave;
 		wxBitmapButton* m_bpDiscard;
+		wxListBox* m_listStaff;
+		wxStaticText* m_staticText121;
+		wxTextCtrl* m_textName;
+		wxStaticText* m_staticText122;
+		wxComboBox* m_comboRole;
+		wxStaticText* m_staticText127;
+		wxComboBox* m_comboJudge;
+		wxStaticText* m_staticText125;
+		wxTextCtrl* m_textLogin;
+		wxStaticText* m_staticText126;
+		wxTextCtrl* m_textPass;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
@@ -1437,11 +1458,12 @@ class Staff : public wxDialog
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectWorker( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		Staff( wxWindow* parent, wxWindowID id = ID_STAFF, const wxString& title = _("Staff"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 630,392 ), long style = wxCAPTION|wxCLOSE_BOX );
+		Staff( wxWindow* parent, wxWindowID id = ID_STAFF, const wxString& title = _("Staff"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 844,392 ), long style = wxCAPTION|wxCLOSE_BOX );
 		~Staff();
 	
 };
