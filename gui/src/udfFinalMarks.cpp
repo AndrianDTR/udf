@@ -287,3 +287,15 @@ void udfFinalMarks::OnKeyDown( wxKeyEvent& event )
 		event.Skip();
 	}
 }
+
+void udfFinalMarks::OnScaleChange(wxSpinEvent& event)
+{
+	int scale = m_spinScale->GetValue();
+	m_gridMarks->SetDefaultColSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+	m_gridMarks->SetDefaultRowSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+	wxFont fnt = m_gridMarks->GetDefaultCellFont();
+	fnt.SetPointSize(m_fntSize * scale / 100);
+	m_gridMarks->SetDefaultCellFont(fnt);
+	m_gridMarks->ForceRefresh();
+	udfSettingsBase::Instance()->SetFinalMarksScale(scale);
+}
