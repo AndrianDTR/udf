@@ -23,12 +23,12 @@ udfJudgeMark::udfJudgeMark( wxWindow* parent, unsigned int tourId )
 	int scale = udfSettingsBase::Instance()->GetJudgeMarksScale();
 	m_spinScale->SetValue(scale);
 	m_fntSize = m_gridMarks->GetDefaultCellFont().GetPointSize();
-	
+
 	if(UDF_OK == GetTourCategoryId(tourId, catId))
 		m_catId = catId;
 
 	RefreshGrid();
-	
+
 	m_row = m_col = -1;
 }
 
@@ -64,7 +64,7 @@ void udfJudgeMark::RefreshGrid()
 	{
 		int nCol = 0;
 		int nRow = 0;
-		
+
 		m_gridMarks->ClearGrid();
 		if(m_gridMarks->GetNumberRows())
 			m_gridMarks->DeleteRows(0, m_gridMarks->GetNumberRows());
@@ -88,7 +88,7 @@ void udfJudgeMark::RefreshGrid()
 
 		m_gridMarks->AppendCols(juds.size());
 		m_gridMarks->AppendRows(teams.size());
-		
+
 		wxString jDescr;
 		tUIListIt jud = juds.begin();
 		while(jud != juds.end())
@@ -96,9 +96,9 @@ void udfJudgeMark::RefreshGrid()
 			unsigned int jId = *jud;
 			wxString letter = m_gridMarks->GetColLabelValue(nCol);
 			wxString judge = GetCsJudgeNameById(jId);
-			
-			jDescr += wxString::Format(STR_FORMAT_REPORT_JUDGE_SHORTCUT, letter[0], judge);
-			
+
+			jDescr += STR_FORMAT(STR_FORMAT_REPORT_JUDGE_SHORTCUT, letter[0], judge);
+
 			m_col2id[nCol] = jId;
 			m_id2col[jId] = nCol;
 
@@ -106,14 +106,14 @@ void udfJudgeMark::RefreshGrid()
 			jud++;
 		}
 		m_textJudges->SetValue(jDescr);
-		
+
 		tUIListIt team = teams.begin();
 		while(team != teams.end())
 		{
 			unsigned int tId = *team;
 			unsigned int startNum = 0;
 			GetTeamStartNumber(tId, startNum);
-			m_gridMarks->SetRowLabelValue(nRow, wxString::Format(STR_FORMAT_START_NUMBER, startNum));
+			m_gridMarks->SetRowLabelValue(nRow, STR_FORMAT(STR_FORMAT_START_NUMBER, startNum));
 			m_row2id[nRow] = tId;
 			m_id2row[tId] = nRow;
 
@@ -185,12 +185,12 @@ void udfJudgeMark::OnSearch(wxCommandEvent& event)
 	int nRow = 0;
 	for(nRow = 0; nRow < m_gridMarks->GetNumberRows(); ++nRow)
 	{
-		
+
 		if(!m_gridMarks->GetRowLabelValue(nRow).StartsWith(text))
 			m_gridMarks->HideRow(nRow);
 		else
 			m_gridMarks->ShowRow(nRow);
-		
+
 	}
 	Leave();
 }
@@ -201,10 +201,10 @@ void udfJudgeMark::OnKeyUp( wxKeyEvent& event )
 	{
 		int col = m_gridMarks->GetGridCursorCol();
 		int row = m_gridMarks->GetGridCursorRow();
-		
+
 		if( -1 == row || -1 == col)
 			break;
-		
+
 		switch(event.GetKeyCode())
 		{
 			case 'X':
@@ -217,7 +217,7 @@ void udfJudgeMark::OnKeyUp( wxKeyEvent& event )
 				m_gridMarks->MoveCursorDown(false);
 				break;
 		}
-		
+
 	}while(0);
 }
 

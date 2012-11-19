@@ -11,24 +11,24 @@ udfJudgeCategories::udfJudgeCategories( wxWindow* parent, unsigned int nId )
 , m_nId(nId)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
+
 	m_staticJudge->SetLabel(GetJudgeNameById(m_nId));
-	
+
 	RefreshList();
 }
 
 void udfJudgeCategories::RefreshList()
 {
 	m_checkCategories->Clear();
-	
+
 	CCategoriesTable(m_pCon).GetTable(m_cats);
-	
+
 	CCategoriesTable::tTableIt it = m_cats.begin();
 	while(it != m_cats.end())
 	{
 		CCategoriesTable::tDATA& data = it->second;
-		
-		wxString name = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM, data.shortName, data.name);
+
+		wxString name = STR_FORMAT(STR_FORMAT_CATEGORY_LIST_ITEM, data.shortName, data.name);
 		int nItem = m_checkCategories->Insert(name, m_checkCategories->GetCount(), (void*)&it->first);
 		unsigned int rowId = 0;
 		if(UDF_OK == JudgeHaveCategory(m_nId, it->first, rowId))
@@ -42,16 +42,16 @@ void udfJudgeCategories::RefreshList()
 void udfJudgeCategories::OnSave( wxCommandEvent& event )
 {
 	Enter();
-	
+
 	int item = 0;
 	for(item = 0; item < m_checkCategories->GetCount(); ++item)
 	{
 		bool ok = m_checkCategories->IsChecked(item);
 		unsigned int nId = *(int*)m_checkCategories->GetClientData(item);
 		unsigned int rowId = 0;
-				
+
 		long haveCat = JudgeHaveCategory(m_nId, nId, rowId);
-		
+
 		__info("Item: %d, checked: %d, nId: %d, have: %ld", item, ok, nId, haveCat);
 		if(!ok && UDF_OK == haveCat)
 		{
@@ -67,7 +67,7 @@ void udfJudgeCategories::OnSave( wxCommandEvent& event )
 			CJudgesCategoriesHaveTable(m_pCon).AddRow(data);
 		}
 	}
-	
+
 	EndModal(wxID_OK);
 	Leave();
 }

@@ -57,7 +57,7 @@ wxString GetClubNameById(unsigned int nId)
 			break;
 		}
 
-		res = wxString::Format(STR_FORMAT_CLUB_NAME, club.name, city.Name, country.name);
+		res = STR_FORMAT(STR_FORMAT_CLUB_NAME, club.name, city.Name, country.name);
 	}while(0);
 
 	return res;
@@ -83,7 +83,7 @@ wxString	GetCityNameById(unsigned int nId)
 			break;
 		}
 
-		res = wxString::Format(STR_FORMAT_CITY_NAME, city.Name, country.name);
+		res = STR_FORMAT(STR_FORMAT_CITY_NAME, city.Name, country.name);
 	}while(0);
 
 	return res;
@@ -118,7 +118,7 @@ wxString	GetJudgeNameById(unsigned int nId)
 	{
 		CDbConnection* pCon = CDbManager::Instance()->GetConnection();
 		CJudgesTable::tDATA 	data = {0};
-		
+
 		if(UDF_OK != CJudgesTable(pCon).GetRow(nId, data))
 		{
 			break;
@@ -207,7 +207,7 @@ wxString	GetCategoryNameById(unsigned int nId)
 			break;
 		}
 
-		res = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+		res = STR_FORMAT(STR_FORMAT_CATEGORY_LIST_ITEM
 			, data.shortName
 			, data.name);
 	}while(0);

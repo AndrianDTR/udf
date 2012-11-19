@@ -11,6 +11,8 @@
 //MACRO constant declaration
 #define STR_DEFINITION(x,y)		const wxString x = _( y )
 
+#define STR_FORMAT(format, ...)			wxString::Format(_( format ), __VA_ARGS__)
+
 
 //Constant definitions
 STR_DEFINITION(STR_ERROR, "Error");
@@ -157,6 +159,8 @@ STR_DEFINITION(STR_COMPOSITION, "Composition");
 
 STR_DEFINITION(STR_FORMAT_CATEGORY_LIST_ITEM, "%s - %s");
 
+
+//STR_FORMAT_DEFINITION("%s - %s", ...);
 
 
 

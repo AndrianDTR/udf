@@ -33,7 +33,7 @@ void udfChampionshipCategoriesMngrDlg::OnAddAll( wxCommandEvent& event )
 
 		CChampionshipCategoriesTable::tTableIt itemIt =
 			m_ChampionshipsCategories.insert(std::make_pair(data.id, data)).first;
-		wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+		wxString catName = STR_FORMAT(STR_FORMAT_CATEGORY_LIST_ITEM
 			, cData.shortName
 			, cData.name);
 		m_listSelected->Insert(catName, nPos, (void*)&itemIt->first);
@@ -64,7 +64,7 @@ void udfChampionshipCategoriesMngrDlg::OnAdd( wxCommandEvent& event )
 
 				CChampionshipCategoriesTable::tTableIt itemIt =
 					m_ChampionshipsCategories.insert(std::make_pair(data.id, data)).first;
-				wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+				wxString catName = STR_FORMAT(STR_FORMAT_CATEGORY_LIST_ITEM
 					, cData.shortName
 					, cData.name);
 				m_listSelected->Insert(catName, nPos, (void*)&itemIt->first);
@@ -152,7 +152,7 @@ void udfChampionshipCategoriesMngrDlg::RefreshAllList()
 	{
 		CCategoriesTable::tDATA& data = it->second;
 		int nPos = m_listAll->GetCount();
-		wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+		wxString catName = STR_FORMAT(STR_FORMAT_CATEGORY_LIST_ITEM
 					, data.shortName
 					, data.name);
 		m_listAll->Insert(catName, nPos, (void*)&it->first);
@@ -180,7 +180,7 @@ void udfChampionshipCategoriesMngrDlg::RefreshSelectedList()
 		if(cIt != m_Categories.end())
 		{
 			CCategoriesTable::tDATA& cData = cIt->second;
-			wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+			wxString catName = STR_FORMAT(STR_FORMAT_CATEGORY_LIST_ITEM
 				, cData.shortName
 				, cData.name);
 			m_listSelected->Insert(catName, nPos, (void*)&it->first);

@@ -11,10 +11,10 @@ udfCitiesMngr::udfCitiesMngr( wxWindow* parent )
 , m_pCon(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
+
 	CCitiesTable tableCities(m_pCon);
 	tableCities.GetTable(m_Cities);
-	
+
 	CCitiesTable::tTableIt it = m_Cities.begin();
 	m_listItems->Clear();
 	while(it != m_Cities.end())
@@ -49,13 +49,13 @@ void udfCitiesMngr::OnSearch( wxCommandEvent& event )
 {
 	wxString search = m_textSearch->GetValue().Upper();
 	CCitiesTable::tTableIt item;
-	
+
 	m_listItems->Clear();
 	for(item = m_Cities.begin(); item != m_Cities.end(); item++)
 	{
 		CCitiesTable::tDATA& data = item->second;
 		wxString name(data.Name);
-		
+
 		if(name.Upper().Contains(search))
 		{
 			int pos = m_listItems->GetCount();
@@ -71,15 +71,15 @@ void udfCitiesMngr::OnSelectItem( wxCommandEvent& event )
 		int nItem = m_listItems->GetSelection();
 		int nId = *(int*)m_listItems->GetClientData(nItem);
 		CCitiesTable::tTableIt it = m_Cities.find(nId);
-		
+
 		if(it == m_Cities.end())
 			break;
-		
+
 		CCitiesTable::tDATA& data = it->second;
 		CCountriesTable::tTableIt cIt = m_Countries.find(data.countryId);
 		if(cIt == m_Countries.end())
 			break;
-			
+
 		CCountriesTable::tDATA& country = cIt->second;
 		int nCountry = m_comboCounty->FindString(country.name);
 		m_comboCounty->SetSelection(nCountry);
@@ -90,13 +90,13 @@ void udfCitiesMngr::OnSelectItem( wxCommandEvent& event )
 void udfCitiesMngr::OnAdd( wxCommandEvent& event )
 {
 	int nItem = m_listItems->GetCount();
-		
+
 	CCitiesTable::tDATA data = {0};
 	data.id = -nItem;
 	int nCountry = GetSelectedCountry();
 	data.countryId = *(int*)m_comboCounty->GetClientData(nCountry);
 	data.Name = m_textName->GetValue();
-	
+
 	CCitiesTable::tTableIt it = m_Cities.insert(std::make_pair(data.id, data)).first;
 	m_listItems->Insert(data.Name, nItem, (void*)&it->first);
 	m_listItems->SetSelection(nItem);
@@ -115,18 +115,18 @@ void udfCitiesMngr::OnUpdateCode( wxCommandEvent& event )
 	do
 	{
 		int nItem = m_listItems->GetSelection();
-		
+
 		if(-1 == nItem)
 			break;
-			
+
 		int nId = *(int*)m_listItems->GetClientData(nItem);
 		CCitiesTable::tTableIt it = m_Cities.find(nId);
-		
+
 		if(it == m_Cities.end())
 			break;
-		
+
 		int nCountry = GetSelectedCountry();
-					
+
 		CCitiesTable::tDATA& data = it->second;
 		data.countryId = *(int*)m_comboCounty->GetClientData(nCountry);
 		data.Name = m_textName->GetValue();
@@ -138,11 +138,11 @@ void udfCitiesMngr::OnUpdateCode( wxCommandEvent& event )
 void udfCitiesMngr::OnSave( wxCommandEvent& event )
 {
 	OnUpdateCode(event);
-	
+
 	CCitiesTable table(m_pCon);
 	CCitiesTable::tTableMap stored;
 	table.GetTable(stored);
-		
+
 	CCitiesTable::tTableIt listIt = stored.begin();
 	while(listIt != stored.end())
 	{
@@ -166,7 +166,7 @@ void udfCitiesMngr::OnSave( wxCommandEvent& event )
 		}
 		listIt++;
 	}
-	
+
 	if(m_Cities.size() > 0)
 	{
 		CCitiesTable::tTableIt rLstIt = m_Cities.begin();
@@ -177,7 +177,7 @@ void udfCitiesMngr::OnSave( wxCommandEvent& event )
 			rLstIt++;
 		}
 	}
-	
+
 	EndModal(wxID_OK);
 }
 
@@ -195,22 +195,22 @@ int udfCitiesMngr::GetSelectedCountry()
 		res = m_comboCounty->FindString(value);
 		if(-1 != res)
 			break;
-		
+
 		if(wxNO == wxMessageBox(
-			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_COUNTRY)
+			  STR_FORMAT(STR_NOT_IN_DB_INSERT, STR_COUNTRY)
 			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
 		)
 			break;
-		
+
 		udfCountriesMngr dlg(this);
 		if(wxID_OK != dlg.ShowModal())
 			break;
-		
+
 		RefreshCountries();
 		m_comboCounty->SetValue(value);
 	}
-	
+
 	return res;
 }

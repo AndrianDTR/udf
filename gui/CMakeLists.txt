@@ -49,6 +49,8 @@ set( HEADER_FILES
 	src/udfCategoryInfo.h
 	src/udfTourInfo.h
 	src/udfSettings.h
+	src/udfStaff.h
+	src/udfUserRolesMgr.h
 	src/udfsettingsbase.h
 )
 
@@ -88,6 +90,8 @@ set( SOURCE_FILES
 	src/udfCategoryInfo.cpp
 	src/udfTourInfo.cpp
 	src/udfSettings.cpp
+	src/udfStaff.cpp
+	src/udfUserRolesMgr.cpp
 	src/udfsettingsbase.cpp
 )
 

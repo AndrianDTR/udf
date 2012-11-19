@@ -17,7 +17,7 @@ udfCsInfo::udfCsInfo( wxWindow* parent)
 , m_pTree(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
+
 	RefreshCities();
 	RefreshTypes();
 }
@@ -44,7 +44,7 @@ void udfCsInfo::RefreshCities()
 {
 	CCountriesTable::tTableMap countries;
 	CCountriesTable(m_pCon).GetTable(countries);
-	
+
 	CCitiesTable::tTableMap cities;
 	CCitiesTable(m_pCon).GetTable(cities);
 
@@ -60,7 +60,7 @@ void udfCsInfo::RefreshCities()
 		if(cIt != countries.end())
 		{
 			CCountriesTable::tDATA& cData = cIt->second;
-			wxString city = wxString::Format(STR_FORMAT_CITY_NAME, data.Name, cData.name);
+			wxString city = STR_FORMAT(STR_FORMAT_CITY_NAME, data.Name, cData.name);
 			m_comboCity->Insert(city, nPos, (void*)&it->first);
 		}
 		it++;
@@ -78,7 +78,7 @@ int udfCsInfo::GetSelectedType()
 		if(-1 != res)
 			break;
 		if(wxNO == ShowQuestion(
-			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_CHAMPIONSHIP_TYPE)
+			  STR_FORMAT(STR_NOT_IN_DB_INSERT, STR_CHAMPIONSHIP_TYPE)
 			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
@@ -143,7 +143,7 @@ int udfCsInfo::GetSelectedCity()
 		if(-1 != res)
 			break;
 		if(wxNO == ShowQuestion(
-			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_CITY)
+			  STR_FORMAT(STR_NOT_IN_DB_INSERT, STR_CITY)
 			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
@@ -167,24 +167,24 @@ bool udfCsInfo::Show(bool show)
 	{
 		if(!show)
 			break;
-		
+
 		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
 			break;
-		
+
 		CChampionshipTable::tDATA data = {0};
 		udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
-			
+
 		if(UDF_OK != CChampionshipTable(m_pCon).GetRow(csItem->GetId(), data))
 		{
 			ShowError(STR_ERR_UPD_CHAMPIONSHIP_FAILED);
 			break;
 		}
-				
+
 		m_textChName->SetValue(data.name);
 		m_textAddress->SetValue(data.address);
 		m_textAdditionalInfo->SetValue(data.additionalInfo);
 
-		
+
 		CChampionshipTypeTable::tDATA typeData = {0};
 		if(CChampionshipTypeTable(m_pCon).GetRow(data.type, typeData))
 			break;
@@ -196,9 +196,9 @@ bool udfCsInfo::Show(bool show)
 		m_dateDate->SetValue(wxDateTime(data.date));
 		m_dateRegOpen->SetValue(wxDateTime(data.regOpenDate));
 		m_dateRegClose->SetValue(wxDateTime(data.regCloseDate));
-		
+
 	}while(0);
-	
+
 	return wxPanel::Show(show);
 }
 
@@ -208,12 +208,12 @@ void udfCsInfo::OnSave( wxCommandEvent& event )
 	{
 		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk())
 			break;
-		
+
 		if(!ValidateValues())
 			break;
-		
+
 		CChampionshipTable::tDATA data = {0};
-				
+
 		data.type = *(int*)m_comboType->GetClientData(GetSelectedType());
 		data.city = *(int*)m_comboCity->GetClientData(GetSelectedCity());
 
@@ -228,7 +228,7 @@ void udfCsInfo::OnSave( wxCommandEvent& event )
 		{
 			udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
 			data.id = csItem->GetId();
-				
+
 			if(UDF_OK != CChampionshipTable(m_pCon).UpdateRow(csItem->GetId(), data))
 			{
 				ShowError(STR_ERR_UPD_CHAMPIONSHIP_FAILED);
@@ -239,13 +239,13 @@ void udfCsInfo::OnSave( wxCommandEvent& event )
 		else
 		{
 			data.id = -1;
-				
+
 			if(UDF_OK != CChampionshipTable(m_pCon).AddRow(data))
 			{
 				ShowError(STR_ERR_ADD_CHAMPIONSHIP_FAILED);
 				break;
 			}
-			
+
 			m_pTree->AppendItem(m_parentItem, data.name, -1, -1, new udfTreeItemData(data.id, IT_CS));
 		}
 	}while(0);
@@ -260,15 +260,15 @@ void udfCsInfo::OnRemoveChampionship( wxCommandEvent& event )
 			__info("One of item is not set");
 			break;
 		}
-		
+
 		udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
-		
+
 		if(UDF_OK != CChampionshipTable(m_pCon).DelRow(csItem->GetId()))
 		{
 			ShowError(STR_ERR_DEL_CHAMPIONSHIP_FAILED);
 			break;
 		}
-		
+
 		m_pTree->Delete(m_itemId);
 		m_itemId.Unset();
 		this->Hide();
@@ -290,10 +290,10 @@ void udfCsInfo::OnCategoryMngr( wxCommandEvent& event )
 			__info("Main window not set");
 			break;
 		}
-		
+
 		m_pMainWindow->ShowCsCategoryManager();
 	}while(0);
-	
+
 	event.Skip();
 	Leave();
 }
@@ -308,10 +308,10 @@ void udfCsInfo::OnJudgeMngr( wxCommandEvent& event )
 			__info("Main window not set");
 			break;
 		}
-			
+
 		m_pMainWindow->ShowCsJudgesManager();
 	}while(0);
-	
+
 	event.Skip();
 	Leave();
 }

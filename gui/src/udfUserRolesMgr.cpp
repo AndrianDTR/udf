@@ -1,9 +1,10 @@
 #include "udfUserRolesMgr.h"
 
 udfUserRolesMgr::udfUserRolesMgr( wxWindow* parent )
-:
-UserRolesMgr( parent )
+: UserRolesMgr( parent )
+, m_pCon(NULL)
 {
+	m_pCon = CDbManager::Instance()->GetConnection();
 
 }
 
@@ -24,12 +25,12 @@ void udfUserRolesMgr::OnRemove( wxCommandEvent& event )
 
 void udfUserRolesMgr::OnSave( wxCommandEvent& event )
 {
-// TODO: Implement OnSave
+	EndModal(wxID_OK);
 }
 
 void udfUserRolesMgr::OnDiscard( wxCommandEvent& event )
 {
-// TODO: Implement OnDiscard
+	EndModal(wxID_CANCEL);
 }
 
 void udfUserRolesMgr::OnSelectRole( wxListEvent& event )

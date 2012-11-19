@@ -129,7 +129,7 @@ void udfDancersTeamMngr::RefreshTeamCategories(int teamId)
 		{
 			int nPos = m_listTeamCategories->GetCount();
 			m_listTeamCategories->Insert(
-				wxString::Format(STR_FORMAT_TEAM_CATEGORY_NAME, catName, data.compositionName),
+				STR_FORMAT(STR_FORMAT_TEAM_CATEGORY_NAME, catName, data.compositionName),
 				nPos, (void*)&item->first);
 		}
 	}
@@ -432,7 +432,7 @@ void udfDancersTeamMngr::OnAddDancerTeamCategory( wxCommandEvent& event )
 
 		CChampionshipTeamCategoriesTable::tTableIt item =
 			m_CsTmCats.insert(std::make_pair(data.id, data)).first;
-		m_listTeamCategories->Insert(wxString::Format(STR_FORMAT_TEAM_CATEGORY_NAME, cat, data.compositionName)
+		m_listTeamCategories->Insert(STR_FORMAT(STR_FORMAT_TEAM_CATEGORY_NAME, cat, data.compositionName)
 			, nPos, (void*)&item->first);
 		//*/
 	}while(0);
@@ -536,7 +536,7 @@ int udfDancersTeamMngr::GetSelectedClub()
 		res = m_comboClub->FindString(value);
 		if(-1 == res)
 		{
-			ShowWarning(wxString::Format(STR_NOT_IN_DB, STR_CLUB));
+			ShowWarning(STR_FORMAT(STR_NOT_IN_DB, STR_CLUB));
 			break;
 		}
 	}while(0);
@@ -553,7 +553,7 @@ int udfDancersTeamMngr::GetSelectedCategory()
 		res = m_comboCsCategories->FindString(value);
 		if(-1 == res)
 		{
-			ShowWarning(wxString::Format(STR_NOT_IN_DB, STR_CATEGORY));
+			ShowWarning(STR_FORMAT(STR_NOT_IN_DB, STR_CATEGORY));
 			break;
 		}
 	}while(0);
@@ -570,7 +570,7 @@ int udfDancersTeamMngr::GetSelectedDancer()
 		res = m_comboDancers->FindString(value);
 		if(-1 == res)
 		{
-			ShowWarning(wxString::Format(STR_NOT_IN_DB, STR_DANCER));
+			ShowWarning(STR_FORMAT(STR_NOT_IN_DB, STR_DANCER));
 			break;
 		}
 	}while(0);

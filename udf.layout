@@ -7,10 +7,10 @@
 	<File name="dbmgr/src/db.h" open="0" top="0" tabpos="6">
 		<Cursor position="650" topLine="6" />
 	</File>
-	<File name="dbmgr/src/dbconnection.cpp" open="1" top="1" tabpos="6">
+	<File name="dbmgr/src/dbconnection.cpp" open="0" top="0" tabpos="6">
 		<Cursor position="1087" topLine="49" />
 	</File>
-	<File name="dbmgr/src/dbconnection.h" open="1" top="0" tabpos="8">
+	<File name="dbmgr/src/dbconnection.h" open="0" top="0" tabpos="8">
 		<Cursor position="168" topLine="0" />
 	</File>
 	<File name="dbmgr/src/dbtable.cpp" open="0" top="0" tabpos="2">
@@ -199,13 +199,13 @@
 	<File name="gui/res/button_raiting.xpm" open="0" top="0" tabpos="0">
 		<Cursor position="4083" topLine="117" />
 	</File>
-	<File name="gui/src/cdbmanager.cpp" open="1" top="0" tabpos="5">
+	<File name="gui/src/cdbmanager.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="94" topLine="0" />
 	</File>
-	<File name="gui/src/cdbmanager.h" open="1" top="0" tabpos="4">
+	<File name="gui/src/cdbmanager.h" open="0" top="0" tabpos="4">
 		<Cursor position="96" topLine="0" />
 	</File>
-	<File name="gui/src/main.cpp" open="1" top="0" tabpos="3">
+	<File name="gui/src/main.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="1192" topLine="18" />
 	</File>
 	<File name="gui/src/string_def.h" open="0" top="0" tabpos="0">
@@ -268,7 +268,7 @@
 	<File name="gui/src/udfPaymentHistory.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="815" topLine="0" />
 	</File>
-	<File name="gui/src/udfSettings.cpp" open="1" top="0" tabpos="7">
+	<File name="gui/src/udfSettings.cpp" open="0" top="0" tabpos="7">
 		<Cursor position="1109" topLine="30" />
 	</File>
 	<File name="gui/src/udfSettings.h" open="0" top="0" tabpos="4">
@@ -280,8 +280,8 @@
 	<File name="gui/src/udfStartNumberAssignDlg.h" open="0" top="0" tabpos="0">
 		<Cursor position="578" topLine="8" />
 	</File>
-	<File name="gui/src/udfTourInfo.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="6068" topLine="277" />
+	<File name="gui/src/udfTourInfo.cpp" open="1" top="1" tabpos="0">
+		<Cursor position="1976" topLine="50" />
 	</File>
 	<File name="gui/src/udfTourInfo.h" open="0" top="0" tabpos="1">
 		<Cursor position="329" topLine="25" />
@@ -295,10 +295,10 @@
 	<File name="gui/src/udfuiutils.h" open="0" top="0" tabpos="0">
 		<Cursor position="394" topLine="0" />
 	</File>
-	<File name="skating/src/udfskatingrules.cpp" open="1" top="0" tabpos="1">
+	<File name="skating/src/udfskatingrules.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="11181" topLine="357" />
 	</File>
-	<File name="skating/src/udfskatingrules.h" open="1" top="0" tabpos="2">
+	<File name="skating/src/udfskatingrules.h" open="0" top="0" tabpos="2">
 		<Cursor position="786" topLine="18" />
 	</File>
 </CodeBlocks_layout_file>

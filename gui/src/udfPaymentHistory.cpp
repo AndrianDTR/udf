@@ -9,7 +9,7 @@ udfPaymentHistory::udfPaymentHistory( wxWindow* parent, unsigned long nId, char 
 , m_cType(cType)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
+
 	RefreshHeaders();
 	RefreshList();
 }
@@ -25,7 +25,7 @@ void udfPaymentHistory::RefreshHeaders()
 void udfPaymentHistory::RefreshList()
 {
 	m_listPayments->DeleteAllItems();
-	
+
 	CPaymentHistoryTable table(m_pCon);
 	CPaymentHistoryTable::tDATA filter = {0};
 	filter.personId = m_nPersonId;
@@ -37,7 +37,7 @@ void udfPaymentHistory::RefreshList()
 	while(it != m_payments.end())
 	{
 		AddListItem(it);
-		
+
 		it++;
 	}
 }
@@ -48,7 +48,7 @@ void udfPaymentHistory::OnAdd( wxCommandEvent& event )
 	{
 		CPaymentHistoryTable::tDATA data = {0};
 		int nPos = m_listPayments->GetItemCount();
-		
+
 		udfPayment	dlg(this);
 		if(dlg.ShowModal() == wxID_OK)
 		{
@@ -61,12 +61,12 @@ void udfPaymentHistory::OnAdd( wxCommandEvent& event )
 				data.sum = -1.0;
 			else
 				data.sum = dlg.GetSum();
-				
+
 			if(UDF_OK != CPaymentHistoryTable(m_pCon).AddRow(data))
 				break;
-			
+
 			CPaymentHistoryTable::tTableIt it = m_payments.insert(make_pair(data.id, data)).first;
-			
+
 			AddListItem(it);
 		}
 	}while(0);
@@ -80,13 +80,13 @@ void udfPaymentHistory::OnUpdate( wxCommandEvent& event )
 		if(-1 == nItem)
 			break;
 		unsigned int nId = *(int*)m_listPayments->GetItemData(nItem);
-		
+
 		CPaymentHistoryTable::tTableIt it = m_payments.find(nId);
 		if(it == m_payments.end())
 			break;
-		
+
 		CPaymentHistoryTable::tDATA& data = it->second;
-		
+
 		udfPayment	dlg(this);
 		dlg.SetPayDate(data.payDate);
 		dlg.SetExpDate(data.expDate);
@@ -103,7 +103,7 @@ void udfPaymentHistory::OnUpdate( wxCommandEvent& event )
 				data.sum = -1.0;
 			else
 				data.sum = dlg.GetSum();
-			
+
 			if(UDF_OK != CPaymentHistoryTable(m_pCon).UpdateRow(nId, data))
 				break;
 
@@ -112,16 +112,16 @@ void udfPaymentHistory::OnUpdate( wxCommandEvent& event )
 			info.SetId(nItem);
 			info.SetText(wxDateTime(data.payDate).Format(STR_FORMAT_DATE));
 			m_listPayments->SetItem(info);
-			
+
 			info.SetColumn(nCol++);
 			info.SetText(wxDateTime(data.expDate).Format(STR_FORMAT_DATE));
 			m_listPayments->SetItem(info);
-	
+
 			info.SetColumn(nCol++);
 			if (data.sum == -1.0)
 				info.SetText(STR_FREE);
 			else
-				info.SetText(wxString::Format(STR_FORMAT_SUM, data.sum));
+				info.SetText(STR_FORMAT(STR_FORMAT_SUM, data.sum));
 			m_listPayments->SetItem(info);
 		}
 	}while(0);
@@ -135,10 +135,10 @@ void udfPaymentHistory::OnRemove( wxCommandEvent& event )
 		if(-1 == nItem)
 			break;
 		unsigned int nId = *(int*)m_listPayments->GetItemData(nItem);
-		
+
 		if(UDF_OK != CPaymentHistoryTable(m_pCon).DelRow(nId))
 			break;
-		
+
 		m_payments.erase(nId);
 		m_listPayments->DeleteItem(nItem);
 	}while(0);
@@ -160,7 +160,7 @@ void udfPaymentHistory::AddListItem(CPaymentHistoryTable::tTableIt& it)
 	wxListItem info;
 	CPaymentHistoryTable::tDATA& data = it->second;
 	int nPos = m_listPayments->GetItemCount();
-	
+
 	info.SetId(nPos);
 	info.SetData((void*)&it->first);
 	info.SetText(wxDateTime(data.payDate).Format(STR_FORMAT_DATE));
@@ -175,6 +175,6 @@ void udfPaymentHistory::AddListItem(CPaymentHistoryTable::tTableIt& it)
 	if (data.sum == -1.0)
 		info.SetText(STR_FREE);
 	else
-		info.SetText(wxString::Format(STR_FORMAT_SUM, data.sum));
+		info.SetText(STR_FORMAT(STR_FORMAT_SUM, data.sum));
 	m_listPayments->SetItem(info);
 }

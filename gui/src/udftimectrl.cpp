@@ -18,7 +18,7 @@ udfTimeChangeEvent::udfTimeChangeEvent(wxEventType type, wxWindowID id, const wx
 }
 
 
-udfTimeChangeEvent::udfTimeChangeEvent(const udfTimeChangeEvent& event) 
+udfTimeChangeEvent::udfTimeChangeEvent(const udfTimeChangeEvent& event)
 	: wxNotifyEvent(event)
 {
 	val = event.val;
@@ -29,7 +29,7 @@ wxEvent *udfTimeChangeEvent::Clone()
 	return new udfTimeChangeEvent(*this);
 }
 
-void udfTimeChangeEvent::SetValue(const wxString& value) 
+void udfTimeChangeEvent::SetValue(const wxString& value)
 {
 	val = value;
 }
@@ -67,7 +67,7 @@ void udfTimeTextCtrl::Increment(IncrementType direction)
 	 *        01234567891
 	 *                  0
 	 */
-	 
+
 	if (pos > 8)
 	{
 		if (buffer.IsSameAs(wxT("AM"), FALSE) )
@@ -94,10 +94,10 @@ void udfTimeTextCtrl::Increment(IncrementType direction)
 				value--;
 				break;
 		}
-		
+
 		FixValue(&value);
-	
-		buffer = wxString::Format(wxT("%.2d"), (int) value);
+
+		buffer = STR_FORMAT(wxT("%.2d"), (int) value);
 	}
 }
 
@@ -116,9 +116,9 @@ void udfTimeTextCtrl::OnChar(wxKeyEvent& event)
 	UpdatePosition();
 	SelectPart();
 	UpdateBuffer();
-		
+
 	int keycode = event.GetKeyCode();
-	
+
 	if (keycode >= 48 && keycode <= 57 && pos < 8)
 	{
 		char ch = keycode;
@@ -126,23 +126,23 @@ void udfTimeTextCtrl::OnChar(wxKeyEvent& event)
 
 		long value;
 		temp.Right(2).ToLong(&value);
-		
+
 		if (value < min || value > max)
 		{
 			buffer = wxString(wxT("0") ) + (wchar_t) ch;
 		}
-		else 
+		else
 		{
-			buffer = wxString::Format(wxT("%.2d"), (int) value);
+			buffer = STR_FORMAT(wxT("%.2d"), (int) value);
 		}
 		FlushBuffer();
 	}
-	
+
 	switch (keycode)
 	{
 		case WXK_TAB:
 			FlushBuffer();
-			
+
 			if (!event.ShiftDown() )
 			{
 				pos += 3;
@@ -151,7 +151,7 @@ void udfTimeTextCtrl::OnChar(wxKeyEvent& event)
 			{
 				pos -= 3;
 			}
-			
+
 			#ifndef __WXMAC__
 			if (pos < 0 || pos > 11)
 			{
@@ -164,32 +164,32 @@ void udfTimeTextCtrl::OnChar(wxKeyEvent& event)
 			FlushBuffer();
 
 			pos -= 3;
-			if (pos < 0) 
+			if (pos < 0)
 			{
 				pos = 0;
 			}
 			break;
-			
+
 		case WXK_RIGHT:
 			FlushBuffer();
 
 			pos += 3;
-			if (pos > 11) 
+			if (pos > 11)
 			{
 				pos = 11;
 			}
 			break;
-						
+
 		case WXK_UP:
 			Increment(POSITIVE);
 			FlushBuffer();
 			break;
-			
+
 		case WXK_DOWN:
 			Increment(NEGATIVE);
 			FlushBuffer();
 			break;
-		
+
 		case 65:
 		case 97:
 			if (pos > 8)
@@ -198,7 +198,7 @@ void udfTimeTextCtrl::OnChar(wxKeyEvent& event)
 			}
 			FlushBuffer();
 			break;
-			
+
 		case 80:
 		case 112:
 			if (pos > 8)
@@ -216,14 +216,14 @@ void udfTimeTextCtrl::UpdatePosition()
 	pos = GetInsertionPoint();
 }
 
-void udfTimeTextCtrl::SelectPart() 
+void udfTimeTextCtrl::SelectPart()
 {
-	if (pos <= 2) 
+	if (pos <= 2)
 	{
 		min = 0;
 		max = 12;
 	}
-	
+
 	if (pos > 2 && pos <= 8)
 	{
 		min = 0;
@@ -234,18 +234,18 @@ void udfTimeTextCtrl::SelectPart()
 	{
 		SetSelection(0, 2);
 	}
-	
+
 	if (pos > 2 && pos <= 5)
 	{
 		SetSelection(3, 5);
 	}
-	
+
 	if (pos > 5 && pos <= 8)
 	{
 		SetSelection(6, 8);
 	}
-	
-	if (pos > 8) 
+
+	if (pos > 8)
 	{
 		SetSelection(9, 11);
 	}
@@ -262,7 +262,7 @@ void udfTimeTextCtrl::FlushBuffer(bool clear)
 	long start, end;
 	GetSelection(&start, &end);
 	Replace(start, end, buffer);
-	
+
 	// trigger a MyTimeChangeEvent
 	udfTimeChangeEvent timechanged(udfEVT_TIMECHANGE, tc->GetId() );
 	timechanged.SetEventObject(tc);
@@ -272,11 +272,11 @@ void udfTimeTextCtrl::FlushBuffer(bool clear)
 
 void udfTimeTextCtrl::FixValue(long *value)
 {
-	if (*value < min) 
+	if (*value < min)
 	{
 		*value = max;
 	}
-	
+
 	if (*value > max)
 	{
 		*value = min;
@@ -285,14 +285,14 @@ void udfTimeTextCtrl::FixValue(long *value)
 
 BEGIN_EVENT_TABLE(udfTimeTextCtrl, wxTextCtrl)
 	EVT_CHAR(udfTimeTextCtrl::OnChar)
-END_EVENT_TABLE()	
+END_EVENT_TABLE()
 
-// MySpinButton 
+// MySpinButton
 IMPLEMENT_DYNAMIC_CLASS(udfTimeSpinButton, wxSpinButton)
 
 udfTimeSpinButton::udfTimeSpinButton()
 	: wxSpinButton()
-{	
+{
 }
 
 udfTimeSpinButton::udfTimeSpinButton(udfTimeCtrl *timectrl)
@@ -324,22 +324,22 @@ END_EVENT_TABLE()
 // MyTimeCtrl
 IMPLEMENT_DYNAMIC_CLASS(udfTimeCtrl, wxControl)
 
-udfTimeCtrl::udfTimeCtrl(wxWindow *parent, wxWindowID id, 
+udfTimeCtrl::udfTimeCtrl(wxWindow *parent, wxWindowID id,
 	const wxString& value, const wxPoint& pos, const wxSize& size)
 	: wxControl(parent, id, pos, size)
 {
 	tc = new udfTimeTextCtrl(this, value);
 	sb = new udfTimeSpinButton(this);
-	
+
 	tc->SetWindowStyle(wxTE_PROCESS_TAB);
 	tc->SetMaxLength(11);
-	
+
 	wxSize bestsize = DoGetBestSize();
 	DoMoveWindow(pos.x, pos.y, bestsize.x, bestsize.y);
-	
+
 	// prevent the time picker from intercepting events
 	wxControl::Enable(FALSE);
-	
+
 	Show(TRUE);
 }
 
@@ -352,20 +352,20 @@ udfTimeCtrl::~udfTimeCtrl()
 bool udfTimeCtrl::Show(bool show)
 {
 	wxControl::Show(show);
-	
+
 	tc->Show(show);
 	sb->Show(show);
-	
+
 	return TRUE;
 }
 
 bool udfTimeCtrl::Enable(bool enable)
 {
 	wxControl::Enable(enable);
-	
+
 	tc->Enable(enable);
 	sb->Enable(enable);
-	
+
 	return TRUE;
 }
 
@@ -378,10 +378,10 @@ wxSize udfTimeCtrl::DoGetBestSize() const
 void udfTimeCtrl::DoMoveWindow(int x, int y, int width, int height)
 {
 	wxControl::DoMoveWindow(x, y, width, height);
-	
+
 	wxSize buttonsize = sb->GetBestSize();
 	int textwidth = width - (buttonsize.x + SPACING);
-	
+
 	tc->SetSize(x, y, textwidth, height);
 	sb->SetSize(x + textwidth + SPACING, y, -1, height);
 }

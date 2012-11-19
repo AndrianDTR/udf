@@ -45,13 +45,15 @@ protected:
 	// Handlers for MainFrameBase events.
 	void OnCloseFrame( wxCloseEvent& event );
 	void OnExitClick( wxCommandEvent& event );
-	
+
 	void OnMenuCategoryManage( wxCommandEvent& event );
 	void OnMenuClubManage( wxCommandEvent& event );
 	void OnMenuJudgeManage( wxCommandEvent& event );
 	void OnMenuChampionshipTypes( wxCommandEvent& event );
 	void OnMenuOptions( wxCommandEvent& event );
-	
+	void OnMenuStaff( wxCommandEvent& event );
+	void OnMenuStaffRoles( wxCommandEvent& event );
+
 	void OnAddChampionsip( wxCommandEvent& event );
 	void OnStartNumberAssign( wxCommandEvent& event );
 	void OnJudgeMngr( wxCommandEvent& event );
@@ -69,14 +71,14 @@ protected:
 
 	void OnSearch( wxCommandEvent& event );
 	void OnCsSelect(wxTreeEvent& event);
-	
+
 	void OnCsTourReport( wxCommandEvent& event );
-	
+
 	void CsSelected();
 	void BlockSelected();
 	void CatSelected();
 	void TourSelected();
-	
+
 
 private:
 	CDbConnection*						m_pCon;
@@ -86,18 +88,18 @@ private:
 	CChampionshipTypeTable::tTableMap 	m_ChampionshipTypes;
 
 	wxTreeItemId						m_root;
-	
+
 	udfCsInfo*							m_pageCsInfo;
 	udfBlockInfo*						m_pageBlockInfo;
 	udfCategoryInfo*					m_pageCatInfo;
 	udfTourInfo*						m_pageTourInfo;
 
 protected:
-	
+
 	wxDateTime		GetChDateById(unsigned int nId);
 
 	wxTreeItemId	GetItemByType(eITEM_TYPE type);
-	
+
 	bool			IsFinalTourAdded();
 
 public:
@@ -111,22 +113,22 @@ public:
 	int				ShowAgeCatsMngrDlg();
 	int				ShowCsCategoryManager();
 	int				ShowCsJudgesManager();
-	
+
 	wxTreeItemId	GetSelectedCs();
 	wxTreeItemId	GetSelectedCsBlock();
 	wxTreeItemId	GetSelectedBlockCategory();
 	wxTreeItemId	GetSelectedCatTour();
-	
+
 	void			RefreshList();
 	void			RefreshCs(unsigned int id, wxTreeItemId parent);
 	void			RefreshCsBlock(unsigned int id, wxTreeItemId parent);
 	void			RefreshCategory(unsigned int id, wxTreeItemId parent);
-	
+
 	void 			OnAddBlock( wxCommandEvent& event );
 	void 			OnAddTour( wxCommandEvent& event );
-	
+
 	void			ShowStartNumberAssign();
-	
+
 };
 
 #endif // __udfMainFrameBase__

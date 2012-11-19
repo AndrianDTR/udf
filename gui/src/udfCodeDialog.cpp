@@ -1,6 +1,8 @@
 #include "udfCodeDialog.h"
 #include "udfcommon.h"
 
+#include "string_def.h"
+
 udfCodeDialog::udfCodeDialog( wxWindow* parent )
 :
 CodeDialog( parent )
@@ -12,7 +14,7 @@ void udfCodeDialog::OnAdd( wxCommandEvent& event )
 {
 	wxString code = m_textCode->GetValue();
 	wxString name = m_textName->GetValue();
-	
+
 	if(!name.empty() && !code.empty())
 	{
 		unsigned int nNextId = -m_listItems->GetCount();
@@ -20,9 +22,9 @@ void udfCodeDialog::OnAdd( wxCommandEvent& event )
 		data.nId = nNextId;
 		data.name = name;
 		code.ToLong(&data.code);
-			
+
 		m_listMap.insert(std::make_pair(nNextId, data));
-		
+
 		RefreshList();
 	}
 }
@@ -31,9 +33,9 @@ void udfCodeDialog::OnRemove( wxCommandEvent& event )
 {
 	int nItem = m_listItems->GetSelection();
 	int* pnId = (int*)m_listItems->GetClientData(nItem);
-	
+
 	m_listMap.erase(*pnId);
-	
+
 	RefreshList();
 }
 
@@ -42,10 +44,10 @@ void udfCodeDialog::OnUpdateCode(wxCommandEvent& event)
 	unsigned int nItem = m_listItems->GetSelection();
 	wxString code = m_textCode->GetValue();
 	wxString name = m_textName->GetValue();
-	
+
 	int* pnId = (int*)m_listItems->GetClientData(nItem);
 	tListIt it = m_listMap.find(*pnId);
-	
+
 	if(it != m_listMap.end() && !name.empty() && !code.empty())
 	{
 		tDATA& data = it->second;
@@ -72,7 +74,7 @@ void udfCodeDialog::AddListItem(unsigned int nId, wxString name, long code)
 	data.code = code;
 	data.nId = nId;
 	data.name = name;
-	
+
 	m_listMap.insert(std::make_pair(data.nId, data));
 }
 
@@ -87,12 +89,12 @@ void udfCodeDialog::OnSelectItem(wxCommandEvent& event)
 	int* pnId = (int*)m_listItems->GetClientData(nItem);
 
 	m_bpRemove->Disable();
-	
+
 	tListIt it = m_listMap.find(*pnId);
 	if(it != m_listMap.end())
 	{
 		tDATA& data = it->second;
-		wxString code = wxString::Format(wxT("%ld"), data.code);
+		wxString code = STR_FORMAT("%ld", data.code);
 		m_textCode->SetValue(code);
 		m_textName->SetValue(data.name);
 		m_bpRemove->Enable();
@@ -108,7 +110,7 @@ void udfCodeDialog::OnSearch(wxCommandEvent& event)
 {
 	wxString search = m_textSearch->GetValue().Upper();
 	tListIt		item;
-	
+
 	m_listItems->Clear();
 	for(item = m_listMap.begin(); item != m_listMap.end(); item++)
 	{
@@ -126,7 +128,7 @@ void udfCodeDialog::OnSearch(wxCommandEvent& event)
 void udfCodeDialog::RefreshList()
 {
 	tListIt		item;
-	
+
 	m_listItems->Clear();
 	for(item = m_listMap.begin(); item != m_listMap.end(); item++)
 	{

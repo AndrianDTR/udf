@@ -20,7 +20,7 @@ udfTourInfo::udfTourInfo( wxWindow* parent )
 , m_pTree(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
+
 	int scale = udfSettingsBase::Instance()->GetTourInfoScale();
 	m_spinScale->SetValue(scale);
 	m_fntSize = m_gridSuccess->GetDefaultCellFont().GetPointSize();
@@ -63,7 +63,7 @@ void udfTourInfo::CreateNewTour()
 
 		if(0 == teams.size())
 		{
-			ShowWarning("There are no any team that pass in previous tour.");
+			ShowWarning("There are no any teams that pass in previous tour.");
 			break;
 		}
 
@@ -72,7 +72,7 @@ void udfTourInfo::CreateNewTour()
 		GetTourTypeByDancersCount(teams.size(), m_tourType);
 		CTourTypesTable(m_pCon).GetRow(m_tourType, typeData);
 		m_staticType->SetLabel(typeData.name);
-		m_staticMinMax->SetLabel(wxString::Format("%d - %d", typeData.min, typeData.max));
+		m_staticMinMax->SetLabel(STR_FORMAT("%d - %d", typeData.min, typeData.max));
 
 		m_gridSuccess->ClearGrid();
 		if(m_gridSuccess->GetNumberRows())
@@ -137,7 +137,7 @@ void udfTourInfo::CreateNewTour()
 
 		CChampionshipToursTable::tDATA tourInfo = {0};
 		CChampionshipToursTable(m_pCon).GetRow(nTourId, tourInfo);
-		m_textLimit->SetValue(wxString::Format(_("%d"), tourInfo.limit));
+		m_textLimit->SetValue(STR_FORMAT("%d", tourInfo.limit));
 
 		tTourMarksList		marksList;
 		GetTourMarks(nTourId, juds, marksList, m_tourType == 1);
@@ -148,13 +148,13 @@ void udfTourInfo::CreateNewTour()
 		{
 			tTourMarks& data = *row;
 
-			m_gridSuccess->SetRowLabelValue(nRow, wxString::Format(STR_FORMAT_START_NUMBER, data.startNum));
+			m_gridSuccess->SetRowLabelValue(nRow, STR_FORMAT(STR_FORMAT_START_NUMBER, data.startNum));
 			m_row2id[nRow] = data.id;
 			m_id2row[data.id] = nRow;
 
 			if(m_tourType > 1)
 			{
-				m_gridSuccess->SetCellValue(wxString::Format(_("%d"), data.sum), nRow, 1);
+				m_gridSuccess->SetCellValue(STR_FORMAT("%d", data.sum), nRow, 1);
 			}
 
 			nCol = extraCols;
@@ -165,7 +165,7 @@ void udfTourInfo::CreateNewTour()
 					m_gridSuccess->SetCellValue(_("X"), nRow, nCol);
 					if(m_tourType == 1)
 					{
-						m_gridSuccess->SetCellValue(wxString::Format(_("%d"), *c), nRow, nCol);
+						m_gridSuccess->SetCellValue(STR_FORMAT("%d", *c), nRow, nCol);
 					}
 				}
 			}
@@ -263,9 +263,9 @@ void udfTourInfo::CalculatePlaces()
 			wxString rating;
 			float rate = place->second / 10.0f;
 			if(place->second % 10)
-				rating = wxString::Format(_("%.1f"), rate);
+				rating = STR_FORMAT("%.1f", rate);
 			else
-				rating = wxString::Format(_("%.0f"), rate);
+				rating = STR_FORMAT("%.0f", rate);
 			m_gridSuccess->SetCellValue(place->first, 0, rating);
 		}
 
@@ -398,7 +398,7 @@ void udfTourInfo::OnUpdate(wxCommandEvent& event)
 
 		CTourTypesTable::tDATA typeData = {0};
 		CTourTypesTable(m_pCon).GetRow(tourInfo.typeId, typeData);
-		wxString name = wxString::Format(STR_FORMAT_TOUR_NAME, typeData.name, tourInfo.limit);
+		wxString name = STR_FORMAT(STR_FORMAT_TOUR_NAME, typeData.name, tourInfo.limit);
 		if(m_itemId.IsOk())
 		{
 			m_pTree->SetItemText(m_itemId, name);

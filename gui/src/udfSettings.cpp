@@ -11,7 +11,7 @@ udfSettings::udfSettings( wxWindow* parent )
 , m_pCon(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
+
 	Refresh();
 }
 
@@ -29,7 +29,7 @@ void udfSettings::OnSave( wxCommandEvent& event )
 	pConf->SetUser(m_textUser->GetValue());
 	pConf->SetPass(m_textPass->GetValue());
 	pConf->WriteConfig();
-	
+
 	CDbManager::Instance()->Release();
 	CDbManager::Instance();
 
@@ -120,32 +120,32 @@ void udfSettings::Refresh()
 		CTourTypesTable table(m_pCon);
 
 		table.GetRow(1, tourData);
-		m_textMaxFinal->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMinFinal->SetValue(wxString::Format(_("%d"), tourData.min));
-		
+		m_textMaxFinal->SetValue(STR_FORMAT(_("%d"), tourData.max));
+		m_textMinFinal->SetValue(STR_FORMAT(_("%d"), tourData.min));
+
 		table.GetRow(2, tourData);
-		m_textMax12->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin12->SetValue(wxString::Format(_("%d"), tourData.min));
+		m_textMax12->SetValue(STR_FORMAT(_("%d"), tourData.max));
+		m_textMin12->SetValue(STR_FORMAT(_("%d"), tourData.min));
 
 		table.GetRow(3, tourData);
-		m_textMax14->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin14->SetValue(wxString::Format(_("%d"), tourData.min));
+		m_textMax14->SetValue(STR_FORMAT(_("%d"), tourData.max));
+		m_textMin14->SetValue(STR_FORMAT(_("%d"), tourData.min));
 
 		table.GetRow(4, tourData);
-		m_textMax18->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin18->SetValue(wxString::Format(_("%d"), tourData.min));
+		m_textMax18->SetValue(STR_FORMAT(_("%d"), tourData.max));
+		m_textMin18->SetValue(STR_FORMAT(_("%d"), tourData.min));
 
 		table.GetRow(5, tourData);
-		m_textMax116->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin116->SetValue(wxString::Format(_("%d"), tourData.min));
+		m_textMax116->SetValue(STR_FORMAT(_("%d"), tourData.max));
+		m_textMin116->SetValue(STR_FORMAT(_("%d"), tourData.min));
 
 		table.GetRow(6, tourData);
-		m_textMax132->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin132->SetValue(wxString::Format(_("%d"), tourData.min));
+		m_textMax132->SetValue(STR_FORMAT(_("%d"), tourData.max));
+		m_textMin132->SetValue(STR_FORMAT(_("%d"), tourData.min));
 
 		table.GetRow(7, tourData);
-		m_textMax164->SetValue(wxString::Format(_("%d"), tourData.max));
-		m_textMin164->SetValue(wxString::Format(_("%d"), tourData.min));
+		m_textMax164->SetValue(STR_FORMAT(_("%d"), tourData.max));
+		m_textMin164->SetValue(STR_FORMAT(_("%d"), tourData.min));
 	}while(0);
 }
 
@@ -162,7 +162,7 @@ void udfSettings::OnTest(wxCommandEvent& event)
 
 	CTourTypesTable::tTableMap data;
 	long res = CTourTypesTable(pCon).GetTable(data);
-	
+
 	if(UDF_OK == res && data.size())
 	{
 		m_textTest->SetValue(_("Connected successfully."));

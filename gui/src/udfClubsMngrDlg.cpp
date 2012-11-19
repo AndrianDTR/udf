@@ -19,7 +19,7 @@ udfClubsMngrDlg::udfClubsMngrDlg( wxWindow* parent )
 , m_pCon(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
+
 	RefreshList();
 	RefreshCities();
 }
@@ -27,23 +27,23 @@ udfClubsMngrDlg::udfClubsMngrDlg( wxWindow* parent )
 void udfClubsMngrDlg::RefreshCities()
 {
 	RefreshCountries();
-	
+
 	CCitiesTable table(m_pCon);
 	table.GetTable(m_Cities);
-	
+
 	m_comboCity->Clear();
-	
+
 	CCitiesTable::tTableIt it = m_Cities.begin();
 	while(it != m_Cities.end())
 	{
 		CCitiesTable::tDATA& data = it->second;
 		int nPos = m_comboCity->GetCount();
-		
+
 		CCountriesTable::tTableIt cIt = m_Countries.find(data.countryId);
 		if(cIt != m_Countries.end())
 		{
 			CCountriesTable::tDATA& cData = cIt->second;
-			wxString city = wxString::Format(STR_FORMAT_CITY_NAME, data.Name, cData.name);
+			wxString city = STR_FORMAT(STR_FORMAT_CITY_NAME, data.Name, cData.name);
 			m_comboCity->Insert(city, nPos, (void*)&it->first);
 		}
 		it++;
@@ -61,7 +61,7 @@ void udfClubsMngrDlg::RefreshList()
 {
 	CClubsTable table(m_pCon);
 	table.GetTable(m_Clubs);
-	
+
 	m_listClubs->Clear();
 	CClubsTable::tTableIt it = m_Clubs.begin();
 	while(it != m_Clubs.end())
@@ -69,7 +69,7 @@ void udfClubsMngrDlg::RefreshList()
 		CClubsTable::tDATA& data = it->second;
 		int nPos = m_listClubs->GetCount();
 		m_listClubs->Insert(data.name, nPos, (void*)&it->first);
-		
+
 		it++;
 	}
 }
@@ -81,7 +81,7 @@ bool udfClubsMngrDlg::ValidateData()
 	{
 		if(-1 == GetSelectedCity())
 			break;
-		
+
 		res = true;
 	}while(0);
 	return res;
@@ -91,12 +91,12 @@ void udfClubsMngrDlg::OnSearch(wxCommandEvent& event)
 {
 	wxString search = m_textSearch->GetValue().Upper();
 	CClubsTable::tTableIt item;
-	
+
 	m_listClubs->Clear();
 	for(item = m_Clubs.begin(); item != m_Clubs.end(); item++)
 	{
 		CClubsTable::tDATA& data = item->second;
-		
+
 		if(wxString(data.name).Upper().Contains(search)
 		|| wxString(data.contacts).Upper().Contains(search)
 		|| wxString(data.additionalInfo).Upper().Contains(search)
@@ -115,20 +115,20 @@ void udfClubsMngrDlg::OnAddClub( wxCommandEvent& event )
 	do
 	{
 		int nItem = m_listClubs->GetCount();
-		
+
 		if(! ValidateData())
 			break;
-		
+
 		CClubsTable::tDATA data = {0};
 		data.id = -nItem;
 		data.city = *(int*)m_comboCity->GetClientData(GetSelectedCity());
-		
+
 		data.name = m_textName->GetValue();
 		data.additionalInfo = m_textInfo->GetValue();
 		data.contacts = m_textAddress->GetValue();
 		data.email = m_textEmail->GetValue();
 		data.web = m_textWeb->GetValue();
-		
+
 		CClubsTable::tTableIt it = m_Clubs.insert(std::make_pair(data.id, data)).first;
 		m_listClubs->Insert(data.name, nItem, (void*)&it->first);
 		m_listClubs->SetSelection(nItem);
@@ -142,9 +142,9 @@ void udfClubsMngrDlg::OnRemoveClub( wxCommandEvent& event )
 		int nItem = m_listClubs->GetSelection();
 		if(nItem == -1)
 			break;
-		
+
 		int nId = *(int*)m_listClubs->GetClientData(nItem);
-				
+
 		m_Clubs.erase(nId);
 		m_listClubs->Delete(nItem);
 	}while(0);
@@ -157,10 +157,10 @@ void udfClubsMngrDlg::OnUpdate(wxCommandEvent& event)
 		CClubsTable::tDATA* pData = NULL;
 		if(! GetSelectedItemData(pData))
 			break;
-		
+
 		if(! ValidateData())
 			break;
-		
+
 		int nItem = m_listClubs->FindString(pData->name, true);
 		pData->city = *(int*)m_comboCity->GetClientData(GetSelectedCity());
 		pData->name = m_textName->GetValue();
@@ -168,9 +168,9 @@ void udfClubsMngrDlg::OnUpdate(wxCommandEvent& event)
 		pData->contacts = m_textAddress->GetValue();
 		pData->email = m_textEmail->GetValue();
 		pData->web = m_textWeb->GetValue();
-		
+
 		m_listClubs->SetString(nItem, pData->name);
-		
+
 	}while(0);
 }
 
@@ -179,7 +179,7 @@ void udfClubsMngrDlg::OnSave( wxCommandEvent& event )
 	CClubsTable table(m_pCon);
 	CClubsTable::tTableMap storedCats;
 	table.GetTable(storedCats);
-		
+
 	CClubsTable::tTableIt listIt = storedCats.begin();
 	while(listIt != storedCats.end())
 	{
@@ -212,22 +212,22 @@ void udfClubsMngrDlg::OnSave( wxCommandEvent& event )
 				data.web = cData.web;
 				data.additionalInfo = cData.additionalInfo;
 				data.contacts = cData.contacts;
-				
+
 				data.login = cData.login;
 				data.pass = cData.pass;
-				
+
 				data.director = cData.director;
 				data.director_bd = cData.director_bd;
 				data.director_phone = cData.director_phone;
 				data.director_email = cData.director_email;
-			
+
 				table.UpdateRow(listIt->first, data);
 			}
 			m_Clubs.erase(rLstIt);
 		}
 		listIt++;
 	}
-	
+
 	if(m_Clubs.size() > 0)
 	{
 		CClubsTable::tTableIt rLstIt = m_Clubs.begin();
@@ -238,7 +238,7 @@ void udfClubsMngrDlg::OnSave( wxCommandEvent& event )
 			rLstIt++;
 		}
 	}
-	
+
 	//EndModal(wxID_OK);
 }
 
@@ -254,13 +254,13 @@ void udfClubsMngrDlg::OnSelectClub(wxCommandEvent& event)
 		CClubsTable::tDATA* pData = NULL;
 		if(!GetSelectedItemData(pData))
 			break;
-		
+
 		m_textName->SetValue(pData->name);
 		m_textAddress->SetValue(pData->contacts);
 		m_textInfo->SetValue(pData->additionalInfo);
 		m_textEmail->SetValue(pData->email);
 		m_textWeb->SetValue(pData->web);
-		
+
 		CCitiesTable::tTableIt cityIt = m_Cities.find(pData->city);
 		if(cityIt == m_Cities.end())
 			break;
@@ -269,7 +269,7 @@ void udfClubsMngrDlg::OnSelectClub(wxCommandEvent& event)
 		if(countryIt == m_Countries.end())
 			break;
 		CCountriesTable::tDATA& countryData = countryIt->second;
-		wxString city = wxString::Format(STR_FORMAT_CITY_NAME, cityData.Name, countryData.name);
+		wxString city = STR_FORMAT(STR_FORMAT_CITY_NAME, cityData.Name, countryData.name);
 		m_comboCity->SetValue(city);
 	}while(0);
 }
@@ -284,21 +284,21 @@ int udfClubsMngrDlg::GetSelectedCity()
 		if(-1 != res)
 			break;
 		if(wxNO == wxMessageBox(
-			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_CITY)
+			  STR_FORMAT(STR_NOT_IN_DB_INSERT, STR_CITY)
 			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
 		)
 			break;
-		
+
 		udfCitiesMngr dlg(this);
 		if(wxID_OK != dlg.ShowModal())
 			break;
-		
+
 		RefreshCountries();
 		m_comboCity->SetValue(value);
 	}
-	
+
 	return res;
 }
 
@@ -309,17 +309,17 @@ bool udfClubsMngrDlg::GetSelectedItemData(CClubsTable::tDATA*& pData)
 		int nItem = m_listClubs->GetSelection();
 		if(nItem == -1)
 			break;
-		
+
 		int nId = *(int*)m_listClubs->GetClientData(nItem);
-		
+
 		CClubsTable::tTableIt it = m_Clubs.find(nId);
 		if(it == m_Clubs.end())
 			break;
-			
+
 		pData = &it->second;
 		res = true;
 	}while(0);
-	
+
 	return res;
 }
 
@@ -330,13 +330,13 @@ void udfClubsMngrDlg::OnAccountInfo( wxCommandEvent& event )
 		CClubsTable::tDATA* pData = NULL;
 		if(!GetSelectedItemData(pData))
 			break;
-		
+
 		udfAccountInfo dlg(this);
 		dlg.SetLogin(pData->login);
 		dlg.SetPass(pData->pass);
 		if(wxID_OK != dlg.ShowModal())
 			break;
-			
+
 		pData->login = dlg.GetLogin();
 		pData->pass = dlg.GetPass();
 	}while(0);
@@ -349,7 +349,7 @@ void udfClubsMngrDlg::OnDirectorInfo( wxCommandEvent& event )
 		CClubsTable::tDATA* pData = NULL;
 		if(!GetSelectedItemData(pData))
 			break;
-		
+
 		udfDirectorInfo dlg(this);
 		dlg.SetName(pData->director);
 		dlg.SetBd(pData->director_bd);
@@ -357,7 +357,7 @@ void udfClubsMngrDlg::OnDirectorInfo( wxCommandEvent& event )
 		dlg.SetPhone(pData->director_phone);
 		if(wxID_OK != dlg.ShowModal())
 			break;
-		
+
 		pData->director = dlg.GetName();
 		pData->director_bd = dlg.GetBd();
 		pData->director_email = dlg.GetEmail();
@@ -372,11 +372,11 @@ void udfClubsMngrDlg::OnTrainersMngr( wxCommandEvent& event )
 		CClubsTable::tDATA* pData = NULL;
 		if(!GetSelectedItemData(pData))
 			break;
-		
+
 		udfTrainersMngrDlg dlg(this, pData->id);
 		if(wxID_OK != dlg.ShowModal())
 			break;
-			
+
 	}while(0);
 }
 
@@ -387,11 +387,11 @@ void udfClubsMngrDlg::OnDancersMngr( wxCommandEvent& event )
 		CClubsTable::tDATA* pData = NULL;
 		if(!GetSelectedItemData(pData))
 			break;
-		
+
 		udfDancersMngrDlg dlg(this, pData->id);
 		if(wxID_OK != dlg.ShowModal())
 			break;
-			
+
 	}while(0);
 }
 
@@ -402,7 +402,7 @@ void udfClubsMngrDlg::OnPayment(wxCommandEvent& event)
 		CClubsTable::tDATA* pData = NULL;
 		if(!GetSelectedItemData(pData))
 			break;
-		
+
 		udfPaymentHistory(this, pData->id, udfPT_CLUB).ShowModal();
 	}while(0);
 }

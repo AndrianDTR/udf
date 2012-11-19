@@ -21,6 +21,9 @@
 #include "udfCategoryInfo.h"
 #include "udfTourInfo.h"
 
+#include "udfStaff.h"
+#include "udfUserRolesMgr.h"
+
 #include "db.h"
 
 #include "wx/aboutdlg.h"
@@ -67,7 +70,7 @@ udfMainFrameBase::udfMainFrameBase( wxWindow* parent )
 
 udfMainFrameBase::~udfMainFrameBase()
 {
-	
+
 }
 
 void udfMainFrameBase::OnCloseFrame( wxCloseEvent& event )
@@ -139,7 +142,7 @@ void udfMainFrameBase::RefreshList()
 
 		int nTeamsCount = 0;
 		GetTeamsCountForChampionship(it->first, nTeamsCount);
-		wxString csName = wxString::Format(_("%s (%d)"), data.name, nTeamsCount);
+		wxString csName = STR_FORMAT(_("%s (%d)"), data.name, nTeamsCount);
 		wxTreeItemId csItem = m_treeCs->AppendItem(m_root, csName, -1, -1, new udfTreeItemData(it->first, IT_CS));
 
 		RefreshCs(it->first, csItem);
@@ -163,7 +166,7 @@ void udfMainFrameBase::RefreshCs(unsigned int id, wxTreeItemId parent)
 	{
 		CCsBlocksTable::tDATA& data = it->second;
 
-		wxString name = wxString::Format(STR_FORMAT_BLOCK_NAME, data.name, time2str(data.startTime));
+		wxString name = STR_FORMAT(STR_FORMAT_BLOCK_NAME, data.name, time2str(data.startTime));
 		wxTreeItemId csBlock = m_treeCs->AppendItem(parent, name, -1, -1, new udfTreeItemData(it->first, IT_BLOCK));
 
 		RefreshCsBlock(it->first, csBlock);
@@ -187,7 +190,7 @@ void udfMainFrameBase::RefreshCsBlock(unsigned int id, wxTreeItemId parent)
 
 		tUIList	regTeams;
 		GetTeamsInCategory(id, regTeams);
-		wxString catName = wxString::Format(STR_FORMAT_CS_NAME, GetCsCategoryNameById(id), regTeams.size());
+		wxString catName = STR_FORMAT(STR_FORMAT_CS_NAME, GetCsCategoryNameById(id), regTeams.size());
 		wxTreeItemId csCat = m_treeCs->AppendItem(parent, catName, -1, -1, new udfTreeItemData(id, IT_CAT));
 
 		RefreshCategory(id, csCat);
@@ -213,7 +216,7 @@ void udfMainFrameBase::RefreshCategory(unsigned int id, wxTreeItemId parent)
 		CTourTypesTable::tDATA typeData = {0};
 		CTourTypesTable(m_pCon).GetRow(data.typeId, typeData);
 
-		wxString tourName = wxString::Format(STR_FORMAT_TOUR_NAME, typeData.name, data.limit);
+		wxString tourName = STR_FORMAT(STR_FORMAT_TOUR_NAME, typeData.name, data.limit);
 		m_treeCs->AppendItem(parent, tourName, -1, -1, new udfTreeItemData(itTour->first, IT_TOUR));
 
 		itTour++;
@@ -268,21 +271,21 @@ void udfMainFrameBase::OnSearch(wxCommandEvent& event)
 
 	wxTreeItemIdValue cookie;
 	wxTreeItemId it = m_treeCs->GetFirstChild(m_root, cookie);
-	
+
 	while(it.IsOk())
 	{
 		wxString name = m_treeCs->GetItemText(it);
-		
+
 		if(name.Upper().Contains(search))
 		{
 			__msg("Found %s contains %s", name.Upper().ToStdString().c_str(), search.ToStdString().c_str());
-			
+
 			m_treeCs->SetFocusedItem(it);
 			m_treeCs->Expand(it);
 			m_treeCs->EnsureVisible(it);
 			break;
 		}
-		
+
 		it = m_treeCs->GetNextSibling(it);
 	}
 }
@@ -312,7 +315,7 @@ wxDateTime udfMainFrameBase::GetChDateById(unsigned int nId)
 	info.SetName(wxT("Championship calculator."));
 
 	info.SetVersion(
-		wxString::Format("%d.%d.%d", UDF_VERSION_MAJOR, UDF_VERSION_MINOR, UDF_VERSION_PATCH)
+		STR_FORMAT("%d.%d.%d", UDF_VERSION_MAJOR, UDF_VERSION_MINOR, UDF_VERSION_PATCH)
 		);
 
 	info.SetDescription(wxT("Calculate and print dance championship result."));
@@ -650,6 +653,18 @@ void udfMainFrameBase::OnMenuOptions(wxCommandEvent& event)
 	dlg.ShowModal();
 }
 
+void udfMainFrameBase::OnMenuStaff( wxCommandEvent& event )
+{
+	udfStaff dlg(this);
+	dlg.ShowModal();
+}
+
+void udfMainFrameBase::OnMenuStaffRoles( wxCommandEvent& event )
+{
+	udfUserRolesMgr dlg(this);
+	dlg.ShowModal();
+}
+
 /************************************************************************/
 int udfMainFrameBase::ShowCsCategoryManager()
 {
@@ -853,10 +868,10 @@ void udfMainFrameBase::ShowStartNumberAssign()
 	do
 	{
 		wxTreeItemId csItem = GetSelectedCs();
-		
+
 		if(!csItem.IsOk())
 			break;
-		
+
 		udfTreeItemData *cs = (udfTreeItemData *)m_treeCs->GetItemData(csItem);
 		udfStartNumberAssignDlg(this, cs->GetId()).ShowModal();
 	}while(0);

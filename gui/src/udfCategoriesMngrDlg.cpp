@@ -30,7 +30,7 @@ void udfCategoriesMngrDlg::RefreshData()
 
 		int nCount = m_listCategories->GetCount();
 
-		wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+		wxString catName = STR_FORMAT(STR_FORMAT_CATEGORY_LIST_ITEM
 			, data.shortName
 			, data.name);
 		m_listCategories->Insert(catName, nCount, (void*)&it->first);
@@ -108,7 +108,7 @@ void udfCategoriesMngrDlg::OnAdd( wxCommandEvent& event )
 
 	CCategoriesTable::tTableIt it = m_Categories.insert(std::make_pair(data.id, data)).first;
 	m_listCategories->Insert(
-		wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+		STR_FORMAT(STR_FORMAT_CATEGORY_LIST_ITEM
 			, data.shortName
 			, data.name)
 		, nItem
@@ -224,7 +224,7 @@ void udfCategoriesMngrDlg::OnCategorySearch(wxCommandEvent& event)
 		if(name.Upper().Contains(search) || sname.Upper().Contains(search))
 		{
 			int pos = m_listCategories->GetCount();
-			wxString catName = wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+			wxString catName = STR_FORMAT(STR_FORMAT_CATEGORY_LIST_ITEM
 				, data.shortName
 				, data.name);
 			m_listCategories->Insert(catName, pos, (void*)&item->first);
@@ -252,7 +252,7 @@ void udfCategoriesMngrDlg::OnUpdate(wxCommandEvent& event)
 		data.name = m_textName->GetValue();
 		data.shortName = m_textShortName->GetValue();
 		m_listCategories->SetString(nItem
-			, wxString::Format(STR_FORMAT_CATEGORY_LIST_ITEM
+			, STR_FORMAT(STR_FORMAT_CATEGORY_LIST_ITEM
 				, data.shortName
 				, data.name)
 			);
@@ -280,7 +280,7 @@ int udfCategoriesMngrDlg::GetSelectedAgeCat()
 			break;
 
 		if(wxNO == wxMessageBox(
-			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_AGE_CATEGORY)
+			  STR_FORMAT(STR_NOT_IN_DB_INSERT, STR_AGE_CATEGORY)
 			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
@@ -309,7 +309,7 @@ int udfCategoriesMngrDlg::GetSelectedDanceType()
 			break;
 
 		if(wxNO == wxMessageBox(
-			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_DANCE_TYPE)
+			  STR_FORMAT(STR_NOT_IN_DB_INSERT, STR_DANCE_TYPE)
 			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
@@ -338,7 +338,7 @@ int udfCategoriesMngrDlg::GetSelectedLigue()
 			break;
 
 		if(wxNO == wxMessageBox(
-			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_LIGUE)
+			  STR_FORMAT(STR_NOT_IN_DB_INSERT, STR_LIGUE)
 			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
@@ -400,7 +400,7 @@ wxString udfCategoriesMngrDlg::GetShortName(int nAgeId, int nLigueId, int nDance
 	int nLigue = GetLigueCodeById(nLigueId);
 	int nDance = GetDanceCodeById(nDanceId);
 
-	return wxString::Format(STR_FORMAT_CAT_SNAME, nAge, nLigue, nDance);
+	return STR_FORMAT(STR_FORMAT_CAT_SNAME, nAge, nLigue, nDance);
 }
 
 wxString udfCategoriesMngrDlg::GetName(int nAgeId, int nLigueId, int nDanceId)
@@ -409,5 +409,5 @@ wxString udfCategoriesMngrDlg::GetName(int nAgeId, int nLigueId, int nDanceId)
 	string ligue = GetLigueNameById(nLigueId);
 	string dance = GetDanceNameById(nDanceId);
 
-	return wxString::Format(STR_FORMAT_CAT_NAME, age, ligue, dance);
+	return STR_FORMAT(STR_FORMAT_CAT_NAME, age, ligue, dance);
 }

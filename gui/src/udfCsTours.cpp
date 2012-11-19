@@ -1,6 +1,7 @@
 #include "udfCsTours.h"
 
 #include "udfuiutils.h"
+#include "string_def.h"
 
 udfCsTours::udfCsTours( wxWindow* parent, unsigned int type, int limit)
 : CsTours( parent )
@@ -18,7 +19,7 @@ udfCsTours::udfCsTours( wxWindow* parent, unsigned int type, int limit)
 			m_comboType->SetSelection(0);
 	}
 
-	m_textLimit->SetValue(wxString::Format(_("%d"), limit));
+	m_textLimit->SetValue(STR_FORMAT("%d", limit));
 }
 
 void udfCsTours::RefreshTypes()

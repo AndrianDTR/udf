@@ -1,8 +1,14 @@
 #include "udfStaff.h"
 
 udfStaff::udfStaff( wxWindow* parent )
-:
-Staff( parent )
+: Staff( parent )
+, m_pCon(NULL)
+{
+	m_pCon = CDbManager::Instance()->GetConnection();
+
+}
+
+void udfStaff::OnSelectWorker( wxCommandEvent& event )
 {
 
 }
@@ -24,10 +30,10 @@ void udfStaff::OnRemove( wxCommandEvent& event )
 
 void udfStaff::OnSave( wxCommandEvent& event )
 {
-// TODO: Implement OnSave
+	EndModal(wxID_OK);
 }
 
 void udfStaff::OnDiscard( wxCommandEvent& event )
 {
-// TODO: Implement OnDiscard
+	EndModal(wxID_CANCEL);
 }

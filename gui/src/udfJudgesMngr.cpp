@@ -12,7 +12,7 @@ udfJudgesMngr::udfJudgesMngr( wxWindow* parent )
 , m_pCon(NULL)
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
-	
+
 	RefreshList();
 	RefreshCities();
 }
@@ -20,23 +20,23 @@ udfJudgesMngr::udfJudgesMngr( wxWindow* parent )
 void udfJudgesMngr::RefreshCities()
 {
 	RefreshCountries();
-	
+
 	CCitiesTable table(m_pCon);
 	table.GetTable(m_Cities);
-	
+
 	m_comboCity->Clear();
-	
+
 	CCitiesTable::tTableIt it = m_Cities.begin();
 	while(it != m_Cities.end())
 	{
 		CCitiesTable::tDATA& data = it->second;
 		int nPos = m_comboCity->GetCount();
-		
+
 		CCountriesTable::tTableIt cIt = m_Countries.find(data.countryId);
 		if(cIt != m_Countries.end())
 		{
 			CCountriesTable::tDATA& cData = cIt->second;
-			wxString city = wxString::Format(STR_FORMAT_CITY_NAME, data.Name, cData.name);
+			wxString city = STR_FORMAT(STR_FORMAT_CITY_NAME, data.Name, cData.name);
 			m_comboCity->Insert(city, nPos, (void*)&it->first);
 		}
 		it++;
@@ -53,7 +53,7 @@ void udfJudgesMngr::RefreshCountries()
 void udfJudgesMngr::RefreshList()
 {
 	CJudgesTable(m_pCon).GetTable(m_Judges);
-	
+
 	m_listJudges->Clear();
 	CJudgesTable::tTableIt it = m_Judges.begin();
 	while(it != m_Judges.end())
@@ -61,7 +61,7 @@ void udfJudgesMngr::RefreshList()
 		CJudgesTable::tDATA& data = it->second;
 		int nPos = m_listJudges->GetCount();
 		m_listJudges->Insert(data.name, nPos, (void*)&it->first);
-		
+
 		it++;
 	}
 }
@@ -70,12 +70,12 @@ void udfJudgesMngr::OnSearch( wxCommandEvent& event )
 {
 	wxString search = m_textSearch->GetValue().Upper();
 	CJudgesTable::tTableIt item;
-	
+
 	m_listJudges->Clear();
 	for(item = m_Judges.begin(); item != m_Judges.end(); item++)
 	{
 		CJudgesTable::tDATA& data = item->second;
-		
+
 		if(wxString(data.name).Upper().Contains(search)
 		|| wxString(data.additionalInfo).Upper().Contains(search)
 		|| wxString(data.email).Upper().Contains(search)
@@ -95,13 +95,13 @@ void udfJudgesMngr::OnSelectJudge( wxCommandEvent& event )
 		CJudgesTable::tDATA* pData = NULL;
 		if(!GetSelectedItemData(pData))
 			break;
-		
+
 		m_textName->SetValue(pData->name);
 		m_textAttestation->SetValue(pData->attestationInfo);
 		m_textInfo->SetValue(pData->additionalInfo);
 		m_textEmail->SetValue(pData->email);
 		m_textPhone->SetValue(pData->phone);
-		
+
 		CCitiesTable::tTableIt cityIt = m_Cities.find(pData->cityId);
 		if(cityIt == m_Cities.end())
 			break;
@@ -110,9 +110,9 @@ void udfJudgesMngr::OnSelectJudge( wxCommandEvent& event )
 		if(countryIt == m_Countries.end())
 			break;
 		CCountriesTable::tDATA& countryData = countryIt->second;
-		wxString city = wxString::Format(STR_FORMAT_CITY_NAME, cityData.Name, countryData.name);
+		wxString city = STR_FORMAT(STR_FORMAT_CITY_NAME, cityData.Name, countryData.name);
 		m_comboCity->SetValue(city);
-		
+
 		m_checkPracticer->SetValue(pData->practicer == udfYES);
 	}while(0);
 }
@@ -122,21 +122,21 @@ void udfJudgesMngr::OnAddJudge( wxCommandEvent& event )
 	do
 	{
 		int nItem = m_listJudges->GetCount();
-		
+
 		if(! ValidateData())
 			break;
-		
+
 		CJudgesTable::tDATA data = {0};
 		data.id = -nItem;
 		data.cityId = *(int*)m_comboCity->GetClientData(GetSelectedCity());
-		
+
 		data.name = m_textName->GetValue();
 		data.additionalInfo = m_textInfo->GetValue();
 		data.attestationInfo = m_textAttestation->GetValue();
 		data.email = m_textEmail->GetValue();
 		data.phone = m_textPhone->GetValue();
 		data.practicer = m_checkPracticer->GetValue() ? udfYES : udfNO;
-		
+
 		CJudgesTable::tTableIt it = m_Judges.insert(std::make_pair(data.id, data)).first;
 		m_listJudges->Insert(data.name, nItem, (void*)&it->first);
 		m_listJudges->SetSelection(nItem);
@@ -150,9 +150,9 @@ void udfJudgesMngr::OnRemoveJudge( wxCommandEvent& event )
 		int nItem = m_listJudges->GetSelection();
 		if(nItem == -1)
 			break;
-		
+
 		int nId = *(int*)m_listJudges->GetClientData(nItem);
-				
+
 		m_Judges.erase(nId);
 		m_listJudges->Delete(nItem);
 	}while(0);
@@ -165,10 +165,10 @@ void udfJudgesMngr::OnUpdate(wxCommandEvent& event)
 		CJudgesTable::tDATA* pData = NULL;
 		if(! GetSelectedItemData(pData))
 			break;
-		
+
 		if(! ValidateData())
 			break;
-		
+
 		int nItem = m_listJudges->FindString(pData->name, true);
 		pData->cityId = *(int*)m_comboCity->GetClientData(GetSelectedCity());
 		pData->name = m_textName->GetValue();
@@ -177,9 +177,9 @@ void udfJudgesMngr::OnUpdate(wxCommandEvent& event)
 		pData->email = m_textEmail->GetValue();
 		pData->phone = m_textPhone->GetValue();
 		pData->practicer = m_checkPracticer->GetValue() ? udfYES : udfNO;
-		
+
 		m_listJudges->SetString(nItem, pData->name);
-		
+
 	}while(0);
 }
 
@@ -188,7 +188,7 @@ void udfJudgesMngr::OnSave( wxCommandEvent& event )
 	CJudgesTable table(m_pCon);
 	CJudgesTable::tTableMap stored;
 	table.GetTable(stored);
-		
+
 	CJudgesTable::tTableIt listIt = stored.begin();
 	while(listIt != stored.end())
 	{
@@ -220,7 +220,7 @@ void udfJudgesMngr::OnSave( wxCommandEvent& event )
 				data.additionalInfo = cData.additionalInfo;
 				data.attestationInfo = cData.attestationInfo;
 				data.practicer = cData.practicer;
-				
+
 				if( UDF_OK != table.UpdateRow(listIt->first, data))
 				{
 					ShowWarning(STR_ERR_DEL_JUDGE_FAILED);
@@ -230,7 +230,7 @@ void udfJudgesMngr::OnSave( wxCommandEvent& event )
 		}
 		listIt++;
 	}
-	
+
 	if(m_Judges.size() > 0)
 	{
 		CJudgesTable::tTableIt rLstIt = m_Judges.begin();
@@ -244,7 +244,7 @@ void udfJudgesMngr::OnSave( wxCommandEvent& event )
 			rLstIt++;
 		}
 	}
-	
+
 	EndModal(wxID_OK);
 }
 
@@ -263,21 +263,21 @@ int udfJudgesMngr::GetSelectedCity()
 		if(-1 != res)
 			break;
 		if(wxNO == ShowQuestion(
-			  wxString::Format(STR_NOT_IN_DB_INSERT, STR_CITY)
+			  STR_FORMAT(STR_NOT_IN_DB_INSERT, STR_CITY)
 			, STR_INCORRECT_VALUE
 			, wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION
 			, this)
 		)
 			break;
-		
+
 		udfCitiesMngr dlg(this);
 		if(wxID_OK != dlg.ShowModal())
 			break;
-		
+
 		RefreshCountries();
 		m_comboCity->SetValue(value);
 	}
-	
+
 	return res;
 }
 
@@ -288,7 +288,7 @@ bool udfJudgesMngr::ValidateData()
 	{
 		if(-1 == GetSelectedCity())
 			break;
-		
+
 		res = true;
 	}while(0);
 	return res;
@@ -301,17 +301,17 @@ bool udfJudgesMngr::GetSelectedItemData(CJudgesTable::tDATA*& pData)
 		int nItem = m_listJudges->GetSelection();
 		if(nItem == -1)
 			break;
-		
+
 		int nId = *(int*)m_listJudges->GetClientData(nItem);
-		
+
 		CJudgesTable::tTableIt it = m_Judges.find(nId);
 		if(it == m_Judges.end())
 			break;
-			
+
 		pData = &it->second;
 		res = true;
 	}while(0);
-	
+
 	return res;
 }
 
@@ -322,9 +322,9 @@ void udfJudgesMngr::OnPayment(wxCommandEvent& event)
 		CJudgesTable::tDATA* pData = NULL;
 		if(!GetSelectedItemData(pData))
 			break;
-		
+
 		udfPaymentHistory(this, pData->id, udfPT_JUDGE).ShowModal();
-	}while(0);	
+	}while(0);
 }
 
 void udfJudgesMngr::OnCategories(wxCommandEvent& event)
@@ -334,7 +334,7 @@ void udfJudgesMngr::OnCategories(wxCommandEvent& event)
 		CJudgesTable::tDATA* pData = NULL;
 		if(!GetSelectedItemData(pData))
 			break;
-		
+
 		udfJudgeCategories(this, pData->id).ShowModal();
 	}while(0);
 }
