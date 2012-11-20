@@ -242,7 +242,7 @@ DancersTeamMngr::~DancersTeamMngr()
 	
 }
 
-ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+ChampionshipCategoriesMngr::ChampionshipCategoriesMngr( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
@@ -318,10 +318,60 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_bpAddAll->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnAddAll ), NULL, this );
-	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnAdd ), NULL, this );
-	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnRemove ), NULL, this );
-	m_bpRemoveAll->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnRemoveAll ), NULL, this );
+	m_bpAddAll->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnAddAll ), NULL, this );
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnAdd ), NULL, this );
+	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnRemove ), NULL, this );
+	m_bpRemoveAll->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnRemoveAll ), NULL, this );
+	m_bpButton31->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnSave ), NULL, this );
+	m_bpButton32->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnDiscard ), NULL, this );
+}
+
+ChampionshipCategoriesMngr::~ChampionshipCategoriesMngr()
+{
+	// Disconnect Events
+	m_bpAddAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnAddAll ), NULL, this );
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnAdd ), NULL, this );
+	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnRemove ), NULL, this );
+	m_bpRemoveAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnRemoveAll ), NULL, this );
+	m_bpButton31->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnSave ), NULL, this );
+	m_bpButton32->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngr::OnDiscard ), NULL, this );
+	
+}
+
+ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxBoxSizer* bSizer7;
+	bSizer7 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* m_bSizer;
+	m_bSizer = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_treeCategories = new wxTreeCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE|wxTR_FULL_ROW_HIGHLIGHT|wxTR_HAS_BUTTONS|wxTR_HIDE_ROOT );
+	m_bSizer->Add( m_treeCategories, 1, wxALL|wxEXPAND, 5 );
+	
+	bSizer7->Add( m_bSizer, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer34;
+	bSizer34 = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_bpButton31 = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpButton31->SetDefault(); 
+	bSizer34->Add( m_bpButton31, 0, wxALL, 5 );
+	
+	m_bpButton32 = new wxBitmapButton( this, wxID_CANCEL, wxBitmap( button_cancel_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	bSizer34->Add( m_bpButton32, 0, wxALL, 5 );
+	
+	bSizer7->Add( bSizer34, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	this->SetSizer( bSizer7 );
+	this->Layout();
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_treeCategories->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( ChampionshipCategoriesMngrDlg::OnSelectItem ), NULL, this );
 	m_bpButton31->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnSave ), NULL, this );
 	m_bpButton32->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnDiscard ), NULL, this );
 }
@@ -329,10 +379,7 @@ ChampionshipCategoriesMngrDlg::ChampionshipCategoriesMngrDlg( wxWindow* parent, 
 ChampionshipCategoriesMngrDlg::~ChampionshipCategoriesMngrDlg()
 {
 	// Disconnect Events
-	m_bpAddAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnAddAll ), NULL, this );
-	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnAdd ), NULL, this );
-	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnRemove ), NULL, this );
-	m_bpRemoveAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnRemoveAll ), NULL, this );
+	m_treeCategories->Disconnect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( ChampionshipCategoriesMngrDlg::OnSelectItem ), NULL, this );
 	m_bpButton31->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnSave ), NULL, this );
 	m_bpButton32->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ChampionshipCategoriesMngrDlg::OnDiscard ), NULL, this );
 	
@@ -803,6 +850,10 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer5->Add( m_textSearch, 1, wxALL|wxEXPAND, 5 );
 	
 	m_bpAdd = new wxBitmapButton( m_panel1, wxID_CHAMPIONSIP_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpAdd->SetToolTip( _("Add new championship") );
+	
+	m_bpAdd->SetToolTip( _("Add new championship") );
+	
 	bSizer5->Add( m_bpAdd, 0, wxALL, 5 );
 	
 	sbSizer9->Add( bSizer5, 0, wxALIGN_RIGHT|wxEXPAND, 5 );
@@ -2128,12 +2179,12 @@ JudgeMark::JudgeMark( wxWindow* parent, wxWindowID id, const wxString& title, co
 	
 	// Columns
 	m_gridMarks->EnableDragColMove( false );
-	m_gridMarks->EnableDragColSize( true );
+	m_gridMarks->EnableDragColSize( false );
 	m_gridMarks->SetColLabelSize( 25 );
 	m_gridMarks->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
 	// Rows
-	m_gridMarks->EnableDragRowSize( true );
+	m_gridMarks->EnableDragRowSize( false );
 	m_gridMarks->SetRowLabelSize( 80 );
 	m_gridMarks->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
@@ -2228,13 +2279,13 @@ FinalMarks::FinalMarks( wxWindow* parent, wxWindowID id, const wxString& title, 
 	// Columns
 	m_gridMarks->SetColSize( 0, 60 );
 	m_gridMarks->EnableDragColMove( false );
-	m_gridMarks->EnableDragColSize( true );
+	m_gridMarks->EnableDragColSize( false );
 	m_gridMarks->SetColLabelSize( 25 );
 	m_gridMarks->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
 	// Rows
 	m_gridMarks->SetRowSize( 0, 60 );
-	m_gridMarks->EnableDragRowSize( true );
+	m_gridMarks->EnableDragRowSize( false );
 	m_gridMarks->SetRowLabelSize( 80 );
 	m_gridMarks->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
@@ -3205,6 +3256,10 @@ CsInfo::CsInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSiz
 	bSizer7 = new wxBoxSizer( wxHORIZONTAL );
 	
 	m_bpRemove = new wxBitmapButton( this, wxID_CHAMPIONSIP_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpRemove->SetToolTip( _("Remove current championship") );
+	
+	m_bpRemove->SetToolTip( _("Remove current championship") );
+	
 	bSizer7->Add( m_bpRemove, 0, wxALL, 5 );
 	
 	m_bpSave = new wxBitmapButton( this, wxID_CHAMPIONSHIP_SAVE, wxBitmap( button_save_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
@@ -3272,8 +3327,16 @@ CsInfo::CsInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSiz
 	m_staticText7->Wrap( -1 );
 	fgSizer1->Add( m_staticText7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
+	wxBoxSizer* bSizer126;
+	bSizer126 = new wxBoxSizer( wxHORIZONTAL );
+	
 	m_comboCity = new wxComboBox( this, ID_CITY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0, NULL, 0 ); 
-	fgSizer1->Add( m_comboCity, 0, wxALL|wxEXPAND, 5 );
+	bSizer126->Add( m_comboCity, 1, wxALL|wxEXPAND, 5 );
+	
+	m_button8 = new wxButton( this, wxID_ANY, _("+"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer126->Add( m_button8, 0, wxALL, 5 );
+	
+	fgSizer1->Add( bSizer126, 1, wxEXPAND, 5 );
 	
 	m_staticText8 = new wxStaticText( this, wxID_ANY, _("Adsress"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText8->Wrap( -1 );
@@ -3356,6 +3419,13 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	
 	m_spinScale = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 100 );
 	bSizer126->Add( m_spinScale, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	
+	m_bpAdd = new wxBitmapButton( this, ID_ADD, wxBitmap( button_add_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+	m_bpAdd->SetToolTip( _("Add another block") );
+	
+	m_bpAdd->SetToolTip( _("Add another block") );
+	
+	bSizer126->Add( m_bpAdd, 0, wxALL, 5 );
 	
 	m_bpRemove = new wxBitmapButton( this, ID_REMOVE, wxBitmap( button_delete_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer126->Add( m_bpRemove, 0, wxALL, 5 );
@@ -3445,7 +3515,7 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	
 	// Grid
 	m_gridJudgesCats->CreateGrid( 10, 10 );
-	m_gridJudgesCats->EnableEditing( true );
+	m_gridJudgesCats->EnableEditing( false );
 	m_gridJudgesCats->EnableGridLines( true );
 	m_gridJudgesCats->EnableDragGridSize( false );
 	m_gridJudgesCats->SetMargins( 0, 0 );
@@ -3453,7 +3523,7 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	// Columns
 	m_gridJudgesCats->AutoSizeColumns();
 	m_gridJudgesCats->EnableDragColMove( false );
-	m_gridJudgesCats->EnableDragColSize( true );
+	m_gridJudgesCats->EnableDragColSize( false );
 	m_gridJudgesCats->SetColLabelSize( 25 );
 	m_gridJudgesCats->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
@@ -3476,6 +3546,7 @@ BlockInfo::BlockInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	
 	// Connect Events
 	m_spinScale->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( BlockInfo::OnScaleChange ), NULL, this );
+	m_bpAdd->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnAdd ), NULL, this );
 	m_bpRemove->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnRemove ), NULL, this );
 	m_bpUpdate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnUpdateBlock ), NULL, this );
 	m_bpCsCategories->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnBlockCategories ), NULL, this );
@@ -3491,6 +3562,7 @@ BlockInfo::~BlockInfo()
 {
 	// Disconnect Events
 	m_spinScale->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( BlockInfo::OnScaleChange ), NULL, this );
+	m_bpAdd->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnAdd ), NULL, this );
 	m_bpRemove->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnRemove ), NULL, this );
 	m_bpUpdate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnUpdateBlock ), NULL, this );
 	m_bpCsCategories->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BlockInfo::OnBlockCategories ), NULL, this );
@@ -3629,12 +3701,12 @@ TourInfo::TourInfo( wxWindow* parent, wxWindowID id, const wxPoint& pos, const w
 	// Columns
 	m_gridSuccess->SetColSize( 0, 25 );
 	m_gridSuccess->EnableDragColMove( false );
-	m_gridSuccess->EnableDragColSize( true );
+	m_gridSuccess->EnableDragColSize( false );
 	m_gridSuccess->SetColLabelSize( 150 );
 	m_gridSuccess->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_TOP );
 	
 	// Rows
-	m_gridSuccess->EnableDragRowSize( true );
+	m_gridSuccess->EnableDragRowSize( false );
 	m_gridSuccess->SetRowLabelSize( 60 );
 	m_gridSuccess->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	

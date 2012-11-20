@@ -27,8 +27,8 @@
 #include <wx/button.h>
 #include <wx/combobox.h>
 #include <wx/dialog.h>
-#include <wx/menu.h>
 #include <wx/treectrl.h>
+#include <wx/menu.h>
 #include <wx/panel.h>
 #include <wx/notebook.h>
 #include <wx/splitter.h>
@@ -113,9 +113,9 @@ class DancersTeamMngr : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class ChampionshipCategoriesMngrDlg
+/// Class ChampionshipCategoriesMngr
 ///////////////////////////////////////////////////////////////////////////////
-class ChampionshipCategoriesMngrDlg : public wxDialog 
+class ChampionshipCategoriesMngr : public wxDialog 
 {
 	private:
 	
@@ -146,6 +146,31 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemoveAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		ChampionshipCategoriesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 798,517 ), long style = wxCAPTION|wxCLOSE_BOX|wxSYSTEM_MENU );
+		~ChampionshipCategoriesMngr();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class ChampionshipCategoriesMngrDlg
+///////////////////////////////////////////////////////////////////////////////
+class ChampionshipCategoriesMngrDlg : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxTreeCtrl* m_treeCategories;
+		wxBitmapButton* m_bpButton31;
+		wxBitmapButton* m_bpButton32;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnSelectItem( wxTreeEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		
@@ -1517,6 +1542,7 @@ class CsInfo : public wxPanel
 		wxDatePickerCtrl* m_dateDate;
 		wxStaticText* m_staticText7;
 		wxComboBox* m_comboCity;
+		wxButton* m_button8;
 		wxStaticText* m_staticText8;
 		wxTextCtrl* m_textAddress;
 		wxStaticText* m_staticText12;
@@ -1557,6 +1583,7 @@ class BlockInfo : public wxPanel
 		enum
 		{
 			ID_BLOCKINFO = 1000,
+			ID_ADD,
 			ID_REMOVE,
 			ID_M_BPUPDATE,
 			ID_M_BPCSCATEGORIES,
@@ -1570,6 +1597,7 @@ class BlockInfo : public wxPanel
 		
 		wxStaticText* m_staticText120;
 		wxSpinCtrl* m_spinScale;
+		wxBitmapButton* m_bpAdd;
 		wxBitmapButton* m_bpRemove;
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpCsCategories;
@@ -1590,6 +1618,7 @@ class BlockInfo : public wxPanel
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnScaleChange( wxSpinEvent& event ) { event.Skip(); }
+		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdateBlock( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnBlockCategories( wxCommandEvent& event ) { event.Skip(); }

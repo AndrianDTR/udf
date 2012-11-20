@@ -33,7 +33,7 @@ bool MainApp::OnInit()
 	SetVendorName(wxT("andrian yablonskyy"));
     SetAppName(wxT("udf"));
 	
-	setlocale(LC_ALL, "C");
+	setlocale(LC_ALL, "Ukraine");
 	try
 	{
 		CDbManager* pDbMgr = NULL;

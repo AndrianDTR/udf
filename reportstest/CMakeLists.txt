@@ -54,7 +54,6 @@ link_directories ( ${UDF_BINARY_DIR}/lib )
 # Add module link flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -L${UDF_BINARY_DIR}/lib") 
 
-
 ################################
 ## Add WxWidgets libs
 ################################

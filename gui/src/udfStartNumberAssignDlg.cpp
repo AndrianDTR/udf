@@ -94,6 +94,12 @@ void udfStartNumberAssignDlg::OnAssign( wxCommandEvent& event )
 		unsigned long startNum = 1;
 		m_textNumber->GetValue().ToULong((unsigned long*)&startNum);
 
+		if(startNum < 999)
+		{
+			__msg("Start number < 999.");
+			break;
+		}
+		
 		int nPos = m_listTeams->GetSelection();
 		if(-1 == nPos)
 		{
@@ -142,7 +148,7 @@ void udfStartNumberAssignDlg::OnDiscard( wxCommandEvent& event )
 
 void udfStartNumberAssignDlg::OnAllAssignIncrease(wxCommandEvent& event)
 {
-	unsigned int nStartNum = 1;
+	unsigned int nStartNum = 999;
 	CChampionshipTeamsTable::tTableIt it = m_CsTeams.begin();
 	while(it != m_CsTeams.end())
 	{
@@ -158,7 +164,7 @@ void udfStartNumberAssignDlg::OnAllAssignIncrease(wxCommandEvent& event)
 
 void udfStartNumberAssignDlg::OnAllAssignRandom(wxCommandEvent& event)
 {
-	unsigned int nStartNum = 1;
+	unsigned int nStartNum = 999;
 	CChampionshipTeamsTable::tTableIt it = m_CsTeams.begin();
 	while(it != m_CsTeams.end())
 	{
@@ -166,8 +172,8 @@ void udfStartNumberAssignDlg::OnAllAssignRandom(wxCommandEvent& event)
 
 		do
 		{
-			nStartNum = rand()%9999;
-		}while(m_StNumMap.end() != m_StNumMap.find(nStartNum));
+			nStartNum = rand() % 9999;
+		}while(nStartNum < 999 || m_StNumMap.end() != m_StNumMap.find(nStartNum));
 
 		data.startNumber = nStartNum;
 
@@ -177,22 +183,22 @@ void udfStartNumberAssignDlg::OnAllAssignRandom(wxCommandEvent& event)
 
 void udfStartNumberAssignDlg::OnFindNext(wxCommandEvent& event)
 {
-	unsigned int startNum = 0;
+	unsigned int startNum = 999;
 	m_textNumber->GetValue().ToULong((unsigned long*)&startNum);
 	do
 	{
 		startNum++;
-	}while(m_StNumMap.end() != m_StNumMap.find(startNum));
+	}while(startNum < 999 || m_StNumMap.end() != m_StNumMap.find(startNum));
 	m_textNumber->SetValue(STR_FORMAT(STR_FORMAT_START_NUMBER, startNum));
 }
 
 void udfStartNumberAssignDlg::OnFindRandom(wxCommandEvent& event)
 {
-	unsigned int nStartNum = 1;
+	unsigned int nStartNum = 999;
 	do
 	{
-		nStartNum = rand()%9999;
-	}while(m_StNumMap.end() != m_StNumMap.find(nStartNum));
+		nStartNum = rand()  %9999;
+	}while(nStartNum < 999 || m_StNumMap.end() != m_StNumMap.find(nStartNum));
 
 	m_textNumber->SetValue(STR_FORMAT(STR_FORMAT_START_NUMBER, nStartNum));
 }

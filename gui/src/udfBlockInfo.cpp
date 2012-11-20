@@ -294,6 +294,9 @@ void udfBlockInfo::CreateNewBlock()
 		int scale = m_spinScale->GetValue();
 		m_gridJudgesCats->SetDefaultColSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
 		m_gridJudgesCats->SetDefaultRowSize(GRID_CELL_SIZE_DEFAULT * scale / 100);
+		wxFont fnt = m_gridJudgesCats->GetDefaultCellFont();
+		fnt.SetPointSize(m_fntSize * scale / 100);
+		m_gridJudgesCats->SetDefaultCellFont(fnt);
 		m_gridJudgesCats->SetDefaultCellAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
 		m_gridJudgesCats->SetRowLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTRE);
 

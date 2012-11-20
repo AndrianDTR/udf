@@ -34,7 +34,8 @@ void udfCsInfo::RefreshTypes()
 	{
 		CChampionshipTypeTable::tDATA& data = it->second;
 		int nPos = m_comboType->GetCount();
-		m_comboType->Insert(data.name, nPos, (void*)&it->first);
+		int id = m_comboType->Insert(data.name, nPos);
+		m_type2id[id] = it->first;
 		it++;
 	}
 	m_comboType->AutoComplete(m_comboType->GetStrings());
@@ -61,7 +62,8 @@ void udfCsInfo::RefreshCities()
 		{
 			CCountriesTable::tDATA& cData = cIt->second;
 			wxString city = STR_FORMAT(STR_FORMAT_CITY_NAME, data.Name, cData.name);
-			m_comboCity->Insert(city, nPos, (void*)&it->first);
+			int id = m_comboCity->Insert(city, nPos);
+			m_city2id[id] = it->first;
 		}
 		it++;
 	}
@@ -101,21 +103,23 @@ bool udfCsInfo::ValidateValues()
 	bool res = false;
 	do
 	{
-		if(-1 == GetSelectedType())
+		if(!m_city2id[GetSelectedCity()])
 			break;
 
-		if(-1 == GetSelectedCity())
+		if(!m_type2id[GetSelectedType()])
 			break;
 
 		wxDateTime date = m_dateDate->GetValue();
 		wxDateTime open = m_dateRegOpen->GetValue();
 		wxDateTime close = m_dateRegClose->GetValue();
 
+		/*
 		if(date < wxDateTime::Now())
 		{
 			ShowWarning(STR_WARN_NOW_GREATTHEN_ChDATE);
 			break;
 		}
+		*/
 		if(close >= date)
 		{
 			ShowWarning(STR_WARN_REGCLOSE_GREATTHEN_ChDATE);
@@ -189,9 +193,13 @@ bool udfCsInfo::Show(bool show)
 		if(CChampionshipTypeTable(m_pCon).GetRow(data.type, typeData))
 			break;
 
-		m_comboType->SetValue(typeData.name);
+		int nSel = m_comboType->FindString(typeData.name);
+		if(-1 != nSel)
+			m_comboType->Select(nSel);
 
-		m_comboCity->SetValue(GetCityNameById(data.city));
+		nSel = m_comboCity->FindString(GetCityNameById(data.city));
+		if(-1 != nSel)
+			m_comboCity->Select(nSel);
 
 		m_dateDate->SetValue(wxDateTime(data.date));
 		m_dateRegOpen->SetValue(wxDateTime(data.regOpenDate));
@@ -214,9 +222,9 @@ void udfCsInfo::OnSave( wxCommandEvent& event )
 
 		CChampionshipTable::tDATA data = {0};
 
-		data.type = *(int*)m_comboType->GetClientData(GetSelectedType());
-		data.city = *(int*)m_comboCity->GetClientData(GetSelectedCity());
-
+		data.type = m_type2id[GetSelectedType()];
+		data.city = m_city2id[GetSelectedCity()];
+		
 		data.name = m_textChName->GetValue();
 		data.additionalInfo = m_textAdditionalInfo->GetValue();
 		data.address = m_textAddress->GetValue();

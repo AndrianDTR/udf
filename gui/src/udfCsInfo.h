@@ -16,6 +16,8 @@ class udfMainFrameBase;
 /** Implementing CsInfo */
 class udfCsInfo : public CsInfo
 {
+	typedef std::map<int, unsigned int>				tI2UiMap;
+	
 protected:
 	// Handlers for CsInfo events.
 	void OnRemoveChampionship( wxCommandEvent& event );
@@ -43,6 +45,9 @@ private:
 	wxTreeCtrl*				m_pTree;
 	wxTreeItemId			m_parentItem;
 	wxTreeItemId			m_itemId;
+	
+	tI2UiMap				m_city2id;
+	tI2UiMap				m_type2id;
 
 public:
 	bool			Show(bool show = true);

@@ -30,7 +30,7 @@ set( ALL_FILES ${HEADER_FILES} ${SOURCE_FILES} ${PLATFORM_HEADER_FILES} ${PLATFO
 
 set( MODULE_NAME "udfreports" )
 
-add_library( ${MODULE_NAME} SHARED ${ALL_FILES} )
+add_library( ${MODULE_NAME} ${ALL_FILES} )
 
 add_dependencies( ${MODULE_NAME} wx_widgets)
 
@@ -40,7 +40,7 @@ include_directories( ${WX_INCLUDE_DIR} )
 
 add_definitions(-DUDFREPORT_EXPORTS)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall")
 
 if(UDF_DEBUG STREQUAL yes)
 	MESSAGE(STATUS "DEBUG BUILD.")

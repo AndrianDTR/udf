@@ -28,8 +28,6 @@ class udfTreeItemData : public wxTreeItemData
 public:
     udfTreeItemData(const unsigned long nId, eITEM_TYPE type) : m_nId(nId), m_type(type) { }
 
-    void 			ShowInfo(wxTreeCtrl *tree);
-    const wxChar*	GetDesc() const { return wxString::Format("%ld", m_nId).c_str(); }
 	unsigned long	GetId() const {return m_nId; }
 	eITEM_TYPE		GetType()const {return m_type; }
 
