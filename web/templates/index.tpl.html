@@ -7,30 +7,30 @@
             <tr>
                 <td align="center" style="padding-left:20px;padding-right:20px">
                     <table width="100%" border="0" cellpadding="0" cellspacing="5">
-					    <tr>
-							<td id="main" class="bordered">
-								{include file="loginform.tpl.html"}
-								<table width="100%" border="0" cellpadding="0" cellspacing="0">
-									<tr class='page-full-content'>
-										<td  id="content" class='page-content bordered' valign="top" height="1px">
-											{if $user_logined==1}
-												{include file="championship_list.tpl.html"}
-											{/if}
-										</td>
-									</tr>
-								</table>
+		    	<tr>
+				<td id="main" class="bordered">
+					{include file="loginform.tpl.html"}
+					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tr class='page-full-content'>
+							<td  id="content" class='page-content bordered' valign="top" height="1px">
+								{if $user_logined==1}
+								{include file="cs_list.tpl.html"}
+								{/if}
 							</td>
 						</tr>
-						<tr>
-                            <td id="copyright" class="bordered">
-                                {include file="copyright.tpl.html"}
-                            </td>
+					</table>
+				</td>
+			</tr>
+			<tr>
+                        	<td id="copyright" class="bordered">
+                        	        {include file="copyright.tpl.html"}
+                        	</td>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
-	</center>
+    </center>
 </body>
 {if $user_logined==1}
 <script type="text/javascript">

@@ -10,14 +10,14 @@
 defined('__INDEX') or die('Restricted access');
 
 // Connection DB data
-define('DB_HOST','localhost');
-define('DB_NAME','udf');
-define('DB_USER','regonline');
-define('DB_PASS','online-pass');
+define('DB_HOST','mysql4.000webhost.com');
+define('DB_NAME','a8483135_mdw');
+define('DB_USER','a8483135_andrian');
+define('DB_PASS','testpass0');
 
 // Template related constants
 define('TPL','./templates/');
-define('URL','http://localhost/udf/');
+define('URL','http://mdw.com.ua/');
 
 // Table definition
 define('T_CATEGORIES','categories');

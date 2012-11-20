@@ -54,11 +54,11 @@ DisplayBLOBsAsText<|||>3<|||>0
 DoUsageStatistics<|||>3<|||>0
 ExportSQL_CreateDatabases<|||>3<|||>1
 ExportSQL_CreateTables<|||>3<|||>1
-ExportSQL_DataHow<|||>3<|||>0
+ExportSQL_DataHow<|||>3<|||>1
 ExportSQL_Directories<|||>1<|||>Z:\home\andrian\Projects\udf\db<{{{><}}}>Z:\home\andrian\flashRed\udf.db<{{{><}}}>
 ExportSQL_DropDatabases<|||>3<|||>1
 ExportSQL_DropTables<|||>3<|||>1
-ExportSQL_Filenames<|||>1<|||>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\tables.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all.sql<{{{><}}}>
+ExportSQL_Filenames<|||>1<|||>Z:\home\TOROKI-WIND\andrian.yablonskyy\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\structure.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\tables.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all-data.sql<{{{><}}}>Z:\home\andrian\Projects\udf\db\all.sql<{{{><}}}>
 ExportSQL_Output<|||>3<|||>0
 FilterPanel<|||>3<|||>0
 LastActiveSession<|||>1<|||>udf
@@ -116,10 +116,10 @@ ToolBarQueryLeft<|||>3<|||>494
 ToolBarQueryTop<|||>3<|||>2
 WrapLongLines<|||>3<|||>0
 Servers\udf\Compressed<|||>3<|||>0
-Servers\udf\ConnectCount<|||>3<|||>44
+Servers\udf\ConnectCount<|||>3<|||>45
 Servers\udf\Databases<|||>1<|||>udf
 Servers\udf\Host<|||>1<|||>127.0.0.1
-Servers\udf\LastConnect<|||>1<|||>2012-11-15 15:08:13
+Servers\udf\LastConnect<|||>1<|||>2012-11-20 14:28:38
 Servers\udf\lastUsedDB<|||>1<|||>udf
 Servers\udf\LoginPrompt<|||>3<|||>0
 Servers\udf\NetType<|||>3<|||>0
