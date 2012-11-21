@@ -89,6 +89,8 @@
     <File Name="src/udfsettingsbase.h"/>
     <File Name="src/udfsettingsbase.cpp"/>
     <File Name="src/udfuicommon.h"/>
+    <File Name="src/udfLoginDlg.cpp"/>
+    <File Name="src/udfLoginDlg.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="res">
     <File Name="res/button_money.png"/>
@@ -132,6 +134,7 @@
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(WorkspacePath)/build/bin" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/build/bin" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       
@@ -183,6 +186,7 @@ $(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppc
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[
+      
       
       
       

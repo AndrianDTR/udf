@@ -113,51 +113,6 @@ class DancersTeamMngr : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class ChampionshipCategoriesMngr
-///////////////////////////////////////////////////////////////////////////////
-class ChampionshipCategoriesMngr : public wxDialog 
-{
-	private:
-	
-	protected:
-		enum
-		{
-			ID_LIST_ALL = 1000,
-			wxID_ADDALL,
-			wxID_ADDONE,
-			wxID_REMOVEONE,
-			wxID_REMOVEALL,
-			ID_SELECTED_LIST,
-		};
-		
-		wxStaticText* m_staticText8;
-		wxListBox* m_listAll;
-		wxBitmapButton* m_bpAddAll;
-		wxBitmapButton* m_bpAdd;
-		wxBitmapButton* m_bpRemove;
-		wxBitmapButton* m_bpRemoveAll;
-		wxStaticText* m_staticText9;
-		wxListBox* m_listSelected;
-		wxBitmapButton* m_bpButton31;
-		wxBitmapButton* m_bpButton32;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnAddAll( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAdd( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRemoveAll( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		ChampionshipCategoriesMngr( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 798,517 ), long style = wxCAPTION|wxCLOSE_BOX|wxSYSTEM_MENU );
-		~ChampionshipCategoriesMngr();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class ChampionshipCategoriesMngrDlg
 ///////////////////////////////////////////////////////////////////////////////
 class ChampionshipCategoriesMngrDlg : public wxDialog 
@@ -180,6 +135,31 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 		
 		ChampionshipCategoriesMngrDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Championship categories management"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 798,517 ), long style = wxCAPTION|wxCLOSE_BOX|wxSYSTEM_MENU );
 		~ChampionshipCategoriesMngrDlg();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class LoginDlg
+///////////////////////////////////////////////////////////////////////////////
+class LoginDlg : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText126;
+		wxTextCtrl* m_textCtrl84;
+		wxBitmapButton* m_bpLogin;
+		wxBitmapButton* m_bpCancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnOk( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCancel( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		LoginDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Login dialog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 525,410 ), long style = wxSTAY_ON_TOP );
+		~LoginDlg();
 	
 };
 
@@ -1543,7 +1523,6 @@ class CsInfo : public wxPanel
 		wxDatePickerCtrl* m_dateDate;
 		wxStaticText* m_staticText7;
 		wxComboBox* m_comboCity;
-		wxButton* m_button8;
 		wxStaticText* m_staticText8;
 		wxTextCtrl* m_textAddress;
 		wxStaticText* m_staticText12;
@@ -1685,7 +1664,6 @@ class TourInfo : public wxPanel
 			ID_ADDNEXT,
 			ID_REMOVE,
 			ID_UPDATE,
-			ID_YELLOW,
 			ID_LIMIT,
 			ID_JUDGES,
 		};
@@ -1700,8 +1678,6 @@ class TourInfo : public wxPanel
 		wxBitmapButton* m_bpRemoveTour;
 		wxBitmapButton* m_bpUpdate;
 		wxBitmapButton* m_bpresults;
-		wxButton* m_buttonMarkGreen;
-		wxButton* m_buttonMarkYellow;
 		wxStaticText* m_staticText121;
 		wxTextCtrl* m_textLimit;
 		wxGrid* m_gridSuccess;
@@ -1713,8 +1689,6 @@ class TourInfo : public wxPanel
 		virtual void OnRemove( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnResults( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMarkGreen( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnMarkYellow( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCellLeftClick( wxGridEvent& event ) { event.Skip(); }
 		
 	

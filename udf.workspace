@@ -31,6 +31,7 @@
   
   
   
+  
   ]]>
   </Environment>
   <Project Name="dbmgr" Path="dbmgr/dbmgr.project" Active="No"/>
@@ -45,9 +46,9 @@
       <Project Name="common" ConfigName="Debug"/>
       <Project Name="dbtest" ConfigName="Debug"/>
       <Project Name="dbmgr" ConfigName="Debug"/>
-      <Project Name="gui" ConfigName="Debug"/>
       <Project Name="skating" ConfigName="Debug"/>
       <Project Name="skatingtest" ConfigName="Debug"/>
+      <Project Name="gui" ConfigName="Debug"/>
       <Project Name="gui" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
@@ -57,9 +58,9 @@
       <Project Name="common" ConfigName="Debug"/>
       <Project Name="dbtest" ConfigName="Release"/>
       <Project Name="dbmgr" ConfigName="Release"/>
-      <Project Name="gui" ConfigName="Release"/>
       <Project Name="skating" ConfigName="Release"/>
       <Project Name="skatingtest" ConfigName="Release"/>
+      <Project Name="gui" ConfigName="Release"/>
       <Project Name="gui" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>

@@ -70,8 +70,8 @@ void printPlaces(int teams, int** marks)
 
 int main(int argc, char **argv)
 {
-	const int teams = 9;
-	const int juds = 32;
+	const int teams = 6;
+	const int juds = 7;
 
 	srand(time(0));
 
@@ -198,6 +198,15 @@ int main(int argc, char **argv)
 		7		9 	1 	9 	9 	3 	4 	4 	9 	1 	4 		6 		7 		1 		2 		6 		3
 		8		6 	5 	8 	2 	5 	6 	3 	5 	3 	3 		5 		5 		7 		1 		5 		5
 		9		8 	3 	1 	7 	9 	8 	8 	7 	5 	9 		2 		1 		4 		9 		9 		9
+		//*/
+		
+		
+		{2, 6, 6, 3, 2, 1, 6}, // 2
+		{5, 4, 2, 2, 3, 4, 5}, // 4
+		{6, 5, 1, 1, 6, 2, 4}, // 5
+		{4, 3, 4, 6, 1, 3, 3}, // 3
+		{3, 1, 3, 4, 5, 6, 1}, // 1
+		{1, 2, 5, 5, 4, 5, 2}  // 6
 		//*/
 	};
 

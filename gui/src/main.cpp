@@ -18,6 +18,7 @@
 #include "udfexceptions.h"
 
 #include "udfSettings.h"
+#include "udfLoginDlg.h"
 #include "locale.h"
 // initialize the application
 IMPLEMENT_APP(MainApp);
@@ -36,27 +37,40 @@ bool MainApp::OnInit()
 	setlocale(LC_ALL, "Ukraine");
 	try
 	{
-		CDbManager* pDbMgr = NULL;
 		do
 		{
-			pDbMgr = CDbManager::Instance();
-			// Connection OK
-			if(pDbMgr->IsOk())
+			CDbManager* pDbMgr = NULL;
+			do
+			{
+				pDbMgr = CDbManager::Instance();
+				// Connection OK
+				if(pDbMgr->IsOk())
+				{
+					break;
+				}
+				
+				//Cancel pressed
+				if(wxID_OK != udfSettings(NULL).ShowModal())
+				{
+					break;
+				}
+			}
+			while(1);
+			
+			if(!pDbMgr->IsOk())
 			{
 				break;
 			}
 			
-			//Cancel pressed
-			if(UDF_OK != udfSettings(NULL).ShowModal())
+			if(wxID_OK != udfLoginDlg(NULL).ShowModal())
 			{
 				break;
 			}
-		}
-		while(1);
 
-		SetTopWindow( new udfMainFrameBase( NULL ) );
-		GetTopWindow()->Show();
-		res = true;
+			SetTopWindow( new udfMainFrameBase( NULL ) );
+			GetTopWindow()->Show();
+			res = true;
+		}while(0);
 	}
 	catch(...)
 	{

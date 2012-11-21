@@ -303,11 +303,23 @@ void udfTourInfo::OnCellLeftClick(wxGridEvent& event)
 
 		if(col == 0)
 		{
+			if(m_gridSuccess->GetCellBackgroundColour(row, col) != wxColour(255, 255, 200))
+				break;
+				
 			wxString value = m_gridSuccess->GetCellValue(row, col);
 			if(value.IsEmpty())
-				m_gridSuccess->SetCellValue(row, col, _("X"));
+				value = _("X");
 			else
-				m_gridSuccess->SetCellValue(row, col, _(""));
+				value = STR_EMPTY;
+				
+			int nRow = 0;
+			for(nRow = 0; nRow < m_gridSuccess->GetNumberRows(); ++nRow)
+			{
+				if(m_gridSuccess->GetCellBackgroundColour(nRow, col) == wxColour(255, 255, 200))
+				{
+					m_gridSuccess->SetCellValue(value, nRow, col);
+				}
+			}
 		}
 	}while(0);
 	event.Skip();
@@ -454,30 +466,6 @@ void udfTourInfo::OnAddNext(wxCommandEvent& event)
 	event.Skip();
 
 	Leave();
-}
-
-void udfTourInfo::OnMarkGreen(wxCommandEvent& event)
-{
-	int nRow = 0;
-	for(nRow = 0; nRow < m_gridSuccess->GetNumberRows(); ++nRow)
-	{
-		if(m_gridSuccess->GetCellBackgroundColour(nRow, 0) == wxColour(200, 255, 200))
-		{
-			m_gridSuccess->SetCellValue(_("X"), nRow, 0);
-		}
-	}
-}
-
-void udfTourInfo::OnMarkYellow(wxCommandEvent& event)
-{
-	int nRow = 0;
-	for(nRow = 0; nRow < m_gridSuccess->GetNumberRows(); ++nRow)
-	{
-		if(m_gridSuccess->GetCellBackgroundColour(nRow, 0) == wxColour(255, 255, 200))
-		{
-			m_gridSuccess->SetCellValue(_("X"), nRow, 0);
-		}
-	}
 }
 
 void udfTourInfo::OnScaleChange(wxSpinEvent& event)

@@ -41,46 +41,59 @@ udfChampionshipCategoriesMngrDlg::~udfChampionshipCategoriesMngrDlg()
 
 void udfChampionshipCategoriesMngrDlg::OnSave( wxCommandEvent& event )
 {
-	/*
 	CChampionshipCategoriesTable table(m_pCon);
 	CChampionshipCategoriesTable::tTableMap stored;
 	CChampionshipCategoriesTable::tDATA filter = {0};
 	filter.championshipId = m_nCSId;
 	table.Find(stored, filter);
-
-	CChampionshipCategoriesTable::tTableIt listIt = stored.begin();
-	while(listIt != stored.end())
+	
+	wxTreeItemIdValue	cookie;
+	wxTreeItemId group = m_treeCategories->GetFirstChild(m_root, cookie);
+	while(group.IsOk())
 	{
-		CChampionshipCategoriesTable::tTableIt rLstIt = m_ChampionshipsCategories.find(listIt->first);
-		if(rLstIt == m_ChampionshipsCategories.end())
+		wxTreeItemIdValue	cookie2;
+		wxTreeItemId cat = m_treeCategories->GetFirstChild(group, cookie2);
+		while(cat.IsOk())
 		{
-			table.DelRow(listIt->first);
-		}
-		else if(rLstIt != m_ChampionshipsCategories.end() && rLstIt->first == listIt->first)
-		{
-			CChampionshipCategoriesTable::tDATA& data = listIt->second;
-			CChampionshipCategoriesTable::tDATA& cData = rLstIt->second;
-			if( data.catId != cData.catId)
+			if(TIS_CHECKED == m_treeCategories->GetItemState(cat))
 			{
-				data.catId = cData.catId;
-				table.UpdateRow(listIt->first, data);
+				bool found = false;
+				udfCatTreeItemData* pData = (udfCatTreeItemData*)m_treeCategories->GetItemData(cat);
+				
+				CChampionshipCategoriesTable::tTableIt it = stored.begin();
+				while(it != stored.end())
+				{
+					CChampionshipCategoriesTable::tDATA& catData = it->second;
+					if(catData.catId == pData->GetId())
+					{
+						found = true;
+						stored.erase(it);
+						break;
+					}
+					it++;
+				}
+				
+				if(!found)
+				{
+					CChampionshipCategoriesTable::tDATA catData = {0};
+					catData.championshipId = m_nCSId;
+					catData.catId = pData->GetId();
+					table.AddRow(catData);
+				}
 			}
-			m_ChampionshipsCategories.erase(rLstIt);
+			cat = m_treeCategories->GetNextChild(group, cookie2);
 		}
-		listIt++;
+		
+		group = m_treeCategories->GetNextChild(m_root, cookie);
+	}
+	
+	CChampionshipCategoriesTable::tTableIt it = stored.begin();
+	while(it != stored.end())
+	{
+		table.DelRow(it->first);
+		it++;
 	}
 
-	if(m_ChampionshipsCategories.size() > 0)
-	{
-		CChampionshipCategoriesTable::tTableIt rLstIt = m_ChampionshipsCategories.begin();
-		while(rLstIt != m_ChampionshipsCategories.end())
-		{
-			CChampionshipCategoriesTable::tDATA& data = rLstIt->second;
-			table.AddRow(data);
-			rLstIt++;
-		}
-	}
-	*/
 	EndModal(wxID_OK);
 }
 

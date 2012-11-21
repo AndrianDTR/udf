@@ -52,6 +52,7 @@ set( HEADER_FILES
 	src/udfStaff.h
 	src/udfUserRolesMgr.h
 	src/udfsettingsbase.h
+	src/udfLoginDlg.h
 )
 
 set( SOURCE_FILES 
@@ -93,6 +94,7 @@ set( SOURCE_FILES
 	src/udfStaff.cpp
 	src/udfUserRolesMgr.cpp
 	src/udfsettingsbase.cpp
+	src/udfLoginDlg.cpp
 )
 
 # Make sure the PLATFORM_HEADER_FILES variable is always defined

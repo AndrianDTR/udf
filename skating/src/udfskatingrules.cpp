@@ -401,20 +401,28 @@ bool udfSkatingRules::Rule5()
 		
 		for(p = 0; p < m_nTeams; p++)
 		{
-			int mostCnt = 0;
+			int maxMark = 0;
+			int maxMarkCnt = 0;
 			for(t = 0; t < m_nTeams; t++)
 			{
 				if(m_ppnResults[t][p] >= m_jMost)
 				{
-					mostCnt++;
+					if(m_ppnResults[t][p] > maxMark)
+					{
+						maxMark = m_ppnResults[t][p];
+						maxMarkCnt = 0;
+					}
+					
+					if(maxMark == m_ppnResults[t][p])
+						maxMarkCnt++;
 				}
 			}
 			
-			if(mostCnt == 1)
+			if(maxMarkCnt == 1)
 			{
 				for(t = 0; t < m_nTeams; t++)
 				{
-					if(m_ppnResults[t][p] >= m_jMost)
+					if(m_ppnResults[t][p] == maxMark)
 					{
 						m_PlacesMap[m_PlacesMap.size()] = t;
 
@@ -426,14 +434,16 @@ bool udfSkatingRules::Rule5()
 						break;
 					}
 				}
+				break;
 			}
-			else if(mostCnt > 1)
+			else if(maxMarkCnt > 1)
 			{
 				res = false;
 				break;
 			}
 		}
-
+		
+		__msg("%s results", __FUNCTION__);
 		printTable(m_nTeams, m_ppnResults);
 	}while(0);
 
@@ -523,7 +533,8 @@ bool udfSkatingRules::Rule6()
 				}
 			}
 		}
-
+		
+		__msg("%s results", __FUNCTION__);
 		printTable(m_nTeams, m_ppnResults);
 	}while(0);
 
@@ -648,7 +659,7 @@ bool udfSkatingRules::Rule7()
 						//Find other marks that are equal to first
 						if(t != j && m_ppnResults[t][p] == m_ppnResults[j][p])
 						{
-							if(!sumMap[sumTbl[j][p]])
+							if(sumMap.find(sumTbl[j][p]) == sumMap.end())
 							{
 								sumMap[sumTbl[j][p]] = j;
 								maxSum = sumTbl[j][p] > maxSum ? sumTbl[j][p] : maxSum;
@@ -662,12 +673,34 @@ bool udfSkatingRules::Rule7()
 					
 					if(ssList.size() > 1)
 					{
-						sumMap = Rule7B(p, ssList, sumTbl, m_ppnResults);
-						maxSum = sumMap.size();
+						iiMap plMap = Rule7B(p, ssList, sumTbl, m_ppnResults);
+						
+						int pl = 0;
+						iiIt a = plMap.begin();
+						while(a != plMap.end())
+						{
+							pl = a->first > pl ? a->first : pl;
+							a++;
+						}
+						
+						sumMap.erase(sumTbl[t][p]);
+						for(j = 0; j <= maxSum; j++)
+						{
+							iiIt	sIt = sumMap.find(j);
+							
+							if(sIt == sumMap.end())
+								continue;
+							
+							plMap[++pl] = sIt->second;
+						}
+						
+						sumMap = plMap;
+						maxSum = pl;
 						res = false;
 					}
-					
-					break;
+
+					if(1 < sumMap.size())
+						break;
 				}
 			}
 			
@@ -693,6 +726,7 @@ bool udfSkatingRules::Rule7()
 				break;
 		}
 
+		__msg("%s results", __FUNCTION__);
 		FreeMarkTable(sumTbl);
 		printTable(m_nTeams, m_ppnResults);
 
@@ -708,6 +742,7 @@ iiMap udfSkatingRules::Rule7B(int place, iList tList, int** sumTable, int** rngT
 
 	int t, p, j, k, n;
 	p = place+1;
+	
 	if(p < m_nTeams)
 	{
 		bool sameMarks = false;
@@ -866,7 +901,8 @@ bool udfSkatingRules::Rule8()
 				break;
 			}
 		}
-
+	
+		__msg("%s results", __FUNCTION__);
 		printTable(m_nTeams, m_ppnResults);
 
 	}while(0);

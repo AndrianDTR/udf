@@ -172,9 +172,28 @@ bool udfCsInfo::Show(bool show)
 		if(!show)
 			break;
 
-		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk() || !m_itemId.IsOk())
+		if(!m_pMainWindow || !m_pTree || !m_parentItem.IsOk())
 			break;
 
+		m_textChName->SetValue(STR_EMPTY);
+		m_textAddress->SetValue(STR_EMPTY);
+		m_textAdditionalInfo->SetValue(STR_EMPTY);
+		
+		if(m_comboType->GetCount())
+			m_comboType->Select(0);
+		if(m_comboCity->GetCount())
+			m_comboCity->Select(0);
+		
+		wxDateTime dt = wxDateTime::Now();
+		m_dateRegOpen->SetValue(dt);
+		m_dateRegClose->SetValue(dt.Add(wxDateSpan().Days(1)));
+		m_dateDate->SetValue(dt.Add(wxDateSpan().Days(1)));
+
+		m_textChName->SetFocus();
+		
+		if(!m_itemId.IsOk())
+			break;
+			
 		CChampionshipTable::tDATA data = {0};
 		udfTreeItemData* csItem = (udfTreeItemData*)m_pTree->GetItemData(m_itemId);
 
@@ -187,7 +206,6 @@ bool udfCsInfo::Show(bool show)
 		m_textChName->SetValue(data.name);
 		m_textAddress->SetValue(data.address);
 		m_textAdditionalInfo->SetValue(data.additionalInfo);
-
 
 		CChampionshipTypeTable::tDATA typeData = {0};
 		if(CChampionshipTypeTable(m_pCon).GetRow(data.type, typeData))
@@ -277,9 +295,12 @@ void udfCsInfo::OnRemoveChampionship( wxCommandEvent& event )
 			break;
 		}
 
+		wxTreeItemId curr = m_pTree->GetPrevSibling(m_itemId);
 		m_pTree->Delete(m_itemId);
-		m_itemId.Unset();
-		this->Hide();
+		if(curr.IsOk())
+			m_pTree->SelectItem(curr);
+		else
+			this->Hide();
 	}while(0);
 }
 
