@@ -33,21 +33,23 @@ private:
 class udfChampionshipCategoriesMngrDlg : public ChampionshipCategoriesMngrDlg
 {
 private:
+	wxImageList* 								m_states;
 	wxTreeItemId								m_root;
-	
+
 	unsigned int 								m_nCSId;
 	CDbConnection*								m_pCon;
-	CChampionshipCategoriesTable::tTableMap		m_ChampionshipsCategories;
-	CCategoriesTable::tTableMap					m_Categories;
 
 protected:
 	// Handlers for ChampionshipCategoriesMngrDlg events.
+	void OnSelectItem( wxTreeEvent& event );
+	void OnStateToggle( wxTreeEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
 
 public:
 	/** Constructor */
 	udfChampionshipCategoriesMngrDlg( wxWindow* parent, unsigned int nId );
+	virtual ~udfChampionshipCategoriesMngrDlg();
 
 protected:
 	void 	Refresh();

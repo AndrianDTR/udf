@@ -171,6 +171,7 @@ class ChampionshipCategoriesMngrDlg : public wxDialog
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSelectItem( wxTreeEvent& event ) { event.Skip(); }
+		virtual void OnStateToggle( wxTreeEvent& event ) { event.Skip(); }
 		virtual void OnSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDiscard( wxCommandEvent& event ) { event.Skip(); }
 		

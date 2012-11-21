@@ -209,25 +209,28 @@
 		<Cursor position="1192" topLine="18" />
 	</File>
 	<File name="gui/src/string_def.h" open="0" top="0" tabpos="0">
-		<Cursor position="7772" topLine="136" />
+		<Cursor position="372" topLine="0" />
 	</File>
 	<File name="gui/src/udfBlockInfo.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="7172" topLine="288" />
+		<Cursor position="8694" topLine="346" />
 	</File>
 	<File name="gui/src/udfBlockInfo.h" open="0" top="0" tabpos="2">
 		<Cursor position="289" topLine="16" />
 	</File>
-	<File name="gui/src/udfCategoriesMngrDlg.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="797" topLine="21" />
+	<File name="gui/src/udfCategoriesMngrDlg.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="10156" topLine="359" />
+	</File>
+	<File name="gui/src/udfCategoriesMngrDlg.h" open="1" top="1" tabpos="2">
+		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="gui/src/udfCategoryInfo.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="561" topLine="5" />
+		<Cursor position="1616" topLine="57" />
 	</File>
 	<File name="gui/src/udfCategoryInfo.h" open="0" top="0" tabpos="4">
 		<Cursor position="261" topLine="10" />
 	</File>
 	<File name="gui/src/udfChampionshipCategoriesMngrDlg.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="4686" topLine="136" />
+		<Cursor position="5185" topLine="149" />
 	</File>
 	<File name="gui/src/udfChampionshipCategoriesMngrDlg.h" open="0" top="0" tabpos="0">
 		<Cursor position="201" topLine="0" />
@@ -236,64 +239,109 @@
 		<Cursor position="4353" topLine="128" />
 	</File>
 	<File name="gui/src/udfCitiesMngr.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="3071" topLine="103" />
+		<Cursor position="4720" topLine="166" />
+	</File>
+	<File name="gui/src/udfClubsMngrDlg.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6835" topLine="253" />
+	</File>
+	<File name="gui/src/udfCodeDialog.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="351" topLine="0" />
 	</File>
 	<File name="gui/src/udfCsInfo.cpp" open="0" top="0" tabpos="7">
-		<Cursor position="3591" topLine="168" />
+		<Cursor position="2949" topLine="112" />
 	</File>
 	<File name="gui/src/udfCsInfo.h" open="0" top="0" tabpos="3">
 		<Cursor position="115" topLine="0" />
 	</File>
+	<File name="gui/src/udfCsTourReport.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="4871" topLine="179" />
+	</File>
 	<File name="gui/src/udfCsTours.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="0" topLine="0" />
+		<Cursor position="437" topLine="0" />
 	</File>
 	<File name="gui/src/udfDancersMngrDlg.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1800" topLine="50" />
+		<Cursor position="8862" topLine="344" />
 	</File>
 	<File name="gui/src/udfDancersTeamMngr.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="14545" topLine="578" />
+		<Cursor position="13472" topLine="539" />
+	</File>
+	<File name="gui/src/udfFinalMarks.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5775" topLine="221" />
+	</File>
+	<File name="gui/src/udfJudgeCategories.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="661" topLine="0" />
 	</File>
 	<File name="gui/src/udfJudgeMark.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="3037" topLine="122" />
+		<Cursor position="2718" topLine="99" />
 	</File>
 	<File name="gui/src/udfJudgeMark.h" open="0" top="0" tabpos="0">
 		<Cursor position="937" topLine="13" />
 	</File>
+	<File name="gui/src/udfJudgesMngr.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6570" topLine="232" />
+	</File>
 	<File name="gui/src/udfMainFrameBase.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="16139" topLine="655" />
+		<Cursor position="15593" topLine="647" />
 	</File>
 	<File name="gui/src/udfMainFrameBase.h" open="0" top="0" tabpos="0">
-		<Cursor position="402" topLine="12" />
+		<Cursor position="1340" topLine="38" />
+	</File>
+	<File name="gui/src/udfPayment.h" open="0" top="0" tabpos="0">
+		<Cursor position="932" topLine="7" />
 	</File>
 	<File name="gui/src/udfPaymentHistory.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="815" topLine="0" />
+		<Cursor position="4262" topLine="144" />
+	</File>
+	<File name="gui/src/udfReportPreview.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="199" topLine="0" />
 	</File>
 	<File name="gui/src/udfSettings.cpp" open="0" top="0" tabpos="7">
-		<Cursor position="1109" topLine="30" />
+		<Cursor position="3639" topLine="114" />
 	</File>
 	<File name="gui/src/udfSettings.h" open="0" top="0" tabpos="4">
 		<Cursor position="0" topLine="9" />
 	</File>
+	<File name="gui/src/udfStaff.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="148" topLine="0" />
+	</File>
+	<File name="gui/src/udfStaff.h" open="0" top="0" tabpos="0">
+		<Cursor position="153" topLine="0" />
+	</File>
 	<File name="gui/src/udfStartNumberAssignDlg.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="2314" topLine="72" />
+		<Cursor position="4400" topLine="163" />
 	</File>
 	<File name="gui/src/udfStartNumberAssignDlg.h" open="0" top="0" tabpos="0">
 		<Cursor position="578" topLine="8" />
 	</File>
-	<File name="gui/src/udfTourInfo.cpp" open="1" top="1" tabpos="0">
-		<Cursor position="1976" topLine="50" />
+	<File name="gui/src/udfTourInfo.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="458" topLine="0" />
 	</File>
 	<File name="gui/src/udfTourInfo.h" open="0" top="0" tabpos="1">
-		<Cursor position="329" topLine="25" />
+		<Cursor position="122" topLine="0" />
 	</File>
 	<File name="gui/src/udfTrainersMngrDlg.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1014" topLine="17" />
+		<Cursor position="5962" topLine="231" />
+	</File>
+	<File name="gui/src/udfUserRolesMgr.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="179" topLine="0" />
+	</File>
+	<File name="gui/src/udfUserRolesMgr.h" open="0" top="0" tabpos="0">
+		<Cursor position="174" topLine="0" />
+	</File>
+	<File name="gui/src/udftimectrl.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2187" topLine="102" />
 	</File>
 	<File name="gui/src/udfuiutils.cpp" open="0" top="0" tabpos="13">
-		<Cursor position="897" topLine="9" />
+		<Cursor position="3706" topLine="176" />
 	</File>
 	<File name="gui/src/udfuiutils.h" open="0" top="0" tabpos="0">
 		<Cursor position="394" topLine="0" />
+	</File>
+	<File name="reports/src/udfreportbase.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="253" topLine="11" />
+	</File>
+	<File name="reports/src/udfreportbase.h" open="0" top="0" tabpos="0">
+		<Cursor position="163" topLine="0" />
 	</File>
 	<File name="skating/src/udfskatingrules.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="11181" topLine="357" />

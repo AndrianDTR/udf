@@ -244,8 +244,12 @@
 		<Unit filename="gui/src/udfsettingsbase.h" />
 		<Unit filename="gui/src/udftimectrl.cpp" />
 		<Unit filename="gui/src/udftimectrl.h" />
+		<Unit filename="gui/src/udfuicommon.h" />
 		<Unit filename="gui/src/udfuiutils.cpp" />
 		<Unit filename="gui/src/udfuiutils.h" />
+		<Unit filename="reports/src/udfreportbase.cpp" />
+		<Unit filename="reports/src/udfreportbase.h" />
+		<Unit filename="reportstest/src/main.cpp" />
 		<Unit filename="skating/src/udfskatingrules.cpp" />
 		<Unit filename="skating/src/udfskatingrules.h" />
 		<Unit filename="skatingtest/src/main.cpp" />

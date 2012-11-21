@@ -2347,7 +2347,7 @@
                                 <event name="OnTreeSelChanged">OnSelectItem</event>
                                 <event name="OnTreeSelChanging"></event>
                                 <event name="OnTreeSetInfo"></event>
-                                <event name="OnTreeStateImageClick"></event>
+                                <event name="OnTreeStateImageClick">OnStateToggle</event>
                                 <event name="OnUpdateUI"></event>
                             </object>
                         </object>
