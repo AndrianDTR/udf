@@ -16,6 +16,12 @@ typedef enum{
 	CTIT_CAT,
 }eCAT_TREE_ITEM_TYPE;
 
+typedef enum{
+	TIS_UNCHECKED = 0,
+	TIS_3STATE,
+	TIS_CHECKED
+}eTREE_ITEM_STATE;
+
 class udfCatTreeItemData : public wxTreeItemData
 {
 public:
@@ -32,6 +38,8 @@ private:
 /** Implementing ChampionshipCategoriesMngrDlg */
 class udfChampionshipCategoriesMngrDlg : public ChampionshipCategoriesMngrDlg
 {
+	typedef std::map<unsigned int, wxTreeItemId>	UI2IdMap;
+
 private:
 	wxImageList* 								m_states;
 	wxTreeItemId								m_root;
@@ -41,7 +49,6 @@ private:
 
 protected:
 	// Handlers for ChampionshipCategoriesMngrDlg events.
-	void OnSelectItem( wxTreeEvent& event );
 	void OnStateToggle( wxTreeEvent& event );
 	void OnSave( wxCommandEvent& event );
 	void OnDiscard( wxCommandEvent& event );
@@ -52,7 +59,8 @@ public:
 	virtual ~udfChampionshipCategoriesMngrDlg();
 
 protected:
-	void 	Refresh();
+	void 			Refresh();
+	wxTreeItemId	SetParentState(wxTreeItemId item);
 };
 
 #endif // __udfChampionshipCategoriesMngrDlg__

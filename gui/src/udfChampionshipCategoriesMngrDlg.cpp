@@ -6,6 +6,7 @@
 
 #include "tree_unchecked.xpm"
 #include "tree_checked.xpm"
+#include "tree_3state.xpm"
 
 udfChampionshipCategoriesMngrDlg::udfChampionshipCategoriesMngrDlg( wxWindow* parent, unsigned int nId )
 : ChampionshipCategoriesMngrDlg( parent )
@@ -15,9 +16,10 @@ udfChampionshipCategoriesMngrDlg::udfChampionshipCategoriesMngrDlg( wxWindow* pa
 {
 	m_pCon = CDbManager::Instance()->GetConnection();
 
-	wxIcon icons[2];
-	icons[0] = wxIcon(tree_unchecked_xpm);
-	icons[1] = wxIcon(tree_checked_xpm);
+	wxIcon icons[3];
+	icons[TIS_UNCHECKED] = wxIcon(tree_unchecked_xpm);
+	icons[TIS_3STATE] = wxIcon(tree_3state_xpm);
+	icons[TIS_CHECKED] = wxIcon(tree_checked_xpm);
 
 	int width  = icons[0].GetWidth(),
 		height = icons[0].GetHeight();
@@ -87,6 +89,36 @@ void udfChampionshipCategoriesMngrDlg::OnDiscard( wxCommandEvent& event )
 	EndModal(wxID_CANCEL);
 }
 
+wxTreeItemId udfChampionshipCategoriesMngrDlg::SetParentState(wxTreeItemId item)
+{
+	wxTreeItemId res;
+	do
+	{
+		if(!item.IsOk())
+			break;
+
+		wxTreeItemId parent = m_treeCategories->GetItemParent(item);
+		if(parent.IsOk() && parent != m_root)
+		{
+			wxTreeItemIdValue cookie;
+			wxTreeItemId chldItem = m_treeCategories->GetFirstChild(parent, cookie);
+			int state = TIS_CHECKED;
+			do
+			{
+				if(TIS_UNCHECKED == m_treeCategories->GetItemState(chldItem))
+				{
+					state = TIS_3STATE;
+					break;
+				}
+				chldItem = m_treeCategories->GetNextChild(parent, cookie);
+			}while(chldItem.IsOk());
+			m_treeCategories->SetItemState(parent, state);
+			res = parent;
+		}
+	}while(0);
+	return res;
+}
+
 void udfChampionshipCategoriesMngrDlg::OnStateToggle( wxTreeEvent& event )
 {
 	do
@@ -96,9 +128,15 @@ void udfChampionshipCategoriesMngrDlg::OnStateToggle( wxTreeEvent& event )
 		if( !item.IsOk() )
 			break;
 
-		m_treeCategories->SetItemState(item, wxTREE_ITEMSTATE_NEXT);
-
 		int state = m_treeCategories->GetItemState(item);
+
+		if(TIS_UNCHECKED == state)
+			m_treeCategories->SetItemState(item, TIS_CHECKED);
+		else
+			m_treeCategories->SetItemState(item, TIS_UNCHECKED);
+
+		state = m_treeCategories->GetItemState(item);
+
 		if (m_treeCategories->ItemHasChildren(item))
 		{
 			wxTreeItemIdValue cookie;
@@ -110,16 +148,14 @@ void udfChampionshipCategoriesMngrDlg::OnStateToggle( wxTreeEvent& event )
 			}while(chldItem.IsOk());
 		}
 
+		SetParentState(item);
     }while(0);
-}
-
-void udfChampionshipCategoriesMngrDlg::OnSelectItem( wxTreeEvent& event )
-{
-
 }
 
 void udfChampionshipCategoriesMngrDlg::Refresh()
 {
+	UI2IdMap	id2tid;
+
 	m_treeCategories->DeleteAllItems();
 	m_root = m_treeCategories->AddRoot("");
 
@@ -131,7 +167,7 @@ void udfChampionshipCategoriesMngrDlg::Refresh()
 		CAgeCategoryTable::tDATA data = listIt->second;
 		wxTreeItemId block = m_treeCategories->AppendItem(
 			m_root, data.name, -1, -1, new udfCatTreeItemData(listIt->first, CTIT_BLOCK));
-		m_treeCategories->SetItemState(block, 0);
+		m_treeCategories->SetItemState(block, TIS_UNCHECKED);
 
 		CCategoriesTable::tTableMap cats;
 		CCategoriesTable::tDATA filter = {0};
@@ -147,7 +183,8 @@ void udfChampionshipCategoriesMngrDlg::Refresh()
 						, catData.name);
 			wxTreeItemId catId = m_treeCategories->AppendItem(
 				block, catName, -1, -1, new udfCatTreeItemData(it->first, CTIT_CAT));
-			m_treeCategories->SetItemState(catId, 0);
+			m_treeCategories->SetItemState(catId, TIS_UNCHECKED);
+			id2tid[it->first] = catId;
 
 			it++;
 		}
@@ -155,7 +192,22 @@ void udfChampionshipCategoriesMngrDlg::Refresh()
 		listIt++;
 	}
 
-	// Move throyugh registered categories and set state to 1
-	//m_treeCategories->SetItemState(catId, 0);
+	CChampionshipCategoriesTable::tDATA filter = {0};
+	filter.championshipId = m_nCSId;
 
+	CChampionshipCategoriesTable::tTableMap csCats;
+	CChampionshipCategoriesTable(m_pCon).Find(csCats, filter);
+	CChampionshipCategoriesTable::tTableIt catIt = csCats.begin();
+	while(catIt != csCats.end())
+	{
+		CChampionshipCategoriesTable::tDATA& data = catIt->second;
+		wxTreeItemId catId = id2tid[data.catId];
+		if(catId.IsOk())
+		{
+			m_treeCategories->SetItemState(catId, TIS_CHECKED);
+			wxTreeItemId parent = SetParentState(catId);
+			m_treeCategories->Expand(parent);
+		}
+		catIt++;
+	}
 }
