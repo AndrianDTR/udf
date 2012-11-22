@@ -10,8 +10,11 @@ udfSettings::udfSettings( wxWindow* parent )
 : Settings( parent )
 , m_pCon(NULL)
 {
-	m_pCon = CDbManager::Instance()->GetConnection();
-
+	if(parent)
+	{
+		m_pCon = CDbManager::Instance()->GetConnection();
+	}
+	
 	Refresh();
 }
 
@@ -151,18 +154,28 @@ void udfSettings::Refresh()
 
 void udfSettings::OnTest(wxCommandEvent& event)
 {
-	m_textTest->SetValue(_("Connecting..."));
-
-	CDbConnection* pCon = new CDbConnection();
-	pCon->Open( m_textServer->GetValue().ToStdString()
-		, m_textUser->GetValue().ToStdString()
-		, m_textPass->GetValue().ToStdString()
-		, m_textDatabase->GetValue().ToStdString()
-	);
-
+	long res = UDF_E_FAIL;
 	CTourTypesTable::tTableMap data;
-	long res = CTourTypesTable(pCon).GetTable(data);
+	
+	m_textTest->SetValue(_("Connecting..."));
+	
+	try
+	{
+		CDbConnection* pCon = new CDbConnection();
+		pCon->Open( m_textServer->GetValue().ToStdString()
+			, m_textUser->GetValue().ToStdString()
+			, m_textPass->GetValue().ToStdString()
+			, m_textDatabase->GetValue().ToStdString()
+		);
 
+		
+		res = CTourTypesTable(pCon).GetTable(data);
+	}
+	catch(...)
+	{
+		
+	}
+	
 	if(UDF_OK == res && data.size())
 	{
 		m_textTest->SetValue(_("Connected successfully."));

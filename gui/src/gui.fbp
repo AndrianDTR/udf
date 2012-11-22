@@ -1825,6 +1825,16 @@
                 <property name="orient">wxVERTICAL</property>
                 <property name="permission">none</property>
                 <object class="sizeritem" expanded="1">
+                    <property name="border">5</property>
+                    <property name="flag">wxEXPAND</property>
+                    <property name="proportion">0</property>
+                    <object class="spacer" expanded="1">
+                        <property name="height">320</property>
+                        <property name="permission">protected</property>
+                        <property name="width">0</property>
+                    </object>
+                </object>
+                <object class="sizeritem" expanded="1">
                     <property name="border">10</property>
                     <property name="flag">wxEXPAND|wxRIGHT|wxLEFT</property>
                     <property name="proportion">0</property>
@@ -1958,7 +1968,7 @@
                                 <property name="bitmap">../res/button_ok.xpm; Load From File</property>
                                 <property name="context_help"></property>
                                 <property name="context_menu">1</property>
-                                <property name="default">0</property>
+                                <property name="default">1</property>
                                 <property name="disabled"></property>
                                 <property name="enabled">1</property>
                                 <property name="fg"></property>
@@ -2073,6 +2083,16 @@
                                 <event name="OnUpdateUI"></event>
                             </object>
                         </object>
+                    </object>
+                </object>
+                <object class="sizeritem" expanded="1">
+                    <property name="border">5</property>
+                    <property name="flag">wxEXPAND</property>
+                    <property name="proportion">1</property>
+                    <object class="spacer" expanded="1">
+                        <property name="height">0</property>
+                        <property name="permission">protected</property>
+                        <property name="width">0</property>
                     </object>
                 </object>
             </object>
