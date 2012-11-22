@@ -53,7 +53,7 @@ class cs_list
 		$data = "Get data from DB in ".get_class($this);
 		$csList = array();
 		$res = db_query("select id,type,name,additional_info,date,reg_open,reg_close from ".T_CS
-		." where reg_close<NOW()");
+		." where reg_close > NOW() and reg_open < NOW()");
 		while($row = db_fetch_row($res))
 		{
 			$csRow = array();
