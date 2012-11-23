@@ -146,10 +146,17 @@ class LoginDlg : public wxDialog
 	private:
 	
 	protected:
+		enum
+		{
+			ID_PASSWD = 1000,
+		};
+		
+		
 		wxStaticText* m_staticText126;
 		wxTextCtrl* m_textCtrl84;
 		wxBitmapButton* m_bpLogin;
 		wxBitmapButton* m_bpCancel;
+		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnOk( wxCommandEvent& event ) { event.Skip(); }

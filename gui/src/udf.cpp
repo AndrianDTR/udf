@@ -298,24 +298,28 @@ LoginDlg::LoginDlg( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	wxBoxSizer* bSizer130;
 	bSizer130 = new wxBoxSizer( wxVERTICAL );
 	
+	
+	bSizer130->Add( 0, 320, 0, wxEXPAND, 5 );
+	
 	wxBoxSizer* bSizer131;
 	bSizer131 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticText126 = new wxStaticText( this, wxID_ANY, _("Password"), wxPoint( -1,380 ), wxDefaultSize, 0 );
+	m_staticText126 = new wxStaticText( this, wxID_ANY, _("Password"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
 	m_staticText126->Wrap( -1 );
 	bSizer131->Add( m_staticText126, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrl84 = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxPoint( -1,380 ), wxDefaultSize, wxTE_PASSWORD );
+	m_textCtrl84 = new wxTextCtrl( this, ID_PASSWD, wxEmptyString, wxPoint( -1,380 ), wxDefaultSize, wxTE_PASSWORD );
 	bSizer131->Add( m_textCtrl84, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_bpLogin = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxPoint( -1,380 ), wxDefaultSize, wxBU_AUTODRAW );
+	m_bpLogin = new wxBitmapButton( this, wxID_OK, wxBitmap( button_ok_xpm ), wxPoint( -1,-1 ), wxDefaultSize, wxBU_AUTODRAW );
+	m_bpLogin->SetDefault(); 
 	m_bpLogin->SetToolTip( _("Login") );
 	
 	m_bpLogin->SetToolTip( _("Login") );
 	
 	bSizer131->Add( m_bpLogin, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_bpCancel = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_cancel_xpm ), wxPoint( 200,380 ), wxDefaultSize, wxBU_AUTODRAW );
+	m_bpCancel = new wxBitmapButton( this, wxID_ANY, wxBitmap( button_cancel_xpm ), wxPoint( -1,-1 ), wxDefaultSize, wxBU_AUTODRAW );
 	m_bpCancel->SetToolTip( _("Cancel") );
 	
 	m_bpCancel->SetToolTip( _("Cancel") );
@@ -323,6 +327,9 @@ LoginDlg::LoginDlg( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	bSizer131->Add( m_bpCancel, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	bSizer130->Add( bSizer131, 0, wxEXPAND|wxRIGHT|wxLEFT, 10 );
+	
+	
+	bSizer130->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	this->SetSizer( bSizer130 );
 	this->Layout();
