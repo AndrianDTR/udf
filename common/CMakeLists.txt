@@ -22,6 +22,10 @@ exec_program(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ARGS "rev-list --reverse HEAD | nl | tail -1 | awk '{print $2}'"
     OUTPUT_VARIABLE REPO_HASH )
+ELSE(UNIX)
+	MESSAGE(STATUS "Win build common")
+
+	include_directories( ${UDF_SOURCE_DIR}/common/src src)
 ENDIF(UNIX)
 CONFIGURE_FILE( ${VERSION_FILE}.in ${VERSION_FILE} )
 

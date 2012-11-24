@@ -1,0 +1,323 @@
+<project name="buildsystem" default="dist" basedir="..">
+
+  <description>
+    PCTool project
+  </description>
+
+  <!-- use default properties for this build, if one is not specified -->
+  <property name="settings" value="BuildSystem/build.settings"/>
+  
+  <!-- test if properties file exists for this build -->
+  <condition property="settingsFileAvailable">
+    <available file="${settings}"/>
+  </condition>
+  <fail unless="settingsFileAvailable" message="Required settings file ${settings} is not available"/>
+
+  <!-- load global properties for this build -->
+  <property file="${settings}"/>
+  <condition property="isCVS"><istrue value="${build.isCVS}"/></condition>
+  <condition property="isSVN"><istrue value="${build.isSVN}"/></condition>
+  <condition property="doInit"><istrue value="${build.doInit}"/></condition>
+  <condition property="doUpdate"><istrue value="${build.doUpdate}"/></condition>
+  <condition property="doVersionUpdate"><istrue value="${build.doVersionUpdate}"/></condition>
+  <condition property="doResourceUpdate"><istrue value="${build.doResourceUpdate}"/></condition>
+  <condition property="doCompile"><istrue value="${build.doCompile}"/></condition>
+  <condition property="doCommit"><istrue value="${build.doCommit}"/></condition>
+  <condition property="doVersionCommit"><istrue value="${build.doVersionCommit}"/></condition>
+  <condition property="doTag"><istrue value="${build.doTag}"/></condition>
+  <condition property="doChangelog"><istrue value="${build.doChangelog}"/></condition>
+  <condition property="doZip"><istrue value="${build.doZip}"/></condition>
+  <condition property="doMail"><istrue value="${build.doMail}"/></condition>
+  <condition property="doCVSUpdate"><and><istrue value="${build.isCVS}"/><istrue value="${build.doUpdate}"/></and></condition>
+  <condition property="doSVNUpdate"><and><istrue value="${build.isSVN}"/><istrue value="${build.doUpdate}"/></and></condition>
+  <condition property="doCVSCommit"><and><istrue value="${build.isCVS}"/><istrue value="${build.doCommit}"/></and></condition>
+  <condition property="doSVNCommit"><and><istrue value="${build.isSVN}"/><istrue value="${build.doCommit}"/></and></condition>
+  <condition property="doCVSVersionCommit"><and><istrue value="${build.isCVS}"/><istrue value="${build.doVersionCommit}"/></and></condition>
+  <condition property="doSVNVersionCommit"><and><istrue value="${build.isSVN}"/><istrue value="${build.doVersionCommit}"/></and></condition>
+  <condition property="doCVSTag"><and><istrue value="${build.isCVS}"/><istrue value="${build.doTag}"/></and></condition>
+  <condition property="doSVNTag"><and><istrue value="${build.isSVN}"/><istrue value="${build.doTag}"/></and></condition>
+  <condition property="doCVSChangelog"><and><istrue value="${build.isCVS}"/><istrue value="${build.doChangelog}"/></and></condition>
+  <condition property="doSVNChangelog"><and><istrue value="${build.isSVN}"/><istrue value="${build.doChangelog}"/></and></condition>
+
+  <!-- path to the svnant libraries. Usually they will be located in ANT_HOME/lib -->
+  <path id="svnant.classpath" >
+    <fileset dir="${dir.build}/svnant-1.2.0-RC1/lib" erroronmissingdir="false">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <!-- load the svn task -->
+  <typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="svnant.classpath" onerror="ignore"/>
+
+  <!-- load svn properties file -->
+  <property file="BuildSystem/svn.settings" /> 
+
+  <!-- create build.number file if one is missing - just in case -->
+  <propertyfile file="${dir.build}/build.number" comment="Build number file">
+    <entry  key="major.number" type="int" default="1"/>
+    <entry  key="minor.number" type="int" default="1"/>
+    <entry  key="build.number" type="int" default="0"/>
+    <entry  key="patch.number" type="int" default="0"/>
+  </propertyfile>
+
+  <!-- create changelog_cvs.last file if one is missing - just in case -->
+  <propertyfile file="${dir.build}/changelog_cvs.last" comment="Last changelog timestamp">
+    <entry  key="build.lastchangelog" type="string" default="2000 Jan 01 00:00:00"/>
+  </propertyfile>
+
+  <!-- create changelog_svn.last file if one is missing - just in case -->
+  <propertyfile file="${dir.build}/changelog_svn.last" comment="Last changelog timestamp">
+    <entry  key="build.lastchangelog" type="string" default="1"/>
+  </propertyfile>
+
+  <!-- add specific parameters here -->
+
+  <!-- dump own properties -->
+  <echo message="Build steps:"/>
+  <echoproperties prefix="do"/>
+
+  <!-- dump own properties 
+  <echo message="Build directories:"/>
+  <echoproperties prefix="dir."/>
+  <echoproperties prefix="svnant."/>
+  -->
+
+  <!-- perform intialization -->
+  <target name="init" description="Prepare build process" if="doInit">
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${dir.bin}"/>
+    <mkdir dir="${dir.lib}"/>
+  </target>
+
+  <!-- perform source code update from CVS -->
+  <target name="cvs_update" depends="init" description="Update sources from CVS" if="doCVSUpdate">
+    <cvs quiet="true" failonerror="true">
+      <commandline>
+        <argument value="update"/>
+        <argument value="-P"/>
+        <argument value="-d"/>
+      </commandline>
+    </cvs>
+  </target>
+
+  <!-- perform source code update from SVN -->
+  <target name="svn_update" depends="init" description="Update sources from SVN" if="doSVNUpdate">
+    <svn username="${svnant.repository.user}" password="${svnant.repository.passwd}">
+      <update dir="."/>
+    </svn>
+  </target>
+
+  <!-- update build number -->
+  <target name="version_update" depends="cvs_update, svn_update" description="Update build version" if="doVersionUpdate">
+    <propertyfile file="${dir.build}/build.number" comment="Build number file">
+      <entry  key="major.number" type="int" default="1"/>
+      <entry  key="minor.number" type="int" default="1"/>
+      <entry  key="build.number" type="int" operation="+" value="1" default="0"/>
+      <entry  key="patch.number" type="int" default="0"/>
+    </propertyfile>
+  </target>
+
+  <!-- modify Win32 resource header -->
+  <target name="version_constants" depends="version_update" description="Define build variables">
+    <property file="${dir.build}/build.number"/>
+    <property name="build_number" value="${major.number}_${minor.number}_${build.number}_${patch.number}"/>
+  </target>
+
+  <!-- modify Win32 resource header -->
+  <target name="resource_update" depends="version_constants" description="Modify Win32 resource header" if="doResourceUpdate">
+    <!-- modify resource (relevant for Windows only) -->
+    <replaceregexp file="${win32.versionfile}" match="^#define\sMAJOR_VERSION.*$"
+    replace="#define MAJOR_VERSION ${major.number}" byline="true"/>
+    <replaceregexp file="${win32.versionfile}" match="^#define\sMINOR_VERSION.*$"
+    replace="#define MINOR_VERSION ${minor.number}" byline="true"/>
+    <replaceregexp file="${win32.versionfile}" match="^#define\sBUILD_NUMBER.*$"
+    replace="#define BUILD_NUMBER ${build.number}" byline="true"/>
+    <replaceregexp file="${win32.versionfile}" match="^#define\sPATCH_LEVEL.*$"
+    replace="#define PATCH_LEVEL ${patch.number}" byline="true"/>
+    <replaceregexp file="${win32.versionfile}" match="^#define\sFILE_VERSION.*$"
+    replace="#define FILE_VERSION &quot;${major.number}, ${minor.number}, ${build.number}, ${patch.number}&quot;"
+    byline="true"/>
+    <replaceregexp file="${win32.versionfile}" match="^#define\sPRODUCT_VERSION.*$"
+    replace="#define PRODUCT_VERSION &quot;${major.number}, ${minor.number}&quot;"
+    byline="true"/>
+  </target>
+
+  <!-- detect host platform before compilation -->
+  <target name="find_platform" depends="resource_update" description="Find host platform">
+    <condition property="isOsWindows">
+      <and>
+        <os family="windows"/>
+        <or>
+          <os name="Windows 2000"/>
+          <os name="Windows XP"/>
+        </or>
+      </and>
+    </condition>
+    <condition property="isOsUnix">
+      <os family="unix"/>
+    </condition>
+
+    <condition property="doCompileWindows">
+      <and>
+        <istrue value="${isOsWindows}"/>
+        <istrue value="${doCompile}"/>
+      </and>
+    </condition>
+
+    <condition property="doCompileUnix">
+      <and>
+        <istrue value="${isOsUnix}"/>
+        <istrue value="${doCompile}"/>
+      </and>
+    </condition>
+  </target>
+
+  <!-- perform compilation under Windows platform -->
+  <target name="compile_windows" depends="find_platform" description="Compile the source code" if="doCompileWindows">
+    <!-- Compile C++ code - MS Visual Studion Express Edition 2008 specific!!! -->
+    <exec executable="cmd.exe" failonerror="true">
+      <arg value="/c"/>
+      <arg value="${dir.build}\vcexpressbuild.bat"/>
+      <arg value="${win32.solution}"/>
+    </exec>
+  </target>
+
+  <!-- perform compilation under Linux platform -->
+  <target name="compile_unix" depends="find_platform" description="Compile the source code" if="doCompileUnix">
+    <!-- Compile C++ code -->
+  </target>
+
+  <!-- perform commit for modified version files into CVS-->
+  <target name="cvs_version_commit" depends="compile_windows,compile_unix" description="Commit modified files to CVS" if="doCVSVersionCommit">
+    <!-- Commit build number -->
+    <cvs quiet="true" failonerror="true">
+      <commandline>
+        <argument value="-z9"/>
+        <argument value="commit"/>
+        <argument value="-m Build_system_auto_version_update"/>
+        <argument value="${dir.build}/build.number"/>
+        <argument value="${win32.versionfile}"/>
+      </commandline>
+    </cvs>
+  </target>
+
+  <!-- perform commit for modified version files into SVN-->
+  <target name="svn_version_commit" depends="compile_windows,compile_unix" description="Commit modified files to SVN" if="doSVNVersionCommit">
+    <!-- Commit build number -->
+    <svn username="${svnant.repository.user}" password="${svnant.repository.passwd}">
+      <commit message="Build_system_auto_commit">
+        <fileset dir=".">
+          <include name="${dir.build}/build.number"/>
+          <include name="${win32.versionfile}"/>
+        </fileset>
+      </commit>
+    </svn>
+  </target>
+
+  <!-- perform full CVS commit -->
+  <target name="cvs_commit" depends="cvs_version_commit" description="Full CVS commit" if="doCVSCommit">
+    <cvs quiet="true" failonerror="true">
+      <commandline>
+        <argument value="-z9"/>
+        <argument value="commit"/>
+        <argument value="-m Build_system_auto_commit"/>
+      </commandline>
+    </cvs>
+  </target>
+
+  <!-- perform full SVN commit -->
+  <target name="svn_commit" depends="svn_version_commit" description="Full SVN commit" if="doSVNCommit">
+    <svn username="${svnant.repository.user}" password="${svnant.repository.passwd}">
+      <commit dir="." message="Build_system_auto_commit">
+      </commit>
+    </svn>
+  </target>
+
+  <!-- create CVS tag on the source tree -->
+  <target name="cvs_tag" depends="cvs_commit" description="Tag CVS sources" if="doCVSTag">
+    <cvs quiet="true" failonerror="true">
+      <commandline>
+        <argument line="tag"/>
+        <argument line="-F"/>
+        <argument line="build_${build_number}"/>
+      </commandline>
+    </cvs>
+  </target>
+
+  <!-- create SVN tag on the source tree -->
+  <target name="svn_tag" depends="svn_commit" description="Tag SVN sources" if="doSVNTag">
+    <!-- No tag feature for SVN, can create branch instead ?-->
+  </target>
+
+  <!-- grab CVS changelog -->
+  <target name="cvs_changelog" depends="cvs_tag" description="Grab CVS changelog" if="doCVSChangelog">
+    <!-- load changelog_cvs.last file -->
+    <property file="${dir.build}/changelog_cvs.last"/>
+    <!-- grab XML changelog, convert to text and remove XML -->
+    <cvschangelog destfile="${dir.build}/changelog.xml" start="${build.lastchangelog}" failonerror="true"/>
+    <style in="${dir.build}/changelog.xml" out="${dir.build}/changelog.txt" style="${dir.build}/changelog2txt.xsl">
+      <param name="title" expression="${project.fullname} - changelog by automated buildsystem"/>
+    </style>
+    <delete file="${dir.build}/changelog.xml"/>
+    <!-- update the last changelog timestamp -->
+    <tstamp>
+      <format property="currenttimestamp" pattern="yyyy MMM dd HH:mm:ss" locale="en"/>
+    </tstamp>
+    <propertyfile file="${dir.build}/changelog_cvs.last" comment="Last changelog timestamp">
+      <entry  key="build.lastchangelog" type="string" value="${currenttimestamp}"/>
+    </propertyfile>
+  </target>
+
+  <!-- grab SVN changelog -->
+  <target name="svn_changelog" depends="svn_tag" description="Grab SVN changelog" if="doSVNChangelog">
+    <!-- load changelog_svn.last file -->
+    <property file="${dir.build}/changelog_svn.last"/>
+    <!-- No chnage log feature in SVN, so grab diff output instead -->
+    <svn username="${svnant.repository.user}" password="${svnant.repository.passwd}">
+      <diff oldPath="." oldTargetRevision="${build.lastchangelog}" outFile="${dir.build}/changelog.txt"/>
+    </svn>
+    <svn>
+      <wcVersion path="."/>
+    </svn>
+    <propertyfile file="${dir.build}/changelog_svn.last" comment="Last changelog revision">
+      <entry  key="build.lastchangelog" type="string" value="${revision.max}"/>
+    </propertyfile>
+  </target>
+
+  <!-- zip sources package -->
+  <target name="zipsources" depends="cvs_changelog, svn_changelog" description="ZIP sources" if="doZip">
+    <property name="file_name" value="${zip.filename}_${build_number}.zip"/>
+    <zip destfile="${dir.build}/${file_name}" basedir="." whenempty="create"
+    includes="${zip.sources}" excludes="${zip.excludes}"/>
+  </target>
+
+  <!-- send mail notification -->
+  <target name="sendmail" depends="zipsources" description="Send mail notification" if="doMail">
+    <echoproperties prefix="mail."/>
+    <property name="file_name" value="${zip.filename}_${build_number}.zip"/>
+    <property name="mail_subject" value="${project.unixname}:X:${project.packagename}:${build_number}:${file_name}:.zip:Other"/>
+    <mail mailhost="${mail.host}" mailport="${mail.port}" subject="${mail_subject}" messagefile="${dir.build}/mailbody.txt">
+      <from address="${mail.from}"/>
+      <replyto address="vkozhuhov@baymark.com.ua"/>
+      <to address="${mail.to}"/>
+      <cc address="${mail.cc}"/>
+      <fileset dir="${dir.build}">
+        <include name="${file_name}"/>
+        <include name="ChangeLog.txt"/>
+      </fileset>
+    </mail>
+  </target>
+
+  <!-- create installation package -->
+  <target name="dist" depends="sendmail" description="Generate the distribution" >
+    <!-- Create installation - NSIS specific!!! -->
+    <exec executable="cmd.exe" failonerror="true">
+      <arg value="/c"/>
+      <arg value="${dir.build}\nsisbuild.bat"/>
+      <arg value="${dir.setup}\NSISLOG.TXT"/>
+      <arg value="${build_number}"/>
+      <arg value="${dir.setup}\${install.script}"/>
+    </exec>
+  </target>
+
+</project>

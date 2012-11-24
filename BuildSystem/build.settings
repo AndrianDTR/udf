@@ -1,0 +1,67 @@
+#Build settings file
+#Mon Oct 20 17:54:43 EEST 2008
+
+###############################################################################
+# General build properties
+###############################################################################
+project.fullname  =PC Tool
+project.shortname  =
+#project.packagename  =
+#project.cvsmodule =
+
+###############################################################################
+# Environment configuration
+###############################################################################
+build.isCVS             =false
+build.isSVN             =true
+
+###############################################################################
+# Build steps configuration
+###############################################################################
+build.doInit            =true
+build.doUpdate          =true
+build.doVersionUpdate   =true
+build.doResourceUpdate  =true
+build.doCompile         =true
+build.doVersionCommit   =false
+build.doCommit          =false
+build.doTag             =false
+build.doChangelog       =false
+build.doZip             =false
+build.doMail            =false
+
+###############################################################################
+# Build directories
+###############################################################################
+dir.lib     =lib
+dir.bin     =bin
+dir.build   =BuildSystem
+dir.setup   =Setup
+
+###############################################################################
+# Win32 specifics
+###############################################################################
+win32.versionfile =Common/src/BuildVersion.h
+win32.solution = PC-Tools.sln
+#win32.buildtarget =ALL
+
+###############################################################################
+# Mail options
+###############################################################################
+mail.host         =192.168.0.1
+mail.port         =25
+mail.to           =
+mail.cc           =vkozhuhov@baymark.com.ua
+mail.from         =PC Tool build system <vkozhuhov@baymark.com.ua>
+
+###############################################################################
+# Archiving options
+###############################################################################
+zip.sources       =Authentication/**, Common/**, CoreModule/**, DataStorage/**, GUI/**, Logger/**, Navigation/**, PC-Tools.sln, ProtocolModule/**, read.me, Setup/** USB_Driver/**
+zip.excludes      =*.plg, .svn/**, cvs 
+zip.filename      =PCTool_src
+
+###############################################################################
+# Installation options
+###############################################################################
+install.script    =PCTool.nsi
