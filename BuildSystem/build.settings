@@ -4,8 +4,8 @@
 ###############################################################################
 # General build properties
 ###############################################################################
-project.fullname  =PC Tool
-project.shortname  =
+project.fullname  =UDF
+project.shortname  = udf
 #project.packagename  =
 #project.cvsmodule =
 
@@ -13,15 +13,16 @@ project.shortname  =
 # Environment configuration
 ###############################################################################
 build.isCVS             =false
-build.isSVN             =true
+build.isSVN             =false
+build.isGIT             =true
 
 ###############################################################################
 # Build steps configuration
 ###############################################################################
 build.doInit            =true
-build.doUpdate          =true
-build.doVersionUpdate   =true
-build.doResourceUpdate  =true
+build.doUpdate          =false
+build.doVersionUpdate   =false
+build.doResourceUpdate  =false
 build.doCompile         =true
 build.doVersionCommit   =false
 build.doCommit          =false
@@ -33,16 +34,16 @@ build.doMail            =false
 ###############################################################################
 # Build directories
 ###############################################################################
-dir.lib     =lib
-dir.bin     =bin
+dir.lib     =build/lib
+dir.bin     =build/bin
+dir.setup   =build/Setup
 dir.build   =BuildSystem
-dir.setup   =Setup
 
 ###############################################################################
 # Win32 specifics
 ###############################################################################
-win32.versionfile =Common/src/BuildVersion.h
-win32.solution = PC-Tools.sln
+win32.versionfile =common/src/version.h
+win32.solution = build/udf.sln
 #win32.buildtarget =ALL
 
 ###############################################################################
@@ -51,17 +52,17 @@ win32.solution = PC-Tools.sln
 mail.host         =192.168.0.1
 mail.port         =25
 mail.to           =
-mail.cc           =vkozhuhov@baymark.com.ua
-mail.from         =PC Tool build system <vkozhuhov@baymark.com.ua>
+mail.cc           =andrian.yablonsky@gmail.com
+mail.from         =UDF Buil system <andrian.yablonsky@gmail.com>
 
 ###############################################################################
 # Archiving options
 ###############################################################################
-zip.sources       =Authentication/**, Common/**, CoreModule/**, DataStorage/**, GUI/**, Logger/**, Navigation/**, PC-Tools.sln, ProtocolModule/**, read.me, Setup/** USB_Driver/**
-zip.excludes      =*.plg, .svn/**, cvs 
-zip.filename      =PCTool_src
+zip.sources       =common/**, db/**, dbmgr/**, dbtest/**, gui/**, reports/**, reportstest/**, CMakeLists.txt, skating/**, skatingtest/**, tools/**, web/**
+zip.excludes      =*.plg, .git/**
+zip.filename      =UDF_src
 
 ###############################################################################
 # Installation options
 ###############################################################################
-install.script    =PCTool.nsi
+install.script    =UDF.nsi

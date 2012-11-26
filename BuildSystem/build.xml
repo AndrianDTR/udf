@@ -1,8 +1,34 @@
 <project name="buildsystem" default="dist" basedir="..">
 
   <description>
-    PCTool project
+    UDF project
   </description>
+
+<macrodef name = "git">
+	<attribute name = "command" />
+	<attribute name = "dir" default = "" />
+	<element name = "args" optional = "true" />
+	<sequential>
+		<echo message = "git @{command}" />
+		<exec executable = "git" dir = "@{dir}">
+			<arg value = "@{command}" />
+			<args/>
+		</exec>
+	</sequential>
+</macrodef>
+<macrodef name = "git-clone-pull">
+	<attribute name = "repository" />
+	<attribute name = "dest" />
+	<sequential>
+		<git command = "clone">
+			<args>
+				<arg value = "@{repository}" />
+				<arg value = "@{dest}" />
+			</args>
+		</git>
+		<git command = "pull" dir = "@{dest}" />
+	</sequential>
+</macrodef>
 
   <!-- use default properties for this build, if one is not specified -->
   <property name="settings" value="BuildSystem/build.settings"/>
@@ -15,7 +41,7 @@
 
   <!-- load global properties for this build -->
   <property file="${settings}"/>
-  <condition property="isCVS"><istrue value="${build.isCVS}"/></condition>
+  <condition property="isGIT"><istrue value="${build.isGIT}"/></condition>
   <condition property="isSVN"><istrue value="${build.isSVN}"/></condition>
   <condition property="doInit"><istrue value="${build.doInit}"/></condition>
   <condition property="doUpdate"><istrue value="${build.doUpdate}"/></condition>
@@ -28,15 +54,15 @@
   <condition property="doChangelog"><istrue value="${build.doChangelog}"/></condition>
   <condition property="doZip"><istrue value="${build.doZip}"/></condition>
   <condition property="doMail"><istrue value="${build.doMail}"/></condition>
-  <condition property="doCVSUpdate"><and><istrue value="${build.isCVS}"/><istrue value="${build.doUpdate}"/></and></condition>
+  <condition property="doGITUpdate"><and><istrue value="${build.isGIT}"/><istrue value="${build.doUpdate}"/></and></condition>
   <condition property="doSVNUpdate"><and><istrue value="${build.isSVN}"/><istrue value="${build.doUpdate}"/></and></condition>
-  <condition property="doCVSCommit"><and><istrue value="${build.isCVS}"/><istrue value="${build.doCommit}"/></and></condition>
+  <condition property="doGITCommit"><and><istrue value="${build.isGIT}"/><istrue value="${build.doCommit}"/></and></condition>
   <condition property="doSVNCommit"><and><istrue value="${build.isSVN}"/><istrue value="${build.doCommit}"/></and></condition>
-  <condition property="doCVSVersionCommit"><and><istrue value="${build.isCVS}"/><istrue value="${build.doVersionCommit}"/></and></condition>
+  <condition property="doGITVersionCommit"><and><istrue value="${build.isGIT}"/><istrue value="${build.doVersionCommit}"/></and></condition>
   <condition property="doSVNVersionCommit"><and><istrue value="${build.isSVN}"/><istrue value="${build.doVersionCommit}"/></and></condition>
-  <condition property="doCVSTag"><and><istrue value="${build.isCVS}"/><istrue value="${build.doTag}"/></and></condition>
+  <condition property="doGITTag"><and><istrue value="${build.isGIT}"/><istrue value="${build.doTag}"/></and></condition>
   <condition property="doSVNTag"><and><istrue value="${build.isSVN}"/><istrue value="${build.doTag}"/></and></condition>
-  <condition property="doCVSChangelog"><and><istrue value="${build.isCVS}"/><istrue value="${build.doChangelog}"/></and></condition>
+  <condition property="doGITChangelog"><and><istrue value="${build.isGIT}"/><istrue value="${build.doChangelog}"/></and></condition>
   <condition property="doSVNChangelog"><and><istrue value="${build.isSVN}"/><istrue value="${build.doChangelog}"/></and></condition>
 
   <!-- path to the svnant libraries. Usually they will be located in ANT_HOME/lib -->
@@ -61,7 +87,7 @@
   </propertyfile>
 
   <!-- create changelog_cvs.last file if one is missing - just in case -->
-  <propertyfile file="${dir.build}/changelog_cvs.last" comment="Last changelog timestamp">
+  <propertyfile file="${dir.build}/changelog_git.last" comment="Last changelog timestamp">
     <entry  key="build.lastchangelog" type="string" default="2000 Jan 01 00:00:00"/>
   </propertyfile>
 
@@ -89,15 +115,9 @@
     <mkdir dir="${dir.lib}"/>
   </target>
 
-  <!-- perform source code update from CVS -->
-  <target name="cvs_update" depends="init" description="Update sources from CVS" if="doCVSUpdate">
-    <cvs quiet="true" failonerror="true">
-      <commandline>
-        <argument value="update"/>
-        <argument value="-P"/>
-        <argument value="-d"/>
-      </commandline>
-    </cvs>
+  <!-- perform source code update from GIT -->
+  <target name="git_update" depends="init" description="Update sources from GIT" if="doGITUpdate">
+    <git command="pull" />
   </target>
 
   <!-- perform source code update from SVN -->
@@ -108,7 +128,7 @@
   </target>
 
   <!-- update build number -->
-  <target name="version_update" depends="cvs_update, svn_update" description="Update build version" if="doVersionUpdate">
+  <target name="version_update" depends="git_update, svn_update" description="Update build version" if="doVersionUpdate">
     <propertyfile file="${dir.build}/build.number" comment="Build number file">
       <entry  key="major.number" type="int" default="1"/>
       <entry  key="minor.number" type="int" default="1"/>
@@ -148,8 +168,8 @@
       <and>
         <os family="windows"/>
         <or>
-          <os name="Windows 2000"/>
           <os name="Windows XP"/>
+		  <os name="Windows 7"/>
         </or>
       </and>
     </condition>
@@ -187,18 +207,15 @@
     <!-- Compile C++ code -->
   </target>
 
-  <!-- perform commit for modified version files into CVS-->
-  <target name="cvs_version_commit" depends="compile_windows,compile_unix" description="Commit modified files to CVS" if="doCVSVersionCommit">
+  <!-- perform commit for modified version files into GIT -->
+  <target name="git_version_commit" depends="compile_windows,compile_unix" description="Commit modified files to GIT" if="doGITVersionCommit">
     <!-- Commit build number -->
-    <cvs quiet="true" failonerror="true">
+    <git quiet="true" failonerror="true">
       <commandline>
-        <argument value="-z9"/>
         <argument value="commit"/>
-        <argument value="-m Build_system_auto_version_update"/>
-        <argument value="${dir.build}/build.number"/>
-        <argument value="${win32.versionfile}"/>
+        <argument value="-am 'Build_system_auto_version_update ${dir.build}/build.number ${win32.versionfile}'"/>
       </commandline>
-    </cvs>
+    </git>
   </target>
 
   <!-- perform commit for modified version files into SVN-->
@@ -214,15 +231,14 @@
     </svn>
   </target>
 
-  <!-- perform full CVS commit -->
-  <target name="cvs_commit" depends="cvs_version_commit" description="Full CVS commit" if="doCVSCommit">
-    <cvs quiet="true" failonerror="true">
+  <!-- perform full GIT commit -->
+  <target name="git_commit" depends="git_version_commit" description="Full GIT commit" if="doGITCommit">
+    <git quiet="true" failonerror="true">
       <commandline>
-        <argument value="-z9"/>
         <argument value="commit"/>
-        <argument value="-m Build_system_auto_commit"/>
+        <argument value="-am 'Build_system_auto_commit'"/>
       </commandline>
-    </cvs>
+    </git>
   </target>
 
   <!-- perform full SVN commit -->
@@ -233,15 +249,15 @@
     </svn>
   </target>
 
-  <!-- create CVS tag on the source tree -->
-  <target name="cvs_tag" depends="cvs_commit" description="Tag CVS sources" if="doCVSTag">
-    <cvs quiet="true" failonerror="true">
+  <!-- create GIT tag on the source tree -->
+  <target name="git_tag" depends="git_commit" description="Tag GIT sources" if="doGITTag">
+    <git quiet="true" failonerror="true">
       <commandline>
         <argument line="tag"/>
         <argument line="-F"/>
         <argument line="build_${build_number}"/>
       </commandline>
-    </cvs>
+    </git>
   </target>
 
   <!-- create SVN tag on the source tree -->
@@ -250,11 +266,11 @@
   </target>
 
   <!-- grab CVS changelog -->
-  <target name="cvs_changelog" depends="cvs_tag" description="Grab CVS changelog" if="doCVSChangelog">
+  <target name="git_changelog" depends="git_tag" description="Grab GIT changelog" if="doGITChangelog">
     <!-- load changelog_cvs.last file -->
-    <property file="${dir.build}/changelog_cvs.last"/>
+    <property file="${dir.build}/changelog_git.last"/>
     <!-- grab XML changelog, convert to text and remove XML -->
-    <cvschangelog destfile="${dir.build}/changelog.xml" start="${build.lastchangelog}" failonerror="true"/>
+    <gitchangelog destfile="${dir.build}/changelog.xml" start="${build.lastchangelog}" failonerror="true"/>
     <style in="${dir.build}/changelog.xml" out="${dir.build}/changelog.txt" style="${dir.build}/changelog2txt.xsl">
       <param name="title" expression="${project.fullname} - changelog by automated buildsystem"/>
     </style>
@@ -263,7 +279,7 @@
     <tstamp>
       <format property="currenttimestamp" pattern="yyyy MMM dd HH:mm:ss" locale="en"/>
     </tstamp>
-    <propertyfile file="${dir.build}/changelog_cvs.last" comment="Last changelog timestamp">
+    <propertyfile file="${dir.build}/changelog_hit.last" comment="Last changelog timestamp">
       <entry  key="build.lastchangelog" type="string" value="${currenttimestamp}"/>
     </propertyfile>
   </target>
@@ -285,7 +301,7 @@
   </target>
 
   <!-- zip sources package -->
-  <target name="zipsources" depends="cvs_changelog, svn_changelog" description="ZIP sources" if="doZip">
+  <target name="zipsources" depends="git_changelog, svn_changelog" description="ZIP sources" if="doZip">
     <property name="file_name" value="${zip.filename}_${build_number}.zip"/>
     <zip destfile="${dir.build}/${file_name}" basedir="." whenempty="create"
     includes="${zip.sources}" excludes="${zip.excludes}"/>
@@ -298,7 +314,7 @@
     <property name="mail_subject" value="${project.unixname}:X:${project.packagename}:${build_number}:${file_name}:.zip:Other"/>
     <mail mailhost="${mail.host}" mailport="${mail.port}" subject="${mail_subject}" messagefile="${dir.build}/mailbody.txt">
       <from address="${mail.from}"/>
-      <replyto address="vkozhuhov@baymark.com.ua"/>
+      <replyto address="andrian.yablonsky@gmail.com"/>
       <to address="${mail.to}"/>
       <cc address="${mail.cc}"/>
       <fileset dir="${dir.build}">

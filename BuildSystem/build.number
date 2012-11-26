@@ -1,6 +1,7 @@
 #Build number file
+#Mon, 26 Nov 2012 01:16:28 +0200
 #Tue Jan 13 19:19:18 EET 2009
-build.number=12
+build.number=1
 minor.number=1
 patch.number=0
 major.number=0

@@ -1,3 +1,3 @@
-SET TEMP=r:\
-SET TMP=r:\
+SET TEMP=a:\
+SET TMP=a:\
 ant -logfile build_log.txt
