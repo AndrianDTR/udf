@@ -1,0 +1,68 @@
+#Build settings file
+#Mon Oct 20 17:54:43 EEST 2008
+
+###############################################################################
+# General build properties
+###############################################################################
+project.fullname  =UDF
+project.shortname  = udf
+#project.packagename  =
+#project.cvsmodule =
+
+###############################################################################
+# Environment configuration
+###############################################################################
+build.isCVS             =false
+build.isSVN             =false
+build.isGIT             =true
+
+###############################################################################
+# Build steps configuration
+###############################################################################
+build.doInit            =true
+build.doUpdate          =false
+build.doVersionUpdate   =false
+build.doResourceUpdate  =false
+build.doCompile         =true
+build.doVersionCommit   =false
+build.doCommit          =false
+build.doTag             =false
+build.doChangelog       =false
+build.doZip             =false
+build.doMail            =false
+
+###############################################################################
+# Build directories
+###############################################################################
+dir.lib     =build/lib
+dir.bin     =build/bin
+dir.setup   =build/Setup
+dir.build   =BuildSystem
+
+###############################################################################
+# Win32 specifics
+###############################################################################
+win32.versionfile =common/src/version.h
+win32.solution = build/udf.sln
+#win32.buildtarget =ALL
+
+###############################################################################
+# Mail options
+###############################################################################
+mail.host         =192.168.0.1
+mail.port         =25
+mail.to           =
+mail.cc           =andrian.yablonsky@gmail.com
+mail.from         =UDF Buil system <andrian.yablonsky@gmail.com>
+
+###############################################################################
+# Archiving options
+###############################################################################
+zip.sources       =common/**, db/**, dbmgr/**, dbtest/**, gui/**, reports/**, reportstest/**, CMakeLists.txt, skating/**, skatingtest/**, tools/**, web/**
+zip.excludes      =*.plg, .git/**
+zip.filename      =UDF_src
+
+###############################################################################
+# Installation options
+###############################################################################
+install.script    =UDF.nsi
