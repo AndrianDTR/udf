@@ -740,7 +740,7 @@ iiMap udfSkatingRules::Rule7B(int place, iList tList, int** sumTable, int** rngT
 	iiMap res;
 	Enter();
 
-	int t, p, j, k, n;
+	int t, p, j;
 	p = place+1;
 	
 	if(p < m_nTeams)
