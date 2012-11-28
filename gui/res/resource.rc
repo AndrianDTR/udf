@@ -1,0 +1,83 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+#include "BuildVersion.h"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+1 VERSIONINFO
+ FILEVERSION MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER, PATCH_LEVEL
+ PRODUCTVERSION MAJOR_VERSION, MINOR_VERSION
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "042204b0"
+        BEGIN
+            VALUE "FileDescription", "PC Tool UI Executable"
+            VALUE "FileVersion", FILE_VERSION
+            VALUE "InternalName", "GUI"
+            VALUE "LegalCopyright", "Copyright (C) 2008"
+            VALUE "OriginalFilename", "PCTool.exe"
+            VALUE "ProductName", "PCTool"
+            VALUE "ProductVersion", PRODUCT_VERSION
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x422, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_MSG_WARNING         ICON                    "warning.ico"
+IDI_MSG_CONFIRMATION    ICON                    "question.ico"
+IDI_MSG_LOGIN           ICON                    "password.ico"
+IDI_ICON_LOGIN          ICON                    "login.ico"
+IDI_ICON_SAVEALLDATA    ICON                    "savealldata.ico"
+IDI_ICON_ANTENNA_INFO   ICON                    "antinfo.ico"
+IDI_ICON_ANTENNA_SELECT ICON                    "antselect.ico"
+IDI_ICON_FUNC_TEST      ICON                    "devfunctest.ico"
+IDI_ICON_DTC_OVERVIEW   ICON                    "dtcoverview.ico"
+IDI_ICON_DTC_LIST       ICON                    "dtclist.ico"
+IDI_ICON_EPG_DATA       ICON                    "epgdata.ico"
+IDI_ICON_GPS_DATA       ICON                    "gpsdata.ico"
+IDI_ICON_GPS_INIT       ICON                    "gpsinit.ico"
+IDI_ICON_EWS_DATA       ICON                    "emergency.ico"
+IDI_ICON_PROGRAMDATA    ICON                    "programdata.ico"
+IDI_ICON_DIVERSITY      ICON                    "divercity.ico"
+IDI_ICON_POWERSUPPLY    ICON                    "power.ico"
+IDI_ICON_SOURCE         ICON                    "source.ico"
+IDI_ICON_STATIONLIST    ICON                    "statlist.ico"
+IDI_ICON_TELETEXT       ICON                    "teletext.ico"
+IDI_ICON_TEMPANDFAN     ICON                    "tempandfan.ico"
+IDI_ICON_MODULECTRL     ICON                    "tunerctrl.ico"
+IDI_ICON_TERMINALMODE   ICON                    "terminalmode.ico"
+IDI_ICON_TERMINAL       ICON                    "terminal.ico"
+IDI_ICON_SEARCHMODULES  ICON                    "searchtuner.ico"
+IDI_ICON_TVMODULEDATA   ICON                    "tvmoddata.ico"
+IDI_ICON_FLASH          ICON                    "flash.ico"
+IDI_ICON_COMMENT        ICON                    "comment.ico"
+IDI_ICON_TESTDRIVE      ICON                    "testdrive.ico"
+IDI_ICON_DOWNLOAD       ICON                    "download.ico"
+
+
+
