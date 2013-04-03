@@ -1,116 +1,133 @@
-#                                               -*- Autoconf -*-
-# Process this file with autoconf to produce a configure script.
-AC_PREREQ([2.65])
-AC_INIT([udf], [0.01], [andrian.yablonsky@gmail.com])
+# Autoconf
+AC_PREREQ(2.61)
+m4_include([version.m4])
+AC_INIT([udf], VERSION_NUMBER)
+AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_HEADERS([config.h])
+
+# Check System
+AC_C_BIGENDIAN
 AC_CANONICAL_SYSTEM
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+# Automake
+AM_INIT_AUTOMAKE([subdir-objects -Wall foreign tar-pax 1.11])
+AM_SILENT_RULES([yes])
 
-# Checks for programs.
-AC_PROG_CXX
-AC_PROG_CPP
-
-LT_INIT([disable-shared])
+# Libtool
+LTVER="1:0:0"
+AC_SUBST(LTVER)
+LT_INIT([shared])
 
 abs_builddir=`pwd`
 abs_srcdir=`cd $srcdir && pwd`
-abs_bin=$abs_srcdir/bin
-mkdir -p $abs_bin
 
-export abs_bin=$abs_bin
-export abs_builddir=$abs_builddir
-export abs_srcdir=$abs_srcdir
+# Check CPU and CPU Endianness
+AM_CONDITIONAL([TARGET_CPU_X86],[test "x$target_cpu" = "xi686" -o "x$target_cpu" = "xi386" -o "x$target_cpu" = "xx86_64"])
+AM_CONDITIONAL([TARGET_CPU_LE], [test "x$ac_cv_c_bigendian" = "xno"])
 
-AC_ARG_WITH([wxWidgets],
-            [AS_HELP_STRING([--with-wxWidgets],[Compile wxWidgets libraries [default=no]])],
-            [],[with_wxWidgets=yes])
-
-# Checks for library functions.
-AC_CHECK_LIB([pthread], [pthread_create], [], [AC_MSG_ERROR([pthread library was not found])])
-
-# Check packages installed
-#AC_PKG_SQLITE
-
-# Check headers
-#AC_CHECK_HEADERS([gtk/gtk.h], [], [AC_MSG_ERROR([gtk/gtk.h header was not found. please install libgtk*-dev])])
-
-######################################
-
-AC_CONFIG_HEADERS([config.h])
-
-######################################
-
-AC_C_BIGENDIAN
-
-######################################
-target_os_windows=no
+# Check OS
 target_os_linux=no
+target_os_windows=no
 
 case "$target_os" in
-windows*)
-        target_os_windows=yes
-	AC_DEFINE([BUILD4WIN],[1],[BUILD4WIN])
-	AC_MSG_CHECKING(compiling for windows)
-	;;
 linux*)
-        target_os_linux=yes
+	target_os_linux=yes
 	AC_MSG_CHECKING(compiling for Linux)
-	AC_DEFINE([BUILD4LIN],[1],[BUILD4LIN])
+	AC_DEFINE([OS_LINUX],[1],[OS_LINUX])
+	;;
+windows*)
+	target_os_windows=yes
+	AC_MSG_CHECKING(compiling for Windows)
+	AC_DEFINE([OS_WINDOWS],[1],[OS_WINDOWS])
 	;;
 esac
 
-AM_CONDITIONAL([TARGET_OS_WINDOWS],[test "x$target_os_windows" = "xyes"])
 AM_CONDITIONAL([TARGET_OS_LINUX],[test "x$target_os_linux" = "xyes"])
+AM_CONDITIONAL([TARGET_OS_WINDOWS],[test "x$target_os_windows" = "xyes"])
 
-######################################
-AC_SUBST(UDF_WITH_CPPFLAGS)
-AC_SUBST(UDF_WITH_LDADD)
-AC_SUBST(UDF_WITH_CXXFLAGS)
+# Check Programs
+AC_PROG_CC
+AC_PROG_CXX
+BB_ENABLE_DOXYGEN
 
-AC_SUBST(UDF_WXSRC)
-AC_SUBST(UDF_WXVER)
+# 3rd party
+udf_3rdparty_srcdir="$abs_srcdir/3rd-party"
+export udf_3rdparty_srcdir
 
-AC_SUBST(TOP_SRCDIR)
-AC_SUBST(TOP_BUILDDIR)
+udf_3rdparty_builddir="$abs_builddir/3rd-party"
+export udf_3rdparty_builddir
 
-UDF_WITH_CXXFLAGS="$UDF_WITH_CXXFLAGS -I$abs_srcdir/common/src"
+ac_configure_args="$ac_configure_args udf_3rdparty_srcdir='$udf_3rdparty_srcdir' udf_3rdparty_builddir='$udf_3rdparty_builddir'"
 
-AM_CONDITIONAL([WITH_WXWIDGETS],[test "x$with_wxWidgets" = "xyes"])
-AS_IF([test "x$with_wxWidgets" = "xyes"],[
-    AC_DEFINE([CONFIG_WXWIDGETS],[1],[Compile wxWidgets libraries])
-    wxTar=`ls $abs_srcdir/3rd_party/wxWidgets*.tar.*`
-    UDF_WXSRC=`echo $wxTar|awk -F.tar '{print $1}'`
-    UDF_WXVER=`echo wxWidgets-2.9.3|awk -F- '{print $2}'|awk -F. '{print $1"."$2}'`
-    AS_IF([ ! test -d "$UDF_WXSRC/buildwx" ],[
-    	echo ""
-    	echo "Unpack wxWidgets sources..."
-        `tar -xvf $wxTar -C $abs_srcdir/3rd_party/`
-        AS_IF([ ! test -d "$UDF_WXSRC" ],[
-            `echo "Error! wxWidgets-XXX dir not created." && exit 1`
-        ])
-        `mkdir -p $UDF_WXSRC/buildwx`
-        echo "Finish"
-    ])
-    UDF_WITH_CXXFLAGS="$UDF_WITH_CXXFLAGS -L $UDF_WXSRC/buildwx/lib -I$UDF_WXSRC/buildwx/lib/wx/include/gtk2-unicode-static-$UDF_WXVER -I$UDF_WXSRC/include"
-    UDF_WITH_CPPFLAGS="$UDF_WITH_CPPFLAGS -D_FILE_OFFSET_BITS=64 -D__WXGTK__"
-    export UDF_WXSRC="$UDF_WXSRC"
-	export UDF_WXVER="$UDF_WXVER"
+# Modules
+AM_CONDITIONAL([ENABLE_DOXYGEN],[test "x$enable_doxygen" = "xyes"])
+
+# 3rd party build
+AC_ARG_WITH([udf-3rd-party],
+	[AS_HELP_STRING([--with-udf-3rd-party]
+		, [include udf-3rd-party (yes|no) [default=yes]]
+		)]
+	, []
+	, [with_udf_3rd_party=yes]
+)
+AM_CONDITIONAL([WITH_UDF_3RD_PARTY], [test "x$with_udf_3rd_party" != "xno"])
+
+# build target
+AC_ARG_WITH([udf-bin],
+	[AS_HELP_STRING([--with-udb-bin],[include udf-bin (yes|no) [default=yes]])],
+	[], [with_udf_bin=yes])
+AM_CONDITIONAL([WITH_UDF_BIN], [test "x$with_udf_bin" != "xno"])
+
+# build test
+AC_ARG_WITH([udf-featuretest],
+	[AS_HELP_STRING([--with-udf-featuretest],[include udf-featuretest (yes|no) [default=no]])],
+	[], [with_udf_featuretest=no])
+AM_CONDITIONAL([WITH_UDF_FEATURETEST], [test "x$with_udf_featuretest" != "xno"])
+AS_IF([test "x$with_udf_featuretest" != "xno"],[
+	AC_CONFIG_FILES([test/featuretest/Makefile])
 ])
 
-export UDF_WITH_CPPFLAGS="$UDF_WITH_CPPFLAGS"
-export UDF_WITH_LDADD="$UDF_WITH_LDADD"
-export UDF_WITH_CXXFLAGS="-Wall $UDF_WITH_CXXFLAGS"
+#AC_ARG_ENABLE([gcov],
+#	[AC_HELP_STRING([--enable-gcov],[turn on code coverage analysis tools [default=no]])])
+#AM_CONDITIONAL([ENABLE_GCOV],[test "x$enable_gcov" = "xyes"])
+#
+## Check progs
+#AC_CHECK_PROGS([LCOV], [lcov], [false])
+#AC_CHECK_PROGS([GENHTML], [genhtml], [false])
+#AC_CHECK_PROGS([XMLLINT], [xmllint], [false])
 
-export TOP_SRCDIR="$abs_srcdir"
-export TOP_BUILDDIR="$abs_builddir"
+## gcov
+#dnl Check for --enable-gcov and add appropriate flags for gcc
+#if test "x$enable_gcov" = "xyes"; then
+#	if test "x$LCOV" = "xfalse"; then
+#		AC_MSG_ERROR([lcov binary was not found])
+#	fi
+#	if test "x$GENHTML" = "xfalse";then
+#		AC_MSG_ERROR([genhtml binary was not found])
+#	fi
+#	export COVFLAGS="--coverage"
+#fi
+#
+## xmllint
+#if test "x$XMLLINT" = "xfalse"; then
+#	AC_MSG_ERROR([xmllint binary was not found])
+#fi
 
+# Configuration Files
+#AC_CONFIG_SUBDIRS([src])
+AS_IF([test "x$with_udf_3rd_party" != "xno"],[AC_CONFIG_SUBDIRS([3rd-party])])
 
 AC_CONFIG_FILES([
 	Makefile
-	3rd_party/Makefile
-	common/Makefile
-	dbmgr/Makefile
-	gui/Makefile
+	src/Makefile
+	test/Makefile
+	tools/Makefile
 	])
-	
+
+#AC_CONFIG_FILES([
+#	doc/Doxyfile
+#	doc/Makefile
+#	])
+
 AC_OUTPUT
