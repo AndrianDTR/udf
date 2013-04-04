@@ -3,7 +3,7 @@ AC_PREREQ(2.61)
 m4_include([version.m4])
 AC_INIT([udf], VERSION_NUMBER)
 AC_CONFIG_AUX_DIR(config)
-#AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 
 # Check System
@@ -19,8 +19,8 @@ LTVER="1:0:0"
 AC_SUBST(LTVER)
 LT_INIT([shared])
 
-abs_builddir=`pwd`
-abs_srcdir=`cd $srcdir && pwd`
+export abs_builddir=`pwd`
+export abs_srcdir=`cd $srcdir && pwd`
 
 # Check CPU and CPU Endianness
 AM_CONDITIONAL([TARGET_CPU_X86],[test "x$target_cpu" = "xi686" -o "x$target_cpu" = "xi386" -o "x$target_cpu" = "xx86_64"])
@@ -50,15 +50,6 @@ AM_CONDITIONAL([TARGET_OS_WINDOWS],[test "x$target_os_windows" = "xyes"])
 AC_PROG_CC
 AC_PROG_CXX
 BB_ENABLE_DOXYGEN
-
-# 3rd party
-udf_3rdparty_srcdir="$abs_srcdir/3rd_party"
-export udf_3rdparty_srcdir
-
-udf_3rdparty_builddir="$abs_builddir/3rd_party"
-export udf_3rdparty_builddir
-
-ac_configure_args="$ac_configure_args udf_3rdparty_srcdir='$udf_3rdparty_srcdir' udf_3rdparty_builddir='$udf_3rdparty_builddir'"
 
 # Modules
 AM_CONDITIONAL([ENABLE_DOXYGEN],[test "x$enable_doxygen" = "xyes"])
@@ -116,7 +107,16 @@ AS_IF([test "x$with_udf_featuretest" != "xno"],[
 
 # Configuration Files
 #AC_CONFIG_SUBDIRS([src])
-AS_IF([test "x$with_udf_3rd_party" != "xno"],[AC_CONFIG_SUBDIRS([3rd_party])])
+echo "All0 QQQQQQQQQQQ" `pwd`
+AS_IF([test "x$with_udf_3rd_party" != "xno"],[
+	export udf_3rdparty_srcdir="$abs_srcdir/3rd_party"
+	export udf_3rdparty_builddir="$abs_builddir/3rd_party"
+	ac_configure_args="$ac_configure_args udf_3rdparty_srcdir='$udf_3rdparty_srcdir' udf_3rdparty_builddir='$udf_3rdparty_builddir'"
+
+	AC_CONFIG_SUBDIRS([3rd_party])
+])
+
+echo "All1 QQQQQQQQQQQ" `pwd`
 
 AC_CONFIG_FILES([
 	Makefile
@@ -124,9 +124,11 @@ AC_CONFIG_FILES([
 	tools/Makefile
 	])
 
+echo "All2 QQQQQQQQQQQ" `pwd`
 #AC_CONFIG_FILES([
 #	doc/Doxyfile
 #	doc/Makefile
 #	])
 
 AC_OUTPUT
+

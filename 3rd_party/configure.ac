@@ -51,21 +51,19 @@ AC_PROG_CC
 AC_PROG_CXX
 
 # More configure flags
-ac_configure_args="$ac_configure_args --enable-shared"
-
 export CXXFLAGS="$CXXFLAGS -DNDEBUG -g0 -O2"
 export CFLAGS="$CFLAGS -DNDEBUG -g0 -O2"
 
 # Packages
 AC_BUILD_WXWIDGETS
 AC_BUILD_BOOST
-#AC_BUILD_MYSQLCPPCON
-#AC_BUILD_CPPCON
-
+AC_BUILD_MYSQLCPPCON
+echo "3rd All0 QQQQQQQQQ" `pwd`
 # Configuration Files
 AC_CONFIG_FILES([
 	Makefile
-	])
+])
 
+echo "3rd All QQQQQQQQQ" `pwd`
 AC_OUTPUT
 

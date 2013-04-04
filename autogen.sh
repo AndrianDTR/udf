@@ -10,7 +10,6 @@ do
 	fi
 done
 
-mode="env"
 branch="unknown"
 VERFILE="version.num"
 
@@ -26,12 +25,10 @@ if [ "$REVISION" == "" ] && [ "$BUILDNUMBER" == "" ]; then
 		REVISION=$tag
 		BUILDNUMBER=`cat $VERFILE`
 		BUILDNUMBER=$[$BUILDNUMBER + 1]
-		mode="git"
 	fi
 
 	if [ "$REVISION" == "" ]; then
 		REVISION="unknown"
-		mode="unknown"
 	fi
 
 	if [ "$BUILDNUMBER" == "" ]; then

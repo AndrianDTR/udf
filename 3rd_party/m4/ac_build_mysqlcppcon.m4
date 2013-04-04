@@ -1,34 +1,39 @@
 # SYNOPSIS
 #
-#   AC_PKG_WXWIDGETS
+#   AC_PKG_MYSQLCPPCON
 #
 # DESCRIPTION
 #
 #   This macro defines external libraries configuration.
 
-AC_DEFUN([AC_BUILD_WXWIDGETS],[
-	wxFileMask=$udf_3rdparty_srcdir/wxWidgets*.tar.bz2
-	wxFile=`ls $wxFileMask` 
-	wxDir=$udf_3rdparty_srcdir/wxWidgets
+AC_DEFUN([AC_BUILD_MYSQLCPPCON],[
+	cppConFileMask=$udf_3rdparty_srcdir/mysql-connector-c++-*.tar.gz
+	cppConFile=`ls $cppConFileMask` 
+	cppConDir=$udf_3rdparty_builddir/mysql-connector-c++
+	PWD=`pwd`
 
-	AS_IF([ test -f $wxFile ], [
-		wxExtDir=`ls $wxFile | sed 's/.tar.bz2/ /g'`
-		wxVer=`echo $wxExtDir | sed 's/.*\///g' | sed 's/wxWidgets-//g'`
+	AS_IF([ test -f $cppConFile ], [
+		cppConExtDir=`ls $cppConFile | sed 's/.tar.gz/ /g'`
+		cppConVer=`echo $cppConExtDir | sed 's/.*\///g' | sed 's/mysql-connector-c++-//g'`
 
-		AS_IF([ test -d $wxDir ], [], [			
-			tar -xf $wxFile 
-			mv "wxWidgets-$wxVer" $wxDir
+		AS_IF([ test -d $cppConDir ], [], [			
+			tar -xf $cppConFile 
+			mv "mysql-connector-c++-$cppConVer" $cppConDir
 		])
 	
-	], [ AC_MSG_ERROR([cannot find a wxWidgets package]) ])
+	], [ AC_MSG_ERROR([cannot find a MySQL C++ Connector package]) ])
 	
-	AM_CONDITIONAL([WITH_WXWIDGETS], [ test -d $wxDir ])
+	AM_CONDITIONAL([WITH_MYSQLCPPCON], [ test -d $cppConDir ])
 	
-	AS_IF([ test -d $wxDir ], [
-		ac_configure_args="$ac_configure_args --disable-shared --enable-monolithic --enable-unicode --with-libpng=builtin --with-libxpm=builtin --with-zlib=builtin"
-		AC_CONFIG_SUBDIRS([ wxWidgets ])
+	AS_IF([ test -d $cppConDir ], [
+		AC_MSG_NOTICE([MySQL C++ Connector library])
+		cd $cppConDir
+		cmake -DBOOST_ROOT=$BOOSTROOT ./ 
+		echo "AAAAAAAAAAAA" `pwd` $PWD
+		cd $PWD
 	])
 
-	export WXVER=$wxVer
+	export CPPCONVER=$cppConVer
+	export CPPCONDIR=$cppConDir
 ])
 
