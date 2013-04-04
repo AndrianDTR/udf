@@ -3,7 +3,7 @@ AC_PREREQ(2.61)
 m4_include([version.m4])
 AC_INIT([udf], VERSION_NUMBER)
 AC_CONFIG_AUX_DIR(config)
-AC_CONFIG_MACRO_DIR([m4])
+#AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 
 # Check System
@@ -52,10 +52,10 @@ AC_PROG_CXX
 BB_ENABLE_DOXYGEN
 
 # 3rd party
-udf_3rdparty_srcdir="$abs_srcdir/3rd-party"
+udf_3rdparty_srcdir="$abs_srcdir/3rd_party"
 export udf_3rdparty_srcdir
 
-udf_3rdparty_builddir="$abs_builddir/3rd-party"
+udf_3rdparty_builddir="$abs_builddir/3rd_party"
 export udf_3rdparty_builddir
 
 ac_configure_args="$ac_configure_args udf_3rdparty_srcdir='$udf_3rdparty_srcdir' udf_3rdparty_builddir='$udf_3rdparty_builddir'"
