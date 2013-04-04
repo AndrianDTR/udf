@@ -1,0 +1,6 @@
+autoreconf --force --install -I config -I m4 -I `pwd`/m4-extra
+
+cd build 
+rm -rf *
+../configure
+cd ..
