@@ -57,16 +57,13 @@ export CXXFLAGS="$CXXFLAGS -DNDEBUG -g0 -O2"
 export CFLAGS="$CFLAGS -DNDEBUG -g0 -O2"
 
 # Packages
-AC_SVN
 AC_BUILD_WXWIDGETS
-AC_BUILD_BOOST
-AC_BUILD_CPPCON
+#AC_BUILD_BOOST
+#AC_BUILD_CPPCON
 
 # Configuration Files
 AC_CONFIG_FILES([
 	Makefile
-	libcli/Makefile
-	sqlite3/Makefile
 	])
 
 AC_OUTPUT

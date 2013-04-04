@@ -13,13 +13,8 @@ done
 mode="env"
 branch="unknown"
 VERFILE="version.num"
-WXVER=2.9.3
 
-if [ ! -f $VERSION]; then
-	touch $VERFILE
-fi
-
-if [ ! -d wx]; then
+if [ ! -f $VERFILE ]; then
 	touch $VERFILE
 fi
 
@@ -52,7 +47,7 @@ fi
 
 echo "PWD     = $PWD"
 echo "BRANCH  = $BRANCH"
-echo "VERSION = $REVISION.$BUILDNUMBER
+echo "VERSION = $REVISION.$BUILDNUMBER"
 
 # update generated configuration files
 autoreconf --force --install -I config -I m4 -I `pwd`/m4-extra

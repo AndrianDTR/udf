@@ -85,7 +85,7 @@ AC_ARG_WITH([udf-featuretest],
 	[], [with_udf_featuretest=no])
 AM_CONDITIONAL([WITH_UDF_FEATURETEST], [test "x$with_udf_featuretest" != "xno"])
 AS_IF([test "x$with_udf_featuretest" != "xno"],[
-	AC_CONFIG_FILES([test/featuretest/Makefile])
+	AC_CONFIG_FILES([test/Makefile])
 ])
 
 #AC_ARG_ENABLE([gcov],
@@ -116,12 +116,11 @@ AS_IF([test "x$with_udf_featuretest" != "xno"],[
 
 # Configuration Files
 #AC_CONFIG_SUBDIRS([src])
-AS_IF([test "x$with_udf_3rd_party" != "xno"],[AC_CONFIG_SUBDIRS([3rd-party])])
+AS_IF([test "x$with_udf_3rd_party" != "xno"],[AC_CONFIG_SUBDIRS([3rd_party])])
 
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
-	test/Makefile
 	tools/Makefile
 	])
 

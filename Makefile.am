@@ -6,10 +6,14 @@ DIST_SUBDIRS =
 EXTRA_DIST = README README.build
 
 if WITH_UDF_3RD_PARTY
-SUBDIRS += 3rd-party
+SUBDIRS += 3rd_party
 endif
 
-SUBDIRS += src test tools
+if WITH_UDF_FEATURETEST
+SUBDIRS += test
+endif
+
+SUBDIRS += src tools
 
 #if ENABLE_DOXYGEN
 #SUBDIRS += doc
