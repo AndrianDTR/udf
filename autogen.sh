@@ -15,7 +15,7 @@ TAG=`git describe --abbrev=0 --always`
 MAJOR=`echo $TAG | awk -F. '{print $1}'`
 MINOR=`echo $TAG | awk -F. '{print $2}'`
 EXT=`echo $TAG | awk -F. '{print $3}'`
-
+BUILDNUMBER=0
 if [ "x$MAJOR" = "x" ]; then
 	MAJOR=0
 fi
@@ -28,9 +28,14 @@ if [ "x$EXT" = "x" ]; then
 	EXT=0
 fi
 
+bld=`cat version.num`
+if [ $? -eq 0 ]; then
+	BUILDNUMBER=$bld
+fi
+
 export BRANCH
 export REVISION=$MAJOR.$MINOR.$EXT
-export BUILDNUMBER=`cat version.num`
+export BUILDNUMBER
 export VERSION="$MAJOR.$MINOR.$EXT b$BUILDNUMBER"
 echo
 echo "PWD     = $PWD"
