@@ -1,0 +1,152 @@
+<table border="0" width="100%" class="team-info tBordered" cellspacing="0" cellpadding="5px">
+<tr>
+	<th colspan="2"><div class="table-title"><nobr>Team info:</nobr></div></th>
+</tr>
+
+<tr>
+	<td colspan="2"><span class="col-title">Name:</span> 
+	<input type="hidden" id="team-id" value="{$team.id}" />
+	<input type="hidden" id="cs-id" value="{$team.csId}" />
+	<input type="hidden" id="cl-id" value="{$team.clId}" />
+	<input type="text" class="input-text" name="name" id="team-name" value="{$team.name}" /></td>
+</tr>
+<tr>
+	<td width="50%"><div class="col-title">Categories: 
+		<select name="category" class="input-combo" id="category">
+		{foreach from=$csCategories item=it}
+			<option value="{$it.id}">{$it.name}</option>
+		{/foreach}
+		</select> 
+		Composition name: <input type="text" class="input-text" name="composition-name" id="composition-name" />
+		<span class="button button-small b-add-category">Add</span>
+		</div><div class="col-data">
+		{foreach from=$team.categories item=it}
+			<a href="#" class="rm-category link underline-hover" id="{$it.id}">[-] {$it.name} ({$it.composition})</a><br/>
+		{/foreach}
+	</div></td>
+	<td width="50%"><div class="col-title">Dancers: 
+		<select name="dancer" class="input-combo" id="dancer">
+		{foreach from=$clDancers item=it}
+			<option value="{$it.id}">{$it.name}</option>
+		{/foreach}
+		</select>
+		<span class="button button-small b-add-dancer">Add</span>
+		</div><div class="col-data">
+		{foreach from=$team.dancers item=it}
+			<a href="#" class="rm-dancer link underline-hover" id="{$it.id}">[-] {$it.name}</a><br/>
+		{/foreach}
+	</div></td>	
+</tr>
+<tr>
+	<td colspan="2"><div class="buttons-bar" >
+	<span class="button button-small b-save">Save</span>
+	<span class="button button-small b-back">Back</span>
+	</div></td>
+</tr>
+</table>
+<script type="text/javascript">
+{literal}
+$(document).ready(function () {
+	String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g,"");
+	};
+	$(".rm-category").each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			id = $(this).attr('id');
+			teamId = $("#team-id").val();
+			$.getJSON("?a=gc&m=team_info&id="+teamId+"&cat=1&rm="+id, function(data){
+				if(0 == data.err)
+				{
+					$("#content").html(data.data);
+				}
+			});
+		});
+	});
+	$(".rm-dancer").each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			teamId = $("#team-id").val();
+			id = $(this).attr('id');
+			$.getJSON("?a=gc&m=team_info&id="+teamId+"&dancer=1&rm="+id, function(data){
+				if(0 == data.err)
+				{
+					$("#content").html(data.data);
+				}
+			});
+		});
+	});
+	$(".b-back").each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			csId = $("#cs-id").val();
+			$.getJSON("?a=gc&m=cs_teams&id="+csId, function(data){
+				if(0 == data.err)
+				{
+					$("#content").html(data.data);
+				}
+			});
+		});
+	});
+	$(".b-save").each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			teamId = $("#team-id").val();
+			name = $("#team-name").val();
+			$.getJSON("?a=gc&m=team_info&id="+teamId+"&upd=1&name="+name, function(data){
+				if(0 == data.err)
+				{
+					$("#content").html(data.data);
+				}
+				else
+				{
+					alert(data.data);
+				}
+			});
+		});
+	});
+	$(".b-add-dancer").each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			teamId = $("#team-id").val();
+			dancerId = $("#dancer option:selected").val();
+			$.getJSON("?a=gc&m=team_info&id="+teamId+"&dancer=1&add="+dancerId, function(data){
+				if(0 == data.err)
+				{
+					$("#content").html(data.data);
+				}
+				else
+				{
+					alert(data.data);
+				}
+			});
+		});
+	});
+	$(".b-add-category").each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			teamId = $("#team-id").val();
+			categoryId = $("#category option:selected").val();
+			name = trim($("#composition-name").val());
+			if(!name)
+			{	
+				alert("Composition name is empty.");
+			}
+			else
+			{
+				$.getJSON("?a=gc&m=team_info&id="+teamId+"&cat=1&add="+categoryId+"&name="+name, function(data){
+					if(0 == data.err)
+					{
+						$("#content").html(data.data);
+					}
+					else
+					{
+						alert(data.data);
+					}
+				});
+			}
+		});
+	});
+});
+{/literal}
+</script>

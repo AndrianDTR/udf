@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="dbmgr" InternalType="Library">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00010001N0005Debug000000000000]]>
+    </Plugin>
+  </Plugins>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="src">
+    <File Name="src/dbconnection.cpp"/>
+    <File Name="src/dbconnection.h"/>
+    <File Name="src/dberrors.h"/>
+    <File Name="src/dbtable.h"/>
+    <File Name="src/tagecategory.cpp"/>
+    <File Name="src/tagecategory.h"/>
+    <File Name="src/dberrors.cpp"/>
+    <File Name="src/dbutils.cpp"/>
+    <File Name="src/dbutils.h"/>
+    <File Name="src/tcategories.cpp"/>
+    <File Name="src/tcategories.h"/>
+    <File Name="src/tchampionship.cpp"/>
+    <File Name="src/tchampionship.h"/>
+    <File Name="src/tchampionshipcategories.cpp"/>
+    <File Name="src/tchampionshipcategories.h"/>
+    <File Name="src/tchampionshipjudgesmark.cpp"/>
+    <File Name="src/tchampionshipjudgesmark.h"/>
+    <File Name="src/tchampionshipjudgesteam.cpp"/>
+    <File Name="src/tchampionshipjudgesteam.h"/>
+    <File Name="src/tchampionshipteam.cpp"/>
+    <File Name="src/tchampionshipteam.h"/>
+    <File Name="src/tchampionshipteamcategories.cpp"/>
+    <File Name="src/tchampionshipteamcategories.h"/>
+    <File Name="src/tchampionshiptype.cpp"/>
+    <File Name="src/tchampionshiptype.h"/>
+    <File Name="src/tcities.cpp"/>
+    <File Name="src/tcities.h"/>
+    <File Name="src/tclubs.cpp"/>
+    <File Name="src/tclubs.h"/>
+    <File Name="src/tcountries.cpp"/>
+    <File Name="src/tcountries.h"/>
+    <File Name="src/tdancers.cpp"/>
+    <File Name="src/tdancers.h"/>
+    <File Name="src/tdancetypes.cpp"/>
+    <File Name="src/tdancetypes.h"/>
+    <File Name="src/tgender.cpp"/>
+    <File Name="src/tgender.h"/>
+    <File Name="src/tjudges.cpp"/>
+    <File Name="src/tjudges.h"/>
+    <File Name="src/tjudgescategorieshave.cpp"/>
+    <File Name="src/tjudgescategorieshave.h"/>
+    <File Name="src/tliga.cpp"/>
+    <File Name="src/tliga.h"/>
+    <File Name="src/ttreiners.cpp"/>
+    <File Name="src/ttreiners.h"/>
+    <File Name="src/tchampionshipteamdancers.cpp"/>
+    <File Name="src/tchampionshipteamdancers.h"/>
+    <File Name="src/tchampionshiptour.cpp"/>
+    <File Name="src/tchampionshiptour.h"/>
+    <File Name="src/tpaymenthistory.cpp"/>
+    <File Name="src/tpaymenthistory.h"/>
+    <File Name="src/dbtable.cpp"/>
+    <File Name="src/db.h"/>
+    <File Name="src/tcsblocks.h"/>
+    <File Name="src/tstaff.cpp"/>
+    <File Name="src/tuserroles.cpp"/>
+    <File Name="src/ttourtypes.h"/>
+    <File Name="src/ttourtypes.cpp"/>
+    <File Name="src/tstaff.h"/>
+    <File Name="src/tuserroles.h"/>
+    <File Name="src/tcsblocks.cpp"/>
+    <File Name="src/tcsblocksj2c.cpp"/>
+    <File Name="src/tcsblocksj2c.h"/>
+    <File Name="src/tchampionshiptourpass.cpp"/>
+    <File Name="src/tchampionshiptourpass.h"/>
+  </VirtualDirectory>
+  <Settings Type="Static Library">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="">
+        <IncludePath Value="$(WorkspacePath)/gui/res"/>
+        <IncludePath Value="$(WorkspacePath)/gui/src"/>
+        <IncludePath Value="$(WorkspacePath)/dbmgr/src"/>
+        <IncludePath Value="$(WorkspacePath)/common/src"/>
+        <IncludePath Value="$(WorkspacePath)/3rd_party/wxWidgets-2.9.3/buildgtk/lib/wx/include/gtk2-unicode-static-2.9"/>
+        <IncludePath Value="$(WorkspacePath)/3rd_party/wxWidgets-2.9.3/include"/>
+        <IncludePath Value="$(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/driver"/>
+        <IncludePath Value="$(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn"/>
+        <IncludePath Value="/usr/include"/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g" C_Options="-g" Required="no" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="" Required="no"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="yes">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand>make -j8</BuildCommand>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand>cmake ../</MakefileGenerationCommand>
+        <ThirdPartyToolName>Other</ThirdPartyToolName>
+        <WorkingDirectory>$(WorkspacePath)/build</WorkingDirectory>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths>$(WorkspacePath)/gui/res
+$(WorkspacePath)/gui/src
+$(WorkspacePath)/dbmgr/src
+$(WorkspacePath)/common/src
+$(WorkspacePath)/3rd_party/wxWidgets-2.9.3/buildgtk/lib/wx/include/gtk2-unicode-static-2.9
+$(WorkspacePath)/3rd_party/wxWidgets-2.9.3/include
+$(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/driver
+$(WorkspacePath)/3rd_party/mysql-connector-c++-1.1.0/cppconn
+/usr/include</SearchPaths>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="" C_Options="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
+</CodeLite_Project>

@@ -1,0 +1,43 @@
+<table border="0" width="100%" class="championship-list tBordered" cellspacing="0" cellpadding="5px">
+<tr>
+	<th colspan="3"><div class="table-title"><nobr>Avaliable championships:</nobr></div></th>
+</tr>
+
+{foreach from=$csList item=it}
+
+<tr>
+	<td><div class="col-title">Date:</div><div class="col-data">{$it.date}</div></td>
+	<td colspan="2"><div class="col-title">Name:</div><div class="col-data"><a href="#" class="cs_teams link" id="{$it.id}">{$it.name}</a></div></td>
+</tr>
+<tr>
+	<td width="1px"><div class="col-title"><nobr>Registration period:</nobr></div><div class="col-data"><nobr>{$it.reg_open} - {$it.reg_close}</nobr></div></td>
+	<td width="1px"><div class="col-title"><nobr>Type:</nobr></div><div class="col-data"><nobr>{$it.type}</nobr></div></td>
+	<td><div class="col-title">Categories:</div><div class="col-data">{", "|implode:$it.categories_list}</div></td>
+</tr>
+<tr>
+	<td colspan="3"><div class="col-title"><nobr>Additional info:</nobr></div><div class="col-data">{$it.additional_info}</div></td>
+</tr>
+
+<tr>
+	<td colspan="3"></td>
+</tr>
+{/foreach}
+</table>
+<script type="text/javascript">
+{literal}
+$(document).ready(function () {
+	$(".cs_teams").each(function(i){
+		$(this).click(function(e){
+			e.preventDefault();
+			id = $(this).attr('id');
+			$.getJSON("?a=gc&m=cs_teams&id="+id, function(data){
+				if(0 == data.err)
+				{
+					$("#content").html(data.data);
+				}
+			});
+		});
+	});
+});
+{/literal}
+</script>

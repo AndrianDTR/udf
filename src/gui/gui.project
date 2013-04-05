@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="gui" InternalType="GUI">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00010001N0005Debug000000000000]]>
+    </Plugin>
+  </Plugins>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="src">
+    <File Name="src/udfDancersTeamMngr.h"/>
+    <File Name="src/udfMainFrameBase.h"/>
+    <File Name="src/udfClubsMngrDlg.h"/>
+    <File Name="src/udfDirectorInfo.cpp"/>
+    <File Name="src/udfJudgesMngr.cpp"/>
+    <File Name="src/udfDancersMngrDlg.h"/>
+    <File Name="src/gui.fbp"/>
+    <File Name="src/cdbmanager.cpp"/>
+    <File Name="src/udfCategoriesMngrDlg.cpp"/>
+    <File Name="src/udfDancersTeamMngr.cpp"/>
+    <File Name="src/udfChampionshipJudgesTeamMngrDlg.h"/>
+    <File Name="src/udfMainFrameBase.cpp"/>
+    <File Name="src/udfJudgesMngr.h"/>
+    <File Name="src/udfCategoriesMngrDlg.h"/>
+    <File Name="src/udfStartNumberAssignDlg.h"/>
+    <File Name="src/udfClubsMngrDlg.cpp"/>
+    <File Name="src/udf.h"/>
+    <File Name="src/udfChampionshipCategoriesMngrDlg.cpp"/>
+    <File Name="src/udfAccountInfo.cpp"/>
+    <File Name="src/main.cpp"/>
+    <File Name="src/udfStartNumberAssignDlg.cpp"/>
+    <File Name="src/main.h"/>
+    <File Name="src/udfAccountInfo.h"/>
+    <File Name="src/udfDirectorInfo.h"/>
+    <File Name="src/udfChampionshipCategoriesMngrDlg.h"/>
+    <File Name="src/cdbmanager.h"/>
+    <File Name="src/udfChampionshipJudgesTeamMngrDlg.cpp"/>
+    <File Name="src/udf.cpp"/>
+    <File Name="src/udfDancersMngrDlg.cpp"/>
+    <File Name="src/udfCodeDialog.cpp"/>
+    <File Name="src/udfCodeDialog.h"/>
+    <File Name="src/udfCitiesMngr.cpp"/>
+    <File Name="src/udfCitiesMngr.h"/>
+    <File Name="src/udfCountriesMngr.cpp"/>
+    <File Name="src/udfCountriesMngr.h"/>
+    <File Name="src/udfChampionshipTypeMngr.cpp"/>
+    <File Name="src/udfChampionshipTypeMngr.h"/>
+    <File Name="src/udfexceptions.h"/>
+    <File Name="src/udfexceptions.cpp"/>
+    <File Name="src/string_def.h"/>
+    <File Name="src/udfTrainersMngrDlg.h"/>
+    <File Name="src/udfTrainersMngrDlg.cpp"/>
+    <File Name="src/udfAddTeamCategory.cpp"/>
+    <File Name="src/udfAddTeamCategory.h"/>
+    <File Name="src/udfuiutils.h"/>
+    <File Name="src/udfuiutils.cpp"/>
+    <File Name="src/udfCsTours.cpp"/>
+    <File Name="src/udfCsTours.h"/>
+    <File Name="src/udfJudgeMark.cpp"/>
+    <File Name="src/udfJudgeMark.h"/>
+    <File Name="src/udfCsTourReport.cpp"/>
+    <File Name="src/udfCsTourReport.h"/>
+    <File Name="src/udfReportPreview.cpp"/>
+    <File Name="src/udfReportPreview.h"/>
+    <File Name="src/udfPayment.cpp"/>
+    <File Name="src/udfPayment.h"/>
+    <File Name="src/udfPaymentHistory.cpp"/>
+    <File Name="src/udfPaymentHistory.h"/>
+    <File Name="src/udfUserRolesMgr.cpp"/>
+    <File Name="src/udfBlockInfo.h"/>
+    <File Name="src/udfCsInfo.cpp"/>
+    <File Name="src/udfTourInfo.cpp"/>
+    <File Name="src/udfCategoryInfo.h"/>
+    <File Name="src/udfSettings.h"/>
+    <File Name="src/udfStaff.h"/>
+    <File Name="src/udfStaff.cpp"/>
+    <File Name="src/udfCategoryInfo.cpp"/>
+    <File Name="src/udfBlockInfo.cpp"/>
+    <File Name="src/udfUserRolesMgr.h"/>
+    <File Name="src/udfCsInfo.h"/>
+    <File Name="src/udfSettings.cpp"/>
+    <File Name="src/udfTourInfo.h"/>
+    <File Name="src/udftimectrl.h"/>
+    <File Name="src/udftimectrl.cpp"/>
+    <File Name="src/udfJudgeCategories.h"/>
+    <File Name="src/udfJudgeCategories.cpp"/>
+    <File Name="src/udfFinalMarks.cpp"/>
+    <File Name="src/udfFinalMarks.h"/>
+    <File Name="src/udfsettingsbase.h"/>
+    <File Name="src/udfsettingsbase.cpp"/>
+    <File Name="src/udfuicommon.h"/>
+    <File Name="src/udfLoginDlg.cpp"/>
+    <File Name="src/udfLoginDlg.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="res">
+    <File Name="res/button_money.png"/>
+    <File Name="res/button_move_up10.png"/>
+    <File Name="res/button_payments.png"/>
+    <File Name="res/button_mark.png"/>
+    <File Name="res/button_tour_edit.png"/>
+    <File Name="res/button_report.png"/>
+    <File Name="res/icon-database.png"/>
+    <File Name="res/icon_championship.png"/>
+    <File Name="res/button_move_down10.png"/>
+    <File Name="res/button_move_down.png"/>
+    <File Name="res/button_plus.png"/>
+    <File Name="res/button_minus.png"/>
+    <File Name="res/button_tour_remove.png"/>
+    <File Name="res/button_move_up.png"/>
+    <File Name="res/button_tour_add.png"/>
+    <File Name="res/button_find_next.png"/>
+    <File Name="res/button_find_random.png"/>
+    <File Name="res/button_delete.png"/>
+    <File Name="res/button_assign_followed.png"/>
+    <File Name="res/button_assign_random.png"/>
+    <File Name="res/button_assign.png"/>
+  </VirtualDirectory>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-O0;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes)" C_Options="-g;-O0;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes)" Required="no" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <Preprocessor Value="__WX__"/>
+      </Compiler>
+      <Linker Options="$(shell wx-config --debug=yes --libs --unicode=yes)" Required="no"/>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(WorkspacePath)/build/bin" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/build/bin" PauseExecWhenProcTerminates="no"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      
+      
+      ]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="yes">
+        <RebuildCommand>cd ..;./build</RebuildCommand>
+        <CleanCommand>make clean</CleanCommand>
+        <BuildCommand>make -j8</BuildCommand>
+        <PreprocessFileCommand>g++</PreprocessFileCommand>
+        <SingleFileCommand>g++</SingleFileCommand>
+        <MakefileGenerationCommand>cmake ../</MakefileGenerationCommand>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory>$(WorkspacePath)/build</WorkingDirectory>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths>$(WorkspacePath)/gui/res
+$(WorkspacePath)/gui/src
+$(WorkspacePath)/dbmgr/src
+$(WorkspacePath)/common/src
+$(WorkspacePath)/build/3rd_party/wx_widgets-prefix/src/wxWidgets-2.9.4/include
+$(WorkspacePath)/build/3rd_party/wx_widgets-prefix/src/wx_widgets-build/lib/wx/include/gtk2-unicode-static-2.9/wx
+$(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/driver
+$(WorkspacePath)/build/3rd_party/mysql_connector-prefix/src/mysql_connector/cppconn
+/usr/include</SearchPaths>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O2;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no)" C_Options="-O2;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no)" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <Preprocessor Value="__WX__"/>
+      </Compiler>
+      <Linker Options="-s;$(shell wx-config --debug=no --libs --unicode=yes)" Required="yes"/>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+  <Dependencies Name="Release"/>
+  <Dependencies Name="Debug"/>
+</CodeLite_Project>

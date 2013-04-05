@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="db" InternalType="">
+  <Description/>
+  <Dependencies/>
+  <Settings Type="Static Library">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -Wall" C_Options="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="-O0" Required="yes">
+        <LibraryPath Value="."/>
+        <LibraryPath Value="Debug"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="./Debug" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Workspace Settings&gt;" DbgSetName="&lt;Use Global Settings&gt;">
+        <![CDATA[
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no">
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+  <VirtualDirectory Name="udf">
+    <File Name="udf/dancers.sql"/>
+    <File Name="udf/cities.sql"/>
+    <File Name="udf/age_code.sql"/>
+    <File Name="udf/championship_team.sql"/>
+    <File Name="udf/championship.sql"/>
+    <File Name="udf/championship_judges_team.sql"/>
+    <File Name="udf/dance_types.sql"/>
+    <File Name="udf/championship_categories.sql"/>
+    <File Name="udf/championship_judges_mark.sql"/>
+    <File Name="udf/judges_categories_have.sql"/>
+    <File Name="udf/categories.sql"/>
+    <File Name="udf/championshit_team_categories.sql"/>
+    <File Name="udf/treners.sql"/>
+    <File Name="udf/gender.sql"/>
+    <File Name="udf/liga.sql"/>
+    <File Name="udf/countries.sql"/>
+    <File Name="udf/age_category.sql"/>
+    <File Name="udf/clubs.sql"/>
+    <File Name="udf/judges_categories_name.sql"/>
+    <File Name="udf/championship_type.sql"/>
+    <File Name="udf/judges.sql"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="db">
+    <File Name="all.sql"/>
+  </VirtualDirectory>
+  <Dependencies Name="Debug"/>
+</CodeLite_Project>
