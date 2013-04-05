@@ -54,16 +54,18 @@ AC_PROG_CXX
 export CXXFLAGS="$CXXFLAGS -DNDEBUG -g0 -O2"
 export CFLAGS="$CFLAGS -DNDEBUG -g0 -O2"
 
+export curWD=`pwd`
+
 # Packages
 AC_BUILD_WXWIDGETS
 AC_BUILD_BOOST
 AC_BUILD_MYSQLCPPCON
-echo "3rd All0 QQQQQQQQQ" `pwd`
+cd $curWD
+
 # Configuration Files
 AC_CONFIG_FILES([
 	Makefile
 ])
 
-echo "3rd All QQQQQQQQQ" `pwd`
 AC_OUTPUT
 

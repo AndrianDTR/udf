@@ -26,13 +26,12 @@ AC_DEFUN([AC_BUILD_BOOST],[
 	
 	AS_IF([ test -d $boostDir ], [
 		AC_MSG_NOTICE([BOOST library])
-		PWD=`pwd`
-		cd $boostDir
-		./bootstrap.sh 
-		cd $PWD
+		#cd $boostDir 
+		#./bootstrap.sh
 	])
 
 	export BOOSTVER=`echo $boostVer | sed 's/\_/\./g'`
 	export BOOSTROOT=$boostDir
+	cd $curWD
 ])
 

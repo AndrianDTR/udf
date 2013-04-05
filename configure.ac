@@ -107,7 +107,6 @@ AS_IF([test "x$with_udf_featuretest" != "xno"],[
 
 # Configuration Files
 #AC_CONFIG_SUBDIRS([src])
-echo "All0 QQQQQQQQQQQ" `pwd`
 AS_IF([test "x$with_udf_3rd_party" != "xno"],[
 	export udf_3rdparty_srcdir="$abs_srcdir/3rd_party"
 	export udf_3rdparty_builddir="$abs_builddir/3rd_party"
@@ -116,15 +115,12 @@ AS_IF([test "x$with_udf_3rd_party" != "xno"],[
 	AC_CONFIG_SUBDIRS([3rd_party])
 ])
 
-echo "All1 QQQQQQQQQQQ" `pwd`
-
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
 	tools/Makefile
 	])
 
-echo "All2 QQQQQQQQQQQ" `pwd`
 #AC_CONFIG_FILES([
 #	doc/Doxyfile
 #	doc/Makefile

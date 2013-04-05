@@ -11,4 +11,5 @@ fi
 cd build 
 rm -rf *
 ../configure
+make
 cd ..

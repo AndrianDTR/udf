@@ -10,7 +10,6 @@ AC_DEFUN([AC_BUILD_MYSQLCPPCON],[
 	cppConFileMask=$udf_3rdparty_srcdir/mysql-connector-c++-*.tar.gz
 	cppConFile=`ls $cppConFileMask` 
 	cppConDir=$udf_3rdparty_builddir/mysql-connector-c++
-	PWD=`pwd`
 
 	AS_IF([ test -f $cppConFile ], [
 		cppConExtDir=`ls $cppConFile | sed 's/.tar.gz/ /g'`
@@ -27,13 +26,13 @@ AC_DEFUN([AC_BUILD_MYSQLCPPCON],[
 	
 	AS_IF([ test -d $cppConDir ], [
 		AC_MSG_NOTICE([MySQL C++ Connector library])
-		cd $cppConDir
-		cmake -DBOOST_ROOT=$BOOSTROOT ./ 
-		echo "AAAAAAAAAAAA" `pwd` $PWD
-		cd $PWD
+		#cd $cppConDir
+		#cmake -DBOOST_ROOT=$BOOSTROOT ./
 	])
 
 	export CPPCONVER=$cppConVer
 	export CPPCONDIR=$cppConDir
+	cd $curWD
 ])
+
 

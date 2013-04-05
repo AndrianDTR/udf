@@ -10,41 +10,33 @@ do
 	fi
 done
 
-branch="unknown"
-VERFILE="version.num"
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+TAG=`git describe --abbrev=0 --always`
+MAJOR=`echo $TAG | awk -F. '{print $1}'`
+MINOR=`echo $TAG | awk -F. '{print $2}'`
+EXT=`echo $TAG | awk -F. '{print $3}'`
 
-if [ ! -f $VERFILE ]; then
-	touch $VERFILE
+if [ "x$MAJOR" = "x" ]; then
+	MAJOR=0
 fi
 
-if [ "$REVISION" == "" ] && [ "$BUILDNUMBER" == "" ]; then
-	tag=`git describe --abbrev=0 --always`
-	BRANCH=`git rev-parse --abbrev-ref HEAD`
-
-	if [ "$tag" != "" ]; then
-		REVISION=$tag
-		BUILDNUMBER=`cat $VERFILE`
-		BUILDNUMBER=$[$BUILDNUMBER + 1]
-	fi
-
-	if [ "$REVISION" == "" ]; then
-		REVISION="unknown"
-	fi
-
-	if [ "$BUILDNUMBER" == "" ]; then
-		BUILDNUMBER="1"
-	fi
-
-	echo $BUILDNUMBER > $VERFILE
-	
-	export BRANCH
-	export REVISION
-	export BUILDNUMBER
+if [ "x$MINOR" = "x" ]; then
+	MINOR=0
 fi
 
+if [ "x$EXT" = "x" ]; then
+	EXT=0
+fi
+
+export BRANCH
+export REVISION=$MAJOR.$MINOR.$EXT
+export BUILDNUMBER=`cat version.num`
+export VERSION="$MAJOR.$MINOR.$EXT b$BUILDNUMBER"
+echo
 echo "PWD     = $PWD"
 echo "BRANCH  = $BRANCH"
-echo "VERSION = $REVISION.$BUILDNUMBER"
+echo "VERSION = $VERSION"
+echo
 
 # update generated configuration files
 autoreconf --force --install -I config -I m4 -I `pwd`/m4-extra

@@ -2,6 +2,17 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS =
 DIST_SUBDIRS =
+SRCDIR = $(srcdir)
+BUILDDIR = $(builddir)
+
+VERFILE = $(SRCDIR)/version.num
+
+BUILT_SOURCES =
+
+update-ver:
+	$(SRCDIR)/update-ver.sh $(VERFILE)
+
+all-local: update-ver
 
 EXTRA_DIST = README.build
 

@@ -26,12 +26,11 @@ AC_DEFUN([AC_BUILD_WXWIDGETS],[
 	
 	AS_IF([ test -d $wxDir ], [
 		AC_MSG_NOTICE([wxWidgets library])
-		PWD=`pwd`
-		cd $wxDir
-		./configure --disable-shared --enable-monolithic --enable-unicode --with-libpng=builtin --with-libxpm=builtin --with-zlib=builtin
-		cd $PWD
+		#cd $wxDir
+		#./configure --disable-shared --enable-monolithic --enable-unicode --with-libpng=builtin --with-libxpm=builtin --with-zlib=builtin
 	])
 	export WXDIR=$wxDir
 	export WXVER=$wxVer
+	cd $curWD
 ])
 
