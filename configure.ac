@@ -118,10 +118,15 @@ AS_IF([test "x$with_udf_3rd_party" != "xno"],[
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
+	src/dbmgr/Makefile
 	tools/Makefile
 	])
 
 #AC_CONFIG_FILES([
+#	src/gui/Makefile
+#	src/reports/Makefile
+#	src/skating/Makefile
+
 #	doc/Doxyfile
 #	doc/Makefile
 #	])

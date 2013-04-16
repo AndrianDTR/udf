@@ -1,4 +1,4 @@
 
-#SUBDIRS = dbmgr
+SUBDIRS = dbmgr
 	
 

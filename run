@@ -1,6 +1,6 @@
 #! /bin/bash
 
-git clean -d -f -q -e version.num
+#git clean -d -f -q -e version.num
 
 if [ ! -d build ]; then
 	mkdir build
