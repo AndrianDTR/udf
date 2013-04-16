@@ -1,7 +1,7 @@
 #ifndef __tCountries_h__
 #define __tCountries_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CCountriesTable : public CDbTable
 {

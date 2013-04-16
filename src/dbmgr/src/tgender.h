@@ -1,7 +1,7 @@
 #ifndef __tGender_h__
 #define __tGender_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CGenderTable : public CDbTable
 {

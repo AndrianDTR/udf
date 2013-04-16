@@ -1,7 +1,7 @@
 #ifndef __tStaff_h__
 #define __tStaff_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CStaffTable : public CDbTable
 {

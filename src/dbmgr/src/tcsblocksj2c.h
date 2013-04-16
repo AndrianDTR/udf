@@ -1,7 +1,7 @@
 #ifndef __tCsBlockJ2C_h__
 #define __tCsBlockJ2C_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CCsBlockJ2CTable : public CDbTable
 {

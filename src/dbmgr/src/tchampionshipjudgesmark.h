@@ -1,7 +1,7 @@
 #ifndef __tChampionshipJudgesMark_h__
 #define __tChampionshipJudgesMark_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CChampionshipJudgesMarkTable : public CDbTable
 {

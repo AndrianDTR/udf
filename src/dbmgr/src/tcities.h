@@ -1,7 +1,7 @@
 #ifndef __tCities_h__
 #define __tCities_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CCitiesTable : public CDbTable
 {

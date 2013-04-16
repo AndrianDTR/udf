@@ -1,7 +1,7 @@
 #ifndef __tPaymentHistory_h__
 #define __tPaymentHistory_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CPaymentHistoryTable : public CDbTable
 {

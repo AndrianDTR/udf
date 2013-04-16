@@ -1,7 +1,7 @@
 #ifndef __tClubs_h__
 #define __tClubs_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CClubsTable : public CDbTable
 {

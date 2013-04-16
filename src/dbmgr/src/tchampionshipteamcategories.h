@@ -1,7 +1,7 @@
 #ifndef __tChampionshipTeamCategories_h__
 #define __tChampionshipTeamCategories_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CChampionshipTeamCategoriesTable : public CDbTable
 {

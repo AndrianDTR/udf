@@ -1,7 +1,7 @@
 #ifndef __tDancetypes_h__
 #define __tDancetypes_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CDanceTypesTable : public CDbTable
 {

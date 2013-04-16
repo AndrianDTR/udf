@@ -1,7 +1,7 @@
 #ifndef __tUserRoles_h__
 #define __tUserRoles_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CUserRolesTable : public CDbTable
 {

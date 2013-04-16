@@ -1,7 +1,7 @@
 #ifndef __tJedges_h__
 #define __tJedges_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CJudgesTable : public CDbTable
 {

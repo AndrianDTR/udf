@@ -1,7 +1,7 @@
 #ifndef __tJedgesCategoriesHave_h__
 #define __tJedgesCategoriesHave_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CJudgesCategoriesHaveTable : public CDbTable
 {

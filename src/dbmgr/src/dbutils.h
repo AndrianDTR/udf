@@ -1,7 +1,7 @@
 #ifndef __udfutils_h__
 #define __udfutils_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 typedef std::list<unsigned char> 				tCList;
 typedef std::list<unsigned char>::iterator 		tCListIt;

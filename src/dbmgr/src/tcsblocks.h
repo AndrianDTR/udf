@@ -1,7 +1,7 @@
 #ifndef __tCsBlocks_h__
 #define __tCsBlocks_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CCsBlocksTable : public CDbTable
 {

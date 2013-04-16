@@ -1,7 +1,7 @@
 #ifndef __tDancers_h__
 #define __tDancers_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CDancersTable : public CDbTable
 {

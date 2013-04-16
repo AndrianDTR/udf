@@ -1,7 +1,7 @@
 #ifndef __tTourTypes_h__
 #define __tTourTypes_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CTourTypesTable : public CDbTable
 {

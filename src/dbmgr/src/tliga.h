@@ -1,7 +1,7 @@
 #ifndef __tLiga_h__
 #define __tLiga_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CLigaTable : public CDbTable
 {

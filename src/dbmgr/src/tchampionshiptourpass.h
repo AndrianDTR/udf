@@ -1,7 +1,7 @@
 #ifndef __tCChampionshipTourPassTable_h__
 #define __tCChampionshipTourPassTable_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CChampionshipTourPassTable : public CDbTable
 {

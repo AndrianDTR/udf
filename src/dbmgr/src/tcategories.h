@@ -1,7 +1,7 @@
 #ifndef __tCategories_h__
 #define __tCategories_h__
 
-#include "db.h"
+#include "dbmgr.h"
 
 class CCategoriesTable : public CDbTable
 {
