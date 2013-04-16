@@ -6,6 +6,8 @@ libdbmgrdir = $(includedir)/dbmgr/src
 libdbmgr_HEADERS = \
 	dbmgr.h
 
+INCLUDES = -I$(top_srcdir)/../include
+
 CSRCS = 
 HSRCS = 
 
