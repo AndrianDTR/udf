@@ -24,11 +24,14 @@ AC_DEFUN([AC_BUILD_WXWIDGETS],[
 	
 	AM_CONDITIONAL([WITH_WXWIDGETS], [ test -d $wxDir ])
 	
-	AS_IF([ test -d $wxDir ], [
-		AC_MSG_NOTICE([wxWidgets library])
-		#cd $wxDir
-		#./configure --disable-shared --enable-monolithic --enable-unicode --with-libpng=builtin --with-libxpm=builtin --with-zlib=builtin
+	AS_IF([ test -f $wxDir/lib/libwx_gtk3u-2.9.a ], [], [
+		AS_IF([ test -d $wxDir ], [
+			AC_MSG_NOTICE([wxWidgets library])
+			#cd $wxDir
+			#./configure --disable-shared --enable-monolithic --enable-unicode --with-libpng=builtin --with-libxpm=builtin --with-zlib=builtin
+		])			
 	])
+
 	export WXDIR=$wxDir
 	export WXVER=$wxVer
 	cd $curWD

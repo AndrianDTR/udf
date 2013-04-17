@@ -24,12 +24,13 @@ AC_DEFUN([AC_BUILD_MYSQLCPPCON],[
 	
 	AM_CONDITIONAL([WITH_MYSQLCPPCON], [ test -d $cppConDir ])
 	
-	AS_IF([ test -d $cppConDir ], [
-		AC_MSG_NOTICE([MySQL C++ Connector library])
-		#cd $cppConDir
-		#cmake -DBOOST_ROOT=$BOOSTROOT ./
+	AS_IF([ test -f $cppConDir/driver/libmysqlcppconn-static.a ], [], [
+		AS_IF([ test -d $cppConDir ], [
+			AC_MSG_NOTICE([MySQL C++ Connector library])
+			#cd $cppConDir
+			#cmake -DBOOST_ROOT=$BOOSTROOT ./
+		])
 	])
-
 	export CPPCONVER=$cppConVer
 	export CPPCONDIR=$cppConDir
 	cd $curWD

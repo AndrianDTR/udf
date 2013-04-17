@@ -1,12 +1,12 @@
 
-AM_CPPFLAGS = 
+AM_CPPFLAGS = -I$(top_srcdir)/include
 
 libdbmgrdir = $(includedir)/dbmgr/src
 
 libdbmgr_HEADERS = \
-	dbmgr.h
+	src/dbmgr.h
 
-INCLUDES = -I$(top_srcdir)/../include
+#INCLUDES = -I$(top_srcdir)/include
 
 CSRCS = 
 HSRCS = 
@@ -91,6 +91,8 @@ libdbmgr_la_SOURCES = \
 	$(CSRCS) 
 
 
+all-local: 
+	echo "******************* $(top_srcdir) ***************"
 #EXTRA_DIST = \
 #	clitest.c clitest.txt \
 #	libcli.spec COPYING README Makefile

@@ -9,7 +9,16 @@ fi
 ./autogen.sh
 
 cd build 
-rm -rf *
-../configure
+
+if [[ $@ == **rf** ]]; then
+    	echo "Clean build directory..."
+	rm -rf *
+fi
+
+if [[ $@ == **c** ]]; then
+    	echo "Reconfigure build..."
+	../configure
+fi
+
 make
 cd ..
