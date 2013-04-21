@@ -1,10 +1,16 @@
 # Autoconf
 AC_PREREQ(2.61)
 m4_include([version.m4])
-AC_INIT([udf], VERSION_NUMBER)
+AC_INIT([udf], UDF_VERSION)
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
+
+AC_DEFINE([UDF_VERSION_MAJOR],		[UDF_MAJOR],		[Major version number])
+AC_DEFINE([UDF_VERSION_MINOR],		[UDF_MINOR],		[Minor version number])
+AC_DEFINE([UDF_VERSION_EXT],		[UDF_EXT],		[Version number extension])
+AC_DEFINE([UDF_VERSION_BUILDNUMBER],	[UDF_BUILDNUMBER],	[Number of build])
+AC_DEFINE([UDF_VERSION_HASH],		["UDF_HASH"],		[Last commit hash code])
 
 # Check System
 AC_C_BIGENDIAN

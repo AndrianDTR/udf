@@ -1,6 +1,8 @@
 #ifndef __udfdb_h__
 #define __udfdb_h__
 
+#include "config.h"
+
 #include "string.h"
 #include "time.h"
 #include "stdio.h"
@@ -10,7 +12,6 @@
 #include "string"
 
 #include "udfcommon.h"
-#include "version.h"
 
 #include "dbconnection.h"
 #include "dbutils.h"

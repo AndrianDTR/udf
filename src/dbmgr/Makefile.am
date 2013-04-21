@@ -1,5 +1,13 @@
 
-AM_CPPFLAGS = -I$(top_srcdir)/include
+MYSQLCONNDIR = $(abs_top_builddir)/3rd_party/mysql-connector-c++
+BOOSTDIR = $(abs_top_builddir)/3rd_party/boost
+
+AM_CPPFLAGS = -I$(srcdir)/include \
+	-I$(abs_top_srcdir) \
+	-I$(BOOSTDIR) \
+	-I$(MYSQLCONNDIR)
+
+lib_LTLIBRARIES = libdbmgr.la
 
 libdbmgrdir = $(includedir)/dbmgr/src
 
@@ -83,16 +91,14 @@ CSRCS += \
 	src/tcsblocksj2c.cpp \
 	src/tstaff.cpp 
 
-lib_LTLIBRARIES = \
-	libdbmgr.la
-
 libdbmgr_la_SOURCES = \
 	$(HSRCS) \
 	$(CSRCS) 
 
-
 all-local: 
-	echo "******************* $(top_srcdir) ***************"
+	echo "************* $(srcdir) ** $(MYSQLCONNDIR) **************"
+	if [ -f $(MYSQLCONNDIR)/cppconn/connection.h ]; echo "AAAA $(MYSQLCONNDIR)/cppconn/connection.h --"; fi
+
 #EXTRA_DIST = \
 #	clitest.c clitest.txt \
 #	libcli.spec COPYING README Makefile
